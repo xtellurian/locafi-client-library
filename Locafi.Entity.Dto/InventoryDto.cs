@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Locafi.Entity.Dto
 {
-    public class InventoryDTO : InventoryBaseDTO
+    public class InventoryDto : InventoryBaseDto
     {
         public Guid Id { get; set; }
         public bool Complete { get; set; }
@@ -17,7 +17,7 @@ namespace Locafi.Entity.Dto
         //        public List<InventoryReasonDTO> Reasons { get; set; }
         public Dictionary<string, string> Reasons { get; set; }
 
-        public InventoryDTO()
+        public InventoryDto()
         {
             // initialise empty arrays
             FoundItemsExpected = new List<string>();

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Locafi.Entity.Dto
 {
-    public class SnapshotDTO
+    public class SnapshotDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }    // friendly name for the snapshot
@@ -21,7 +21,7 @@ namespace Locafi.Entity.Dto
 
         public List<string> Items { get; set; }   // list of guids for the items identified from the scanned tags
 
-        public SnapshotDTO()
+        public SnapshotDto()
         {
             Id = Guid.NewGuid();
             Tags = new List<SnapshotDtoTag>() { };

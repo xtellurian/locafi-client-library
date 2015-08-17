@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Locafi.Entity.Dto
 {
-    public class ItemDTO
+    public class ItemDto
     {
         public Guid Id { get; set; }    // this references the Guid field in the DB, not the ID_Asset field (must add Guid field to DB)
 

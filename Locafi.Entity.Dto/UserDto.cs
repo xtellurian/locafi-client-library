@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Locafi.Entity.Dto
 {
-    public class UserDTO
+    public class UserDto
     {
         public Guid Id { get; set; }
         public string GivenName { get; set; }

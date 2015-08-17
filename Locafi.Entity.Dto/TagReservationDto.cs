@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Locafi.Entity.Dto
 {
-    public class TagReservationDTO
+    public class TagReservationDto
     {
         public IList<string> TagNumbers { get; set; }
 
-        public TagReservationDTO()
+        public TagReservationDto()
         {
             TagNumbers = new List<string>();
         }
