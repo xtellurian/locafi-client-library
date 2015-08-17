@@ -1,0 +1,1 @@
+nuget pack Locafi.Entity.Dto.csproj -Prop Configuration=Release

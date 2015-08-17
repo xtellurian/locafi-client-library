@@ -5,7 +5,7 @@ namespace Locafi.Entity.Dto
 {
     public class OrderDto
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string ReferenceNumber { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }

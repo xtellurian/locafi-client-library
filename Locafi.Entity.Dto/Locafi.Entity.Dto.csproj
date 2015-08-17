@@ -13,8 +13,8 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile344</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,14 +39,26 @@
   <ItemGroup>
     <Compile Include="AddItemDto.cs" />
     <Compile Include="DataTransferObjects.cs" />
+    <Compile Include="ExtendedPropertyDto.cs" />
+    <Compile Include="InventoryBaseDto.cs" />
+    <Compile Include="InventoryDto.cs" />
+    <Compile Include="InventoryReasonDto.cs" />
+    <Compile Include="ItemDto.cs" />
+    <Compile Include="ItemTypeDto.cs" />
     <Compile Include="OrderDisputeDto.cs" />
     <Compile Include="OrderDto.cs" />
     <Compile Include="OrderItemDetailDto.cs" />
     <Compile Include="OrderSkuDetailDto.cs" />
+    <Compile Include="PersonDto.cs" />
+    <Compile Include="PlaceDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReasonDto.cs" />
+    <Compile Include="SnapshotDto.cs" />
+    <Compile Include="TagReservationDto.cs" />
     <Compile Include="UpdateItemDto.cs" />
     <Compile Include="UpdateItemPlaceDto.cs" />
     <Compile Include="UpdateItemTagDto.cs" />
+    <Compile Include="UserDto.cs" />
     <Compile Include="WriteItemExtendedPropertyDto.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
