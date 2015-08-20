@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Locafi.Entity.Dto
+namespace Locafi.Client.Data
 {
     public class UpdateItemTagDto
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Locafi.Entity.Dto
+namespace Locafi.Client.Data
 {
     public class UpdateItemDto
     {

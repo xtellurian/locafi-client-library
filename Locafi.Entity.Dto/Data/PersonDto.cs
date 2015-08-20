@@ -1,30 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Locafi.Entity.Dto
+namespace Locafi.Client.Data
 {
-    public class PlaceDto
+    public class PersonDto
     {
         public Guid Id { get; set; }
-
-        public string ParentPlaceId { get; set; }    // Determine the parent item that this item is linked to (must add Guid field to DB)
-        public string ParentPlaceName { get; set; }
-
-        public string Name { get; set; }    // Name property for the item
-
-        public string Description { get; set; }    // Description property for the item
 
         public string TagId { get; set; }    // Determine the tag that this item is linked to (not implemented in legacy DB)
         public string TagNumber { get; set; } // tag EPC
         public string TagTypeName { get; set; } // display name for the type of tag
 
-        public List<string> ImageURIs { set; get; } // array of images that belong to this object
+        public string GivenName { get; set; }    // GivenName property for the item
+
+        public string Surname { get; set; }    // Surname property for the item
+
+        public string EmailAddress { get; set; }    // EmailAddress property for the item
+
+        public string ImageUrl { get; set; }    // ImageUrl property for the item
 
         //        public List<ExtendedProperty> ExtendedProperties { get; set; } // not implemented in legacy DB
-
-        public int? UsageCount { get; set; }
 
         public DateTime DateCreated { set; get; } // date item was created
         public string CreatedByUserId { set; get; } // id of the user who created it

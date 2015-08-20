@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Locafi.Entity.Dto
+namespace Locafi.Client.Data
 {
     public class SnapshotDto
     {

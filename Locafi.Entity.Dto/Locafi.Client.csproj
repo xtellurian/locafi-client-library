@@ -8,8 +8,8 @@
     <ProjectGuid>{416E7AA9-3C0F-443C-9B8B-68B4B3385BE4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Locafi.Entity.Dto</RootNamespace>
-    <AssemblyName>Locafi.Entity.Dto</AssemblyName>
+    <RootNamespace>Locafi.Client</RootNamespace>
+    <AssemblyName>Locafi.Client</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -37,28 +37,33 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddItemDto.cs" />
-    <Compile Include="ExtendedPropertyDto.cs" />
-    <Compile Include="InventoryBaseDto.cs" />
-    <Compile Include="InventoryDto.cs" />
-    <Compile Include="InventoryReasonDto.cs" />
-    <Compile Include="ItemDto.cs" />
-    <Compile Include="ItemTypeDto.cs" />
-    <Compile Include="OrderDisputeDto.cs" />
-    <Compile Include="OrderDto.cs" />
-    <Compile Include="OrderItemDetailDto.cs" />
-    <Compile Include="OrderSkuDetailDto.cs" />
-    <Compile Include="PersonDto.cs" />
-    <Compile Include="PlaceDto.cs" />
+    <Compile Include="Action\InventoryAction.cs" />
+    <Compile Include="Action\OrderAction.cs" />
+    <Compile Include="Data\AddItemDto.cs" />
+    <Compile Include="Data\ExtendedPropertyDto.cs" />
+    <Compile Include="Data\InventoryBaseDto.cs" />
+    <Compile Include="Data\InventoryDto.cs" />
+    <Compile Include="Data\InventoryReasonDto.cs" />
+    <Compile Include="Data\ItemDto.cs" />
+    <Compile Include="Data\ItemTypeDto.cs" />
+    <Compile Include="Data\OrderDisputeDto.cs" />
+    <Compile Include="Data\OrderDto.cs" />
+    <Compile Include="Data\OrderItemDetailDto.cs" />
+    <Compile Include="Data\OrderSkuDetailDto.cs" />
+    <Compile Include="Data\PersonDto.cs" />
+    <Compile Include="Data\PlaceDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReasonDto.cs" />
-    <Compile Include="SnapshotDto.cs" />
-    <Compile Include="TagReservationDto.cs" />
-    <Compile Include="UpdateItemDto.cs" />
-    <Compile Include="UpdateItemPlaceDto.cs" />
-    <Compile Include="UpdateItemTagDto.cs" />
-    <Compile Include="UserDto.cs" />
-    <Compile Include="WriteItemExtendedPropertyDto.cs" />
+    <Compile Include="Data\ReasonDto.cs" />
+    <Compile Include="Data\SnapshotDto.cs" />
+    <Compile Include="Data\TagReservationDto.cs" />
+    <Compile Include="Data\UpdateItemDto.cs" />
+    <Compile Include="Data\UpdateItemPlaceDto.cs" />
+    <Compile Include="Data\UpdateItemTagDto.cs" />
+    <Compile Include="Data\UserDto.cs" />
+    <Compile Include="Data\WriteItemExtendedPropertyDto.cs" />
+    <Compile Include="Uri\InventoryUri.cs" />
+    <Compile Include="Uri\OrderUri.cs" />
+    <Compile Include="ApiVersion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
