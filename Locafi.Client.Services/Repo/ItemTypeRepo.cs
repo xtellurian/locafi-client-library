@@ -9,7 +9,7 @@ using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class ItemTypeRepo : WebRepoBase<ODataCollection<ItemTypeDto>>, IItemTypeRepo
+    public class ItemTypeRepo : WebRepo<ODataCollection<ItemTypeDto>>, IItemTypeRepo
     {
         public ItemTypeRepo(IHttpTransferConfigService downloader, ISerialiserService entitySerialiser) : base(downloader, entitySerialiser, "ItemType/")
         {

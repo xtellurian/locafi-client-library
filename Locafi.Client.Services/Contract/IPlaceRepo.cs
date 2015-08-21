@@ -7,5 +7,6 @@ namespace Locafi.Client.Services.Contract
     public interface IPlaceRepo
     {
         Task<IList<PlaceDto>> GetAllPlaces();
+        Task<PlaceDto> AddNewPlace(PlaceDto place);
     }
 }

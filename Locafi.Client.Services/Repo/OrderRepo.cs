@@ -10,7 +10,7 @@ using Locafi.Client.Uri;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class OrderRepo : WebRepoBase<OrderDto>, IOrderRepo
+    public class OrderRepo : WebRepo<OrderDto>, IOrderRepo
     {
         public OrderRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "orders")
         {

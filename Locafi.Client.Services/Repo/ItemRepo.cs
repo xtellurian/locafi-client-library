@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class ItemRepo : WebRepoBase<ODataCollection<ItemDto>>, IItemRepo
+    public class ItemRepo : WebRepo<ODataCollection<ItemDto>>, IItemRepo
     {
         private readonly ISerialiserService _serialiser;
 

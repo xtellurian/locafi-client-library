@@ -15,27 +15,7 @@ namespace Locafi.Client.UnitTests.Tests
         {
         }
 
-        [TestMethod]
-        public async Task AddItem()
-        {
-            var places = await PlaceRepo.GetAllPlaces();
-            var place1 = places[0];
-
-            var item = new AddItemDto
-            {
-                Description = "",
-                ItemExtendedPropertyList = null, // null or empty list?
-                Name = "Test Item",
-                PlaceId = place1.Id,
-                SkuId = Guid.Empty,
-                TagNumber = "",
-                TagType = 0
-            };
-
-            var result = await ItemRepo.AddItem(item);
-
-            Assert.IsNotNull(result);
-        }
+       
 
 
     }

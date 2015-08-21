@@ -9,7 +9,7 @@ using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class UserRepo : WebRepoBase<ODataCollection<UserDto>>, IUserRepo
+    public class UserRepo : WebRepo<ODataCollection<UserDto>>, IUserRepo
     {
         public UserRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Users")
         {

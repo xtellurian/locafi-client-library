@@ -8,7 +8,7 @@ using Locafi.Client.Services.Contract;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class SnapshotRepo : WebRepoBase<SnapshotDto>, ISnapshotRepo
+    public class SnapshotRepo : WebRepo<SnapshotDto>, ISnapshotRepo
     {
         public SnapshotRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Snapshots")
         {

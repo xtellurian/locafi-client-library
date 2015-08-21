@@ -9,16 +9,25 @@ using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class PlaceRepo : WebRepoBase<ODataCollection<PlaceDto>>, IPlaceRepo
+    public class PlaceRepo : WebRepo<ODataCollection<PlaceDto>>, IPlaceRepo
     {
+        private readonly ISerialiserService _serialiser;
+
         public PlaceRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Places/")
         {
+            _serialiser = serialiser;
         }
 
         public async Task<IList<PlaceDto>> GetAllPlaces()
         {
             var result = await base.Get();
             return result.Value;
+        }
+
+        public async Task<PlaceDto> AddNewPlace(PlaceDto place)
+        {
+            var result = await PostResult(place);
+            return _serialiser.Deserialise<PlaceDto>(result);
         }
 
         public async Task<PlaceDto> GetPlaceById(Guid id)

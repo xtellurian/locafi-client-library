@@ -10,13 +10,13 @@ using System.Net.Http;
 
 namespace Locafi.Client.Services
 {
-    public abstract class WebRepoBase<T> where T : class, new()
+    public abstract class WebRepo<T> where T : class, new()
     {
         private readonly IHttpTransferConfigService _configService;
         private readonly ISerialiserService _serialiser;
         private readonly string _service;
 
-        protected WebRepoBase(IHttpTransferConfigService configService, ISerialiserService serialiser, string service)
+        protected WebRepo(IHttpTransferConfigService configService, ISerialiserService serialiser, string service)
         {
             _configService = configService;
             _serialiser = serialiser;
