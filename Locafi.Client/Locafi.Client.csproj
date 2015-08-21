@@ -40,6 +40,7 @@
     <Compile Include="Action\InventoryAction.cs" />
     <Compile Include="Action\OrderAction.cs" />
     <Compile Include="Data\AddItemDto.cs" />
+    <Compile Include="Data\AuthorizationTokenDto.cs" />
     <Compile Include="Data\ExtendedPropertyDto.cs" />
     <Compile Include="Data\InventoryBaseDto.cs" />
     <Compile Include="Data\InventoryDto.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Data\OrderSkuDetailDto.cs" />
     <Compile Include="Data\PersonDto.cs" />
     <Compile Include="Data\PlaceDto.cs" />
+    <Compile Include="Data\UserLoginDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\ReasonDto.cs" />
     <Compile Include="Data\SnapshotDto.cs" />

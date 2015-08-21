@@ -38,6 +38,8 @@ namespace Locafi.Client.Uri
 
             switch (action)
             {
+                case OrderAction.Create:
+                    return "/Create";
                 case OrderAction.Allocate:
                     return $"/{order.Id}/Allocate/{snapshotId}";
                 case OrderAction.DisputeAllocate:

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Locafi.Client.Data
 {
     public class ItemDto
     {
         public Guid Id { get; set; }    // this references the Guid field in the DB, not the ID_Asset field (must add Guid field to DB)
-
         public string ParentItemId { get; set; }    // Determine the parent item that this item is linked to (must add Guid field to DB)
         public string ParentItemName { get; set; }
 
@@ -41,5 +41,6 @@ namespace Locafi.Client.Data
 
         public string Units { get; set; }
         public int? UnitValue { get; set; }
+
     }
 }

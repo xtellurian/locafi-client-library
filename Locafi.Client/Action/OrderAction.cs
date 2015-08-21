@@ -2,6 +2,7 @@
 {
     public enum OrderAction
     {
+        Create,
         Allocate,
         DisputeAllocate,
         Dispatch,
