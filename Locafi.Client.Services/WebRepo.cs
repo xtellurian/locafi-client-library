@@ -13,7 +13,7 @@ namespace Locafi.Client.Services
 {
     public abstract class WebRepo : IWebRepo
     {
-        private readonly string _service;
+        private readonly string _serviceString;
         private readonly IHttpTransferConfigService _configService;
         private readonly ISerialiserService _serialiser;
 
@@ -21,7 +21,7 @@ namespace Locafi.Client.Services
         {
             _configService = configService;
             _serialiser = serialiser;
-            _service = service;
+            _serviceString = service;
         }
 
         protected async Task<T> Get<T>(string extra = "")
@@ -52,18 +52,37 @@ namespace Locafi.Client.Services
         {
             var response = await GetResponse(HttpMethod.Delete, extra);
             Debug.WriteLine(response.IsSuccessStatusCode
-                ? $"{_service} service deleted  id={extra} successfully"
-                : $"{_service} service failed to delete id={extra}");
+                ? $"{_serviceString} service deleted  id={extra} successfully"
+                : $"{_serviceString} service failed to delete id={extra}");
         }
 
-        private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = null)
+        private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "")
         {
-            var baseUrl = await _configService.GetBaseUrl();
-            var message = new HttpRequestMessage(method, baseUrl + _service + extra);
+            var baseUrl = await _configService.GetBaseUrlString();
+            var path = GetFullPath(baseUrl, _serviceString, extra);
+            var message = new HttpRequestMessage(method, path);
             message.Headers.Add("Authorization", "Token " + _configService.GetTokenString());
 
             var client = new HttpClient();
-            return await client.SendAsync(message);
+            Debug.WriteLine($"Uploading to {path}");
+            var response = await client.SendAsync(message);
+            if (response.IsSuccessStatusCode) Debug.WriteLine($"Upload Success to {path}");
+            else
+            {
+                var serverMessage = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine($"Error Uploading to {path}\n {serverMessage}");
+            }
+            return response;
+        }
+
+        private string GetFullPath(string baseUrl, string first, string second)
+        {
+            var result = new StringBuilder(baseUrl.TrimEnd('/'));
+
+            var s1 = first.Trim('/');
+            var s2 = second.Trim('/');
+            result.Append('/').Append(s1).Append('/').Append(s2);
+            return result.ToString();
         }
 
     }

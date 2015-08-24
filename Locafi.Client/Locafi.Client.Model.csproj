@@ -57,7 +57,6 @@
     <Compile Include="Dto\Orders\OrderItemDetailDto.cs" />
     <Compile Include="Dto\Orders\OrderSkuDetailDto.cs" />
     <Compile Include="Dto\PersonDto.cs" />
-    <Compile Include="Dto\PlaceDto.cs" />
     <Compile Include="Dto\Places\AddPlaceDto.cs" />
     <Compile Include="Dto\Places\PlaceDetailDto.cs" />
     <Compile Include="Dto\Places\PlaceSummaryDto.cs" />

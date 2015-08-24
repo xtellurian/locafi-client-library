@@ -15,9 +15,10 @@ namespace Locafi.Client.UnitTests
     public static class WebRepoContainer
     {
         // config
-        private const string BaseUrl = @"http://legacynavapi.azurewebsites.net/api/";
-        private const string UserName = "Rian";
-        private const string Password = "Ramp11";
+        //private const string BaseUrl = @"http://legacynavapi.azurewebsites.net/api/";
+        private const string BaseUrl = @"http://legacylocafiapiv2.azurewebsites.net/api/";
+        private const string UserName = "administrator";
+        private const string Password = "ramp123";
 
 
         private static readonly ISerialiserService Serialiser;

@@ -1,19 +1,36 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Locafi.Client.Contract.Services;
 using Locafi.Client.Model.Dto.Orders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
 {
     [TestClass]
-    public class OrderRepoTests 
+    public class OrderRepoTests
     {
+        private IPlaceRepo _placeRepo;
+        private IPersonRepo _personRepo;
+        private IOrderRepo _orderRepo;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _placeRepo = WebRepoContainer.PlaceRepo;
+            _personRepo = WebRepoContainer.PersonRepo;
+            _orderRepo = WebRepoContainer.OrderRepo;
+        }
+
         [TestMethod]
         public async Task CreateOrderAndCheckExists()
         {
-            var places = await WebRepoContainer.PlaceRepo.GetAllPlaces();
-            var place1 = places[0];
-            var place2 = places[1];
-            var persons = await WebRepoContainer.PersonRepo.GetAllPersons();
+            var ran = new Random();
+            var places = await _placeRepo.GetAllPlaces();
+            var numPlaces = places.Count;
+            var place1 = places[ran.Next(numPlaces - 1)]; // get random places
+            var place2 = places[ran.Next(numPlaces - 1)];
+
+            var persons = await _personRepo.GetAllPersons();
             var person = persons[0];
 
             var order = new OrderDto
@@ -23,7 +40,7 @@ namespace Locafi.Client.UnitTests.Tests
                 DeliverToId = person.Id.ToString()
             };
 
-            var result = await WebRepoContainer.OrderRepo.Create(order);
+            var result = await _orderRepo.Create(order);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(result.DestinationPlaceId,order.DestinationPlaceId);

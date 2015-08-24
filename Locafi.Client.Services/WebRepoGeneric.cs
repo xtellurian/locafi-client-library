@@ -26,7 +26,7 @@ namespace Locafi.Client.Services
 
         protected async Task<T> Get(string extra = "")
         {
-            var baseUrl = await _configService.GetBaseUrl();
+            var baseUrl = await _configService.GetBaseUrlString();
             var message = new HttpRequestMessage(HttpMethod.Get, baseUrl + _service + extra);
             message.Headers.Add("Authorization", "Token " + _configService.GetTokenString());
 
@@ -40,7 +40,7 @@ namespace Locafi.Client.Services
 
         protected async Task<IList<T>> GetList(string extra = "")
         {
-            var baseUrl = await _configService.GetBaseUrl();
+            var baseUrl = await _configService.GetBaseUrlString();
             var message = new HttpRequestMessage(HttpMethod.Get, baseUrl + _service + extra);
             message.Headers.Add("Authorization", "Token " + _configService.GetTokenString());
 
@@ -54,7 +54,7 @@ namespace Locafi.Client.Services
 
         protected async Task<T> Post(T body, string extra = "")
         {
-            var baseUrl = await _configService.GetBaseUrl();
+            var baseUrl = await _configService.GetBaseUrlString();
             var message = new HttpRequestMessage(HttpMethod.Post, baseUrl + _service + extra);
             message.Headers.Add("Authorization", "Token " + _configService.GetTokenString());
             message.Content = new StringContent(_serialiser.Serialise(body), Encoding.UTF8, "application/json");
@@ -69,7 +69,7 @@ namespace Locafi.Client.Services
 
         protected async Task<T> PostRaw(object body, string extra = "")
         {
-            var baseUrl = await _configService.GetBaseUrl();
+            var baseUrl = await _configService.GetBaseUrlString();
             var message = new HttpRequestMessage(HttpMethod.Post, baseUrl + _service + extra);
             message.Headers.Add("Authorization", "Token " + _configService.GetTokenString());
             message.Content = new StringContent(_serialiser.Serialise(body), Encoding.UTF8, "application/json");
@@ -84,7 +84,7 @@ namespace Locafi.Client.Services
 
         protected async Task<string> PostResult(object body, string extra = "")
         {
-            var baseUrl = await _configService.GetBaseUrl();
+            var baseUrl = await _configService.GetBaseUrlString();
             var message = new HttpRequestMessage(HttpMethod.Post, baseUrl + _service + extra);
             message.Headers.Add("Authorization", "Token " + _configService.GetTokenString());
             message.Content = new StringContent(_serialiser.Serialise(body), Encoding.UTF8, "application/json");

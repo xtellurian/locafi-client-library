@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Items;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,34 +8,45 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Locafi.Client.UnitTests.Tests
 {
     [TestClass]
-    public class ItemRepoTests 
+    public class ItemRepoTests
     {
+        private IPlaceRepo _placeRepo;
+        private IItemRepo _itemRepo;
+        [TestInitialize]
+        public void Setup()
+        {
+            _placeRepo = WebRepoContainer.PlaceRepo;
+            _itemRepo = WebRepoContainer.ItemRepo;
+        }
 
         [TestMethod]
         public async Task AddItem()
         {
-            var places = await WebRepoContainer.PlaceRepo.GetAllPlaces();
-            var place1 = places[0];
+            var ran = new Random();
+            var places = await _placeRepo.GetAllPlaces();
+            var place = places[ran.Next(places.Count - 1)]; // picks a random place for the item
 
-            var item = new AddItemDto
+            var addItemDto = new AddItemDto
             {
                 Description = "",
                 ItemExtendedPropertyList = null, // null or empty list?
                 Name = "Test Item",
-                PlaceId = place1.Id,
+                PlaceId = place.Id,
                 SkuId = Guid.Empty,
                 TagNumber = "",
                 TagType = 0
             };
 
-            var result = await WebRepoContainer.ItemRepo.CreateItem(item);
+            var result = await _itemRepo.CreateItem(addItemDto);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(string.Equals(item.Name, result.Name));
-            Assert.IsTrue(string.Equals(item.Description, result.Description));
-            Assert.AreEqual(item.PlaceId, result.PlaceId);
-            Assert.AreEqual(item.SkuId, result.SkuId);
+            Assert.IsTrue(string.Equals(addItemDto.Name, result.Name));
+            Assert.IsTrue(string.Equals(addItemDto.Description, result.Description));
+            Assert.AreEqual(addItemDto.PlaceId, result.PlaceId);
+            Assert.AreEqual(addItemDto.SkuId, result.SkuId);
         }
+
+
 
 
     }

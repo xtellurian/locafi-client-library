@@ -23,11 +23,6 @@ namespace Locafi.Client.Services.Repo
             return await base.GetList();
         }
 
-        public async Task<IList<OrderDto>> GetOrders(string extra)
-        {
-            return await base.GetList(extra);
-        }
-
         public async Task<OrderDto> Create(OrderDto order)
         {
             var path = order.RelativeUri(OrderAction.Create, null);

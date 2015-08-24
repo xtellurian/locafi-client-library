@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class PlaceRepo : WebRepo<ODataCollection<PlaceDto>>, IPlaceRepo
+    public class PlaceRepo : WebRepo, IPlaceRepo
     {
         private readonly ISerialiserService _serialiser;
 
@@ -19,28 +20,37 @@ namespace Locafi.Client.Services.Repo
             _serialiser = serialiser;
         }
 
-        public async Task<IList<PlaceDto>> GetAllPlaces()
+        public async Task<IList<PlaceSummaryDto>> GetAllPlaces()
         {
-            var result = await base.Get();
-            return result.Value;
+            return await QueryPlaces();
         }
 
-        public async Task<PlaceDto> AddNewPlace(PlaceDto place)
-        {
-            var result = await PostResult(place);
-            return _serialiser.Deserialise<PlaceDto>(result);
-        }
 
-        public async Task<PlaceDto> GetPlaceById(Guid id)
+        public async Task<PlaceDetailDto> CreatePlace(AddPlaceDto addPlaceDto)
         {
-            var result = await base.Get("?$filter=Id eq '" + id + "'");
-            return result.Value.FirstOrDefault();
+            var path = @"/CreatePlace";
+            var result = await Post<PlaceDetailDto>(addPlaceDto, path);
+            return result;
         }
+       
 
-        public async Task<PlaceDto> GetPlaceById(string id)
+        //public async Task<PlaceDto> GetPlaceById(Guid id)
+        //{
+        //    var result = await base.Get("?$filter=Id eq '" + id + "'");
+        //    return result.Value.FirstOrDefault();
+        //}
+
+        //public async Task<PlaceDto> GetPlaceById(string id)
+        //{
+        //    var result = await base.Get("?$filter=Id eq '" + id + "'");
+        //    return result.Value.FirstOrDefault();
+        //}
+
+        protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = "")
         {
-            var result = await base.Get("?$filter=Id eq '" + id + "'");
-            return result.Value.FirstOrDefault();
+            var path = $"GetPlaces{queryString}";
+            var result = await Get<IList<PlaceSummaryDto>>(path);
+            return result;
         }
     }
 }
