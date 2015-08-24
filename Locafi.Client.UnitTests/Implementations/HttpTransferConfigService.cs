@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Locafi.Client.Services.Contract;
+using Locafi.Client.Contract.Config;
 
 namespace Locafi.Client.UnitTests.Implementations
 {

@@ -1,27 +1,19 @@
 ﻿using System.Threading.Tasks;
-using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Orders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
 {
     [TestClass]
-    public class OrderRepoTests : HttpRepoContainer
+    public class OrderRepoTests 
     {
-        private const string BaseUrl = @"http://legacynavapi.azurewebsites.net/api/";
-        private const string UserName = "Rian";
-        private const string Password = "Ramp11";
-
-        public OrderRepoTests() : base(BaseUrl, UserName, Password)
-        {
-        }
-
         [TestMethod]
         public async Task CreateOrderAndCheckExists()
         {
-            var places = await PlaceRepo.GetAllPlaces();
+            var places = await WebRepoContainer.PlaceRepo.GetAllPlaces();
             var place1 = places[0];
             var place2 = places[1];
-            var persons = await PersonRepo.GetAllPersons();
+            var persons = await WebRepoContainer.PersonRepo.GetAllPersons();
             var person = persons[0];
 
             var order = new OrderDto
@@ -31,7 +23,7 @@ namespace Locafi.Client.UnitTests.Tests
                 DeliverToId = person.Id.ToString()
             };
 
-            var result = await OrderRepo.Create(order);
+            var result = await WebRepoContainer.OrderRepo.Create(order);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(result.DestinationPlaceId,order.DestinationPlaceId);

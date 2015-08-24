@@ -4,8 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Locafi.Client.Services.Contract;
 using System.Net.Http;
+using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Services;
 
 
 namespace Locafi.Client.Services

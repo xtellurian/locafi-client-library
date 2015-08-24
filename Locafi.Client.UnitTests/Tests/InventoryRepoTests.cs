@@ -6,12 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Locafi.Client.UnitTests.Tests
 {
     [TestClass]
-    public class InventoryRepoTests : HttpRepoContainer
+    public class InventoryRepoTests
     {
-        private const string BaseUrl = @"http://legacynavapi.azurewebsites.net/api/";
-        private const string UserName = "Rian";
-        private const string Password = "Ramp11";
-        public InventoryRepoTests() : base(BaseUrl, UserName, Password)
+        public InventoryRepoTests() 
         {
         }
 

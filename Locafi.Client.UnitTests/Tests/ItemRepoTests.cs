@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Locafi.Client.Data;
-using Locafi.Client.Services.Repo;
+using Locafi.Client.Model.Dto.Items;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
 {
     [TestClass]
-    public class ItemRepoTests : HttpRepoContainer
+    public class ItemRepoTests 
     {
-        private const string BaseUrl = @"http://legacynavapi.azurewebsites.net/api/";
-        private const string UserName = "Rian";
-        private const string Password = "Ramp11";
-        public ItemRepoTests() : base(BaseUrl, UserName, Password)
-        {
-        }
 
         [TestMethod]
         public async Task AddItem()
         {
-            var places = await PlaceRepo.GetAllPlaces();
+            var places = await WebRepoContainer.PlaceRepo.GetAllPlaces();
             var place1 = places[0];
 
             var item = new AddItemDto
@@ -33,9 +27,13 @@ namespace Locafi.Client.UnitTests.Tests
                 TagType = 0
             };
 
-            var result = await ItemRepo.AddItem(item);
+            var result = await WebRepoContainer.ItemRepo.CreateItem(item);
 
             Assert.IsNotNull(result);
+            Assert.IsTrue(string.Equals(item.Name, result.Name));
+            Assert.IsTrue(string.Equals(item.Description, result.Description));
+            Assert.AreEqual(item.PlaceId, result.PlaceId);
+            Assert.AreEqual(item.SkuId, result.SkuId);
         }
 
 

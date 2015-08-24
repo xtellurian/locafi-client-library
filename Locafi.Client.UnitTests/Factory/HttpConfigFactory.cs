@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Data;
-using Locafi.Client.Services.Contract;
 using Locafi.Client.UnitTests.Implementations;
 using Newtonsoft.Json;
 

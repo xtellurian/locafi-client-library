@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
-using Locafi.Client.Services.Contract;
 
 namespace Locafi.Client.Services.Repo
 {

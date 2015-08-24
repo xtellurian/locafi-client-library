@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Locafi.Client.Action;
+using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
-using Locafi.Client.Services.Contract;
-using Locafi.Client.Uri;
+using Locafi.Client.Model.Actions;
+using Locafi.Client.Model.Dto.Orders;
+using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Services.Repo
 {

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Items;
 using Simple.OData.Client;
 
 
@@ -27,7 +28,7 @@ namespace Locafi.Client.Services.Odata
             var client = new ODataClient(settings);
 
             var packages = await client
-                .For<ItemDto>()
+                .For<ItemDetailDto>()
                 .Filter(x => x.TagNumber == "303400000800004000000003")
                 .FindEntriesAsync();
 

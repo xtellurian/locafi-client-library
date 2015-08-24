@@ -58,7 +58,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Factory\HttpConfigFactory.cs" />
-    <Compile Include="HttpRepoContainer.cs" />
+    <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\HttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />
     <Compile Include="Tests\InventoryRepoTests.cs" />
@@ -69,18 +69,23 @@
     <Compile Include="Tests\PlaceRepoTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Locafi.Client.Contract\Locafi.Client.Contract.csproj">
+      <Project>{35e95bf5-adc4-4272-997e-43772eb29495}</Project>
+      <Name>Locafi.Client.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Locafi.Client.Services\Locafi.Client.Services.csproj">
       <Project>{f359b947-ee36-4811-a76e-b3d1d105b69d}</Project>
       <Name>Locafi.Client.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Locafi.Client\Locafi.Client.csproj">
+    <ProjectReference Include="..\Locafi.Client\Locafi.Client.Model.csproj">
       <Project>{416e7aa9-3c0f-443c-9b8b-68b4b3385be4}</Project>
-      <Name>Locafi.Client</Name>
+      <Name>Locafi.Client.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

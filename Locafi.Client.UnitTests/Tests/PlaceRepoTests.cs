@@ -8,15 +8,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Locafi.Client.UnitTests.Tests
 {
     [TestClass]
-    public class PlaceRepoTests : HttpRepoContainer
+    public class PlaceRepoTests
     {
-        private const string BaseUrl = @"http://legacynavapi.azurewebsites.net/api/";
-        private const string UserName = "Rian";
-        private const string Password = "Ramp11";
-
-        public PlaceRepoTests() : base(BaseUrl, UserName, Password)
-        {
-        }
 
         [TestMethod]
         public async Task AddNewPlace()
@@ -30,7 +23,7 @@ namespace Locafi.Client.UnitTests.Tests
 
 
             };
-            var result = await PlaceRepo.AddNewPlace(place);
+            var result = await WebRepoContainer.PlaceRepo.AddNewPlace(place);
             Assert.IsInstanceOfType(result,typeof(PlaceDto));
 
 
@@ -38,7 +31,7 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task GetAllPlaces()
         {
-            var places = await PlaceRepo.GetAllPlaces();
+            var places = await WebRepoContainer.PlaceRepo.GetAllPlaces();
             Assert.IsNotNull(places);
             Assert.IsInstanceOfType(places, typeof(IEnumerable<PlaceDto>));
         }
