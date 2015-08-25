@@ -62,6 +62,7 @@
     <Compile Include="StringConstants.cs" />
     <Compile Include="Tests\AuthenticationTests.cs" />
     <Compile Include="Tests\SkuRepoTests.cs" />
+    <Compile Include="Tests\SnapshotRepoTests.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />

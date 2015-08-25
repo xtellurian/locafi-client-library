@@ -26,5 +26,17 @@ namespace Locafi.Client.Services.Repo
             var result = await Get<SnapshotDto>("/" + snapshotId);
             return result;
         }
+
+        public async Task<IList<SnapshotDto>> GetAllSnapshots()
+        {
+            var result = await Get<IList<SnapshotDto>>();
+            return result;
+        }
+
+        protected async Task<IList<SnapshotDto>> QuerySnapshots(string queryString)
+        {
+            var result = await Get<IList<SnapshotDto>>(queryString);
+            return result;
+        }
     }
 }
