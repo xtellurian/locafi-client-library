@@ -52,7 +52,11 @@ namespace Locafi.Client.UnitTests.Tests
 
         public async Task UpdatePlace()
         {
-            
+            var ran = new Random();
+            var places = await _placeRepo.GetAllPlaces();
+            var place = places[ran.Next(places.Count - 1)];
+
+
         }
 
         

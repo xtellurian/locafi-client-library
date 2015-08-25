@@ -68,6 +68,7 @@
     <Compile Include="Dto\Skus\WriteSkuExtendedPropertyDto.cs" />
     <Compile Include="Dto\UserLoginDto.cs" />
     <Compile Include="Extensions\ItemUri.cs" />
+    <Compile Include="Extensions\PlaceDtoGenerationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\ReasonDto.cs" />
     <Compile Include="Dto\SnapshotDto.cs" />

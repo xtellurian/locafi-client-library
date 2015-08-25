@@ -8,19 +8,19 @@ namespace LegacyNavigatorApi.Models.Dtos
     {
         public Guid TemplateExtendedPropertyId { get; set; }
 
-        public Guid ExtendedPropertyId { get; set; }
+        public Guid ExtendedPropertyId { get; set; } // actual ID of the extended property
 
         public string Value { get; set; }
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ReadEntityExtendedPropertyDto
+    public class ReadEntityExtendedPropertyDto : WriteEntityExtendedPropertyDto
     {
         public Guid Id { get; set; }
 
-        public Guid ExtendedPropertyId { get; set; }
+   //     public Guid ExtendedPropertyId { get; set; }
 
-        public Guid TemplateId { get; set; }
+ //       public Guid TemplateId { get; set; }
 
         public string TemplateType { get; set; }
 
@@ -32,7 +32,7 @@ namespace LegacyNavigatorApi.Models.Dtos
 
         public string ExtendedPropertyDataType { get; set; }
 
-        public string Value { get; set; }
+  //      public string Value { get; set; }
 
     }
 }
