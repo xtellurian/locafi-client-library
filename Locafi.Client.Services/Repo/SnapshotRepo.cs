@@ -9,21 +9,21 @@ using Locafi.Client.Data;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class SnapshotRepo : WebRepo<SnapshotDto>, ISnapshotRepo
+    public class SnapshotRepo : WebRepo, ISnapshotRepo
     {
-        public SnapshotRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Snapshots")
+        public SnapshotRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Snapshots")
         {
         }
 
         public async Task<SnapshotDto> PostSnapshot(SnapshotDto snapshot)
         {
-            var result = await Post(snapshot);
+            var result = await Post<SnapshotDto>(snapshot);
             return result;
         }
 
         public async Task<SnapshotDto> GetSnapshot(string snapshotId)
         {
-            var result = await Get("/" + snapshotId);
+            var result = await Get<SnapshotDto>("/" + snapshotId);
             return result;
         }
     }

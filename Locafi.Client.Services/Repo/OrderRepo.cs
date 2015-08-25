@@ -12,21 +12,21 @@ using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class OrderRepo : WebRepo<OrderDto>, IOrderRepo
+    public class OrderRepo : WebRepo, IOrderRepo
     {
-        public OrderRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "orders")
+        public OrderRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "orders")
         {
         }
 
         public async Task<IList<OrderDto>> GetAllOrders()
         {
-            return await base.GetList();
+            throw new NotImplementedException();
         }
 
         public async Task<OrderDto> Create(OrderDto order)
         {
             var path = order.RelativeUri(OrderAction.Create, null);
-            var result = await Post(order, path);
+            var result = await Post<OrderDto>(order, path);
 
             return result;
         }
@@ -35,7 +35,7 @@ namespace Locafi.Client.Services.Repo
         {
 
             var path = order.RelativeUri(OrderAction.Allocate, snapshotId);
-            var result = await Post(order, path);
+            var result = await Post<OrderDto>(order, path);
 
             return result;
         }
@@ -44,7 +44,7 @@ namespace Locafi.Client.Services.Repo
         {
 
             var path = order.RelativeUri(OrderAction.Receive, snapshotId);
-            var result = await Post(order, path);
+            var result = await Post<OrderDto>(order, path);
 
             return result;
         }
@@ -52,7 +52,7 @@ namespace Locafi.Client.Services.Repo
         public async Task<OrderDto> Dispatch(OrderDto order)
         {
             var path = order.RelativeUri(OrderAction.Dispatch, null);
-            var result = await Post(order, path);
+            var result = await Post<OrderDto>(order, path);
 
             return result;
         }

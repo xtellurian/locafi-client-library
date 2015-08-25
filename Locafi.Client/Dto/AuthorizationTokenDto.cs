@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Locafi.Client.Data
+namespace Locafi.Client.Model.Dto
 {
     public class AuthorizationTokenDto
     {
 
-        public bool success { get; set; }
-        public Tokens tokens { get; set; }
-        public IList<string> messages { get; set; }
+        public bool Success { get; set; }
+        public TokenGroup TokenGroup { get; set; }
+        public IList<string> Messages { get; set; }
 
     }
 
-    public class Tokens
+    public class TokenGroup
     {
         public string Token { get; set; }
         public string Refresh { get; set; }

@@ -7,6 +7,7 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Query;
 using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
@@ -15,7 +16,7 @@ namespace Locafi.Client.Services.Repo
     {
         private readonly ISerialiserService _serialiser;
 
-        public PlaceRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Places/")
+        public PlaceRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) : base(authorisedConfigService, serialiser, "Places/")
         {
             _serialiser = serialiser;
         }
@@ -32,6 +33,11 @@ namespace Locafi.Client.Services.Repo
             var result = await Post<PlaceDetailDto>(addPlaceDto, path);
             return result;
         }
+
+        public async Task<IList<PlaceSummaryDto>> QueryPlaces(ISimpleRestQuery<PlaceSummaryDto> query)
+        {
+            return await QueryPlaces(query.AsRestQuery());
+        }
        
 
         //public async Task<PlaceDto> GetPlaceById(Guid id)
@@ -46,7 +52,7 @@ namespace Locafi.Client.Services.Repo
         //    return result.Value.FirstOrDefault();
         //}
 
-        protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = "")
+        protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = null)
         {
             var path = $"GetPlaces{queryString}";
             var result = await Get<IList<PlaceSummaryDto>>(path);

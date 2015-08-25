@@ -8,21 +8,16 @@ using Locafi.Client.Contract.Config;
 
 namespace Locafi.Client.UnitTests.Implementations
 {
-    public class HttpTransferConfigService : IHttpTransferConfigService
+    public class AuthorisedHttpTransferConfigService : IAuthorisedHttpTransferConfigService
     {
-        public HttpTransferConfigService(string token)
+        public AuthorisedHttpTransferConfigService(string token)
         {
             _token = token;
         }
 
-        internal string BaseUrl { get; set; }
+        public string BaseUrl { get; set; }
 
         private string _token;
-
-        public async Task<string> GetBaseUrlString()
-        {
-            return BaseUrl;
-        }
 
         public async Task<Uri> GetBaseUri()
         {

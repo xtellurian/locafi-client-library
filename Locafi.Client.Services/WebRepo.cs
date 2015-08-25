@@ -13,15 +13,24 @@ namespace Locafi.Client.Services
 {
     public abstract class WebRepo : IWebRepo
     {
-        private readonly string _serviceString;
         private readonly IHttpTransferConfigService _configService;
+        private readonly string _service;
+        private readonly IAuthorisedHttpTransferConfigService _authorisedConfigService;
         private readonly ISerialiserService _serialiser;
+
+        protected WebRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service)
+        {
+            _authorisedConfigService = authorisedConfigService;
+            _configService = authorisedConfigService;
+            _serialiser = serialiser;
+            _service = service;
+        }
 
         protected WebRepo(IHttpTransferConfigService configService, ISerialiserService serialiser, string service)
         {
             _configService = configService;
             _serialiser = serialiser;
-            _serviceString = service;
+            _service = service;
         }
 
         protected async Task<T> Get<T>(string extra = "")
@@ -43,7 +52,7 @@ namespace Locafi.Client.Services
 
         protected async Task<T> Post<T>(object data, string extra = "") where T : class, new()
         {
-            var response = await GetResponse(HttpMethod.Post, extra);
+            var response = await GetResponse(HttpMethod.Post, extra, _serialiser.Serialise(data));
             var result = response.IsSuccessStatusCode ? _serialiser.Deserialise<T>(await response.Content.ReadAsStringAsync()) : null;
             return result;
         }
@@ -52,16 +61,19 @@ namespace Locafi.Client.Services
         {
             var response = await GetResponse(HttpMethod.Delete, extra);
             Debug.WriteLine(response.IsSuccessStatusCode
-                ? $"{_serviceString} service deleted  id={extra} successfully"
-                : $"{_serviceString} service failed to delete id={extra}");
+                ? $"{_service} service deleted  id={extra} successfully"
+                : $"{_service} service failed to delete id={extra}");
         }
 
-        private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "")
+        private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "", string content = null)
         {
-            var baseUrl = await _configService.GetBaseUrlString();
-            var path = GetFullPath(baseUrl, _serviceString, extra);
+            var baseUrl = _configService.BaseUrl;
+            var path = GetFullPath(baseUrl, _service, extra);
             var message = new HttpRequestMessage(method, path);
-            message.Headers.Add("Authorization", "Token " + _configService.GetTokenString());
+            if(content!=null) message.Content = new StringContent(content, Encoding.UTF8, "application/json");
+
+            //message.Content.Headers.Add("Content-Type", new List<string> { "application/json" });
+            if(_authorisedConfigService!=null) message.Headers.Add("Authorization", "Token " + _authorisedConfigService.GetTokenString());
 
             var client = new HttpClient();
             Debug.WriteLine($"Uploading to {path}");

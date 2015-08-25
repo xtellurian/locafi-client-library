@@ -6,6 +6,6 @@ namespace Locafi.Client.Contract.Services
 {
     public interface IPersonRepo
     {
-        Task<List<PersonDto>> GetAllPersons();
+        Task<IList<PersonDto>> GetAllPersons();
     }
 }

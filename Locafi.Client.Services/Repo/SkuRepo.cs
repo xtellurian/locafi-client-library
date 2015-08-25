@@ -13,7 +13,7 @@ namespace Locafi.Client.Services.Repo
 {
     public class SkuRepo : WebRepo, ISkuRepo
     {
-        public SkuRepo(IHttpTransferConfigService downloader, ISerialiserService entitySerialiser) : base(downloader, entitySerialiser, "Skus/")
+        public SkuRepo(IAuthorisedHttpTransferConfigService downloader, ISerialiserService entitySerialiser) : base(downloader, entitySerialiser, "Skus/")
         {
         }
 

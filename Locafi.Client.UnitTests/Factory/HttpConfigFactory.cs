@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto;
 using Locafi.Client.UnitTests.Implementations;
 using Newtonsoft.Json;
 
@@ -13,16 +14,16 @@ namespace Locafi.Client.UnitTests.Factory
     public static class HttpConfigFactory
     {
 
-        public static async Task<HttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd)
+        public static async Task<AuthorisedHttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd)
         {
             var user = new UserLoginDto
             {
-                username = usrname,
-                password = passwrd
+                Username = usrname,
+                Password = passwrd
             };
-            var result = await Post(baseUrl + "auth/login/", user);
+            var result = await Post(baseUrl + "Authentication/Login/", user);
 
-            var configService = new HttpTransferConfigService(result)
+            var configService = new AuthorisedHttpTransferConfigService(result)
             {
                 BaseUrl = baseUrl
             };
@@ -42,7 +43,7 @@ namespace Locafi.Client.UnitTests.Factory
 
             var result = response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<AuthorizationTokenDto>(await response.Content.ReadAsStringAsync()) : null;
 
-            return result?.tokens.Token;
+            return result?.TokenGroup.Token;
         }
 
     }

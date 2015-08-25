@@ -6,6 +6,6 @@ namespace Locafi.Client.Contract.Services
 {
     public interface IUserRepo
     {
-        Task<List<UserDto>> GetAllUsers();
+        Task<IList<UserDto>> GetAllUsers();
     }
 }

@@ -47,6 +47,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\AuthenticationRepo.cs" />
     <Compile Include="IWebRepo.cs" />
     <Compile Include="WebRepo.cs" />
     <Compile Include="Odata\ODataCollection.cs" />
@@ -59,7 +60,6 @@
     <Compile Include="Repo\PlaceRepo.cs" />
     <Compile Include="Repo\SnapshotRepo.cs" />
     <Compile Include="Repo\UserRepo.cs" />
-    <Compile Include="WebRepoGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

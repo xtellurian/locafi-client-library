@@ -41,7 +41,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\IAuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Config\IHttpTransferConfigService.cs" />
+    <Compile Include="Services\IAuthenticationRepo.cs" />
     <Compile Include="Services\IItemRepo.cs" />
     <Compile Include="Services\ISkuRepo.cs" />
     <Compile Include="Services\IOrderRepo.cs" />

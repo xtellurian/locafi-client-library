@@ -10,34 +10,34 @@ using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class UserRepo : WebRepo<ODataCollection<UserDto>>, IUserRepo
+    public class UserRepo : WebRepo, IUserRepo
     {
-        public UserRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Users")
+        public UserRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Users")
         {
         }
 
-        public async Task<List<UserDto>> GetAllUsers()
+        public async Task<IList<UserDto>> GetAllUsers()
         {
-            var result = await Get();
-            return result.Value;
+            var result = await Get<IList<UserDto>>();
+            return result;
         }
 
         public async Task<UserDto> GetUser(string username)
         {
-            var result = await Get("?$filter=UserName eq '" + username + "'");
-            return result.Value.First();
+            var result = await Get<UserDto>("?$filter=UserName eq '" + username + "'");
+            return result;
         }
 
         public async Task<UserDto> GetUserById(Guid id)
         {
-            var result = await Get("?$filter=Id eq '" + id + "'");
-            return result.Value.First();
+            var result = await Get<UserDto>("?$filter=Id eq '" + id + "'");
+            return result;
         }
 
         public async Task<UserDto> GetUserById(string id)
         {
-            var result = await Get("?$filter=Id eq '" + id + "'");
-            return result.Value.First();
+            var result = await Get<UserDto>("?$filter=Id eq '" + id + "'");
+            return result;
         }
     }
 }

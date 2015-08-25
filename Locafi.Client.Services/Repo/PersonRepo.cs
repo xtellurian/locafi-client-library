@@ -10,28 +10,28 @@ using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class PersonRepo : WebRepo<ODataCollection<PersonDto>>, IPersonRepo
+    public class PersonRepo : WebRepo, IPersonRepo
     {
-        public PersonRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Person")
+        public PersonRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Person")
         {
         }
 
-        public async Task<List<PersonDto>> GetAllPersons()
+        public async Task<IList<PersonDto>> GetAllPersons()
         {
-            var items = await Get();
-            return items.Value;
+            var items = await Get<IList<PersonDto>>();
+            return items;
         }
 
         public async Task<PersonDto> GetPersonById(Guid id)
         {
-            var result = await Get("?$filter=Id eq '" + id + "'");
-            return result.Value.First();
+            var result = await Get<PersonDto>("?$filter=Id eq '" + id + "'");
+            return result;
         }
 
         public async Task<PersonDto> GetPersonById(string id)
         {
-            var result = await Get("?$filter=Id eq '" + id + "'");
-            return result.Value.First();
+            var result = await Get<PersonDto>("?$filter=Id eq '" + id + "'");
+            return result;
         }
     }
 }
