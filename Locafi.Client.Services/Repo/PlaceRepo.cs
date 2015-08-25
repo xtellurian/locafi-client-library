@@ -38,7 +38,11 @@ namespace Locafi.Client.Services.Repo
         {
             return await QueryPlaces(query.AsRestQuery());
         }
-       
+
+        public async Task DeletePlace(string placeId)
+        {
+            await Delete(placeId);
+        }
 
         //public async Task<PlaceDto> GetPlaceById(Guid id)
         //{

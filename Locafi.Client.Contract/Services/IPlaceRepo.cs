@@ -12,5 +12,6 @@ namespace Locafi.Client.Contract.Services
        // Task<PlaceDto> AddNewPlace(PlaceDto place);
         Task<PlaceDetailDto> CreatePlace(AddPlaceDto addPlaceDto);
         Task<IList<PlaceSummaryDto>> QueryPlaces(ISimpleRestQuery<PlaceSummaryDto> query);
+        Task DeletePlace(string placeId);
     }
 }

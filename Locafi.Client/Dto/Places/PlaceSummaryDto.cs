@@ -18,5 +18,12 @@ namespace Locafi.Client.Model.Dto.Places
         public string LastModifiedByUserFullName { get; set; }
         public DateTime? DateLastModified { get; set; }
 
+
+        public override bool Equals(object obj)
+        {
+            var summaryDto = obj as PlaceSummaryDto;
+            if (summaryDto == null) return false;
+            return Id.Equals(summaryDto.Id);
+        }
     }
 }

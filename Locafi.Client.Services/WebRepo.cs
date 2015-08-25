@@ -58,12 +58,12 @@ namespace Locafi.Client.Services
             return result;
         }
 
-        protected async Task Delete(string extra = "")
+        protected async Task Delete(string key)
         {
-            var response = await GetResponse(HttpMethod.Delete, extra);
+            var response = await GetResponse(HttpMethod.Delete, key);
             Debug.WriteLine(response.IsSuccessStatusCode
-                ? $"{_service} service deleted  id={extra} successfully"
-                : $"{_service} service failed to delete id={extra}");
+                ? $"{_service} service deleted  id={key} successfully"
+                : $"{_service} service failed to delete id={key}");
         }
 
         private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "", string content = null)
@@ -91,10 +91,11 @@ namespace Locafi.Client.Services
         private string GetFullPath(string baseUrl, string first, string second)
         {
             var result = new StringBuilder(baseUrl.TrimEnd('/'));
-
             var s1 = first.Trim('/');
-            var s2 = second.Trim('/');
-            result.Append('/').Append(s1).Append('/').Append(s2);
+            var isKeySelection = second.StartsWith("(");
+            var s2 = second.Trim('/', '(', ')');
+            
+            result.Append('/').Append(s1).Append(isKeySelection?'(':'/').Append(s2).Append(isKeySelection? ")":"");
             return result.ToString();
         }
     }
