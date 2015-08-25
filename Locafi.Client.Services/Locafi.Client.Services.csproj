@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationRepo.cs" />
     <Compile Include="IWebRepo.cs" />
+    <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="WebRepo.cs" />
     <Compile Include="Odata\ODataCollection.cs" />
     <Compile Include="Odata\shitty.cs" />

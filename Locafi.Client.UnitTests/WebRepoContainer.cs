@@ -22,6 +22,7 @@ namespace Locafi.Client.UnitTests
 
 
         public static IItemRepo ItemRepo => new ItemRepo(AuthorisedHttpTransferConfigService, Serialiser);
+        public static IInventoryRepo InventoryRepo => new InventoryRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IOrderRepo OrderRepo => new OrderRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static IPlaceRepo PlaceRepo => new PlaceRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IPersonRepo PersonRepo => new PersonRepo(AuthorisedHttpTransferConfigService, Serialiser);
@@ -29,6 +30,7 @@ namespace Locafi.Client.UnitTests
         public static ISkuRepo SkuRepo => new SkuRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IUserRepo UserRepo => new UserRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IAuthenticationRepo AuthRepo => new AuthenticationRepo(HttpConfigService, Serialiser);
+        
 
         static WebRepoContainer()
         {
