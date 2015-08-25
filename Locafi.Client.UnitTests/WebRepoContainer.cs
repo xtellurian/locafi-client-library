@@ -15,15 +15,9 @@ namespace Locafi.Client.UnitTests
 {
     public static class WebRepoContainer
     {
-        // config
-        //private const string BaseUrl = @"http://legacynavapi.azurewebsites.net/api/";
-        
-        private const string UserName = "administrator";
-        private const string Password = "ramp123";
-
-
         private static readonly ISerialiserService Serialiser;
-        private static IAuthorisedHttpTransferConfigService AuthorisedHttpTransferConfigService => HttpConfigFactory.Generate(StringConstants.BaseUrl, UserName, Password).Result;
+        private static IAuthorisedHttpTransferConfigService AuthorisedHttpTransferConfigService 
+            => HttpConfigFactory.Generate(StringConstants.BaseUrl, StringConstants.UserName, StringConstants.Password).Result;
         private static readonly IHttpTransferConfigService HttpConfigService;
 
 
@@ -32,6 +26,7 @@ namespace Locafi.Client.UnitTests
         public static IPlaceRepo PlaceRepo => new PlaceRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IPersonRepo PersonRepo => new PersonRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static ISnapshotRepo SnapshotRepo => new SnapshotRepo(AuthorisedHttpTransferConfigService, Serialiser);
+        public static ISkuRepo SkuRepo => new SkuRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IUserRepo UserRepo => new UserRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IAuthenticationRepo AuthRepo => new AuthenticationRepo(HttpConfigService, Serialiser);
 

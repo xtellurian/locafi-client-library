@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
+using Locafi.Client.Model.Dto.Skus;
 
 namespace Locafi.Client.Services
 {
@@ -76,14 +77,14 @@ namespace Locafi.Client.Services
             if(_authorisedConfigService!=null) message.Headers.Add("Authorization", "Token " + _authorisedConfigService.GetTokenString());
 
             var client = new HttpClient();
-            Debug.WriteLine($"Uploading to {path}");
+            Debug.WriteLine($"{method} request at {path}");
+            if(content!=null) Debug.WriteLine($"Payload:\n {content}");
             var response = await client.SendAsync(message);
-            if (response.IsSuccessStatusCode) Debug.WriteLine($"Upload Success to {path}");
-            else
-            {
-                var serverMessage = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"Error Uploading to {path}\n {serverMessage}");
-            }
+            var serverMessage = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine(response.IsSuccessStatusCode
+                ? $"{method} request success at {path}"
+                : $"Error executing {method} request at {path}");
+            Debug.WriteLine($"Response from server:\n{serverMessage}");
             return response;
         }
 
@@ -96,6 +97,5 @@ namespace Locafi.Client.Services
             result.Append('/').Append(s1).Append('/').Append(s2);
             return result.ToString();
         }
-
     }
 }

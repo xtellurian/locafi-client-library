@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
@@ -12,11 +13,16 @@ namespace Locafi.Client.UnitTests.Tests
     {
         private IPlaceRepo _placeRepo;
         private IItemRepo _itemRepo;
+        private IPersonRepo _personRepo;
+        private ISkuRepo _skuRepo;
+
         [TestInitialize]
         public void Setup()
         {
             _placeRepo = WebRepoContainer.PlaceRepo;
             _itemRepo = WebRepoContainer.ItemRepo;
+            _personRepo = WebRepoContainer.PersonRepo;
+            _skuRepo = WebRepoContainer.SkuRepo;
         }
 
         [TestMethod]
@@ -25,16 +31,26 @@ namespace Locafi.Client.UnitTests.Tests
             var ran = new Random();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)]; // picks a random place for the item
+            var persons = await _personRepo.GetAllPersons();
+            var person = persons[ran.Next(persons.Count - 1)];
+            var skus = await _skuRepo.GetAllSkus();
+            var sku = skus[ran.Next(skus.Count - 1)];
+
+
+            var name = Guid.NewGuid().ToString();
+            var description = Guid.NewGuid().ToString();
+            var tagNumber = Guid.NewGuid().ToString();
 
             var addItemDto = new AddItemDto
             {
-                Description = "",
-                ItemExtendedPropertyList = null, // null or empty list?
-                Name = "Test Item",
+                Description = description,
+                Name = name,
                 PlaceId = place.Id,
-                SkuId = Guid.Empty,
-                TagNumber = "",
-                TagType = 0
+                SkuId = sku.Id,
+                TagNumber = tagNumber,
+                TagType = 0,
+                ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(),
+                PersonId = person.Id
             };
 
             var result = await _itemRepo.CreateItem(addItemDto);

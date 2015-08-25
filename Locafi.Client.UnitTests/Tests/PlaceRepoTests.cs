@@ -24,11 +24,15 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task CreatePlace()
         {
+            var description = Guid.NewGuid().ToString();
+            var name = Guid.NewGuid().ToString();
+            var tagNumber = Guid.NewGuid().ToString();
+
             var addPlace = new AddPlaceDto 
             {
-                Description = "Unit test Place",
-                Name = "Teeeeeest",
-                TagNumber = "sdjkbvjskdn",
+                Description = description,
+                Name = name,
+                TagNumber = tagNumber,
                 TemplateId = Guid.Empty,
                 PlaceExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(),
                 TagType = 0

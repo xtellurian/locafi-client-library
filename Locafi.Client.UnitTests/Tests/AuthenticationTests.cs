@@ -16,7 +16,7 @@ namespace Locafi.Client.UnitTests.Tests
             _authRepo = WebRepoContainer.AuthRepo;
         }
         [TestMethod]
-        public async Task UsernamePasswordSuccessfulLoginTest()
+        public async Task SuccessfulLoginTest()
         { 
             var result = await _authRepo.Login(StringConstants.UserName, StringConstants.Password);
             Assert.IsNotNull(result);

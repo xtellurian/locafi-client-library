@@ -6,5 +6,6 @@ namespace Locafi.Client.Contract.Services
 {
     public interface ISkuRepo
     {
+        Task<IList<SkuSummaryDto>> GetAllSkus();
     }
 }
