@@ -33,5 +33,11 @@ namespace Locafi.Client.Services.Repo
             var result = await Get<PersonDto>("?$filter=Id eq '" + id + "'");
             return result;
         }
+
+        protected async Task<IList<PersonDto>> QueryPersons(string queryString)
+        {
+            var result = await Get<IList<PersonDto>>(queryString);
+            return result;
+        }
     }
 }

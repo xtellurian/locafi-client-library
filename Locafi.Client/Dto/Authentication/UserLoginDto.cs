@@ -1,4 +1,4 @@
-﻿namespace Locafi.Client.Model.Dto
+﻿namespace Locafi.Client.Model.Dto.Authentication
 {
     public class UserLoginDto
     {

@@ -61,12 +61,13 @@
     <Compile Include="Dto\Places\PlaceDetailDto.cs" />
     <Compile Include="Dto\Places\PlaceSummaryDto.cs" />
     <Compile Include="Dto\Places\UpdatePlaceDto.cs" />
+    <Compile Include="Dto\Authentication\RefreshLoginDto.cs" />
     <Compile Include="Dto\Skus\AddSkuDto.cs" />
     <Compile Include="Dto\Skus\ReadSkuExtendedPropertyDto.cs" />
     <Compile Include="Dto\Skus\SkuDetailDto.cs" />
     <Compile Include="Dto\Skus\SkuSummaryDto.cs" />
     <Compile Include="Dto\Skus\WriteSkuExtendedPropertyDto.cs" />
-    <Compile Include="Dto\UserLoginDto.cs" />
+    <Compile Include="Dto\Authentication\UserLoginDto.cs" />
     <Compile Include="Extensions\ItemUri.cs" />
     <Compile Include="Extensions\PlaceDtoGenerationExtensions.cs" />
     <Compile Include="Extensions\SnapshotUri.cs" />
@@ -80,6 +81,8 @@
     <Compile Include="ApiVersion.cs" />
     <Compile Include="Query\ISimpleRestQuery.cs" />
     <Compile Include="Query\QueryStrings.cs" />
+    <Compile Include="Query\SimpleItemQuery.cs" />
+    <Compile Include="Query\SimplePersonQuery.cs" />
     <Compile Include="Query\SimplePlaceQuery.cs" />
     <Compile Include="Query\SimpleUserQuery.cs" />
   </ItemGroup>

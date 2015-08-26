@@ -78,7 +78,7 @@ namespace Locafi.Client.UnitTests.Tests
        
 
         [TestCleanup]
-        public async Task Cleanup()
+        public async void Cleanup()
         {
             foreach (var id in _placeIds)
             {

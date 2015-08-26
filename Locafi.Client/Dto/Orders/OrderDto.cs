@@ -5,7 +5,7 @@ namespace Locafi.Client.Model.Dto.Orders
 {
     public class OrderDto
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string ReferenceNumber { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
@@ -26,6 +26,12 @@ namespace Locafi.Client.Model.Dto.Orders
         public OrderDto()
         {
             ServerMessage = "";
+        }
+
+        public override bool Equals(object obj)
+        {
+            var order = obj as OrderDto;
+            return order != null && order.Id.Equals(Id);
         }
     }
 }

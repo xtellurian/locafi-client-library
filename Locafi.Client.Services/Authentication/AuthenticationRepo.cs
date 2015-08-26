@@ -7,6 +7,7 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto;
+using Locafi.Client.Model.Dto.Authentication;
 
 namespace Locafi.Client.Services.Authentication
 {
@@ -24,6 +25,14 @@ namespace Locafi.Client.Services.Authentication
                 Password = passwrd
             };
             var result = await Post<AuthorizationTokenDto>(usr, "/Login");
+            return result;
+        }
+
+        public async Task<AuthorizationTokenDto> RefreshLogin(string refreshToken)
+        {
+            var dto = new RefreshLoginDto(refreshToken);
+            var path = "RefreshLogin";
+            var result = await Post<AuthorizationTokenDto>(dto, path);
             return result;
         }
     }

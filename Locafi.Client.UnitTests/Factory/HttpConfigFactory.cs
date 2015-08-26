@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto;
+using Locafi.Client.Model.Dto.Authentication;
 using Locafi.Client.UnitTests.Implementations;
 using Newtonsoft.Json;
 

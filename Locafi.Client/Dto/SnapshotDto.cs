@@ -36,5 +36,11 @@ namespace Locafi.Client.Data
         {
             TagTypeId = "0";
         }
+
+        public override bool Equals(object obj)
+        {
+            var tag = obj as SnapshotDtoTag;
+            return tag != null && string.Equals(tag.TagNumber, TagNumber);
+        }
     }
 }

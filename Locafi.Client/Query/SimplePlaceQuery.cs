@@ -10,25 +10,18 @@ namespace Locafi.Client.Model.Query
 {
     public class SimplePlaceQuery: ISimpleRestQuery<PlaceSummaryDto>
     {
-        private static readonly Type Responsetype = typeof (PlaceSummaryDto);
-        
         private const string NamePropertyName = "Name";
-
-        public SimplePlaceQuery()
-        {
-            Name = "";
-        }
         public SimplePlaceQuery(string name)
         {
-            Name = name;
+            _queryString = $"{QueryStrings.FilterStart}{QueryStrings.Contains(name, NamePropertyName)}";
         }
 
-        public string Name { get; set; }
+        private readonly string _queryString;
         
 
         public string AsRestQuery()
         {
-            return $"{QueryStrings.FilterStart}substringof('{Name}',{NamePropertyName}) eq true";
+            return _queryString;
         }
     }
 }

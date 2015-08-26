@@ -24,7 +24,7 @@ namespace Locafi.Client.Model.Query
 
         private void GenerateQueryString(string searchTerm, SearchParameter searchParameter)
         {
-            var result = $"{QueryStrings.FilterStart}{QueryStrings.SubstringOf(searchTerm,GetPropertyName(searchParameter))}";
+            var result = $"{QueryStrings.FilterStart}{QueryStrings.Contains(searchTerm,GetPropertyName(searchParameter))}";
             _queryString = result;
         }
 

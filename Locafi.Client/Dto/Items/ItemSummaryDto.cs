@@ -29,5 +29,10 @@ namespace Locafi.Client.Model.Dto.Items
 
         public DateTime? DateLastModified { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            var itemSummary = obj as ItemSummaryDto;
+            return itemSummary != null && itemSummary.Id.Equals(Id);
+        }
     }
 }

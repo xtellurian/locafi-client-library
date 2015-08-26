@@ -10,9 +10,14 @@ namespace Locafi.Client.Model.Query
     {
         public static string FilterStart => "?$filter=";
 
-        public static string SubstringOf(string sub, string propertyName)
+        public static string Contains(string sub, string propertyName)
         {
             return $"contains('{sub}',{propertyName}) eq true";
+        }
+
+        public static string Equals(string propertyName, string value)
+        {
+            return $"{propertyName} eq {value}";
         }
     }
 }

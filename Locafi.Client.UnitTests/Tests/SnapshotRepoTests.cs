@@ -41,7 +41,7 @@ namespace Locafi.Client.UnitTests.Tests
             }
             Assert.IsNotNull(result.Items);
             Assert.AreEqual(newSnap.PlaceId,result.PlaceId);
-            Assert.AreEqual(newSnap.UserId, result.PlaceId);
+            Assert.AreEqual(newSnap.UserId, result.UserId);
         }
 
 

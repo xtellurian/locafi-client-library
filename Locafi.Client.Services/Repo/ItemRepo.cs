@@ -9,6 +9,7 @@ using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Extensions;
+using Locafi.Client.Model.Query;
 using Locafi.Client.Services.Odata;
 using Newtonsoft.Json;
 
@@ -30,9 +31,15 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
-        public async Task<ItemDetailDto> GetItemDetail(string itemId)
+        public async Task<IList<ItemSummaryDto>> QueryItems(ISimpleRestQuery<ItemSummaryDto> query)
         {
-            var path = $"GetItem/{itemId}";
+            var result = await QueryItems(query.AsRestQuery());
+            return result;
+        }
+
+        public async Task<ItemDetailDto> GetItemDetail(Guid id)
+        {
+            var path = $"GetItem/{id}";
             var result = await Get<ItemDetailDto>(path);
             return result;
         }
@@ -76,19 +83,5 @@ namespace Locafi.Client.Services.Repo
             var result = await Get<IList<ItemSummaryDto>>(path);
             return result;
         }
-
-        //public async Task<ItemDto> GetItemFromTag(string tagNumber)
-        //{
-        //    var path = $"?$filter=TagNumber eq '{tagNumber}'";
-        //    var result = await Get(path);
-        //    return result.Value.FirstOrDefault();
-        //}
-
-        //public async Task<ItemDto> GetItemById(string id)
-        //{
-        //    var path = $"?$filter=Id eq '{id}'";
-        //    var result = await Get(path);
-        //    return result.Value.FirstOrDefault();
-        //}
     }
 }

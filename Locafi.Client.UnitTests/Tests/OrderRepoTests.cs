@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Model.Dto.Orders;
@@ -27,17 +28,26 @@ namespace Locafi.Client.UnitTests.Tests
             var ran = new Random();
             var places = await _placeRepo.GetAllPlaces();
             var numPlaces = places.Count;
-            var place1 = places[ran.Next(numPlaces - 1)]; // get random places
-            var place2 = places[ran.Next(numPlaces - 1)];
+            var sourcePlace = places[ran.Next(numPlaces - 1)]; // get random places
+            var destinationPlace = places[ran.Next(numPlaces - 1)];
 
             var persons = await _personRepo.GetAllPersons();
             var person = persons[0];
 
+            var refNumber = Guid.NewGuid().ToString();
+            var description = Guid.NewGuid().ToString();
+
             var order = new OrderDto
             {
-                SourcePlaceId = place1.Id.ToString(),
-                DestinationPlaceId = place2.Id.ToString(),
-                DeliverToId = person.Id.ToString()
+                DateCreated = DateTime.UtcNow,
+                DateLastModified = DateTime.UtcNow,
+                SourcePlaceId = sourcePlace.Id.ToString(),
+                DestinationPlaceId = destinationPlace.Id.ToString(),
+                DeliverToId = person.Id.ToString(),
+                ReferenceNumber = refNumber,
+                Description = description,
+                Status = "Created",
+
             };
 
             var result = await _orderRepo.Create(order);
@@ -47,6 +57,28 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.AreEqual(result.SourcePlaceId, order.SourcePlaceId);
             Assert.AreEqual(result.DeliverToId, order.DeliverToId);
 
+        }
+
+        [TestMethod]
+        public async Task Order_GetAllOrders()
+        {
+            var orders = await _orderRepo.GetAllOrders();
+            Assert.IsNotNull(orders);
+            Assert.IsInstanceOfType(orders,typeof(IEnumerable<OrderDto>));
+        }
+
+        public async Task Order_GetOrderById()
+        {
+            var orders = await _orderRepo.GetAllOrders();
+            Assert.IsNotNull(orders);
+            Assert.IsInstanceOfType(orders, typeof(IEnumerable<OrderDto>));
+
+            foreach (var order in orders)
+            {
+                var result = await _orderRepo.GetOrderById(order.Id);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(order,result);
+            }
         }
 
 

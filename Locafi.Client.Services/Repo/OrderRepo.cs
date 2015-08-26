@@ -20,7 +20,14 @@ namespace Locafi.Client.Services.Repo
 
         public async Task<IList<OrderDto>> GetAllOrders()
         {
-            throw new NotImplementedException();
+            var result = await Get<IList<OrderDto>>();
+            return result;
+        }
+
+        public async Task<OrderDto> GetOrderById(Guid id)
+        {
+            var result = await Get<OrderDto>(id.ToString());
+            return result;
         }
 
         public async Task<OrderDto> Create(OrderDto order)
