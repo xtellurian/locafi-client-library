@@ -8,7 +8,7 @@ namespace Locafi.Client.UnitTests.Tests
     public class OdataTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Odata_example()
         {
             var x = new shitty();
             x.Something();

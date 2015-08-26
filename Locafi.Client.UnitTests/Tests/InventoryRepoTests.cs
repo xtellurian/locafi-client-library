@@ -48,6 +48,20 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
+        public async Task Inventory_AddSnapshotWrongPlace()
+        {
+            var inventory = await RandomCreate();
+            var place = await GetRandomPlace(inventory.PlaceId);
+            var user = await GetRandomUser();
+            var snapshot = SnapshotGenerator.CreateRandomSnapshot(place.Id.ToString(), user.Id.ToString());
+            snapshot = await _snapshotRepo.CreateSnapshot(snapshot);
+            Assert.IsNotNull(snapshot);
+            var result = await _inventoryRepo.AddSnapshot(inventory, snapshot.Id);
+            Assert.IsNull(result);
+
+        }
+
+        [TestMethod]
         public async Task Inventory_ResolveSuccess()
         {
             //await RandomCreateAddSnapshot_Resolve();
@@ -97,11 +111,16 @@ namespace Locafi.Client.UnitTests.Tests
             return result;
         }
 
-        private async Task<PlaceSummaryDto> GetRandomPlace()
+        private async Task<PlaceSummaryDto> GetRandomPlace(Guid notThisId)
         {
             var ran = new Random();
             var allPlaces = await _placeRepo.GetAllPlaces();
-            var place = allPlaces[ran.Next(allPlaces.Count - 1)];
+            PlaceSummaryDto place = null;
+            while (place?.Id.Equals(notThisId) ?? true)
+            {
+                place = allPlaces[ran.Next(allPlaces.Count - 1)];
+            }
+            
             return place;
         }
 

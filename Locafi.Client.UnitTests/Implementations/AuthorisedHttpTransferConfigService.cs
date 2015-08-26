@@ -19,11 +19,6 @@ namespace Locafi.Client.UnitTests.Implementations
 
         private string _token;
 
-        public async Task<Uri> GetBaseUri()
-        {
-            return new Uri(BaseUrl);
-        }
-
         public string GetTokenString()
         {
             return _token;
