@@ -154,6 +154,18 @@ namespace Locafi.Client.UnitTests.Tests
             };
         }
 
+        [TestMethod]
+        public async Task Item_Delete()
+        {
+            var itemToCreate = await CreateRandomAddItemDto();
+            var item = await _itemRepo.CreateItem(itemToCreate);
+            Assert.IsNotNull(item);
+
+            var id = item.Id;
+            await _itemRepo.DeleteItem(id);
+            var sameItem = await _itemRepo.GetItemDetail(id);
+            Assert.IsNull(sameItem);
+        }
 
         private async Task<PlaceSummaryDto> GetRandomOtherPlace(Guid notThisPlaceId)
         {

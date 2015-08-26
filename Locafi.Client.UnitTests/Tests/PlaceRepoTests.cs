@@ -7,6 +7,7 @@ using LegacyNavigatorApi.Models.Dtos;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Query;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
@@ -37,7 +38,6 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsTrue(string.Equals(addPlace.TagNumber, result.TagNumber));
 
         }
-
         
 
         [TestMethod]
@@ -46,6 +46,19 @@ namespace Locafi.Client.UnitTests.Tests
             var places = await _placeRepo.GetAllPlaces();
             Assert.IsNotNull(places);
             Assert.IsInstanceOfType(places, typeof(IEnumerable<PlaceSummaryDto>));
+        }
+
+        [TestMethod]
+        public async Task Place_Query()
+        {
+            var addPlace = GenerateAddPlaceDto();
+            var place = await _placeRepo.CreatePlace(addPlace);
+            Assert.IsNotNull(place);
+
+            var query1 = new SimplePlaceQuery(place.Name);
+            var result1 = await _placeRepo.QueryPlaces(query1);
+            Assert.IsNotNull(result1);
+            Assert.IsTrue(result1.Contains(place));
         }
 
         public async Task Place_Update()

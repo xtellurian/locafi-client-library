@@ -72,9 +72,9 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
-        public async Task DeleteItem(string itemId)
+        public async Task DeleteItem(Guid itemId)
         {
-            await Delete(itemId);
+            await Delete(itemId.ToString());
         }
 
         protected async Task<IList<ItemSummaryDto>> QueryItems (string filterString)
