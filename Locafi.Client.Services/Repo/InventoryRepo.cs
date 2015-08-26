@@ -37,9 +37,23 @@ namespace Locafi.Client.Services.Repo
                 Name = name,
                 PlaceId = placeId
             };
-            var result = await Post<InventoryDto>(dto, dto.RelativeUri(InventoryAction.Create, null));
+            var path = dto.CreateUri();
+            var result = await Post<InventoryDto>(dto, path);
             return result;
+        }
 
+        public async Task<InventoryDto> AddSnapshot(InventoryDto inventory, Guid snapshotId)
+        {
+            var path = inventory.AddSnapshotUri(snapshotId);
+            var result = await Post<InventoryDto>(inventory, path);
+            return result;
+        }
+
+        public async Task<InventoryDto> Resolve(InventoryDto inventory)
+        {
+            var path = inventory.ResolveUri();
+            var result = await Post<InventoryDto>(inventory, path);
+            return result;
         }
 
         protected async Task<IList<InventoryDto>> QueryInventories(string queryString)

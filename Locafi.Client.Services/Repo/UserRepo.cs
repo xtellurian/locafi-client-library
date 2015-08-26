@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Query;
 using Locafi.Client.Services.Odata;
+using Microsoft.OData.Core.UriParser.Semantic;
 
 namespace Locafi.Client.Services.Repo
 {
@@ -22,21 +24,20 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
-        public async Task<UserDto> GetUser(string username)
+        public async Task<IList<UserDto>> QueryUsers(ISimpleRestQuery<UserDto> userQuery)
         {
-            var result = await Get<UserDto>("?$filter=UserName eq '" + username + "'");
+            var result = await QueryUsers(userQuery.AsRestQuery());
             return result;
         }
 
         public async Task<UserDto> GetUserById(Guid id)
         {
-            var result = await Get<UserDto>("?$filter=Id eq '" + id + "'");
-            return result;
+            throw new NotImplementedException(); // not really done properly in api - needs update
         }
 
-        public async Task<UserDto> GetUserById(string id)
+        protected async Task<IList<UserDto>> QueryUsers(string queryString)
         {
-            var result = await Get<UserDto>("?$filter=Id eq '" + id + "'");
+            var result = await Get<IList<UserDto>>(queryString);
             return result;
         }
     }

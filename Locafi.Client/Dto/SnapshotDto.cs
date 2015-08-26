@@ -19,6 +19,12 @@ namespace Locafi.Client.Data
             Tags = new List<SnapshotDtoTag>() { };
             Items = new List<string>() { };
         }
+
+        public override bool Equals(object obj)
+        {
+            var snap = obj as SnapshotDto;
+            return snap != null && (snap.Id.Equals(Id));
+        }
     }
 
     public class SnapshotDtoTag

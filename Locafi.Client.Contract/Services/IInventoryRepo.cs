@@ -10,5 +10,7 @@ namespace Locafi.Client.Contract.Services
         Task<IList<InventoryDto>> GetAllInventories();
         Task<InventoryDto> GetInventory(string id);
         Task<InventoryDto> CreateInventory(string name, Guid placeId);
+        Task<InventoryDto> AddSnapshot(InventoryDto inventory, Guid snapshotId);
+        Task<InventoryDto> Resolve(InventoryDto inventory);
     }
 }

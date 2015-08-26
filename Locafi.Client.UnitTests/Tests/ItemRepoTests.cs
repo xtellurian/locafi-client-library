@@ -26,7 +26,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task AddItem()
+        public async Task Item_AddNew()
         {
             var ran = new Random();
             var places = await _placeRepo.GetAllPlaces();

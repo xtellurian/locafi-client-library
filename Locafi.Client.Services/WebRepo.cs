@@ -93,9 +93,11 @@ namespace Locafi.Client.Services
             var result = new StringBuilder(baseUrl.TrimEnd('/'));
             var s1 = first.Trim('/');
             var isKeySelection = second.StartsWith("(");
+            var isQuery = second.StartsWith("?");
             var s2 = second.Trim('/', '(', ')');
-            
-            result.Append('/').Append(s1).Append(isKeySelection?'(':'/').Append(s2).Append(isKeySelection? ")":"");
+            if (isQuery) result.Append('/').Append(s1).Append(s2);
+            else if (isKeySelection) result.Append('/').Append(s1).Append('(').Append(s2).Append(')');
+            else result.Append('/').Append(s1).Append('/').Append(s2);
             return result.ToString();
         }
     }

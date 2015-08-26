@@ -26,7 +26,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task CreatePlace()
+        public async Task Place_Create()
         {
             var addPlace = GenerateAddPlaceDto();
             var result = await _placeRepo.CreatePlace(addPlace);
@@ -41,14 +41,14 @@ namespace Locafi.Client.UnitTests.Tests
         
 
         [TestMethod]
-        public async Task GetAllPlaces()
+        public async Task Place_GetAll()
         {
             var places = await _placeRepo.GetAllPlaces();
             Assert.IsNotNull(places);
             Assert.IsInstanceOfType(places, typeof(IEnumerable<PlaceSummaryDto>));
         }
 
-        public async Task UpdatePlace()
+        public async Task Place_Update()
         {
             var ran = new Random();
             var places = await _placeRepo.GetAllPlaces();
@@ -60,7 +60,7 @@ namespace Locafi.Client.UnitTests.Tests
 
         
         [TestMethod]
-        public async Task DeletePlace()
+        public async Task Place_Delete()
         {
             var addPlace = GenerateAddPlaceDto(); // create randomly generated new place
             var place = await UploadNewPlace(addPlace); // uplaod that place to the server
@@ -82,7 +82,7 @@ namespace Locafi.Client.UnitTests.Tests
         {
             foreach (var id in _placeIds)
             {
-               // await _placeRepo.DeletePlace(id); //TODO: when implemented
+               // await _placeRepo.Place_Delete(id); //TODO: when implemented
             }
         }
 

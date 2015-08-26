@@ -22,7 +22,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task CreateOrderAndCheckExists()
+        public async Task Order_CreateSuccess()
         {
             var ran = new Random();
             var places = await _placeRepo.GetAllPlaces();

@@ -57,12 +57,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EntityGenerators\SnapshotGenerator.cs" />
     <Compile Include="Factory\HttpConfigFactory.cs" />
     <Compile Include="Implementations\UnauthorisedHttpTransferConfigService.cs" />
     <Compile Include="StringConstants.cs" />
     <Compile Include="Tests\AuthenticationTests.cs" />
     <Compile Include="Tests\SkuRepoTests.cs" />
     <Compile Include="Tests\SnapshotRepoTests.cs" />
+    <Compile Include="Tests\UserRepoTests.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />

@@ -19,7 +19,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task GetAllSkus()
+        public async Task Sku_GetAll()
         {
             var skus = await _skuRepo.GetAllSkus();
 
@@ -29,7 +29,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task GetSkuDetails()
+        public async Task Sku_GetDetails()
         {
             var ran = new Random();
             var skus = await _skuRepo.GetAllSkus();

@@ -19,5 +19,11 @@ namespace Locafi.Client.Data
 
         public bool? IsDeleted { get; set; }    // if item is deleted
         public bool? IsActive { get; set; }     // if item is active
+
+        public override bool Equals(object obj)
+        {
+            var user = obj as UserDto;
+            return user != null && user.Id.Equals(Id);
+        }
     }
 }

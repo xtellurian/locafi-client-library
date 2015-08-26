@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
@@ -22,11 +24,14 @@ namespace Locafi.Client.UnitTests.Tests
             _placeRepo = WebRepoContainer.PlaceRepo;
             _userRepo = WebRepoContainer.UserRepo;
         }
+
         [TestMethod]
-        public async Task CreateSnapshot() // failing due to non-hexadecimal tag numbers. mark to fix soon
+        public async Task Snapshot_Create() 
         {
-            var newSnap = await CreateRandomSnapshot();
-            var result = await _snapshotRepo.PostSnapshot(newSnap);
+            var place = await GetRandomPlace();
+            var user = await GetRandomUser();
+            var newSnap = SnapshotGenerator.CreateRandomSnapshot(place.Id.ToString(), user.Id.ToString());
+            var result = await _snapshotRepo.CreateSnapshot(newSnap);
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result,typeof(SnapshotDto));
             Assert.IsTrue(result.Tags.Count == newSnap.Tags.Count);
@@ -39,54 +44,43 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.AreEqual(newSnap.UserId, result.PlaceId);
         }
 
+
+
         [TestMethod]
-        public async Task GetAllSnapshots() 
+        public async Task Snapshot_GetAll() 
         {
             var snaps = await _snapshotRepo.GetAllSnapshots();
             Assert.IsInstanceOfType(snaps,typeof(IEnumerable<SnapshotDto>));
         }
 
-
-        private async Task<SnapshotDto> CreateRandomSnapshot()
+        [TestMethod]
+        public async Task Snapshot_GetById()
         {
-            var ran = new Random();
-            var places = await _placeRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
-            var users = await _userRepo.GetAllUsers();
-            var user = users[ran.Next(users.Count - 1)];
-            
-            var name = Guid.NewGuid().ToString();
-            var tags = GenerateRandomTags();
-            var snap = new SnapshotDto
+            var snaps = await _snapshotRepo.GetAllSnapshots();
+            foreach (var snap in snaps)
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
-                Tags = tags,
-                PlaceId = place.Id.ToString(),
-                UserId = user.Id.ToString()
-            };
-            return snap;
-        }
-
-        private IList<SnapshotDtoTag> GenerateRandomTags()
-        {
-            var ran = new Random();
-            var tags = new List<SnapshotDtoTag>();
-            var numTags = ran.Next(50);
-            for (var n = 0; n < numTags; n++)
-            {
-                tags.Add(GenerateRandomTag());
+                var result = await _snapshotRepo.GetSnapshot(snap.Id);
+                Assert.IsNotNull(result.Tags);
+                Assert.IsNotNull(result.Items);
+                Assert.AreEqual(snap, result);
             }
-            return tags;
         }
 
-        private SnapshotDtoTag GenerateRandomTag()
+        private async Task<PlaceSummaryDto> GetRandomPlace()
         {
-            return new SnapshotDtoTag
-            {
-                TagNumber = Guid.NewGuid().ToString()
-            };
+            var ran = new Random();
+            var allPlaces = await _placeRepo.GetAllPlaces();
+            var place = allPlaces[ran.Next(allPlaces.Count - 1)];
+            return place;
         }
+
+        private async Task<UserDto> GetRandomUser()
+        {
+            var ran = new Random();
+            var allUsers = await _userRepo.GetAllUsers();
+            var user = allUsers[ran.Next(allUsers.Count - 1)];
+            return user;
+        }
+
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Extensions;
 
 namespace Locafi.Client.Services.Repo
 {
@@ -15,21 +16,24 @@ namespace Locafi.Client.Services.Repo
         {
         }
 
-        public async Task<SnapshotDto> PostSnapshot(SnapshotDto snapshot)
+        public async Task<SnapshotDto> CreateSnapshot(SnapshotDto snapshot)
         {
-            var result = await Post<SnapshotDto>(snapshot);
+            var path = snapshot.CreateUri();
+            var result = await Post<SnapshotDto>(snapshot, path);
             return result;
         }
 
-        public async Task<SnapshotDto> GetSnapshot(string snapshotId)
+        public async Task<SnapshotDto> GetSnapshot(Guid snapshotId)
         {
-            var result = await Get<SnapshotDto>("/" + snapshotId);
+            var path = $"GetSnapshot/{snapshotId}";
+            var result = await Get<SnapshotDto>(path);
             return result;
         }
 
         public async Task<IList<SnapshotDto>> GetAllSnapshots()
         {
-            var result = await Get<IList<SnapshotDto>>();
+            var path = "GetSnapshots";
+            var result = await Get<IList<SnapshotDto>>(path);
             return result;
         }
 

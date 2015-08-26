@@ -69,6 +69,7 @@
     <Compile Include="Dto\UserLoginDto.cs" />
     <Compile Include="Extensions\ItemUri.cs" />
     <Compile Include="Extensions\PlaceDtoGenerationExtensions.cs" />
+    <Compile Include="Extensions\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\ReasonDto.cs" />
     <Compile Include="Dto\SnapshotDto.cs" />
@@ -78,7 +79,9 @@
     <Compile Include="Extensions\OrderUri.cs" />
     <Compile Include="ApiVersion.cs" />
     <Compile Include="Query\ISimpleRestQuery.cs" />
+    <Compile Include="Query\QueryStrings.cs" />
     <Compile Include="Query\SimplePlaceQuery.cs" />
+    <Compile Include="Query\SimpleUserQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

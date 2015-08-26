@@ -6,45 +6,25 @@ namespace Locafi.Client.Model.Extensions
 {
     public static class InventoryUri
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inventoryBase"></param>
-        /// <param name="action">Action you want Locafi to perform</param>
-        /// <param name="snapshotId">Snapshot Id for this action</param>
-        /// <param name="apiVersion">Api Version you are using</param>
-        /// <returns></returns>
-        public static string RelativeUri(this InventoryBaseDto inventoryBase, InventoryAction action, string snapshotId, ApiVersion apiVersion = ApiVersion.Develop)
+
+        public static string AddSnapshotUri(this InventoryDto inventoryDto, Guid snapshotId)
         {
-            switch (apiVersion)
-            {
-                case ApiVersion.Develop:
-                    return Uri_Develop(inventoryBase, action, snapshotId);
-                default:
-                    throw new NotImplementedException($"Unknown Api Verison {apiVersion}");
-            }
+            return $"/{inventoryDto.Id}/AddSnapshot/{snapshotId}";
         }
 
-        private static string Uri_Develop(InventoryBaseDto inventoryBase, InventoryAction action, string snapshotId)
+        public static string CreateUri(this InventoryBaseDto inventoryBaseDto)
         {
-            var realInventory = inventoryBase as InventoryDto;
-            switch (action)
-            {
-                case InventoryAction.Create:
-                    return "/Create/";
-                case InventoryAction.AddSnapshot:
-                    if(string.IsNullOrEmpty(snapshotId)) throw new NullReferenceException("Snapshot cannot be null on Add Snapshot");
-                    if(realInventory==null) throw new NotSupportedException("Cannot Add Snapshot to non-InventoryDto type");
-                    return $"/{realInventory.Id}/AddSnapshot/{snapshotId}";
-                case InventoryAction.Resolve:
-                    if (realInventory == null) throw new NotSupportedException("Cannot Resolve to non-InventoryDto type");
-                    return $"/{realInventory.Id}/Resolve";
-                case InventoryAction.Complete:
-                    if (realInventory == null) throw new NotSupportedException("Cannot Complete to non-InventoryDto type");
-                    return $"/{realInventory.Id}/Complete";
-                default:
-                    throw new InvalidOperationException("Unknown Action");
-            }
+            return "Create";
+        }
+
+        public static string ResolveUri(this InventoryDto inventoryDto)
+        {
+            return $"/{inventoryDto.Id}/Resolve";
+        }
+
+        public static string CompleteUri(this InventoryDto inventoryDto)
+        {
+            return $"/{inventoryDto.Id}/Complete";
         }
     }
 }
