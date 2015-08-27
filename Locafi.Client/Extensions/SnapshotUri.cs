@@ -9,6 +9,11 @@ namespace Locafi.Client.Model.Extensions
 {
     public static class SnapshotUri
     {
+        /// <summary>
+        /// The relative URI for creating/ uploading a new snapshot
+        /// </summary>
+        /// <param name="snapshotDto">The Snapshot to create/ upload </param>
+        /// <returns> The relative URI ie BASE_URL + SERVICE + THIS </returns>
         public static string CreateUri(this SnapshotDto snapshotDto)
         {
             return "CreateSnapshot";

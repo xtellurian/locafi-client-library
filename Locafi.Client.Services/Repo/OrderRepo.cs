@@ -8,7 +8,7 @@ using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Actions;
 using Locafi.Client.Model.Dto.Orders;
-using Locafi.Client.Model.Uri;
+using Locafi.Client.Model.Extensions;
 
 namespace Locafi.Client.Services.Repo
 {
@@ -32,25 +32,25 @@ namespace Locafi.Client.Services.Repo
 
         public async Task<OrderDto> Create(OrderDto order)
         {
-            var path = order.RelativeUri(OrderAction.Create, null);
+            var path = order.CreateUri();
             var result = await Post<OrderDto>(order, path);
 
             return result;
         }
 
-        public async Task<OrderDto> Allocate(OrderDto order, string snapshotId)
+        public async Task<OrderDto> Allocate(OrderDto order, Guid snapshotId)
         {
 
-            var path = order.RelativeUri(OrderAction.Allocate, snapshotId);
+            var path = order.AllocateUri(snapshotId);
             var result = await Post<OrderDto>(order, path);
 
             return result;
         }
 
-        public async Task<OrderDto> Receive(OrderDto order, string snapshotId)
+        public async Task<OrderDto> Receive(OrderDto order, Guid snapshotId)
         {
 
-            var path = order.RelativeUri(OrderAction.Receive, snapshotId);
+            var path = order.ReceiveUri(snapshotId);
             var result = await Post<OrderDto>(order, path);
 
             return result;
@@ -58,7 +58,7 @@ namespace Locafi.Client.Services.Repo
 
         public async Task<OrderDto> Dispatch(OrderDto order)
         {
-            var path = order.RelativeUri(OrderAction.Dispatch, null);
+            var path = order.DispatchUri();
             var result = await Post<OrderDto>(order, path);
 
             return result;

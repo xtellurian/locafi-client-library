@@ -30,7 +30,7 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task Place_Create()
         {
-            var addPlace = GenerateAddPlaceDto();
+            var addPlace = GenerateRandomAddPlaceDto();
             var result = await _placeRepo.CreatePlace(addPlace);
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result,typeof(PlaceDetailDto));
@@ -53,7 +53,7 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Place_SimpleQuery()
         {
             
-            //var addPlace = GenerateAddPlaceDto();
+            //var addPlace = GenerateRandomAddPlaceDto();
             //var place = await _placeRepo.CreatePlace(addPlace);
             //Assert.IsNotNull(place);
 
@@ -67,7 +67,7 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task Place_Query()
         {
-            var addPlace = GenerateAddPlaceDto();
+            var addPlace = GenerateRandomAddPlaceDto();
             var place = await _placeRepo.CreatePlace(addPlace);
             Assert.IsNotNull(place);
 
@@ -107,7 +107,7 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task Place_Delete()
         {
-            var addPlace = GenerateAddPlaceDto(); // create randomly generated new place
+            var addPlace = GenerateRandomAddPlaceDto(); // create randomly generated new place
             var place = await UploadNewPlace(addPlace); // uplaod that place to the server
             Assert.IsNotNull(place); // check we got something back
             Assert.IsInstanceOfType(place,typeof(PlaceDetailDto)); // check its the right type
@@ -141,7 +141,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
 
-        private static AddPlaceDto GenerateAddPlaceDto()
+        private static AddPlaceDto GenerateRandomAddPlaceDto()
         {
             var description = Guid.NewGuid().ToString();
             var name = Guid.NewGuid().ToString();

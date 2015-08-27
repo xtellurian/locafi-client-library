@@ -7,6 +7,14 @@ namespace Locafi.Client.Model.Query.PropertyComparison
 {
     public abstract class PropertyQuery<T> : IRestQuery<T>
     {
+        /// <summary>
+        /// Creates an OData compatible relative URI as Query String.
+        /// May throw exceptions for unsupported types
+        /// </summary>
+        /// <typeparam name="TProperty">The type of the Property you are querying. Can be String, Guid, or DateTimeOffset</typeparam>
+        /// <param name="propertyLambda">eg: s => s.PropertyName</param>
+        /// <param name="value">The value being compared in the operation</param>
+        /// <param name="op">The comparison operator </param>
         public void CreateQuery<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op)
         {
             var propInfo = Validate(propertyLambda);
