@@ -79,12 +79,15 @@
     <Compile Include="Extensions\InventoryUri.cs" />
     <Compile Include="Extensions\OrderUri.cs" />
     <Compile Include="ApiVersion.cs" />
-    <Compile Include="Query\ISimpleRestQuery.cs" />
+    <Compile Include="Query\ComparisonOperator.cs" />
+    <Compile Include="Query\IRestQuery.cs" />
+    <Compile Include="Query\PropertyComparison\ItemQuery.cs" />
+    <Compile Include="Query\PropertyComparison\PropertyQuery.cs" />
     <Compile Include="Query\QueryStrings.cs" />
-    <Compile Include="Query\SimpleItemQuery.cs" />
-    <Compile Include="Query\SimplePersonQuery.cs" />
-    <Compile Include="Query\SimplePlaceQuery.cs" />
-    <Compile Include="Query\SimpleUserQuery.cs" />
+    <Compile Include="Query\Simple\SimpleItemQuery.cs" />
+    <Compile Include="Query\Simple\SimplePersonQuery.cs" />
+    <Compile Include="Query\PropertyComparison\PlaceQuery.cs" />
+    <Compile Include="Query\Simple\SimpleUserQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Locafi.Client.Data;
 
-namespace Locafi.Client.Model.Query
+namespace Locafi.Client.Model.Query.Simple
 {
-    public class SimplePersonQuery : ISimpleRestQuery<PersonDto>
+    public class SimplePersonQuery : IRestQuery<PersonDto>
     {
         public enum StringParameters
         {

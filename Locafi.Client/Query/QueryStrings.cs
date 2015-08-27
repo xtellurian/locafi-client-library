@@ -10,14 +10,26 @@ namespace Locafi.Client.Model.Query
     {
         public static string FilterStart => "?$filter=";
 
-        public static string Contains(string sub, string propertyName)
+        public static string Contains(string propertyName, string sub)
         {
-            return $"contains('{sub}',{propertyName}) eq true";
+            if (!sub.StartsWith("'")) sub = "'" + sub;
+            if (!sub.EndsWith("'")) sub = sub + "'";
+            return $"contains({sub},{propertyName}) eq true";
         }
 
         public static string Equals(string propertyName, string value)
         {
             return $"{propertyName} eq {value}";
+        }
+
+        public static string GreaterThan(string propertyName, string value)
+        {
+            return $"{propertyName} gt {value}";
+        }
+
+        public static string LessThan(string propertyName, string value)
+        {
+            return $"{propertyName} lt {value}";
         }
     }
 }

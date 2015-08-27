@@ -19,6 +19,6 @@ namespace Locafi.Client.Contract.Services
         Task<ItemDetailDto> UpdateItemPlace(UpdateItemPlaceDto updateItemPlaceDto);
         Task<ItemDetailDto> UpdateItem(UpdateItemDto updateItemDto);
         Task DeleteItem(Guid itemId);
-        Task<IList<ItemSummaryDto>> QueryItems(ISimpleRestQuery<ItemSummaryDto> query);
+        Task<IList<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query);
     }
 }

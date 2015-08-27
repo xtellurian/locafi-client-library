@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Query
 {
-    public interface ISimpleRestQuery<T>
+    public interface IRestQuery<T>
     {
         string AsRestQuery();
     }

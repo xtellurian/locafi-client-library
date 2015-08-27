@@ -24,7 +24,7 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
-        public async Task<IList<UserDto>> QueryUsers(ISimpleRestQuery<UserDto> userQuery)
+        public async Task<IList<UserDto>> QueryUsers(IRestQuery<UserDto> userQuery)
         {
             var result = await QueryUsers(userQuery.AsRestQuery());
             return result;

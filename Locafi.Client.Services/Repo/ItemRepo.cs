@@ -31,7 +31,7 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
-        public async Task<IList<ItemSummaryDto>> QueryItems(ISimpleRestQuery<ItemSummaryDto> query)
+        public async Task<IList<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query)
         {
             var result = await QueryItems(query.AsRestQuery());
             return result;

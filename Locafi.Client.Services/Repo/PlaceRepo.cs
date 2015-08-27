@@ -34,7 +34,7 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
-        public async Task<IList<PlaceSummaryDto>> QueryPlaces(ISimpleRestQuery<PlaceSummaryDto> query)
+        public async Task<IList<PlaceSummaryDto>> QueryPlaces(IRestQuery<PlaceSummaryDto> query)
         {
             return await QueryPlaces(query.AsRestQuery());
         }

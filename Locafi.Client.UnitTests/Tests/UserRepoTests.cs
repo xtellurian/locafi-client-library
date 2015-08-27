@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Query.Simple;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests

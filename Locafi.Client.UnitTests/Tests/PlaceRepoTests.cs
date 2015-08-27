@@ -8,6 +8,7 @@ using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
@@ -48,6 +49,21 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsInstanceOfType(places, typeof(IEnumerable<PlaceSummaryDto>));
         }
 
+      
+        public async Task Place_SimpleQuery()
+        {
+            
+            //var addPlace = GenerateAddPlaceDto();
+            //var place = await _placeRepo.CreatePlace(addPlace);
+            //Assert.IsNotNull(place);
+
+            //var query2 = new PlaceQuery();
+            //query2.CreateQuery((p)=>p.Name,place.Name, ComparisonOperator.Contains);
+            //var result2 = await _placeRepo.QueryPlaces(query2);
+            //Assert.IsNotNull(result2);
+            //Assert.IsTrue(result2.Contains(place));
+        }
+
         [TestMethod]
         public async Task Place_Query()
         {
@@ -55,10 +71,26 @@ namespace Locafi.Client.UnitTests.Tests
             var place = await _placeRepo.CreatePlace(addPlace);
             Assert.IsNotNull(place);
 
-            var query1 = new SimplePlaceQuery(place.Name);
-            var result1 = await _placeRepo.QueryPlaces(query1);
-            Assert.IsNotNull(result1);
-            Assert.IsTrue(result1.Contains(place));
+            var q = new PlaceQuery();
+            q.CreateQuery((p) => p.Name, place.Name, ComparisonOperator.Contains);
+            var r = await _placeRepo.QueryPlaces(q);
+            Assert.IsNotNull(r);
+            Assert.IsTrue(r.Contains(place));
+
+            q.CreateQuery(p=> p.LastModifiedByUserId, place.LastModifiedByUserId, ComparisonOperator.Equals);
+            r = await _placeRepo.QueryPlaces(q);
+            Assert.IsNotNull(r);
+            Assert.IsTrue(r.Contains(place));
+
+            q.CreateQuery(p=> p.DateCreated, place.DateCreated.AddDays(2), ComparisonOperator.LessThan);
+            r = await _placeRepo.QueryPlaces(q);
+            Assert.IsNotNull(r);
+            Assert.IsTrue(r.Contains(place));
+
+            q.CreateQuery((p) => p.DateCreated, place.DateCreated.Subtract(new TimeSpan(2, 0, 0, 0)), ComparisonOperator.GreaterThan);
+            r = await _placeRepo.QueryPlaces(q);
+            Assert.IsNotNull(r);
+            Assert.IsTrue(r.Contains(place));
         }
 
         public async Task Place_Update()

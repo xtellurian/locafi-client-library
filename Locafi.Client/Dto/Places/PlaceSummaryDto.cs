@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Dto.Places
         public string TagTypeName { get; set; }
         public Guid? CreatedByUserId { get; set; }
         public string CreatedByUserFullName { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTimeOffset DateCreated { get; set; } // test change
         public Guid? LastModifiedByUserId { get; set; }
         public string LastModifiedByUserFullName { get; set; }
         public DateTime? DateLastModified { get; set; }

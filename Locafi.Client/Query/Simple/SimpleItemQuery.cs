@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Items;
 
-namespace Locafi.Client.Model.Query
+namespace Locafi.Client.Model.Query.Simple
 {
-    public class SimpleItemQuery :ISimpleRestQuery<ItemSummaryDto>
+    public class SimpleItemQuery :IRestQuery<ItemSummaryDto>
     {
         public enum StringProperties
         {

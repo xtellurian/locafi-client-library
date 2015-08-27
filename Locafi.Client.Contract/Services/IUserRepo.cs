@@ -8,6 +8,6 @@ namespace Locafi.Client.Contract.Services
     public interface IUserRepo
     {
         Task<IList<UserDto>> GetAllUsers();
-        Task<IList<UserDto>> QueryUsers(ISimpleRestQuery<UserDto> userQuery);
+        Task<IList<UserDto>> QueryUsers(IRestQuery<UserDto> userQuery);
     }
 }
