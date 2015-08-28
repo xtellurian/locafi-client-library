@@ -65,6 +65,8 @@
     <Compile Include="Tests\SkuRepoTests.cs" />
     <Compile Include="Tests\SnapshotRepoTests.cs" />
     <Compile Include="Tests\PersonRepoTests.cs" />
+    <Compile Include="Tests\TemplateRepoTests.cs" />
+    <Compile Include="Tests\ReasonRepoTests.cs" />
     <Compile Include="Tests\UserRepoTests.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />

@@ -63,14 +63,14 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Order_GetAllOrders()
         {
             var orders = await _orderRepo.GetAllOrders();
-            Assert.IsNotNull(orders);
+            Assert.IsNotNull(orders, "OrderRepo.GetAllOrders returned Null");
             Assert.IsInstanceOfType(orders,typeof(IEnumerable<OrderDto>));
         }
 
         public async Task Order_GetOrderById()
         {
             var orders = await _orderRepo.GetAllOrders();
-            Assert.IsNotNull(orders);
+            Assert.IsNotNull(orders, "OrderRepo.GetAllOrders returned Null");
             Assert.IsInstanceOfType(orders, typeof(IEnumerable<OrderDto>));
 
             foreach (var order in orders)

@@ -87,6 +87,9 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(r);
             Assert.IsTrue(r.Contains(place));
 
+            q.CreateQuery(p=>p.Name, "", ComparisonOperator.Equals);
+            r = await _placeRepo.QueryPlaces(q);
+
             q.CreateQuery((p) => p.DateCreated, place.DateCreated.Subtract(new TimeSpan(2, 0, 0, 0)), ComparisonOperator.GreaterThan);
             r = await _placeRepo.QueryPlaces(q);
             Assert.IsNotNull(r);

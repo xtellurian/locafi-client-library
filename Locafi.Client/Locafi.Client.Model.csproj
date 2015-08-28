@@ -34,12 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Actions\InventoryAction.cs" />
     <Compile Include="Actions\OrderAction.cs" />
-    <Compile Include="Dto\AuthorizationTokenDto.cs" />
+    <Compile Include="Dto\Authentication\AuthorizationTokenDto.cs" />
+    <Compile Include="Dto\DtoBase.cs" />
     <Compile Include="Dto\EntityExtendedPropertyDto.cs" />
     <Compile Include="Dto\InventoryBaseDto.cs" />
     <Compile Include="Dto\InventoryDto.cs" />
@@ -62,17 +60,28 @@
     <Compile Include="Dto\Places\PlaceSummaryDto.cs" />
     <Compile Include="Dto\Places\UpdatePlaceDto.cs" />
     <Compile Include="Dto\Authentication\RefreshLoginDto.cs" />
+    <Compile Include="Dto\Reasons\AddReasonDto.cs" />
+    <Compile Include="Dto\Reasons\ReasonDetailDto.cs" />
     <Compile Include="Dto\Skus\AddSkuDto.cs" />
     <Compile Include="Dto\Skus\ReadSkuExtendedPropertyDto.cs" />
     <Compile Include="Dto\Skus\SkuDetailDto.cs" />
     <Compile Include="Dto\Skus\SkuSummaryDto.cs" />
     <Compile Include="Dto\Skus\WriteSkuExtendedPropertyDto.cs" />
     <Compile Include="Dto\Authentication\UserLoginDto.cs" />
+    <Compile Include="Dto\Templates\AddTemplateDto.cs" />
+    <Compile Include="Dto\Templates\AddTemplateExtendedPropertyDto.cs" />
+    <Compile Include="Dto\Templates\TemplateDetailDto.cs" />
+    <Compile Include="Dto\Templates\TemplateExtendedPropertyDto.cs" />
+    <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
+    <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
+    <Compile Include="Enums\ReasonFor.cs" />
+    <Compile Include="Enums\TagType.cs" />
+    <Compile Include="Enums\TemplateDataTypes.cs" />
+    <Compile Include="Enums\TemplateFor.cs" />
     <Compile Include="Extensions\ItemUri.cs" />
     <Compile Include="Extensions\PlaceDtoGenerationExtensions.cs" />
     <Compile Include="Extensions\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dto\ReasonDto.cs" />
     <Compile Include="Dto\SnapshotDto.cs" />
     <Compile Include="Dto\TagReservationDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
@@ -88,6 +97,15 @@
     <Compile Include="Query\Simple\SimplePersonQuery.cs" />
     <Compile Include="Query\PropertyComparison\PlaceQuery.cs" />
     <Compile Include="Query\Simple\SimpleUserQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

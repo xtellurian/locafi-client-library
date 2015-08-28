@@ -17,7 +17,7 @@ namespace Locafi.Client.Model.Query.Simple
         }
         public SimpleItemQuery(string searchTerm, StringProperties stringProperties)
         {
-            var result = $"{QueryStrings.FilterStart}{QueryStrings.Contains(searchTerm, GetPropertyName(stringProperties))}";
+            var result = $"{QueryStrings.FilterStart}{QueryStrings.Contains( GetPropertyName(stringProperties),searchTerm)}";
             _queryString = result;
         }
 

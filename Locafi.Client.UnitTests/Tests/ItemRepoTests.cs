@@ -21,6 +21,7 @@ namespace Locafi.Client.UnitTests.Tests
         private IPersonRepo _personRepo;
         private ISkuRepo _skuRepo;
         private IUserRepo _userRepo;
+        private IList<Guid> _toDelete;
 
         [TestInitialize]
         public void Setup()
@@ -30,20 +31,23 @@ namespace Locafi.Client.UnitTests.Tests
             _personRepo = WebRepoContainer.PersonRepo;
             _skuRepo = WebRepoContainer.SkuRepo;
             _userRepo = WebRepoContainer.UserRepo;
+            _toDelete = new List<Guid>();
         }
 
         [TestMethod]
-        public async Task Item_AddNew()
+        public async Task Item_Create()
         {
             var addItemDto = await CreateRandomAddItemDto();
 
             var result = await _itemRepo.CreateItem(addItemDto);
 
             Assert.IsNotNull(result);
+            _toDelete.Add(result.Id);
             Assert.IsTrue(string.Equals(addItemDto.Name, result.Name));
             Assert.IsTrue(string.Equals(addItemDto.Description, result.Description));
             Assert.AreEqual(addItemDto.PlaceId, result.PlaceId);
             Assert.AreEqual(addItemDto.SkuId, result.SkuId);
+            Assert.IsNotNull(result.CreatedByUserId);
 
             var check = await _itemRepo.GetItemDetail(result.Id);
 
@@ -84,11 +88,11 @@ namespace Locafi.Client.UnitTests.Tests
         {
             var itemToAdd = await CreateRandomAddItemDto();
             var item = await _itemRepo.CreateItem(itemToAdd);
-            Assert.IsNotNull(item);
+            Assert.IsNotNull(item, "Failed to create Item");
 
             var query1 = new SimpleItemQuery(item.Name, SimpleItemQuery.StringProperties.Name);
             var result1 = await _itemRepo.QueryItems(query1);
-            Assert.IsNotNull(result1);
+            Assert.IsNotNull(result1, "query1 returned null on repo query");
             Assert.IsInstanceOfType(result1,typeof(IEnumerable<ItemSummaryDto>));
             Assert.IsTrue(result1.Contains(item));
 
@@ -182,6 +186,15 @@ namespace Locafi.Client.UnitTests.Tests
             await _itemRepo.DeleteItem(id);
             var sameItem = await _itemRepo.GetItemDetail(id);
             Assert.IsNull(sameItem);
+        }
+
+        [TestCleanup]
+        public async void Cleanup()
+        {
+            foreach (var id in _toDelete)
+            {
+                await _itemRepo.DeleteItem(id);
+            }
         }
 
         private async Task<PlaceSummaryDto> GetRandomOtherPlace(Guid notThisPlaceId)

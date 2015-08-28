@@ -10,7 +10,7 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public string Description { get; set; }
 
-        public string CompanyReference { get; set; }
+        public string CompanyPrefix { get; set; } // decimal number with length eg: "0022"
 
         public string ItemReference { get; set; }
 

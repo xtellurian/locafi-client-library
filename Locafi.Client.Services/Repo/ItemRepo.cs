@@ -74,7 +74,8 @@ namespace Locafi.Client.Services.Repo
 
         public async Task DeleteItem(Guid itemId)
         {
-            await Delete(itemId.ToString());
+            var path = $"DeleteItem/{itemId}";
+            await Delete(path);
         }
 
         protected async Task<IList<ItemSummaryDto>> QueryItems (string filterString)

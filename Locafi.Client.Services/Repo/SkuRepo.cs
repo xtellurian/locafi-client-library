@@ -17,6 +17,13 @@ namespace Locafi.Client.Services.Repo
         {
         }
 
+        public async Task<SkuDetailDto> CreateSku(AddSkuDto addSkuDto)
+        {
+            var path = "CreateSku";
+            var result = await Post<SkuDetailDto>(addSkuDto, path);
+            return result;
+        }
+
         public async Task<IList<SkuSummaryDto>> GetAllSkus()
         {
             var path = "GetSkus";
@@ -29,6 +36,12 @@ namespace Locafi.Client.Services.Repo
             var path = $"GetSkuDetail/{skuId}";
             var result = await Get<SkuDetailDto>(path);
             return result;
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var path = $"{id}/Delete";
+            await Delete(path);
         }
 
         protected async Task<IList<SkuSummaryDto>> QuerySkus(string filterString)

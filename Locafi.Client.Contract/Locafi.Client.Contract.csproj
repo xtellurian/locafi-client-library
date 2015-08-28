@@ -46,12 +46,14 @@
     <Compile Include="Services\IAuthenticationRepo.cs" />
     <Compile Include="Services\IInventoryRepo.cs" />
     <Compile Include="Services\IItemRepo.cs" />
+    <Compile Include="Services\IReasonRepo.cs" />
     <Compile Include="Services\ISkuRepo.cs" />
     <Compile Include="Services\IOrderRepo.cs" />
     <Compile Include="Services\IPersonRepo.cs" />
     <Compile Include="Services\IPlaceRepo.cs" />
     <Compile Include="Services\ISerialiserService.cs" />
     <Compile Include="Services\ISnapshotRepo.cs" />
+    <Compile Include="Services\ITemplateRepo.cs" />
     <Compile Include="Services\IUserRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

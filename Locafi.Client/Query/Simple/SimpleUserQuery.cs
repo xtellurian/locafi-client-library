@@ -13,14 +13,9 @@ namespace Locafi.Client.Model.Query.Simple
             GivenName
         }
 
-        public SimpleUserQuery(string searchTerm, SearchParameter searchSearchParameter)
+        public SimpleUserQuery(string searchTerm, SearchParameter searchParameter)
         {
-            GenerateQueryString(searchTerm, searchSearchParameter);
-        }
-
-        private void GenerateQueryString(string searchTerm, SearchParameter searchParameter)
-        {
-            var result = $"{QueryStrings.FilterStart}{QueryStrings.Contains(searchTerm,GetPropertyName(searchParameter))}";
+            var result = $"{QueryStrings.FilterStart}{QueryStrings.Contains(GetPropertyName(searchParameter),searchTerm)}";
             _queryString = result;
         }
 

@@ -44,18 +44,6 @@ namespace Locafi.Client.Services.Repo
             await Delete(placeId);
         }
 
-        //public async Task<PlaceDto> GetPlaceById(Guid id)
-        //{
-        //    var result = await base.Get("?$filter=Id eq '" + id + "'");
-        //    return result.Value.FirstOrDefault();
-        //}
-
-        //public async Task<PlaceDto> GetPlaceById(string id)
-        //{
-        //    var result = await base.Get("?$filter=Id eq '" + id + "'");
-        //    return result.Value.FirstOrDefault();
-        //}
-
         protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = null)
         {
             var path = $"GetPlaces{queryString}";
