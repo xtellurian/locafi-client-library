@@ -11,8 +11,6 @@ namespace Locafi.Client.Model.Dto.Templates
 {
     public class TemplateSummaryDto : EntityDtoBase
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]

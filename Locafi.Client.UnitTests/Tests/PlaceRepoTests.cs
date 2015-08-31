@@ -7,6 +7,7 @@ using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,20 +18,22 @@ namespace Locafi.Client.UnitTests.Tests
     public class PlaceRepoTests
     {
         private IPlaceRepo _placeRepo;
-        private List<string> _placeIds;
+        private ITemplateRepo _templateRepo;
+        private List<Guid> _toCleanup;
             
             
         [TestInitialize]
         public void Initialize()
         {
             _placeRepo = WebRepoContainer.PlaceRepo;
-            _placeIds = new List<string>();
+            _templateRepo = WebRepoContainer.TemplateRepo;
+            _toCleanup = new List<Guid>();
         }
 
         [TestMethod]
         public async Task Place_Create()
         {
-            var addPlace = GenerateRandomAddPlaceDto();
+            var addPlace = await GenerateRandomAddPlaceDto();
             var result = await _placeRepo.CreatePlace(addPlace);
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result,typeof(PlaceDetailDto));
@@ -38,6 +41,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsTrue(string.Equals(addPlace.Name, result.Name));
             Assert.IsTrue(string.Equals(addPlace.TagNumber, result.TagNumber));
 
+            _toCleanup.Add(result.Id);
         }
         
 
@@ -49,25 +53,11 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsInstanceOfType(places, typeof(IEnumerable<PlaceSummaryDto>));
         }
 
-      
-        public async Task Place_SimpleQuery()
-        {
-            
-            //var addPlace = GenerateRandomAddPlaceDto();
-            //var place = await _placeRepo.CreatePlace(addPlace);
-            //Assert.IsNotNull(place);
-
-            //var query2 = new PlaceQuery();
-            //query2.CreateQuery((p)=>p.Name,place.Name, ComparisonOperator.Contains);
-            //var result2 = await _placeRepo.QueryPlaces(query2);
-            //Assert.IsNotNull(result2);
-            //Assert.IsTrue(result2.Contains(place));
-        }
 
         [TestMethod]
         public async Task Place_Query()
         {
-            var addPlace = GenerateRandomAddPlaceDto();
+            var addPlace = await GenerateRandomAddPlaceDto();
             var place = await _placeRepo.CreatePlace(addPlace);
             Assert.IsNotNull(place);
 
@@ -110,14 +100,16 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task Place_Delete()
         {
-            var addPlace = GenerateRandomAddPlaceDto(); // create randomly generated new place
-            var place = await UploadNewPlace(addPlace); // uplaod that place to the server
+            var addPlace = await GenerateRandomAddPlaceDto(); // create randomly generated new place
+            var place = await _placeRepo.CreatePlace(addPlace);
+            _toCleanup.Add(place.Id);
+
             Assert.IsNotNull(place); // check we got something back
             Assert.IsInstanceOfType(place,typeof(PlaceDetailDto)); // check its the right type
 
             var allPlaces = await _placeRepo.GetAllPlaces(); // get all the current places
             Assert.IsTrue(allPlaces.Contains(place)); // check our place is in there
-            await _placeRepo.DeletePlace(place.Id.ToString()); // try to delete our place
+            await _placeRepo.Delete(place.Id); // try to delete our place
 
             allPlaces = await _placeRepo.GetAllPlaces(); // get all places again
             Assert.IsFalse(allPlaces.Any(p=> p.Id == place.Id)); // check our place is actually gone
@@ -128,34 +120,30 @@ namespace Locafi.Client.UnitTests.Tests
         [TestCleanup]
         public async void Cleanup()
         {
-            foreach (var id in _placeIds)
+            foreach (var id in _toCleanup)
             {
-               // await _placeRepo.Place_Delete(id); //TODO: when implemented
+               await _placeRepo.Delete(id); //TODO: when implemented
             }
         }
 
         // private methods
 
-        private async Task<PlaceDetailDto> UploadNewPlace(AddPlaceDto addPlace)
-        {
-            var place = await _placeRepo.CreatePlace(addPlace);
-            _placeIds.Add(place.Id.ToString());
-            return place;
-        }
 
-
-        private static AddPlaceDto GenerateRandomAddPlaceDto()
+        private async Task<AddPlaceDto> GenerateRandomAddPlaceDto()
         {
+            var ran = new Random();
             var description = Guid.NewGuid().ToString();
             var name = Guid.NewGuid().ToString();
             var tagNumber = Guid.NewGuid().ToString();
+            var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Place);
+            var template = templates[ran.Next(templates.Count - 1)];
 
             var addPlace = new AddPlaceDto
             {
                 Description = description,
                 Name = name,
                 TagNumber = tagNumber,
-                TemplateId = Guid.Empty,
+                TemplateId = template.Id,
                 PlaceExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(),
                 TagType = 0
             };

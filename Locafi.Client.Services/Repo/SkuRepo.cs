@@ -31,7 +31,7 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
-        public async Task<SkuDetailDto> GetSkuDetail(string skuId)
+        public async Task<SkuDetailDto> GetSkuDetail(Guid skuId)
         {
             var path = $"GetSkuDetail/{skuId}";
             var result = await Get<SkuDetailDto>(path);

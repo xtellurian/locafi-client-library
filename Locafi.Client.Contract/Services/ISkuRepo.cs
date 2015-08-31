@@ -8,7 +8,7 @@ namespace Locafi.Client.Contract.Services
     public interface ISkuRepo
     {
         Task<IList<SkuSummaryDto>> GetAllSkus();
-        Task<SkuDetailDto> GetSkuDetail(string skuId);
+        Task<SkuDetailDto> GetSkuDetail(Guid skuId);
         Task<SkuDetailDto> CreateSku(AddSkuDto addSkuDto);
         Task Delete(Guid id);
     }

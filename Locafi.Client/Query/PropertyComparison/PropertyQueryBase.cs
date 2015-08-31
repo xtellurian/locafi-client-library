@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Locafi.Client.Model.Query.PropertyComparison
 {
-    public abstract class PropertyQuery<T> : IRestQuery<T>
+    public abstract class PropertyQueryBase<T> : IRestQuery<T>
     {
         /// <summary>
         /// Creates an OData compatible relative URI as Query String.

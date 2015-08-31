@@ -152,13 +152,5 @@ namespace Locafi.Client.UnitTests.Tests
             return place;
         }
 
-        private async Task<UserDto> GetRandomUser()
-        {
-            var ran = new Random();
-            var allUsers = await _userRepo.GetAllUsers();
-            var user = allUsers[ran.Next(allUsers.Count - 1)];
-            return user;
-        }
-
     }
 }

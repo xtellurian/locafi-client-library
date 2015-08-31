@@ -13,13 +13,15 @@ namespace Locafi.Client.Services.Repo
 {
     public class PersonRepo : WebRepo, IPersonRepo
     {
-        public PersonRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "Person")
+        public PersonRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
+            : base(unauthorizedConfigService, serialiser, "Persons")
         {
         }
 
         public async Task<IList<PersonSummaryDto>> GetAllPersons()
         {
-            var items = await Get<IList<PersonSummaryDto>>();
+            var path = "GetPersons";
+            var items = await Get<IList<PersonSummaryDto>>(path);
             return items;
         }
 

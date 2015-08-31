@@ -50,12 +50,19 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task Snapshot_GetAll() 
         {
+            var place = await GetRandomPlace();
+            var newSnap = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
+            var result = await _snapshotRepo.CreateSnapshot(newSnap);
+            _toCleanup.Add(result.Id);
+
             var snaps = await _snapshotRepo.GetAllSnapshots();
+            Assert.IsNotNull(snaps);
             Assert.IsInstanceOfType(snaps,typeof(IEnumerable<SnapshotSummaryDto>));
+            Assert.IsTrue(snaps.Contains(result));
         }
 
         [TestMethod]
-        public async Task Snapshot_GetById()
+        public async Task Snapshot_GetById() // assumes some exist already
         {
             var snaps = await _snapshotRepo.GetAllSnapshots();
             foreach (var snap in snaps)

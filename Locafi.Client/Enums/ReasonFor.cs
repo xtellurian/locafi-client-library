@@ -10,7 +10,7 @@ namespace Locafi.Client.Model.Enums
     {
         Order_Allocate,
         Order_Receive,
-        Inventory_NewItem,
+        Inventory_ExpectedItem,
         Inventory_UnexpectedItem,
         Inventory_MissingItem
     }

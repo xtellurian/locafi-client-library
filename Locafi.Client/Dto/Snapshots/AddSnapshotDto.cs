@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public Guid PlaceId { get; set; }    // id of location this asset is in
 
         public DateTime StartTimeUtc { get; set; }  // time snapshot was started
-        public DateTime? EndTimeUtc { get; set; }    // time snapshot was completed
+        public DateTime EndTimeUtc { get; set; }    // time snapshot was completed
 
         public IList<SnapshotTagDto> Tags { get; set; }    // list of tags scanned during the snapshot (tag number and tag type)
 

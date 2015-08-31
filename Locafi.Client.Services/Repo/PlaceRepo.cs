@@ -16,20 +16,23 @@ namespace Locafi.Client.Services.Repo
     {
         private readonly ISerialiserService _serialiser;
 
-        public PlaceRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) : base(authorisedUnauthorizedConfigService, serialiser, "Places/")
+        public PlaceRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
+            : base(authorisedUnauthorizedConfigService, serialiser, "Places")
         {
             _serialiser = serialiser;
         }
 
         public async Task<IList<PlaceSummaryDto>> GetAllPlaces()
         {
-            return await QueryPlaces();
+            var path = "GetPlaces";
+            var result = await Get<IList<PlaceSummaryDto>>(path);
+            return result;
         }
 
 
         public async Task<PlaceDetailDto> CreatePlace(AddPlaceDto addPlaceDto)
         {
-            var path = @"/CreatePlace";
+            var path = "CreatePlace";
             var result = await Post<PlaceDetailDto>(addPlaceDto, path);
             return result;
         }
@@ -39,9 +42,10 @@ namespace Locafi.Client.Services.Repo
             return await QueryPlaces(query.AsRestQuery());
         }
 
-        public async Task DeletePlace(string placeId)
+        public async Task Delete(Guid id)
         {
-            await Delete(placeId);
+            var path = $"DeletePlace/{id}";
+            await Delete(path);
         }
 
         protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = null)

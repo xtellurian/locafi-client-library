@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
@@ -8,7 +9,6 @@ using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
-using Locafi.Client.Model.Query.Simple;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
@@ -54,6 +54,23 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(check);
             Assert.AreEqual(result,check);
         }
+        [TestMethod]
+        public async Task Item_UseExtendedProperties()
+        {
+            var addItemDto = await CreateRandomAddItemDto();
+            var result = await _itemRepo.CreateItem(addItemDto);
+            Assert.IsNotNull(result);
+            _toDelete.Add(result.Id);
+
+            var skuDetail = await _skuRepo.GetSkuDetail(result.SkuId);
+            foreach(var skuDetailExtendedProperty in skuDetail.SkuExtendedPropertyList)
+            {
+                var itemExtendedProperty = result.ItemExtendedPropertyList
+                    .FirstOrDefault(e => e.SkuExtendedPropertyId == skuDetailExtendedProperty.Id);
+                Assert.IsNotNull(itemExtendedProperty);
+                Assert.AreEqual(skuDetailExtendedProperty.DefaultValue,itemExtendedProperty.Value);
+            }
+        }
 
         private async Task<AddItemDto> CreateRandomAddItemDto()
         {
@@ -84,32 +101,6 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task Item_SimpleQueryItems()
-        {
-            var itemToAdd = await CreateRandomAddItemDto();
-            var item = await _itemRepo.CreateItem(itemToAdd);
-            Assert.IsNotNull(item, "Failed to create Item");
-
-            var query1 = new SimpleItemQuery(item.Name, SimpleItemQuery.StringProperties.Name);
-            var result1 = await _itemRepo.QueryItems(query1);
-            Assert.IsNotNull(result1, "query1 returned null on repo query");
-            Assert.IsInstanceOfType(result1,typeof(IEnumerable<ItemSummaryDto>));
-            Assert.IsTrue(result1.Contains(item));
-
-            var query2 = new SimpleItemQuery(item.Description, SimpleItemQuery.StringProperties.Description);
-            var result2 = await _itemRepo.QueryItems(query2);
-            Assert.IsNotNull(result2);
-            Assert.IsInstanceOfType(result2, typeof(IEnumerable<ItemSummaryDto>));
-            Assert.IsTrue(result2.Contains(item));
-
-            var query3 = new SimpleItemQuery(item.SkuId, SimpleItemQuery.IdProperties.SkuId);
-            var result3 = await _itemRepo.QueryItems(query3);
-            Assert.IsNotNull(result3);
-            Assert.IsInstanceOfType(result3, typeof(IEnumerable<ItemSummaryDto>));
-            Assert.IsTrue(result3.Contains(item));
-        }
-
-        [TestMethod]
         public async Task Item_QueryItems()
         {
             var itemToAdd = await CreateRandomAddItemDto();
@@ -129,7 +120,8 @@ namespace Locafi.Client.UnitTests.Tests
         {
             var itemToAdd = await CreateRandomAddItemDto();
             var result = await _itemRepo.CreateItem(itemToAdd);
-            Assert.IsNotNull(result);
+            Assert.IsNotNull(result, "result != null");
+            _toDelete.Add(result.Id);
             var count = await _itemRepo.GetItemCount();
             Assert.IsTrue(count > 0);
         }
