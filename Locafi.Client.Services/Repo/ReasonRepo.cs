@@ -12,8 +12,8 @@ namespace Locafi.Client.Services.Repo
 {
     public class ReasonRepo : WebRepo, IReasonRepo
     {
-        public ReasonRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
-            : base(authorisedConfigService, serialiser, "Reasons")
+        public ReasonRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
+            : base(authorisedUnauthorizedConfigService, serialiser, "Reasons")
         {
         }
 

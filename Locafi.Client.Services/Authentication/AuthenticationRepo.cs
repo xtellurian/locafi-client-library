@@ -13,7 +13,7 @@ namespace Locafi.Client.Services.Authentication
 {
     public class AuthenticationRepo : WebRepo, IAuthenticationRepo
     {
-        public AuthenticationRepo(IHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "authentication")
+        public AuthenticationRepo(IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "authentication")
         {
         }
 

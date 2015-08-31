@@ -14,7 +14,7 @@ namespace Locafi.Client.Services.Repo
 {
     public class OrderRepo : WebRepo, IOrderRepo
     {
-        public OrderRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "orders")
+        public OrderRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "orders")
         {
         }
 

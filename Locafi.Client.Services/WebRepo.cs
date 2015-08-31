@@ -9,27 +9,57 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Services.Errors;
+using Locafi.Client.Services.Exceptions;
 
 namespace Locafi.Client.Services
 {
-    public abstract class WebRepo : IWebRepo
+    public abstract class WebRepo
     {
-        private readonly IHttpTransferConfigService _configService;
+        private readonly IWebRepoErrorHandler _errorhandler; // can be implemented by derived types
+        private readonly IHttpTransferConfigService _unauthorizedConfigService;
         private readonly string _service;
-        private readonly IAuthorisedHttpTransferConfigService _authorisedConfigService;
+        private readonly IAuthorisedHttpTransferConfigService _authorisedUnauthorizedConfigService;
         private readonly ISerialiserService _serialiser;
 
-        protected WebRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service)
+        protected WebRepo(IWebRepoErrorHandler errorhandler,
+            IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service)
+            : this(errorhandler, serialiser, service) // high level external error handler
         {
-            _authorisedConfigService = authorisedConfigService;
-            _configService = authorisedConfigService;
-            _serialiser = serialiser;
-            _service = service;
+            _authorisedUnauthorizedConfigService = authorisedUnauthorizedConfigService;
+            _unauthorizedConfigService = authorisedUnauthorizedConfigService;
         }
 
-        protected WebRepo(IHttpTransferConfigService configService, ISerialiserService serialiser, string service)
+        protected WebRepo(IWebRepoErrorHandler errorhandler,
+            IHttpTransferConfigService unauthorisedUnauthorizedConfigService, ISerialiserService serialiser, string service)
+            : this(errorhandler ,serialiser, service) // high level external error handler
         {
-            _configService = configService;
+            _unauthorizedConfigService = unauthorisedUnauthorizedConfigService;
+        }
+
+        protected WebRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service) 
+            : this(serialiser, service) // this as error handler, authorised base
+        {
+            _errorhandler = this as IWebRepoErrorHandler;
+            _authorisedUnauthorizedConfigService = authorisedUnauthorizedConfigService;
+            _unauthorizedConfigService = authorisedUnauthorizedConfigService;
+        }
+
+        protected WebRepo(IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service) 
+            : this(serialiser, service) // internal error handler, unauth
+        {
+            _errorhandler = this as IWebRepoErrorHandler;
+            _unauthorizedConfigService = unauthorizedConfigService;
+        }
+
+        private WebRepo(IWebRepoErrorHandler errorhandler, ISerialiserService serialiser, string service)// set external handler, then base
+            : this(serialiser, service)
+        {
+            _errorhandler = errorhandler;
+        }
+
+        private WebRepo(ISerialiserService serialiser, string service) // base ctor
+        {
             _serialiser = serialiser;
             _service = service;
         }
@@ -42,11 +72,13 @@ namespace Locafi.Client.Services
             if (typeof (T).GetTypeInfo().IsValueType)
             {
                 T result = (T)Convert.ChangeType(data, typeof (T));
+                if (result == null) await Handle(response);
                 return result;
             }
             else
             {
                 var result = _serialiser.Deserialise<T>(data);
+                if (result == null) await Handle(response);
                 return result;
             }
         }
@@ -55,6 +87,7 @@ namespace Locafi.Client.Services
         {
             var response = await GetResponse(HttpMethod.Post, extra, _serialiser.Serialise(data));
             var result = response.IsSuccessStatusCode ? _serialiser.Deserialise<T>(await response.Content.ReadAsStringAsync()) : null;
+            if(result==null) await Handle(response);
             return result;
         }
 
@@ -66,15 +99,21 @@ namespace Locafi.Client.Services
                 : $"{_service} service failed to delete id={key}");
         }
 
+        private async Task Handle(HttpResponseMessage response)
+        {
+            var handle = _errorhandler;
+            if (handle != null) await handle.Handle(response);
+        }
+
         private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "", string content = null)
         {
-            var baseUrl = _configService.BaseUrl;
+            var baseUrl = _unauthorizedConfigService.BaseUrl;
             var path = GetFullPath(baseUrl, _service, extra);
             var message = new HttpRequestMessage(method, path);
             if(content!=null) message.Content = new StringContent(content, Encoding.UTF8, "application/json");
 
             //message.Content.Headers.Add("Content-Type", new List<string> { "application/json" });
-            if(_authorisedConfigService!=null) message.Headers.Add("Authorization", "Token " + _authorisedConfigService.GetTokenString());
+            if(_authorisedUnauthorizedConfigService!=null) message.Headers.Add("Authorization", "Token " + _authorisedUnauthorizedConfigService.GetTokenString());
 
             var client = new HttpClient();
             Debug.WriteLine($"{method} request at {path}");

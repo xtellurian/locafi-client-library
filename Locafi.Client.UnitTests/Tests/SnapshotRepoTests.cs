@@ -16,14 +16,14 @@ namespace Locafi.Client.UnitTests.Tests
     {
         private ISnapshotRepo _snapshotRepo;
         private IPlaceRepo _placeRepo;
-        private IUserRepo _userRepo;
+        private IList<Guid> _toCleanup;
 
         [TestInitialize]
         public void Initialize()
         {
             _snapshotRepo = WebRepoContainer.SnapshotRepo;
             _placeRepo = WebRepoContainer.PlaceRepo;
-            _userRepo = WebRepoContainer.UserRepo;
+            _toCleanup = new List<Guid>();
         }
 
         [TestMethod]
@@ -41,6 +41,8 @@ namespace Locafi.Client.UnitTests.Tests
             }
             Assert.IsNotNull(result.Items);
             Assert.AreEqual(newSnap.PlaceId,result.PlaceId);
+
+            _toCleanup.Add(result.Id); // add to cleanup
         }
 
 
@@ -59,26 +61,41 @@ namespace Locafi.Client.UnitTests.Tests
             foreach (var snap in snaps)
             {
                 var result = await _snapshotRepo.GetSnapshot(snap.Id);
-                Assert.IsNotNull(result.Tags);
-                Assert.IsNotNull(result.Items);
+                Assert.IsNotNull(result.Tags, "result.Tags != null");
+                Assert.IsNotNull(result.Items, "result.Items != null");
                 Assert.AreEqual(snap, result);
             }
         }
+        [TestMethod]
+        public async Task Snapshot_Delete()
+        {
+            // create snapshot
+            var place = await GetRandomPlace();
+            var newSnap = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
+            var result = await _snapshotRepo.CreateSnapshot(newSnap);
+            Assert.IsNotNull(result);
+            var allSnaps = await _snapshotRepo.GetAllSnapshots();
+            Assert.IsTrue(allSnaps.Contains(result)); // make sure it was created
 
+            await _snapshotRepo.Delete(result.Id);
+            allSnaps = await _snapshotRepo.GetAllSnapshots();
+            Assert.IsFalse(allSnaps.Contains(result)); // make sure it was deleted
+
+        }
+        [TestCleanup]
+        public async void Cleanup()
+        {
+            foreach (var id in _toCleanup)
+            {
+                await _snapshotRepo.Delete(id);
+            }
+        }
         private async Task<PlaceSummaryDto> GetRandomPlace()
         {
             var ran = new Random();
             var allPlaces = await _placeRepo.GetAllPlaces();
             var place = allPlaces[ran.Next(allPlaces.Count - 1)];
             return place;
-        }
-
-        private async Task<UserDto> GetRandomUser()
-        {
-            var ran = new Random();
-            var allUsers = await _userRepo.GetAllUsers();
-            var user = allUsers[ran.Next(allUsers.Count - 1)];
-            return user;
         }
 
     }

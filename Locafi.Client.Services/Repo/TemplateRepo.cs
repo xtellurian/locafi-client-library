@@ -12,8 +12,8 @@ namespace Locafi.Client.Services.Repo
 {
     public class TemplateRepo : WebRepo, ITemplateRepo
     {
-        public TemplateRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
-            : base(authorisedConfigService, serialiser, "templates")
+        public TemplateRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
+            : base(authorisedUnauthorizedConfigService, serialiser, "templates")
         {
         }
 

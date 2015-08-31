@@ -14,7 +14,7 @@ namespace Locafi.Client.Services.Repo
 {
     public class UserRepo : WebRepo, IUserRepo
     {
-        public UserRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Users")
+        public UserRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "Users")
         {
         }
 

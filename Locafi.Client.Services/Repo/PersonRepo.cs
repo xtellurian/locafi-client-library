@@ -13,7 +13,7 @@ namespace Locafi.Client.Services.Repo
 {
     public class PersonRepo : WebRepo, IPersonRepo
     {
-        public PersonRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Person")
+        public PersonRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "Person")
         {
         }
 

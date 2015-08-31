@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
@@ -9,13 +10,15 @@ using Locafi.Client.Data;
 using Locafi.Client.Model.Actions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Extensions;
+using Locafi.Client.Services.Errors;
+using Locafi.Client.Services.Exceptions;
 
 namespace Locafi.Client.Services.Repo
 {
-    public class InventoryRepo : WebRepo, IInventoryRepo
+    public class InventoryRepo : WebRepo, IInventoryRepo, IWebRepoErrorHandler
     {
-        public InventoryRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
-            : base(authorisedConfigService, serialiser, "Inventory")
+        public InventoryRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
+            : base(authorisedUnauthorizedConfigService, serialiser, "Inventory")
         {
         }
 
@@ -59,10 +62,21 @@ namespace Locafi.Client.Services.Repo
             return result;
         }
 
+        public async Task Delete(Guid id)
+        {
+            var path = $"DeleteInventory/{id}";
+            await Delete(path);
+        }
+
         protected async Task<IList<InventorySummaryDto>> QueryInventories(string queryString)
         {
             var result = await Get<IList<InventorySummaryDto>>(queryString);
             return result;
+        }
+
+        public async Task Handle(HttpResponseMessage responseMessage)
+        {
+            throw new InventoryException(await responseMessage.Content.ReadAsStringAsync());
         }
     }
 }

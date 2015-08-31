@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
@@ -7,6 +8,7 @@ using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Dto.Snapshots;
+using Locafi.Client.Services.Exceptions;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,6 +21,7 @@ namespace Locafi.Client.UnitTests.Tests
         private IPlaceRepo _placeRepo;
         private ISnapshotRepo _snapshotRepo;
         private IUserRepo _userRepo;
+        private IList<Guid> _toCleanup;
 
         [TestInitialize]
         public void Initialize()
@@ -27,6 +30,7 @@ namespace Locafi.Client.UnitTests.Tests
             _placeRepo = WebRepoContainer.PlaceRepo;
             _snapshotRepo = WebRepoContainer.SnapshotRepo;
             _userRepo = WebRepoContainer.UserRepo;
+            _toCleanup = new List<Guid>();
         }
 
         [TestMethod]
@@ -50,16 +54,17 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(Locafi.Client.Services.Exceptions.InventoryException))]
         public async Task Inventory_AddSnapshotWrongPlace()
         {
-            var inventory = await RandomCreate();
-            var place = await GetRandomPlace(inventory.PlaceId);
-            var user = await GetRandomUser();
+            var inventory = await RandomCreate(); // make new
+            _toCleanup.Add(inventory.Id); // prepare to cleanup later
+            var place = await GetRandomPlace(inventory.PlaceId); // get a place not this palce
             var snapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
             var resultSnapshot = await _snapshotRepo.CreateSnapshot(snapshot);
             Assert.IsNotNull(snapshot);
-            var result = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id);
-            Assert.IsNull(result);
+
+            var result = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id); // should throw exception
 
         }
 
@@ -69,12 +74,25 @@ namespace Locafi.Client.UnitTests.Tests
             //await RandomCreateAddSnapshot_Resolve();
         }
 
+        [TestMethod]
         public async Task Inventory_Delete()
         {
-            var inventory = await RandomCreate();
-            var inventories = await _inventoryRepo.GetAllInventories();
-            Assert.IsTrue(inventories.Contains(inventory));
+            var inventory = await RandomCreate(); // create random 
+            var inventories = await _inventoryRepo.GetAllInventories(); // get all
+            Assert.IsTrue(inventories.Contains(inventory),"inventories.Contains(inventory)"); // assert all contains the one we just made
 
+            await _inventoryRepo.Delete(inventory.Id); // delete the one we just made
+            inventories = await _inventoryRepo.GetAllInventories(); // get all again
+            Assert.IsFalse(inventories.Contains(inventory), "inventories.Contains(inventory)"); // assert the one we made no longer exists
+        }
+
+        [TestCleanup]
+        public async void Cleanup()
+        {
+            foreach (var id in _toCleanup)
+            {
+                await _inventoryRepo.Delete(id);
+            }
         }
 
         private async Task<InventoryDetailDto> RandomCreateAddSnapshot_Resolve()
@@ -117,6 +135,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsInstanceOfType(result, typeof(InventoryDetailDto));
             Assert.IsTrue(string.Equals(result.Name, name));
             Assert.AreEqual(place.Id, result.PlaceId);
+
             return result;
         }
 

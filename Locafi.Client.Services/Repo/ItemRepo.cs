@@ -19,7 +19,7 @@ namespace Locafi.Client.Services.Repo
     {
         private readonly ISerialiserService _serialiser;
 
-        public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedConfig, ISerialiserService serialiser) : base(transferAuthorisedConfig, serialiser, "Items")
+        public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedUnauthorizedConfig, ISerialiserService serialiser) : base(transferAuthorisedUnauthorizedConfig, serialiser, "Items")
         {
             _serialiser = serialiser;
         }

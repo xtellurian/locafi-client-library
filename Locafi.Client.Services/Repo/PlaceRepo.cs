@@ -16,7 +16,7 @@ namespace Locafi.Client.Services.Repo
     {
         private readonly ISerialiserService _serialiser;
 
-        public PlaceRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) : base(authorisedConfigService, serialiser, "Places/")
+        public PlaceRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) : base(authorisedUnauthorizedConfigService, serialiser, "Places/")
         {
             _serialiser = serialiser;
         }

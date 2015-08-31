@@ -13,7 +13,7 @@ namespace Locafi.Client.Services.Repo
 {
     public class SnapshotRepo : WebRepo, ISnapshotRepo
     {
-        public SnapshotRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(configService, serialiser, "Snapshots")
+        public SnapshotRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "Snapshots")
         {
         }
 
@@ -36,6 +36,12 @@ namespace Locafi.Client.Services.Repo
             var path = "GetSnapshots";
             var result = await Get<IList<SnapshotSummaryDto>>(path);
             return result;
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var path = $"DeleteSnapshot/{id}";
+            await Delete(path);
         }
 
         protected async Task<IList<SnapshotSummaryDto>> QuerySnapshots(string queryString)
