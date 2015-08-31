@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LegacyNavigatorApi.Models.Dtos;
+using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Places;
 
 namespace Locafi.Client.Model.Extensions

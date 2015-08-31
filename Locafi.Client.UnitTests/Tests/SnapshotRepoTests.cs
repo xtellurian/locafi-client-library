@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,11 +30,10 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Snapshot_Create() 
         {
             var place = await GetRandomPlace();
-            var user = await GetRandomUser();
-            var newSnap = SnapshotGenerator.CreateRandomSnapshot(place.Id.ToString(), user.Id.ToString());
+            var newSnap = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
             var result = await _snapshotRepo.CreateSnapshot(newSnap);
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result,typeof(SnapshotDto));
+            Assert.IsInstanceOfType(result,typeof(SnapshotDetailDto));
             Assert.IsTrue(result.Tags.Count == newSnap.Tags.Count);
             foreach (var tag in result.Tags)
             {
@@ -41,7 +41,6 @@ namespace Locafi.Client.UnitTests.Tests
             }
             Assert.IsNotNull(result.Items);
             Assert.AreEqual(newSnap.PlaceId,result.PlaceId);
-            Assert.AreEqual(newSnap.UserId, result.UserId);
         }
 
 
@@ -50,7 +49,7 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Snapshot_GetAll() 
         {
             var snaps = await _snapshotRepo.GetAllSnapshots();
-            Assert.IsInstanceOfType(snaps,typeof(IEnumerable<SnapshotDto>));
+            Assert.IsInstanceOfType(snaps,typeof(IEnumerable<SnapshotSummaryDto>));
         }
 
         [TestMethod]

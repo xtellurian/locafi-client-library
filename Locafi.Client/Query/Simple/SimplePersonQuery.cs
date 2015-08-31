@@ -1,9 +1,10 @@
 ﻿using System;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Persons;
 
 namespace Locafi.Client.Model.Query.Simple
 {
-    public class SimplePersonQuery : IRestQuery<PersonDto>
+    public class SimplePersonQuery : IRestQuery<PersonSummaryDto>
     {
         public enum StringParameters
         {

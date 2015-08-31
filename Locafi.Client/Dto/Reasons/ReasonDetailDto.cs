@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Reasons
 {
-    public class ReasonDetailDto : DtoBase
+    public class ReasonDetailDto : EntityDtoBase
     {
         public Guid Id { get; set; }
 

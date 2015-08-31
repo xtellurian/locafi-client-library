@@ -9,7 +9,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Templates
 {
-    public class TemplateSummaryDto : DtoBase
+    public class TemplateSummaryDto : EntityDtoBase
     {
         public Guid Id { get; set; }
 

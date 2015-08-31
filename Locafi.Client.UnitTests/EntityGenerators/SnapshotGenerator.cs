@@ -4,33 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Snapshots;
 
 namespace Locafi.Client.UnitTests.EntityGenerators
 {
     public static class SnapshotGenerator
     {
-        public static SnapshotDto CreateRandomSnapshot(string placeId, string userId)
+        public static AddSnapshotDto CreateRandomSnapshotForUpload(Guid placeId)
         {
             var ran = new Random();
 
             var name = Guid.NewGuid().ToString();
             var tags = GenerateRandomTags();
-            var snap = new SnapshotDto
+            var snap = new AddSnapshotDto
             {
                 StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
                 EndTimeUtc = DateTime.UtcNow,
                 Name = name,
                 Tags = tags,
-                PlaceId = placeId,
-                UserId = userId
+                PlaceId = placeId
             };
             return snap;
         }
 
-        private static IList<SnapshotDtoTag> GenerateRandomTags()
+        private static IList<SnapshotTagDto> GenerateRandomTags()
         {
             var ran = new Random();
-            var tags = new List<SnapshotDtoTag>();
+            var tags = new List<SnapshotTagDto>();
             var numTags = ran.Next(50);
             for (var n = 0; n < numTags; n++)
             {
@@ -39,9 +39,9 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             return tags;
         }
 
-        private static SnapshotDtoTag GenerateRandomTag()
+        private static SnapshotTagDto GenerateRandomTag()
         {
-            return new SnapshotDtoTag
+            return new SnapshotTagDto
             {
                 TagNumber = Guid.NewGuid().ToString()
             };

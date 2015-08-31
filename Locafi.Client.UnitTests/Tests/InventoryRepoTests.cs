@@ -4,7 +4,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,7 +34,7 @@ namespace Locafi.Client.UnitTests.Tests
         {
             var inventories = await _inventoryRepo.GetAllInventories();
             Assert.IsNotNull(inventories);
-            Assert.IsInstanceOfType(inventories, typeof(IEnumerable<InventoryDto>));
+            Assert.IsInstanceOfType(inventories, typeof(IEnumerable<InventorySummaryDto>));
         }
 
         [TestMethod]
@@ -53,10 +55,10 @@ namespace Locafi.Client.UnitTests.Tests
             var inventory = await RandomCreate();
             var place = await GetRandomPlace(inventory.PlaceId);
             var user = await GetRandomUser();
-            var snapshot = SnapshotGenerator.CreateRandomSnapshot(place.Id.ToString(), user.Id.ToString());
-            snapshot = await _snapshotRepo.CreateSnapshot(snapshot);
+            var snapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
+            var resultSnapshot = await _snapshotRepo.CreateSnapshot(snapshot);
             Assert.IsNotNull(snapshot);
-            var result = await _inventoryRepo.AddSnapshot(inventory, snapshot.Id);
+            var result = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id);
             Assert.IsNull(result);
 
         }
@@ -67,37 +69,44 @@ namespace Locafi.Client.UnitTests.Tests
             //await RandomCreateAddSnapshot_Resolve();
         }
 
-        private async Task<InventoryDto> RandomCreateAddSnapshot_Resolve()
+        public async Task Inventory_Delete()
+        {
+            var inventory = await RandomCreate();
+            var inventories = await _inventoryRepo.GetAllInventories();
+            Assert.IsTrue(inventories.Contains(inventory));
+
+        }
+
+        private async Task<InventoryDetailDto> RandomCreateAddSnapshot_Resolve()
         {
             //todo: reasons
             var inventory = await RandomCreate_AddSnapshot();
             
             var result = await _inventoryRepo.Resolve(inventory);
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result,typeof(InventoryDto));
+            Assert.IsInstanceOfType(result,typeof(InventoryDetailDto));
            throw new NotImplementedException();
         }
 
-        private async Task<InventoryDto> RandomCreate_AddSnapshot()
+        private async Task<InventoryDetailDto> RandomCreate_AddSnapshot()
         {
             var inventory = await RandomCreate();
-            var user = await GetRandomUser();
-            var localSnapshot = SnapshotGenerator.CreateRandomSnapshot(inventory.PlaceId.ToString(), user.Id.ToString());
+            var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId);
             var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);
             Assert.IsNotNull(resultSnapshot);
-            Assert.IsInstanceOfType(resultSnapshot, typeof(SnapshotDto));
+            Assert.IsInstanceOfType(resultSnapshot, typeof(SnapshotDetailDto));
 
             Assert.IsNotNull(inventory);
-            Assert.IsInstanceOfType(inventory, typeof(InventoryDto));
+            Assert.IsInstanceOfType(inventory, typeof(InventoryDetailDto));
             var resultInventory = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id);
 
             Assert.IsNotNull(resultInventory);
-            Assert.IsInstanceOfType(resultInventory, typeof(InventoryDto));
-            Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id.ToString()));
+            Assert.IsInstanceOfType(resultInventory, typeof(InventoryDetailDto));
+            Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
             return resultInventory;
         }
 
-        private async Task<InventoryDto> RandomCreate()
+        private async Task<InventoryDetailDto> RandomCreate()
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
@@ -105,7 +114,7 @@ namespace Locafi.Client.UnitTests.Tests
             var place = places[ran.Next(places.Count - 1)];
             var result = await _inventoryRepo.CreateInventory(name, place.Id);
 
-            Assert.IsInstanceOfType(result, typeof(InventoryDto));
+            Assert.IsInstanceOfType(result, typeof(InventoryDetailDto));
             Assert.IsTrue(string.Equals(result.Name, name));
             Assert.AreEqual(place.Id, result.PlaceId);
             return result;

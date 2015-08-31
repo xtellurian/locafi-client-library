@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Snapshots;
 
 namespace Locafi.Client.Model.Extensions
 {
@@ -14,7 +15,7 @@ namespace Locafi.Client.Model.Extensions
         /// </summary>
         /// <param name="snapshotDto">The Snapshot to create/ upload </param>
         /// <returns> The relative URI ie BASE_URL + SERVICE + THIS </returns>
-        public static string CreateUri(this SnapshotDto snapshotDto)
+        public static string CreateUri(this AddSnapshotDto snapshotDto)
         {
             return "CreateSnapshot";
         }

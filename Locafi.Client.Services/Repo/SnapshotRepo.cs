@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Extensions;
 
 namespace Locafi.Client.Services.Repo
@@ -16,30 +17,30 @@ namespace Locafi.Client.Services.Repo
         {
         }
 
-        public async Task<SnapshotDto> CreateSnapshot(SnapshotDto snapshot)
+        public async Task<SnapshotDetailDto> CreateSnapshot(AddSnapshotDto snapshot)
         {
-            var path = snapshot.CreateUri();
-            var result = await Post<SnapshotDto>(snapshot, path);
+            var path = "CreateSnapshot";
+            var result = await Post<SnapshotDetailDto>(snapshot, path);
             return result;
         }
 
-        public async Task<SnapshotDto> GetSnapshot(Guid snapshotId)
+        public async Task<SnapshotDetailDto> GetSnapshot(Guid snapshotId)
         {
             var path = $"GetSnapshot/{snapshotId}";
-            var result = await Get<SnapshotDto>(path);
+            var result = await Get<SnapshotDetailDto>(path);
             return result;
         }
 
-        public async Task<IList<SnapshotDto>> GetAllSnapshots()
+        public async Task<IList<SnapshotSummaryDto>> GetAllSnapshots()
         {
             var path = "GetSnapshots";
-            var result = await Get<IList<SnapshotDto>>(path);
+            var result = await Get<IList<SnapshotSummaryDto>>(path);
             return result;
         }
 
-        protected async Task<IList<SnapshotDto>> QuerySnapshots(string queryString)
+        protected async Task<IList<SnapshotSummaryDto>> QuerySnapshots(string queryString)
         {
-            var result = await Get<IList<SnapshotDto>>(queryString);
+            var result = await Get<IList<SnapshotSummaryDto>>(queryString);
             return result;
         }
     }

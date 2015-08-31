@@ -37,11 +37,12 @@
     <Compile Include="Actions\InventoryAction.cs" />
     <Compile Include="Actions\OrderAction.cs" />
     <Compile Include="Dto\Authentication\AuthorizationTokenDto.cs" />
-    <Compile Include="Dto\DtoBase.cs" />
+    <Compile Include="Dto\EntityDtoBase.cs" />
     <Compile Include="Dto\EntityExtendedPropertyDto.cs" />
-    <Compile Include="Dto\InventoryBaseDto.cs" />
-    <Compile Include="Dto\InventoryDto.cs" />
-    <Compile Include="Dto\InventoryReasonDto.cs" />
+    <Compile Include="Dto\Inventory\AddInventoryDto.cs" />
+    <Compile Include="Dto\Inventory\InventoryDetailDto.cs" />
+    <Compile Include="Dto\Inventory\InventorySummaryDto.cs" />
+    <Compile Include="Dto\Inventory\ResolveInventoryDto.cs" />
     <Compile Include="Dto\Items\AddItemDto.cs" />
     <Compile Include="Dto\Items\ItemDetailDto.cs" />
     <Compile Include="Dto\Items\ItemSummaryDto.cs" />
@@ -54,7 +55,11 @@
     <Compile Include="Dto\Orders\OrderDto.cs" />
     <Compile Include="Dto\Orders\OrderItemDetailDto.cs" />
     <Compile Include="Dto\Orders\OrderSkuDetailDto.cs" />
-    <Compile Include="Dto\PersonDto.cs" />
+    <Compile Include="Dto\Persons\AddPersonDto.cs" />
+    <Compile Include="Dto\Persons\PersonDetailDto.cs" />
+    <Compile Include="Dto\Persons\PersonSummaryDto.cs" />
+    <Compile Include="Dto\Persons\UpdatePersonDto.cs" />
+    <Compile Include="Dto\Persons\UpdatePersonTagDto.cs" />
     <Compile Include="Dto\Places\AddPlaceDto.cs" />
     <Compile Include="Dto\Places\PlaceDetailDto.cs" />
     <Compile Include="Dto\Places\PlaceSummaryDto.cs" />
@@ -68,6 +73,10 @@
     <Compile Include="Dto\Skus\SkuSummaryDto.cs" />
     <Compile Include="Dto\Skus\WriteSkuExtendedPropertyDto.cs" />
     <Compile Include="Dto\Authentication\UserLoginDto.cs" />
+    <Compile Include="Dto\Snapshots\AddSnapshotDto.cs" />
+    <Compile Include="Dto\Snapshots\SnapshotDetailDto.cs" />
+    <Compile Include="Dto\Snapshots\SnapshotSummaryDto.cs" />
+    <Compile Include="Dto\Snapshots\SnapshotTagDto.cs" />
     <Compile Include="Dto\Templates\AddTemplateDto.cs" />
     <Compile Include="Dto\Templates\AddTemplateExtendedPropertyDto.cs" />
     <Compile Include="Dto\Templates\TemplateDetailDto.cs" />
@@ -82,7 +91,6 @@
     <Compile Include="Extensions\PlaceDtoGenerationExtensions.cs" />
     <Compile Include="Extensions\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dto\SnapshotDto.cs" />
     <Compile Include="Dto\TagReservationDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Extensions\InventoryUri.cs" />
@@ -107,6 +115,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

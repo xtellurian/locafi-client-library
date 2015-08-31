@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LegacyNavigatorApi.Models.Dtos
+namespace Locafi.Client.Model.Dto
 {
 
     // ReSharper disable once ClassNeverInstantiated.Global

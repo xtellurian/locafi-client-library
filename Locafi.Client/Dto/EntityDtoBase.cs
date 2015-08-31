@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto
 {
-    public abstract class DtoBase
+    public abstract class EntityDtoBase
     {
+        public Guid Id { get; set; }
+
         public Guid? CreatedByUserId { get; set; }
 
         public string CreatedByUserFullName { get; set; }
@@ -19,5 +21,17 @@ namespace Locafi.Client.Model.Dto
         public string LastModifiedByUserFullName { get; set; }
 
         public DateTimeOffset? DateLastModified { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var entity = obj as EntityDtoBase;
+            return entity != null && entity.Id == this.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
+            return this.Id.GetHashCode();
+        }
     }
 }

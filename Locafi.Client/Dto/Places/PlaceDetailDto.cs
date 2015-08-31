@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using LegacyNavigatorApi.Models.Dtos;
 
 namespace Locafi.Client.Model.Dto.Places
 {

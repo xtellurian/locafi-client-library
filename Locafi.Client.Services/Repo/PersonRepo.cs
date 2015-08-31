@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Persons;
 using Locafi.Client.Services.Odata;
 
 namespace Locafi.Client.Services.Repo
@@ -16,27 +17,22 @@ namespace Locafi.Client.Services.Repo
         {
         }
 
-        public async Task<IList<PersonDto>> GetAllPersons()
+        public async Task<IList<PersonSummaryDto>> GetAllPersons()
         {
-            var items = await Get<IList<PersonDto>>();
+            var items = await Get<IList<PersonSummaryDto>>();
             return items;
         }
 
-        public async Task<PersonDto> GetPersonById(Guid id)
+        public async Task<PersonDetailDto> GetPersonById(Guid id)
         {
-            var result = await Get<PersonDto>("?$filter=Id eq '" + id + "'");
+            var path = $"GetPerson/{id}";
+            var result = await Get<PersonDetailDto>(path);
             return result;
         }
 
-        public async Task<PersonDto> GetPersonById(string id)
+        protected async Task<IList<PersonSummaryDto>> QueryPersons(string queryString)
         {
-            var result = await Get<PersonDto>("?$filter=Id eq '" + id + "'");
-            return result;
-        }
-
-        protected async Task<IList<PersonDto>> QueryPersons(string queryString)
-        {
-            var result = await Get<IList<PersonDto>>(queryString);
+            var result = await Get<IList<PersonSummaryDto>>(queryString);
             return result;
         }
     }
