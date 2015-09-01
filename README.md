@@ -1,1 +1,1 @@
-<a href="https://www.myget.org/"><img src="https://www.myget.org/BuildSource/Badge/locafi-client?identifier=2fab8670-ccb1-401e-ad45-36fcad707005" alt="locafi-client MyGet Build Status" /></a>
+[![locafi-client MyGet Build Status](https://www.myget.org/BuildSource/Badge/locafi-client?identifier=2fab8670-ccb1-401e-ad45-36fcad707005)](https://www.myget.org/)
