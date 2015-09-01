@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.Model", "Locafi.Client\Locafi.Client.Model.csproj", "{416E7AA9-3C0F-443C-9B8B-68B4B3385BE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.Model", "Locafi.Client.Model\Locafi.Client.Model.csproj", "{416E7AA9-3C0F-443C-9B8B-68B4B3385BE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.UnitTests", "Locafi.Client.UnitTests\Locafi.Client.UnitTests.csproj", "{6E09B6E0-4D05-4762-82CA-6DECC486AD5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.Services", "Locafi.Client.Services\Locafi.Client.Services.csproj", "{F359B947-EE36-4811-A76E-B3D1D105B69D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client", "Locafi.Client\Locafi.Client.csproj", "{F359B947-EE36-4811-A76E-B3D1D105B69D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.Contract", "Locafi.Client.Contract\Locafi.Client.Contract.csproj", "{35E95BF5-ADC4-4272-997E-43772EB29495}"
 EndProject

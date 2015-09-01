@@ -8,8 +8,8 @@
     <ProjectGuid>{F359B947-EE36-4811-A76E-B3D1D105B69D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Locafi.Client.Services</RootNamespace>
-    <AssemblyName>Locafi.Client.Services</AssemblyName>
+    <RootNamespace>Locafi.Client</RootNamespace>
+    <AssemblyName>Locafi.Client</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -41,7 +41,7 @@
       <Project>{35e95bf5-adc4-4272-997e-43772eb29495}</Project>
       <Name>Locafi.Client.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Locafi.Client\Locafi.Client.Model.csproj">
+    <ProjectReference Include="..\Locafi.Client.Model\Locafi.Client.Model.csproj">
       <Project>{416e7aa9-3c0f-443c-9b8b-68b4b3385be4}</Project>
       <Name>Locafi.Client.Model</Name>
     </ProjectReference>
@@ -50,11 +50,10 @@
     <Compile Include="Authentication\AuthenticationRepo.cs" />
     <Compile Include="Errors\IWebRepoErrorHandler.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
-    <Compile Include="IWebRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
     <Compile Include="Repo\TemplateRepo.cs" />
-    <Compile Include="WebRepo.cs" />
+    <Compile Include="Repo\WebRepo.cs" />
     <Compile Include="Odata\ODataCollection.cs" />
     <Compile Include="Odata\shitty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,10 +66,6 @@
     <Compile Include="Repo\UserRepo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Data.Edm, Version=5.6.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.6.5-beta\lib\portable-net45+wp8+win8+wpa\Microsoft.Data.Edm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.OData.Core, Version=6.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.OData.Core.6.11.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Core.dll</HintPath>
       <Private>True</Private>

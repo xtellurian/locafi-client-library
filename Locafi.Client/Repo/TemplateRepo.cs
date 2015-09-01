@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Services;
 
-namespace Locafi.Client.Services.Repo
+namespace Locafi.Client.Repo
 {
     public class TemplateRepo : WebRepo, ITemplateRepo
     {

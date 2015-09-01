@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Extensions;
 using Locafi.Client.Model.Query;
-using Locafi.Client.Services.Odata;
-using Newtonsoft.Json;
+using Locafi.Client.Services;
 
-namespace Locafi.Client.Services.Repo
+namespace Locafi.Client.Repo
 {
     public class ItemRepo : WebRepo, IItemRepo
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Locafi.Client.Services.Odata;
+using Locafi.Client.Odata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests

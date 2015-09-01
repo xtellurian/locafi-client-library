@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Reasons;
+using Locafi.Client.Services;
 
-namespace Locafi.Client.Services.Repo
+namespace Locafi.Client.Repo
 {
     public class ReasonRepo : WebRepo, IReasonRepo
     {

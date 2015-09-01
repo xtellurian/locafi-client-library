@@ -7,7 +7,7 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Query;
-using Locafi.Client.Services.Odata;
+using Locafi.Client.Repo;
 using Microsoft.OData.Core.UriParser.Semantic;
 
 namespace Locafi.Client.Services.Repo

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Authentication;
+using Locafi.Client.Repo;
+using Locafi.Client.Services;
 
-namespace Locafi.Client.Services.Authentication
+namespace Locafi.Client.Authentication
 {
     public class AuthenticationRepo : WebRepo, IAuthenticationRepo
     {

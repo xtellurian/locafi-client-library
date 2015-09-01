@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>http://loca.fi</projectUrl>
+    <iconUrl>http://loca.fi/img/Locafi-final-logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Prelim Release.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>Locafi</tags>
+  </metadata>
+</package>

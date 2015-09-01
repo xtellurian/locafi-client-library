@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
-using Locafi.Client.Model.Dto.Skus;
-using Locafi.Client.Services.Errors;
-using Locafi.Client.Services.Exceptions;
+using Locafi.Client.Errors;
 
-namespace Locafi.Client.Services
+namespace Locafi.Client.Repo
 {
     public abstract class WebRepo
     {

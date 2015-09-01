@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Locafi.Client.Data;
-using Locafi.Client.Model.Dto.Items;
+﻿using System.Diagnostics;
 using Locafi.Client.Model.Dto.Places;
 using Simple.OData.Client;
 
-
-namespace Locafi.Client.Services.Odata
+namespace Locafi.Client.Odata
 {
     public class shitty
     {

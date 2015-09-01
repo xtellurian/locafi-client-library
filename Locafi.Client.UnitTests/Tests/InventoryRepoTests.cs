@@ -5,10 +5,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Services;
 using Locafi.Client.Data;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Dto.Snapshots;
-using Locafi.Client.Services.Exceptions;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -54,7 +54,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Locafi.Client.Services.Exceptions.InventoryException))]
+        [ExpectedException(typeof(InventoryException))]
         public async Task Inventory_AddSnapshotWrongPlace()
         {
             var inventory = await RandomCreate(); // make new

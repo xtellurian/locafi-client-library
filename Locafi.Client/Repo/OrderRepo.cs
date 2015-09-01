@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
-using Locafi.Client.Data;
-using Locafi.Client.Model.Actions;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Extensions;
+using Locafi.Client.Services;
 
-namespace Locafi.Client.Services.Repo
+namespace Locafi.Client.Repo
 {
     public class OrderRepo : WebRepo, IOrderRepo
     {

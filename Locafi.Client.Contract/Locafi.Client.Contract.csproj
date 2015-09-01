@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\Locafi.Client\Locafi.Client.Model.csproj">
+    <ProjectReference Include="..\Locafi.Client.Model\Locafi.Client.Model.csproj">
       <Project>{416e7aa9-3c0f-443c-9b8b-68b4b3385be4}</Project>
       <Name>Locafi.Client.Model</Name>
     </ProjectReference>

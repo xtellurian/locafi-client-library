@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Services;
-using Locafi.Client.Data;
-using Locafi.Client.Model.Actions;
+using Locafi.Client.Errors;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Extensions;
-using Locafi.Client.Services.Errors;
-using Locafi.Client.Services.Exceptions;
+using Locafi.Client.Services;
 
-namespace Locafi.Client.Services.Repo
+namespace Locafi.Client.Repo
 {
     public class InventoryRepo : WebRepo, IInventoryRepo, IWebRepoErrorHandler
     {
