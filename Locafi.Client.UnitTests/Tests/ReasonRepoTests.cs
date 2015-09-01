@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Locafi.Client.Contract.Services;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Reasons;
 using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

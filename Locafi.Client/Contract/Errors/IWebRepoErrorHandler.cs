@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Errors
+namespace Locafi.Client.Contract.Errors
 {
     public interface IWebRepoErrorHandler
     {

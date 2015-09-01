@@ -5,8 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
-using Locafi.Client.Contract.Services;
-using Locafi.Client.Errors;
+using Locafi.Client.Contract.Errors;
 
 namespace Locafi.Client.Repo
 {

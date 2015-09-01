@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto;
 
-namespace Locafi.Client.Contract.Services
+namespace Locafi.Client.Contract.Repo
 {
     public interface IAuthenticationRepo
     {

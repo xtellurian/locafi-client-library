@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Locafi.Client.Contract.Services;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

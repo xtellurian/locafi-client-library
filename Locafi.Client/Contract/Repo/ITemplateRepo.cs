@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
 
-namespace Locafi.Client.Contract.Services
+namespace Locafi.Client.Contract.Repo
 {
     public interface ITemplateRepo
     {

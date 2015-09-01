@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Locafi.Client.Contract.Services;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,1 +1,0 @@
-nuget pack Locafi.Client.csproj -Prop Configuration=Release

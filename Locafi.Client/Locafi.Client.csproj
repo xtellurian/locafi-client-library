@@ -37,10 +37,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\Locafi.Client.Contract\Locafi.Client.Contract.csproj">
-      <Project>{35e95bf5-adc4-4272-997e-43772eb29495}</Project>
-      <Name>Locafi.Client.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Locafi.Client.Model\Locafi.Client.Model.csproj">
       <Project>{416e7aa9-3c0f-443c-9b8b-68b4b3385be4}</Project>
       <Name>Locafi.Client.Model</Name>
@@ -48,7 +44,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationRepo.cs" />
-    <Compile Include="Errors\IWebRepoErrorHandler.cs" />
+    <Compile Include="Contract\Config\IAuthorisedHttpTransferConfigService.cs" />
+    <Compile Include="Contract\Config\IHttpTransferConfigService.cs" />
+    <Compile Include="Contract\Config\ISerialiserService.cs" />
+    <Compile Include="Contract\Repo\IAuthenticationRepo.cs" />
+    <Compile Include="Contract\Repo\IInventoryRepo.cs" />
+    <Compile Include="Contract\Repo\IItemRepo.cs" />
+    <Compile Include="Contract\Repo\IOrderRepo.cs" />
+    <Compile Include="Contract\Repo\IPersonRepo.cs" />
+    <Compile Include="Contract\Repo\IPlaceRepo.cs" />
+    <Compile Include="Contract\Repo\IReasonRepo.cs" />
+    <Compile Include="Contract\Repo\ISkuRepo.cs" />
+    <Compile Include="Contract\Repo\ISnapshotRepo.cs" />
+    <Compile Include="Contract\Repo\ITemplateRepo.cs" />
+    <Compile Include="Contract\Repo\IUserRepo.cs" />
+    <Compile Include="Contract\Errors\IWebRepoErrorHandler.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />

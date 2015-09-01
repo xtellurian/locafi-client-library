@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.UnitTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client", "Locafi.Client\Locafi.Client.csproj", "{F359B947-EE36-4811-A76E-B3D1D105B69D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.Contract", "Locafi.Client.Contract\Locafi.Client.Contract.csproj", "{35E95BF5-ADC4-4272-997E-43772EB29495}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,22 +69,6 @@ Global
 		{F359B947-EE36-4811-A76E-B3D1D105B69D}.Release|x64.Build.0 = Release|Any CPU
 		{F359B947-EE36-4811-A76E-B3D1D105B69D}.Release|x86.ActiveCfg = Release|Any CPU
 		{F359B947-EE36-4811-A76E-B3D1D105B69D}.Release|x86.Build.0 = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|ARM.Build.0 = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|x64.Build.0 = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Debug|x86.Build.0 = Debug|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|ARM.ActiveCfg = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|ARM.Build.0 = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|x64.ActiveCfg = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|x64.Build.0 = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|x86.ActiveCfg = Release|Any CPU
-		{35E95BF5-ADC4-4272-997E-43772EB29495}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

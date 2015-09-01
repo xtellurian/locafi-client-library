@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Locafi.Client.Contract.Services;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Data;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
