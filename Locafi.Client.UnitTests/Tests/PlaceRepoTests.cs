@@ -52,6 +52,24 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(places);
             Assert.IsInstanceOfType(places, typeof(IEnumerable<PlaceSummaryDto>));
         }
+        [TestMethod]
+        public async Task Place_GetDetail()
+        {
+            // add one place in case there are none
+            var addPlace = await GenerateRandomAddPlaceDto();
+            var result = await _placeRepo.CreatePlace(addPlace);
+            Assert.IsNotNull(result, "result != null");
+            _toCleanup.Add(result.Id); // cleanup that place later
+
+            var places = await _placeRepo.GetAllPlaces();
+            Assert.IsTrue(places.Count > 0, "places.Count > 0");
+            foreach (var summary in places)
+            {
+                var detail = await _placeRepo.GetPlaceById(summary.Id);
+                Assert.IsNotNull(detail, "detail != null");
+                Assert.AreEqual(detail,summary);
+            }
+        }
 
 
         [TestMethod]

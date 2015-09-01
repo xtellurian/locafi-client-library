@@ -10,5 +10,7 @@ namespace Locafi.Client.Contract.Services
     {
         Task<IList<PersonSummaryDto>> GetAllPersons();
         Task<PersonDetailDto> GetPersonById(Guid id);
+        Task<PersonDetailDto> CreatePerson(AddPersonDto addPerson);
+        Task DeletePerson(Guid id);
     }
 }

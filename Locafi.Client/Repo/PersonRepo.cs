@@ -29,6 +29,19 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<PersonDetailDto> CreatePerson(AddPersonDto addPerson)
+        {
+            var path = "CreatePerson";
+            var result = await Post<PersonDetailDto>(addPerson, path);
+            return result;
+        }
+
+        public async Task DeletePerson(Guid id)
+        {
+            var path = $"DeletePerson/{id}";
+            await Delete(path);
+        }
+
         protected async Task<IList<PersonSummaryDto>> QueryPersons(string queryString)
         {
             var result = await Get<IList<PersonSummaryDto>>(queryString);

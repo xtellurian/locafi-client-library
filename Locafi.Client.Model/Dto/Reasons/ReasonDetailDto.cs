@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Reasons
 {
@@ -13,8 +16,8 @@ namespace Locafi.Client.Model.Dto.Reasons
         public string ReasonNo { get; set; }
 
         public string Name { get; set; }
-
-        public string ReasonFor { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ReasonFor ReasonFor { get; set; }
 
         public override bool Equals(object obj)
         {

@@ -22,7 +22,7 @@ namespace Locafi.Client.UnitTests.Tests
             _orderRepo = WebRepoContainer.OrderRepo;
         }
 
-        [TestMethod]
+   //     [TestMethod]
         public async Task Order_CreateSuccess()
         {
             var ran = new Random();
@@ -59,7 +59,7 @@ namespace Locafi.Client.UnitTests.Tests
 
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public async Task Order_GetAllOrders()
         {
             var orders = await _orderRepo.GetAllOrders();

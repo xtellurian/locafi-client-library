@@ -39,6 +39,7 @@
     <Compile Include="Dto\Authentication\AuthorizationTokenDto.cs" />
     <Compile Include="Dto\EntityDtoBase.cs" />
     <Compile Include="Dto\EntityExtendedPropertyDto.cs" />
+    <Compile Include="Dto\ExtendedProperties\ExtendedPropertySummaryDto.cs" />
     <Compile Include="Dto\Inventory\AddInventoryDto.cs" />
     <Compile Include="Dto\Inventory\InventoryDetailDto.cs" />
     <Compile Include="Dto\Inventory\InventorySummaryDto.cs" />

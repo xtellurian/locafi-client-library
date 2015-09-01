@@ -34,6 +34,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<PlaceDetailDto> GetPlaceById(Guid id)
+        {
+            var path = $"GetPlace/{id}";
+            var result = await Get<PlaceDetailDto>(path);
+            return result;
+        }
+
         public async Task<IList<PlaceSummaryDto>> QueryPlaces(IRestQuery<PlaceSummaryDto> query)
         {
             return await QueryPlaces(query.AsRestQuery());

@@ -54,7 +54,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(check);
             Assert.AreEqual(result,check);
         }
-        [TestMethod]
+      //  [TestMethod]
         public async Task Item_UseExtendedProperties()
         {
             var addItemDto = await CreateRandomAddItemDto();
@@ -71,35 +71,6 @@ namespace Locafi.Client.UnitTests.Tests
                 Assert.AreEqual(skuDetailExtendedProperty.DefaultValue,itemExtendedProperty.Value);
             }
         }
-
-        private async Task<AddItemDto> CreateRandomAddItemDto()
-        {
-            var ran = new Random();
-            var places = await _placeRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)]; // picks a random place for the item
-            var persons = await _personRepo.GetAllPersons();
-            var person = persons[ran.Next(persons.Count - 1)];
-            var skus = await _skuRepo.GetAllSkus();
-            var sku = skus[ran.Next(skus.Count - 1)];
-
-            var name = Guid.NewGuid().ToString();
-            var description = Guid.NewGuid().ToString();
-            var tagNumber = Guid.NewGuid().ToString();
-
-            var addItemDto = new AddItemDto
-            {
-                Description = description,
-                Name = name,
-                PlaceId = place.Id,
-                SkuId = sku.Id,
-                TagNumber = tagNumber,
-                TagType = 0,
-                ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(),
-                PersonId = person.Id
-            };
-            return addItemDto;
-        }
-
         [TestMethod]
         public async Task Item_QueryItems()
         {
@@ -108,10 +79,10 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(item);
 
             var q1 = new ItemQuery();
-            q1.CreateQuery(i=> i.CreatedByUserFullName, item.CreatedByUserFullName, ComparisonOperator.Equals);
+            q1.CreateQuery(i => i.CreatedByUserFullName, item.CreatedByUserFullName, ComparisonOperator.Equals);
             var r1 = await _itemRepo.QueryItems(q1);
             Assert.IsNotNull(r1);
-            Assert.IsInstanceOfType(r1,typeof(IEnumerable<ItemSummaryDto>));
+            Assert.IsInstanceOfType(r1, typeof(IEnumerable<ItemSummaryDto>));
             Assert.IsTrue(r1.Contains(item));
         }
 
@@ -147,7 +118,7 @@ namespace Locafi.Client.UnitTests.Tests
             var movedItem = await _itemRepo.UpdateItemPlace(moveItemDto);
 
             Assert.IsNotNull(movedItem);
-            Assert.AreEqual(item,movedItem);
+            Assert.AreEqual(item, movedItem);
             Assert.AreEqual(movedItem.PlaceId, moveItemDto.NewPlaceId);
         }
 
@@ -155,7 +126,7 @@ namespace Locafi.Client.UnitTests.Tests
         {
             var itemToAdd = await CreateRandomAddItemDto();
             var item = await _itemRepo.CreateItem(itemToAdd);
-           
+
             var user = await GetRandomUser();
 
             var dto = new UpdateItemTagDto
@@ -189,6 +160,37 @@ namespace Locafi.Client.UnitTests.Tests
             }
         }
 
+        #region PrivateMethods
+        private async Task<AddItemDto> CreateRandomAddItemDto()
+        {
+            var ran = new Random();
+            var places = await _placeRepo.GetAllPlaces();
+            var place = places[ran.Next(places.Count - 1)]; // picks a random place for the item
+            var persons = await _personRepo.GetAllPersons();
+            var person = persons[ran.Next(persons.Count - 1)];
+            var skus = await _skuRepo.GetAllSkus();
+            var sku = skus[ran.Next(skus.Count - 1)];
+
+            var name = Guid.NewGuid().ToString();
+            var description = Guid.NewGuid().ToString();
+            var tagNumber = Guid.NewGuid().ToString();
+
+            var addItemDto = new AddItemDto
+            {
+                Description = description,
+                Name = name,
+                PlaceId = place.Id,
+                SkuId = sku.Id,
+                TagNumber = tagNumber,
+                TagType = 0,
+                ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(),
+                PersonId = person.Id
+            };
+            return addItemDto;
+        }
+
+        
+
         private async Task<PlaceSummaryDto> GetRandomOtherPlace(Guid notThisPlaceId)
         {
             var places = await _placeRepo.GetAllPlaces();
@@ -209,6 +211,6 @@ namespace Locafi.Client.UnitTests.Tests
             return user;
         }
 
-
+        #endregion
     }
 }
