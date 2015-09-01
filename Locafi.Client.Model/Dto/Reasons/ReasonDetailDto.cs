@@ -11,8 +11,6 @@ namespace Locafi.Client.Model.Dto.Reasons
 {
     public class ReasonDetailDto : EntityDtoBase
     {
-        public Guid Id { get; set; }
-
         public string ReasonNo { get; set; }
 
         public string Name { get; set; }

@@ -144,7 +144,7 @@ namespace Locafi.Client.UnitTests.Tests
             }
         }
 
-        // private methods
+#region Private Methods
 
 
         private async Task<AddPlaceDto> GenerateRandomAddPlaceDto()
@@ -167,5 +167,7 @@ namespace Locafi.Client.UnitTests.Tests
             };
             return addPlace;
         }
+
+        #endregion
     }
 }
