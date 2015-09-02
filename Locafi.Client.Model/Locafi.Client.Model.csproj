@@ -66,6 +66,13 @@
     <Compile Include="Dto\Places\PlaceSummaryDto.cs" />
     <Compile Include="Dto\Places\UpdatePlaceDto.cs" />
     <Compile Include="Dto\Authentication\RefreshLoginDto.cs" />
+    <Compile Include="Dto\Reader\AntennaConfigDto.cs" />
+    <Compile Include="Dto\Reader\ClusterDto.cs" />
+    <Compile Include="Dto\Reader\ClusterResponseDto.cs" />
+    <Compile Include="Dto\Reader\ClusterTagDto.cs" />
+    <Compile Include="Dto\Reader\ReaderDetailDto.cs" />
+    <Compile Include="Dto\Reader\ReaderSummaryDto.cs" />
+    <Compile Include="Dto\Reader\RssoConfigDto.cs" />
     <Compile Include="Dto\Reasons\AddReasonDto.cs" />
     <Compile Include="Dto\Reasons\ReasonDetailDto.cs" />
     <Compile Include="Dto\Skus\AddSkuDto.cs" />
@@ -85,6 +92,7 @@
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
     <Compile Include="Enums\ReasonFor.cs" />
+    <Compile Include="Enums\TagFor.cs" />
     <Compile Include="Enums\TagType.cs" />
     <Compile Include="Enums\TemplateDataTypes.cs" />
     <Compile Include="Enums\TemplateFor.cs" />

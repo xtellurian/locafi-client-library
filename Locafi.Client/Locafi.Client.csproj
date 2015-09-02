@@ -61,6 +61,8 @@
     <Compile Include="Contract\Errors\IWebRepoErrorHandler.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
+    <Compile Include="Contract\Repo\IReaderRepo.cs" />
+    <Compile Include="Repo\ReaderRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
     <Compile Include="Repo\TemplateRepo.cs" />
     <Compile Include="Repo\WebRepo.cs" />
