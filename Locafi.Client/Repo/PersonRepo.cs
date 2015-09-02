@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Persons;
-using Locafi.Client.Services;
 
 namespace Locafi.Client.Repo
 {

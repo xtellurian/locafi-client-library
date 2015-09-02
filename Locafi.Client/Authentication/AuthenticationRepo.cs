@@ -4,7 +4,6 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Authentication;
 using Locafi.Client.Repo;
-using Locafi.Client.Services;
 
 namespace Locafi.Client.Authentication
 {

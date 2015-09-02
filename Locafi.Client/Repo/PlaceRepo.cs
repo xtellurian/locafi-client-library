@@ -5,7 +5,6 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Query;
-using Locafi.Client.Services;
 
 namespace Locafi.Client.Repo
 {

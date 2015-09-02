@@ -5,7 +5,6 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Extensions;
-using Locafi.Client.Services;
 
 namespace Locafi.Client.Repo
 {

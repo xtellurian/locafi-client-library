@@ -5,7 +5,6 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
-using Locafi.Client.Services;
 
 namespace Locafi.Client.Repo
 {

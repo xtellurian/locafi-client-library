@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Reasons;
-using Locafi.Client.Services;
+using Locafi.Client.Model.Enums;
 
 namespace Locafi.Client.Repo
 {
@@ -26,6 +26,13 @@ namespace Locafi.Client.Repo
         {
             var path = "CreateReason";
             var result = await Post<ReasonDetailDto>(reasonDto, path);
+            return result;
+        }
+
+        public async Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reasonFor)
+        {
+            var path = $"GetReasons/{Enum.GetName(typeof (ReasonFor), reasonFor)}";
+            var result = await Get<IList<ReasonDetailDto>>(path);
             return result;
         }
 

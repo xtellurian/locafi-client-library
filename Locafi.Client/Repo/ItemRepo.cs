@@ -6,7 +6,6 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Extensions;
 using Locafi.Client.Model.Query;
-using Locafi.Client.Services;
 
 namespace Locafi.Client.Repo
 {

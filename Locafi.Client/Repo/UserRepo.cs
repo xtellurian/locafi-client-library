@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Query;
-using Locafi.Client.Repo;
-using Microsoft.OData.Core.UriParser.Semantic;
 
-namespace Locafi.Client.Services.Repo
+namespace Locafi.Client.Repo
 {
     public class UserRepo : WebRepo, IUserRepo
     {
@@ -33,6 +29,7 @@ namespace Locafi.Client.Services.Repo
         public async Task<UserDto> GetUserById(Guid id)
         {
             throw new NotImplementedException(); // not really done properly in api - needs update
+             
         }
 
         protected async Task<IList<UserDto>> QueryUsers(string queryString)

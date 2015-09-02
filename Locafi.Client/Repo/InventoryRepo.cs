@@ -8,7 +8,6 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Extensions;
-using Locafi.Client.Services;
 
 namespace Locafi.Client.Repo
 {
@@ -52,10 +51,10 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<InventoryDetailDto> Resolve(InventorySummaryDto inventory)
+        public async Task<InventoryDetailDto> Resolve(Guid inventoryId, ResolveInventoryDto reasons)
         {
-            var path = inventory.ResolveUri();
-            var result = await Post<InventoryDetailDto>(inventory, path);
+            var path = $"{inventoryId}/Resolve";
+            var result = await Post<InventoryDetailDto>(reasons, path);
             return result;
         }
 
