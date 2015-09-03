@@ -8,6 +8,7 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Reader;
+using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
@@ -48,6 +49,11 @@ namespace Locafi.Client.Repo
         }
 
         public async Task Handle(HttpResponseMessage responseMessage)
+        {
+            
+        }
+
+        public async Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
         {
             
         }

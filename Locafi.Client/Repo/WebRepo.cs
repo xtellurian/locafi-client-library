@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
@@ -6,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Errors;
+using Locafi.Client.Model.Responses;
+using Newtonsoft.Json;
 
 namespace Locafi.Client.Repo
 {
@@ -97,7 +100,23 @@ namespace Locafi.Client.Repo
         private async Task Handle(HttpResponseMessage response)
         {
             var handle = _errorhandler;
-            if (handle != null) await handle.Handle(response);
+            if (handle != null)
+            {
+                try
+                {
+                    var errors =
+                        _serialiser.Deserialise<IList<CustomResponseMessage>>(await response.Content.ReadAsStringAsync());
+                    await handle.Handle(errors);
+                }
+                catch(JsonException)
+                {
+                    await handle.Handle(response);
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"Unhandled WebRepo error in {this.GetType().GetTypeInfo().FullName}");
+            }
         }
 
         private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "", string content = null)

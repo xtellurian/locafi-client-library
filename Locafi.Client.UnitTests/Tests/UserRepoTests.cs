@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
@@ -26,7 +28,7 @@ namespace Locafi.Client.UnitTests.Tests
 
         }
 
-       
+       [TestMethod]
         public async Task User_QueryUsers()
         {
             var ran = new Random();
@@ -35,7 +37,11 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(user);
             Assert.IsInstanceOfType(user,typeof(UserDto));
             // query surname
-            
+            var q = new UserQuery();
+            q.CreateQuery(u=>u.UserName,user.UserName,ComparisonOperator.Equals);
+            var result = await _userRepo.QueryUsers(q);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Contains(user));
         }
     }
 }

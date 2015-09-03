@@ -5,6 +5,10 @@ namespace Locafi.Client.Model.Dto.Skus
 {
     public class AddSkuDto
     {
+        public AddSkuDto()
+        {//TODO: figure out which properties are required
+            SkuExtendedPropertyList = new List<WriteSkuExtendedPropertyDto>();
+        }
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -17,10 +21,7 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public IList<WriteSkuExtendedPropertyDto> SkuExtendedPropertyList { get;set; }
 
-        public AddSkuDto()
-        {
-            SkuExtendedPropertyList = new List<WriteSkuExtendedPropertyDto>();
-        }
+ 
 
     }
 }

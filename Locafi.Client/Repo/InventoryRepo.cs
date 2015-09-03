@@ -8,6 +8,7 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
@@ -81,6 +82,11 @@ namespace Locafi.Client.Repo
         public async Task Handle(HttpResponseMessage responseMessage)
         {
             throw new InventoryException(await responseMessage.Content.ReadAsStringAsync());
+        }
+
+        public Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        {
+            throw new InventoryException(serverMessages);
         }
     }
 }

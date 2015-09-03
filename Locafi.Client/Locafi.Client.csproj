@@ -60,6 +60,8 @@
     <Compile Include="Contract\Repo\IUserRepo.cs" />
     <Compile Include="Contract\Errors\IWebRepoErrorHandler.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
+    <Compile Include="Exceptions\OrderException.cs" />
+    <Compile Include="Exceptions\WebRepoException.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\IReaderRepo.cs" />
     <Compile Include="Repo\ReaderRepo.cs" />

@@ -34,6 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Dto\Orders\AddOrderDto.cs" />
+    <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
+    <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
+    <Compile Include="Dto\Orders\OrderActionResponseDto.cs" />
+    <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
     <Compile Include="Enums\Actions\InventoryAction.cs" />
     <Compile Include="Enums\Actions\OrderAction.cs" />
     <Compile Include="Dto\Authentication\AuthorizationTokenDto.cs" />
@@ -53,9 +58,9 @@
     <Compile Include="Dto\Items\UpdateItemTagDto.cs" />
     <Compile Include="Dto\Items\WriteItemExtendedPropertyDto.cs" />
     <Compile Include="Dto\Orders\OrderDisputeDto.cs" />
-    <Compile Include="Dto\Orders\OrderDto.cs" />
-    <Compile Include="Dto\Orders\OrderItemDetailDto.cs" />
-    <Compile Include="Dto\Orders\OrderSkuDetailDto.cs" />
+    <Compile Include="Dto\Orders\OrderDetailDto.cs" />
+    <Compile Include="Dto\Orders\OrderItemLineItemDto.cs" />
+    <Compile Include="Dto\Orders\OrderSkuLineItemDto.cs" />
     <Compile Include="Dto\Persons\AddPersonDto.cs" />
     <Compile Include="Dto\Persons\PersonDetailDto.cs" />
     <Compile Include="Dto\Persons\PersonSummaryDto.cs" />
@@ -96,6 +101,8 @@
     <Compile Include="Enums\TagType.cs" />
     <Compile Include="Enums\TemplateDataTypes.cs" />
     <Compile Include="Enums\TemplateFor.cs" />
+    <Compile Include="Query\PropertyComparison\EntityQuery.cs" />
+    <Compile Include="Query\PropertyComparison\OrderQuery.cs" />
     <Compile Include="RelativeUri\ItemUri.cs" />
     <Compile Include="Conversion\PlaceDtoConversions.cs" />
     <Compile Include="Conversion\RfidTagConversions.cs" />
@@ -121,6 +128,8 @@
     <Compile Include="Query\PropertyComparison\PlaceQuery.cs" />
     <Compile Include="RelativeUri\TemplateUri.cs" />
     <Compile Include="RelativeUri\UserUri.cs" />
+    <Compile Include="Responses\CustomResponseMessage.cs" />
+    <Compile Include="Responses\ResponseCodes.cs" />
     <Compile Include="RFID\IRfidTag.cs" />
   </ItemGroup>
   <ItemGroup>
