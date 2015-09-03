@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model.RFID;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Snapshots
 {
-    public class SnapshotTagDto
+    public class SnapshotTagDto : IRfidTag
     {
         public string TagNumber { get; set; }   // tag number ie. EPC, barcode number, etc
 
@@ -25,6 +26,11 @@ namespace Locafi.Client.Model.Dto.Snapshots
         {
             var tag = obj as SnapshotTagDto;
             return tag != null && string.Equals(tag.TagNumber, TagNumber);
+        }
+
+        public override int GetHashCode()
+        {
+            return TagNumber.GetHashCode();
         }
     }
 }

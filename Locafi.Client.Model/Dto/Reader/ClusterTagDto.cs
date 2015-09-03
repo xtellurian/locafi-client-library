@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model.RFID;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Reader
 {
-    public class ClusterTagDto
+    public class ClusterTagDto : IRfidTag
     {
         public string TagNumber { get; set; }
 
