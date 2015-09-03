@@ -46,6 +46,31 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(inventories);
             Assert.IsInstanceOfType(inventories, typeof(IEnumerable<InventorySummaryDto>));
         }
+
+        [TestMethod]
+        public async Task Inventory_QueryInventories()
+        {
+            // Create Inventory for us to Query
+            var ran = new Random();
+            var name = Guid.NewGuid().ToString();
+            var places = await _placeRepo.GetAllPlaces();
+            var place = places[ran.Next(places.Count - 1)];
+            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            Assert.IsNotNull(inventory,"Couldn't create that inventory");
+            _toCleanup.Add(inventory.Id);
+            var query = new InventoryQuery();
+            //Query on Name
+            query.CreateQuery(q=>q.Name, inventory.Name, ComparisonOperator.Equals);
+            var result = await _inventoryRepo.QueryInventories(query);
+            Assert.IsNotNull(result, "Result was null on Name query");
+            Assert.IsTrue(result.Contains(inventory));
+
+            query.CreateQuery(q => q.PlaceId, inventory.PlaceId, ComparisonOperator.Equals);
+            result = await _inventoryRepo.QueryInventories(query);
+            Assert.IsNotNull(result, "Result was null on PlaceId query");
+            Assert.IsTrue(result.Contains(inventory));
+        }
+
         [TestMethod]
         public async Task Inventory_GetDetail()
         {

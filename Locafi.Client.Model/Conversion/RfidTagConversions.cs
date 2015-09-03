@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Reader;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.RFID;
 
-namespace Locafi.Client.Model.Extensions
+namespace Locafi.Client.Model.Conversion
 {
     public static class RfidTagConversions
     {

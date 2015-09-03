@@ -13,6 +13,7 @@ namespace Locafi.Client.UnitTests.Tests
         private IPlaceRepo _placeRepo;
         private IPersonRepo _personRepo;
         private IOrderRepo _orderRepo;
+        private IList<Guid> _toCleanup;
 
         [TestInitialize]
         public void Initialize()
@@ -67,6 +68,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsInstanceOfType(orders,typeof(IEnumerable<OrderDto>));
         }
 
+        [TestMethod]
         public async Task Order_GetOrderById()
         {
             var orders = await _orderRepo.GetAllOrders();
@@ -79,6 +81,12 @@ namespace Locafi.Client.UnitTests.Tests
                 Assert.IsNotNull(result);
                 Assert.AreEqual(order,result);
             }
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            
         }
 
 

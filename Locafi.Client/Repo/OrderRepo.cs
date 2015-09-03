@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Orders;
-using Locafi.Client.Model.Extensions;
+using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
@@ -28,15 +28,13 @@ namespace Locafi.Client.Repo
 
         public async Task<OrderDto> Create(OrderDto order)
         {
-            var path = order.CreateUri();
+            var path = OrderUri.Create;
             var result = await Post<OrderDto>(order, path);
-
             return result;
         }
 
         public async Task<OrderDto> Allocate(OrderDto order, Guid snapshotId)
         {
-
             var path = order.AllocateUri(snapshotId);
             var result = await Post<OrderDto>(order, path);
 

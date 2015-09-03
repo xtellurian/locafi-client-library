@@ -34,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Actions\InventoryAction.cs" />
-    <Compile Include="Actions\OrderAction.cs" />
+    <Compile Include="Enums\Actions\InventoryAction.cs" />
+    <Compile Include="Enums\Actions\OrderAction.cs" />
     <Compile Include="Dto\Authentication\AuthorizationTokenDto.cs" />
     <Compile Include="Dto\EntityDtoBase.cs" />
     <Compile Include="Dto\EntityExtendedPropertyDto.cs" />
@@ -96,23 +96,31 @@
     <Compile Include="Enums\TagType.cs" />
     <Compile Include="Enums\TemplateDataTypes.cs" />
     <Compile Include="Enums\TemplateFor.cs" />
-    <Compile Include="Extensions\ItemUri.cs" />
-    <Compile Include="Extensions\PlaceDtoGenerationExtensions.cs" />
-    <Compile Include="Extensions\RfidTagConversions.cs" />
-    <Compile Include="Extensions\SnapshotUri.cs" />
+    <Compile Include="RelativeUri\ItemUri.cs" />
+    <Compile Include="Conversion\PlaceDtoConversions.cs" />
+    <Compile Include="Conversion\RfidTagConversions.cs" />
+    <Compile Include="RelativeUri\PersonUri.cs" />
+    <Compile Include="RelativeUri\PlaceUri.cs" />
+    <Compile Include="RelativeUri\ReaderUri.cs" />
+    <Compile Include="RelativeUri\ReasonUri.cs" />
+    <Compile Include="RelativeUri\SkuUri.cs" />
+    <Compile Include="RelativeUri\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\TagReservationDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
-    <Compile Include="Extensions\InventoryUri.cs" />
-    <Compile Include="Extensions\OrderUri.cs" />
+    <Compile Include="RelativeUri\InventoryUri.cs" />
+    <Compile Include="RelativeUri\OrderUri.cs" />
     <Compile Include="ApiVersion.cs" />
     <Compile Include="Query\ComparisonOperator.cs" />
     <Compile Include="Query\IRestQuery.cs" />
+    <Compile Include="Query\PropertyComparison\InventoryQuery.cs" />
     <Compile Include="Query\PropertyComparison\ItemQuery.cs" />
     <Compile Include="Query\PropertyComparison\PropertyQueryBase.cs" />
     <Compile Include="Query\PropertyComparison\UserQuery.cs" />
     <Compile Include="Query\QueryStrings.cs" />
     <Compile Include="Query\PropertyComparison\PlaceQuery.cs" />
+    <Compile Include="RelativeUri\TemplateUri.cs" />
+    <Compile Include="RelativeUri\UserUri.cs" />
     <Compile Include="RFID\IRfidTag.cs" />
   </ItemGroup>
   <ItemGroup>

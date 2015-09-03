@@ -45,8 +45,6 @@ namespace Locafi.Client.UnitTests.Tests
             _toCleanup.Add(result.Id); // add to cleanup
         }
 
-
-
         [TestMethod]
         public async Task Snapshot_GetAll() 
         {
@@ -89,6 +87,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsFalse(allSnaps.Contains(result)); // make sure it was deleted
 
         }
+
         [TestCleanup]
         public async void Cleanup()
         {

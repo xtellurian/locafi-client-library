@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Inventory;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -13,5 +14,6 @@ namespace Locafi.Client.Contract.Repo
         Task<InventoryDetailDto> AddSnapshot(InventorySummaryDto inventory, Guid snapshotId);
         Task<InventoryDetailDto> Resolve(Guid inventoryId, ResolveInventoryDto reasons);
         Task Delete(Guid id);
+        Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query);
     }
 }

@@ -5,40 +5,41 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Reasons;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
     public class ReasonRepo : WebRepo, IReasonRepo
     {
         public ReasonRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(authorisedUnauthorizedConfigService, serialiser, "Reasons")
+            : base(authorisedUnauthorizedConfigService, serialiser, ReasonUri.ServiceName)
         {
         }
 
         public async Task<IList<ReasonDetailDto>> GetAllReasons()
         {
-            var path = "GetReasons";
+            var path = ReasonUri.GetReasons;
             var result = await Get<IList<ReasonDetailDto>>(path);
             return result;
         }
 
         public async Task<ReasonDetailDto> CreateReason(AddReasonDto reasonDto)
         {
-            var path = "CreateReason";
+            var path = ReasonUri.CreateReason;
             var result = await Post<ReasonDetailDto>(reasonDto, path);
             return result;
         }
 
         public async Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reasonFor)
         {
-            var path = $"GetReasons/{Enum.GetName(typeof (ReasonFor), reasonFor)}";
+            var path = ReasonUri.GetReasonsFor(reasonFor);
             var result = await Get<IList<ReasonDetailDto>>(path);
             return result;
         }
 
         public async Task Delete(Guid id)
         {
-            var path = $"DeleteReason/{id}";
+            var path = ReasonUri.DeleteReason(id);
             await Delete(path);
         }
     }

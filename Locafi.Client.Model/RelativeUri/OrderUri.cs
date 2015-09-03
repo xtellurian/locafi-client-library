@@ -1,20 +1,13 @@
 ﻿using System;
 using Locafi.Client.Model.Dto.Orders;
 
-namespace Locafi.Client.Model.Extensions
+namespace Locafi.Client.Model.Uri
 {
     // static methods for getting API calls from orders and actions
     public static class OrderUri
     {
-        /// <summary>
-        /// The relative URI for creating a new Order
-        /// </summary>
-        /// <param name="orderDto">The Order to be created</param>
-        /// <returns>The relative URI ie BASE_URL + SERVICE + THIS </returns>
-        public static string CreateUri(this OrderDto orderDto)
-        {
-            return "Create";
-        }
+
+        public static string Create => "CreateOrder";
 
         /// <summary>
         /// The relative URI for allocating a snapshot to an Order

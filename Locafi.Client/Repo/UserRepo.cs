@@ -5,12 +5,14 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Data;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.RelativeUri;
 
 namespace Locafi.Client.Repo
 {
     public class UserRepo : WebRepo, IUserRepo
     {
-        public UserRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "Users")
+        public UserRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
+            : base(unauthorizedConfigService, serialiser, UserUri.ServiceName)
         {
         }
 
