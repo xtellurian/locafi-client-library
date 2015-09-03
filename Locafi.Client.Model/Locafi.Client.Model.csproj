@@ -98,6 +98,7 @@
     <Compile Include="Enums\TemplateFor.cs" />
     <Compile Include="Extensions\ItemUri.cs" />
     <Compile Include="Extensions\PlaceDtoGenerationExtensions.cs" />
+    <Compile Include="Extensions\RfidTagConversions.cs" />
     <Compile Include="Extensions\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\TagReservationDto.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Query\PropertyComparison\UserQuery.cs" />
     <Compile Include="Query\QueryStrings.cs" />
     <Compile Include="Query\PropertyComparison\PlaceQuery.cs" />
+    <Compile Include="RFID\IRfidTag.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
