@@ -109,12 +109,12 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public virtual Task Handle(HttpResponseMessage responseMessage)
+        public override async Task Handle(HttpResponseMessage responseMessage)
         {
-            throw new OrderException();
+            throw new OrderException(await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public virtual Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
         {
             throw new OrderException(serverMessages);
         }

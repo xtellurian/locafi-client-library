@@ -12,6 +12,7 @@ namespace Locafi.Client.Model.Uri
         public static string ServiceName => "Reader";
         public static string GetReaders => "GetReaders";
         public static string ProcessCluster => "ProcessCluster";
+        public static string Login => "Login";
         public static string GetReader(Guid id)
         {
             return $"GetReader/{id}";

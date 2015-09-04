@@ -16,5 +16,7 @@ namespace Locafi.Client.Model.Dto.Reader
 
         [JsonConverter(typeof(StringEnumConverter))]
         public TagType TagType { get; set; }
+
+        public double Rssi { get; set; }
     }
 }

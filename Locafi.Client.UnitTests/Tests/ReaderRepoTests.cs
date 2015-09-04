@@ -32,7 +32,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsTrue(readers.Count > 0); //because we cant add readers at the moment
         }
 
-        [TestMethod]
+  //      [TestMethod]
         public async Task Reader_GetDetail()
         {
             var readers = await _readerRepo.GetReaders();

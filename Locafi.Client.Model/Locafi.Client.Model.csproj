@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
@@ -41,7 +42,7 @@
     <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
     <Compile Include="Enums\Actions\InventoryAction.cs" />
     <Compile Include="Enums\Actions\OrderAction.cs" />
-    <Compile Include="Dto\Authentication\AuthorizationTokenDto.cs" />
+    <Compile Include="Dto\Authentication\AuthenticationResponseDto.cs" />
     <Compile Include="Dto\EntityDtoBase.cs" />
     <Compile Include="Dto\EntityExtendedPropertyDto.cs" />
     <Compile Include="Dto\ExtendedProperties\ExtendedPropertySummaryDto.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Enums\TemplateFor.cs" />
     <Compile Include="Query\PropertyComparison\EntityQuery.cs" />
     <Compile Include="Query\PropertyComparison\OrderQuery.cs" />
+    <Compile Include="RelativeUri\AuthenticationUri.cs" />
     <Compile Include="RelativeUri\ItemUri.cs" />
     <Compile Include="Conversion\PlaceDtoConversions.cs" />
     <Compile Include="Conversion\RfidTagConversions.cs" />

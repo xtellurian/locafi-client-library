@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
@@ -78,6 +82,16 @@ namespace Locafi.Client.Repo
             var path = $"{ItemUri.GetItems}{filterString}";
             var result = await Get<IList<ItemSummaryDto>>(path);
             return result;
+        }
+
+        public async override Task Handle(HttpResponseMessage responseMessage)
+        {
+            throw new ItemException(await responseMessage.Content.ReadAsStringAsync());
+        }
+
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        {
+            throw new ItemException(serverMessages);
         }
     }
 }

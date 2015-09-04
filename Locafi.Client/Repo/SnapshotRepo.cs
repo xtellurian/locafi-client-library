@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.RelativeUri;
+using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class SnapshotRepo : WebRepo, ISnapshotRepo
+    public class SnapshotRepo : WebRepo, ISnapshotRepo, IWebRepoErrorHandler
     {
         public SnapshotRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
             : base(unauthorizedConfigService, serialiser, SnapshotUri.ServiceName)
@@ -48,6 +52,16 @@ namespace Locafi.Client.Repo
             var path = $"{SnapshotUri.GetSnapshots}/{queryString}";
             var result = await Get<IList<SnapshotSummaryDto>>(path);
             return result;
+        }
+
+        public override async Task Handle(HttpResponseMessage responseMessage)
+        {
+            throw new SnapshotRepoException(await responseMessage.Content.ReadAsStringAsync());
+        }
+
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        {
+            throw new SnapshotRepoException(serverMessages);
         }
     }
 }

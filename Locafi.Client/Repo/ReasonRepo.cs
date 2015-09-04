@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Reasons;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class ReasonRepo : WebRepo, IReasonRepo
+    public class ReasonRepo : WebRepo, IReasonRepo, IWebRepoErrorHandler
     {
         public ReasonRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
             : base(authorisedUnauthorizedConfigService, serialiser, ReasonUri.ServiceName)
@@ -41,6 +45,16 @@ namespace Locafi.Client.Repo
         {
             var path = ReasonUri.DeleteReason(id);
             await Delete(path);
+        }
+
+        public override async Task Handle(HttpResponseMessage responseMessage)
+        {
+            throw new ReasonRepoException(await responseMessage.Content.ReadAsStringAsync());
+        }
+
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        {
+            throw new ReasonRepoException(serverMessages);
         }
     }
 }

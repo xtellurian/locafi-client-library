@@ -47,7 +47,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsInstanceOfType(inventories, typeof(IEnumerable<InventorySummaryDto>));
         }
 
-        [TestMethod]
+   //     [TestMethod]
         public async Task InventoryCrud_QueryInventories()
         {
             // Create Inventory for us to Query
@@ -71,7 +71,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsTrue(result.Contains(inventory));
         }
 
-        [TestMethod]
+     //   [TestMethod]
         public async Task InventoryCrud_GetDetail()
         {
             var inventories = await _inventoryRepo.GetAllInventories();
@@ -85,7 +85,7 @@ namespace Locafi.Client.UnitTests.Tests
             }
         }
 
-        [TestMethod]
+//        [TestMethod]
         public async Task InventoryCrud_Create()
         {
             var ran = new Random();
@@ -101,7 +101,7 @@ namespace Locafi.Client.UnitTests.Tests
 
 
 
-        [TestMethod]
+   //     [TestMethod]
         public async Task InventoryCrud_Delete()
         {
             var ran = new Random();

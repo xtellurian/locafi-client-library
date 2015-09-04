@@ -10,7 +10,7 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public void Odata_example()
         {
-            var x = new shitty();
+            var x = new RandomOdataExampleCode();
             x.Something();
         }
     }

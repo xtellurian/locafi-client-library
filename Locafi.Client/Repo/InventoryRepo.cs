@@ -13,7 +13,7 @@ using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class InventoryRepo : WebRepo, IInventoryRepo, IWebRepoErrorHandler
+    public class InventoryRepo : WebRepo, IInventoryRepo
     {
         public InventoryRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
             : base(authorisedUnauthorizedConfigService, serialiser, InventoryUri.ServiceName)
@@ -79,12 +79,12 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task Handle(HttpResponseMessage responseMessage)
+        public async override Task Handle(HttpResponseMessage responseMessage)
         {
             throw new InventoryException(await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
         {
             throw new InventoryException(serverMessages);
         }

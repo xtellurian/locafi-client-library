@@ -59,8 +59,18 @@
     <Compile Include="Contract\Repo\ITemplateRepo.cs" />
     <Compile Include="Contract\Repo\IUserRepo.cs" />
     <Compile Include="Contract\Errors\IWebRepoErrorHandler.cs" />
+    <Compile Include="Exceptions\AuthenticationRepoException.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
+    <Compile Include="Exceptions\ItemException.cs" />
     <Compile Include="Exceptions\OrderException.cs" />
+    <Compile Include="Exceptions\PersonException.cs" />
+    <Compile Include="Exceptions\PlaceRepoException.cs" />
+    <Compile Include="Exceptions\ReaderRepoException.cs" />
+    <Compile Include="Exceptions\ReasonRepoException.cs" />
+    <Compile Include="Exceptions\SkuRepoException.cs" />
+    <Compile Include="Exceptions\SnapshotRepoException.cs" />
+    <Compile Include="Exceptions\TemplateRepoException.cs" />
+    <Compile Include="Exceptions\UserRepoException.cs" />
     <Compile Include="Exceptions\WebRepoException.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\IReaderRepo.cs" />
@@ -69,7 +79,7 @@
     <Compile Include="Repo\TemplateRepo.cs" />
     <Compile Include="Repo\WebRepo.cs" />
     <Compile Include="Odata\ODataCollection.cs" />
-    <Compile Include="Odata\shitty.cs" />
+    <Compile Include="Odata\RandomOdataExampleCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repo\ItemRepo.cs" />
     <Compile Include="Repo\SkuRepo.cs" />

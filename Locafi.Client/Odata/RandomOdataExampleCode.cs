@@ -4,7 +4,7 @@ using Simple.OData.Client;
 
 namespace Locafi.Client.Odata
 {
-    public class shitty
+    public class RandomOdataExampleCode
     {
         public async void Something()
         {

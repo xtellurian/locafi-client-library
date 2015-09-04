@@ -38,7 +38,7 @@ namespace Locafi.Client.UnitTests.Tests
             _userRepo = WebRepoContainer.UserRepo;
             _skuRepo = WebRepoContainer.SkuRepo;
         }
-        [TestMethod]
+  //      [TestMethod]
         public async Task InventoryProcess_AddSnapshotSuccess()
         {
             var ran = new Random();
@@ -80,7 +80,7 @@ namespace Locafi.Client.UnitTests.Tests
 
         }
 
-        [TestMethod]
+   //     [TestMethod]
         public async Task InventoryProcess_ResolveSuccess()
         {
             var ran = new Random();
