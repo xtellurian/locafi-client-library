@@ -20,6 +20,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public AddSnapshotDto()
         {
             Tags = new List<SnapshotTagDto>();
+            StartTimeUtc = DateTime.UtcNow;
         }
     }
 }

@@ -1,50 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Snapshots;
-using Locafi.Client.Services;
+using Locafi.Client.Model.RelativeUri;
+using Locafi.Client.Model.Responses;
+using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class SnapshotRepo : WebRepo, ISnapshotRepo
+    public class SnapshotRepo : WebRepo, ISnapshotRepo, IWebRepoErrorHandler
     {
-        public SnapshotRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) : base(unauthorizedConfigService, serialiser, "Snapshots")
+        public SnapshotRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
+            : base(unauthorizedConfigService, serialiser, SnapshotUri.ServiceName)
         {
         }
 
         public async Task<SnapshotDetailDto> CreateSnapshot(AddSnapshotDto snapshot)
         {
-            var path = "CreateSnapshot";
+            var path = SnapshotUri.CreateUri;
             var result = await Post<SnapshotDetailDto>(snapshot, path);
             return result;
         }
 
         public async Task<SnapshotDetailDto> GetSnapshot(Guid snapshotId)
         {
-            var path = $"GetSnapshot/{snapshotId}";
+            var path = SnapshotUri.GetSnapshot(snapshotId);
             var result = await Get<SnapshotDetailDto>(path);
             return result;
         }
 
         public async Task<IList<SnapshotSummaryDto>> GetAllSnapshots()
         {
-            var path = "GetSnapshots";
+            var path = SnapshotUri.GetSnapshots;
             var result = await Get<IList<SnapshotSummaryDto>>(path);
             return result;
         }
 
         public async Task Delete(Guid id)
         {
-            var path = $"DeleteSnapshot/{id}";
+            var path = SnapshotUri.DeleteSnapshot(id);
             await Delete(path);
         }
 
         protected async Task<IList<SnapshotSummaryDto>> QuerySnapshots(string queryString)
         {
-            var result = await Get<IList<SnapshotSummaryDto>>(queryString);
+            var path = $"{SnapshotUri.GetSnapshots}/{queryString}";
+            var result = await Get<IList<SnapshotSummaryDto>>(path);
             return result;
+        }
+
+        public override async Task Handle(HttpResponseMessage responseMessage)
+        {
+            throw new SnapshotRepoException(await responseMessage.Content.ReadAsStringAsync());
+        }
+
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        {
+            throw new SnapshotRepoException(serverMessages);
         }
     }
 }

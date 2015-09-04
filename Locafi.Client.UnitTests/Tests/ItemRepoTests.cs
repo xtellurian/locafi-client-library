@@ -54,7 +54,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(check);
             Assert.AreEqual(result,check);
         }
-      //  [TestMethod]
+   //     [TestMethod]
         public async Task Item_UseExtendedProperties()
         {
             var addItemDto = await CreateRandomAddItemDto();
@@ -77,13 +77,14 @@ namespace Locafi.Client.UnitTests.Tests
             var itemToAdd = await CreateRandomAddItemDto();
             var item = await _itemRepo.CreateItem(itemToAdd);
             Assert.IsNotNull(item);
-
+            
             var q1 = new ItemQuery();
             q1.CreateQuery(i => i.CreatedByUserFullName, item.CreatedByUserFullName, ComparisonOperator.Equals);
             var r1 = await _itemRepo.QueryItems(q1);
             Assert.IsNotNull(r1);
             Assert.IsInstanceOfType(r1, typeof(IEnumerable<ItemSummaryDto>));
             Assert.IsTrue(r1.Contains(item));
+            
         }
 
         [TestMethod]
@@ -118,7 +119,7 @@ namespace Locafi.Client.UnitTests.Tests
             var movedItem = await _itemRepo.UpdateItemPlace(moveItemDto);
 
             Assert.IsNotNull(movedItem);
-            Assert.AreEqual(item, movedItem);
+            Assert.AreEqual(item, movedItem); // is returning incorrect item
             Assert.AreEqual(movedItem.PlaceId, moveItemDto.NewPlaceId);
         }
 
@@ -152,11 +153,21 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestCleanup]
-        public async void Cleanup()
+        public void Cleanup()
         {
-            foreach (var id in _toDelete)
+            var q1 = new UserQuery();// get this user
+            q1.CreateQuery(u => u.UserName, StringConstants.TestingUserName, ComparisonOperator.Equals);
+            var result = _userRepo.QueryUsers(q1).Result;
+            var testUser = result.FirstOrDefault();
+
+            var userId = testUser.Id;
+
+            var q = new ItemQuery(); // get the items made by this user and delete them
+            q.CreateQuery(e => e.CreatedByUserId, userId, ComparisonOperator.Equals);
+            var items = _itemRepo.QueryItems(q).Result;
+            foreach (var item in items)
             {
-                await _itemRepo.DeleteItem(id);
+                _itemRepo.DeleteItem(item.Id).Wait();
             }
         }
 
@@ -175,17 +186,8 @@ namespace Locafi.Client.UnitTests.Tests
             var description = Guid.NewGuid().ToString();
             var tagNumber = Guid.NewGuid().ToString();
 
-            var addItemDto = new AddItemDto
-            {
-                Description = description,
-                Name = name,
-                PlaceId = place.Id,
-                SkuId = sku.Id,
-                TagNumber = tagNumber,
-                TagType = 0,
-                ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(),
-                PersonId = person.Id
-            };
+            var addItemDto = new AddItemDto(sku.Id, place.Id, name, description, tagNumber: tagNumber,
+                personId: person.Id);
             return addItemDto;
         }
 

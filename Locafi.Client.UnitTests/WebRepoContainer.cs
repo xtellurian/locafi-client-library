@@ -8,7 +8,6 @@ using Locafi.Client.Authentication;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Repo;
-using Locafi.Client.Services.Repo;
 using Locafi.Client.UnitTests.Factory;
 using Locafi.Client.UnitTests.Implementations;
 

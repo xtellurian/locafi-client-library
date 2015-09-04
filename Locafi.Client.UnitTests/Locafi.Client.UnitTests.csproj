@@ -68,14 +68,16 @@
     <Compile Include="Tests\TemplateRepoTests.cs" />
     <Compile Include="Tests\ReasonRepoTests.cs" />
     <Compile Include="Tests\ReaderRepoTests.cs" />
+    <Compile Include="Tests\OrderRepoProcessTests.cs" />
+    <Compile Include="Tests\InventoryProcessRepoTests.cs" />
     <Compile Include="Tests\UserRepoTests.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />
-    <Compile Include="Tests\InventoryRepoTests.cs" />
+    <Compile Include="Tests\InventoryCrudRepoTests.cs" />
     <Compile Include="Tests\ItemRepoTests.cs" />
     <Compile Include="Tests\OdataTests.cs" />
-    <Compile Include="Tests\OrderRepoTests.cs" />
+    <Compile Include="Tests\OrderRepoCrudTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\PlaceRepoTests.cs" />
   </ItemGroup>

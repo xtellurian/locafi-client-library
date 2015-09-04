@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Locafi.Client.Model.Dto
+namespace Locafi.Client.Model.Dto.Authentication
 {
-    public class AuthorizationTokenDto
+    public class AuthenticationResponseDto
     {
 
         public bool Success { get; set; }

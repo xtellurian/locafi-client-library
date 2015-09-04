@@ -9,8 +9,9 @@ namespace Locafi.Client.UnitTests
 {
     public static class StringConstants
     {
-        public static string UserName => "administrator";
-        public static string Password => "ramp123";
+        public static string UserName => "admintester";
+        public static string Password => "t3ster";
+        public static string TestingUserName => "testing@ramp.com.au";
         public static string BaseUrl => @"http://legacylocafiapiv2.azurewebsites.net/api/";
     }
 }

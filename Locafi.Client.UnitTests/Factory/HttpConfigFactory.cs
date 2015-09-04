@@ -42,7 +42,7 @@ namespace Locafi.Client.UnitTests.Factory
             var client = new HttpClient();
             var response = await client.SendAsync(message);
 
-            var result = response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<AuthorizationTokenDto>(await response.Content.ReadAsStringAsync()) : null;
+            var result = response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<AuthenticationResponseDto>(await response.Content.ReadAsStringAsync()) : null;
 
             return result?.TokenGroup.Token;
         }

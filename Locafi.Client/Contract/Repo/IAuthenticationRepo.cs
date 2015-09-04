@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Locafi.Client.Model.Dto;
+using Locafi.Client.Model.Dto.Authentication;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface IAuthenticationRepo
     {
-        Task<AuthorizationTokenDto> Login (string usrname, string passwrd);
-        Task<AuthorizationTokenDto> RefreshLogin(string refreshToken);
+        Task<AuthenticationResponseDto> Login (string usrname, string passwrd);
+        Task<AuthenticationResponseDto> RefreshLogin(string refreshToken);
+        Task<AuthenticationResponseDto> Login(ILoginCredentialsProvider credentials);
     }
 }

@@ -1,12 +1,19 @@
 ﻿using System;
-using Locafi.Client.Data;
-using Locafi.Client.Model.Actions;
 using Locafi.Client.Model.Dto.Inventory;
 
-namespace Locafi.Client.Model.Extensions
+namespace Locafi.Client.Model.Uri
 {
     public static class InventoryUri
     {
+        public static string ServiceName => "Inventory";
+        public static string GetInventories => "GetInventories";
+        public static string CreateInventory => "Create";
+
+
+        public static string GetInventory(Guid id)
+        {
+            return $"GetInventory/{id}";
+        }
 
         /// <summary>
         /// The relative URI for Adding a Snapshot to an Inventory
@@ -14,7 +21,7 @@ namespace Locafi.Client.Model.Extensions
         /// <param name="inventoryDto"> The Inventory to which you are adding the Snapshot </param>
         /// <param name="snapshotId"> The Id of the Snapshot, which must be already created </param>
         /// <returns> The relative URI ie BASE_URL + SERVICE + THIS </returns>
-        public static string AddSnapshotUri(this InventorySummaryDto inventoryDto, Guid snapshotId)
+        public static string AddSnapshot(InventorySummaryDto inventoryDto, Guid snapshotId)
         {
             return $"/{inventoryDto.Id}/AddSnapshot/{snapshotId}";
         }
@@ -23,11 +30,11 @@ namespace Locafi.Client.Model.Extensions
         /// <summary>
         /// The relative URI for Resolving an Inventory by uploading a set of reasons
         /// </summary>
-        /// <param name="inventoryDto">The Inventory to Resolve</param>
+        /// <param name="inventoryId">The ID of the Inventory you wish to resolve</param>
         /// <returns> The relative URI ie BASE_URL + SERVICE + THIS </returns>
-        public static string ResolveUri(this InventorySummaryDto inventoryDto)
+        public static string Resolve(Guid inventoryId)
         {
-            return $"/{inventoryDto.Id}/Resolve";
+            return $"/{inventoryId}/Resolve";
         }
 
         /// <summary>
@@ -35,9 +42,14 @@ namespace Locafi.Client.Model.Extensions
         /// </summary>
         /// <param name="inventoryDto"> The Inventory to Complete</param>
         /// <returns> The relative URI ie BASE_URL + SERVICE + THIS </returns>
-        public static string CompleteUri(this InventorySummaryDto inventoryDto)
+        public static string CompleteUri(InventorySummaryDto inventoryDto)
         {
             return $"/{inventoryDto.Id}/Complete";
+        }
+
+        public static string Delete(Guid id)
+        {
+            return $"DeleteInventory/{id}";
         }
     }
 }

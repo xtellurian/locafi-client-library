@@ -14,13 +14,9 @@ namespace Locafi.Client.Model.Dto.Reasons
         public string ReasonNo { get; set; }
 
         public string Name { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public ReasonFor ReasonFor { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            var reason = obj as ReasonDetailDto;
-            return reason != null && reason.Id == this.Id;
-        }
     }
 }

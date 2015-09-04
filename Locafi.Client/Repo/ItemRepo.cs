@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Items;
-using Locafi.Client.Model.Extensions;
 using Locafi.Client.Model.Query;
-using Locafi.Client.Services;
+using Locafi.Client.Model.Responses;
+using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
@@ -14,14 +17,15 @@ namespace Locafi.Client.Repo
     {
         private readonly ISerialiserService _serialiser;
 
-        public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedUnauthorizedConfig, ISerialiserService serialiser) : base(transferAuthorisedUnauthorizedConfig, serialiser, "Items")
+        public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedUnauthorizedConfig, ISerialiserService serialiser) 
+            : base(transferAuthorisedUnauthorizedConfig, serialiser, ItemUri.ServiceName)
         {
             _serialiser = serialiser;
         }
 
         public async Task<long> GetItemCount()
         {
-            var path = @"GetItems/GetCount";
+            var path = ItemUri.GetCount;
             var result = await Get<long>(path);
             return result;
         }
@@ -34,50 +38,60 @@ namespace Locafi.Client.Repo
 
         public async Task<ItemDetailDto> GetItemDetail(Guid id)
         {
-            var path = $"GetItem/{id}";
+            var path = ItemUri.GetItem(id);
             var result = await Get<ItemDetailDto>(path);
             return result;
         }
 
         public async Task<ItemDetailDto> CreateItem(AddItemDto item)
         {
-            const string path = @"/CreateItem";
+            var path = ItemUri.CreateItem;
             var result = await Post<ItemDetailDto>(item, path);
             return result;
         }
 
         public async Task<ItemDetailDto> UpdateTag(UpdateItemTagDto updateItemTagDto)
         {
-            var path = updateItemTagDto.UpdateTagUri();
+            var path = ItemUri.UpdateTag(updateItemTagDto);
             var result = await Post<ItemDetailDto>(updateItemTagDto, path);
             return result;
         }
 
         public async Task<ItemDetailDto> UpdateItemPlace(UpdateItemPlaceDto updateItemPlaceDto)
         {
-            var path = updateItemPlaceDto.UpdatePlaceUri();
+            var path = ItemUri.UpdatePlace(updateItemPlaceDto);
             var result = await Post<ItemDetailDto>(updateItemPlaceDto, path);
             return result;
         }
 
         public async Task<ItemDetailDto> UpdateItem(UpdateItemDto updateItemDto)
         {
-            var path = updateItemDto.UpdateUri();
+            var path = ItemUri.UpdateUri(updateItemDto);
             var result = await Post<ItemDetailDto>(updateItemDto, path);
             return result;
         }
 
         public async Task DeleteItem(Guid itemId)
         {
-            var path = $"DeleteItem/{itemId}";
+            var path = ItemUri.DeleteItem(itemId);
             await Delete(path);
         }
 
         protected async Task<IList<ItemSummaryDto>> QueryItems (string filterString)
         {
-            var path = $"GetItems{filterString}";
+            var path = $"{ItemUri.GetItems}{filterString}";
             var result = await Get<IList<ItemSummaryDto>>(path);
             return result;
+        }
+
+        public async override Task Handle(HttpResponseMessage responseMessage)
+        {
+            throw new ItemException(await responseMessage.Content.ReadAsStringAsync());
+        }
+
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        {
+            throw new ItemException(serverMessages);
         }
     }
 }

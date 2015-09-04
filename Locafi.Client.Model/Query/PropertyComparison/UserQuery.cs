@@ -7,7 +7,7 @@ using Locafi.Client.Data;
 
 namespace Locafi.Client.Model.Query.PropertyComparison
 {
-    //public class UserQuery : PropertyQueryBase<UserSummaryDto>
-    //{
-    //}
+    public class UserQuery : PropertyQueryBase<UserDto>
+    {
+    }
 }

@@ -1,8 +1,10 @@
-﻿namespace Locafi.Client.Model.Dto.Orders
+﻿using System;
+
+namespace Locafi.Client.Model.Dto.Orders
 {
-    public class OrderSkuDetailDto
+    public class OrderSkuLineItemDto
     {
-        public string TypeId { get; set; }
+        public Guid SkuId { get; set; }
         public int Quantity { get; set; }
         public int PackingSize { get; set; }
         public int QtyAllocated { get; set; }

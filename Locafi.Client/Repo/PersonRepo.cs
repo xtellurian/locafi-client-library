@@ -1,44 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Persons;
-using Locafi.Client.Services;
+using Locafi.Client.Model.Responses;
+using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class PersonRepo : WebRepo, IPersonRepo
+    public class PersonRepo : WebRepo, IPersonRepo, IWebRepoErrorHandler
     {
         public PersonRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(unauthorizedConfigService, serialiser, "Persons")
+            : base(unauthorizedConfigService, serialiser, PersonUri.ServiceName)
         {
         }
 
         public async Task<IList<PersonSummaryDto>> GetAllPersons()
         {
-            var path = "GetPersons";
+            var path = PersonUri.GetPersons;
             var items = await Get<IList<PersonSummaryDto>>(path);
             return items;
         }
 
         public async Task<PersonDetailDto> GetPersonById(Guid id)
         {
-            var path = $"GetPerson/{id}";
+            var path = PersonUri.GetPerson(id);
             var result = await Get<PersonDetailDto>(path);
             return result;
         }
 
         public async Task<PersonDetailDto> CreatePerson(AddPersonDto addPerson)
         {
-            var path = "CreatePerson";
+            var path = PersonUri.CreatePerson;
             var result = await Post<PersonDetailDto>(addPerson, path);
             return result;
         }
 
         public async Task DeletePerson(Guid id)
         {
-            var path = $"DeletePerson/{id}";
+            var path = PersonUri.DeletePerson(id);
             await Delete(path);
         }
 
@@ -46,6 +50,16 @@ namespace Locafi.Client.Repo
         {
             var result = await Get<IList<PersonSummaryDto>>(queryString);
             return result;
+        }
+
+        public async override Task Handle(HttpResponseMessage responseMessage)
+        {
+            throw new PersonException(await responseMessage.Content.ReadAsStringAsync());
+        }
+
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        {
+            throw new PersonException(serverMessages);
         }
     }
 }

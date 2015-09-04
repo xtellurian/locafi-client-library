@@ -67,9 +67,17 @@ namespace Locafi.Client.Model.Query.PropertyComparison
             if (propInfo == null)
                 throw new ArgumentException($"Expression '{propertyLambda}' refers to a field, not a property.");
             // validate is part of type
-            if (!type.GetRuntimeProperties().Contains(propInfo))
-                throw new ArgumentException(
-                    $"Expresion '{propertyLambda}' refers to a property that is not from type {type}.");
+            var basetype = type;
+            while (!basetype.GetRuntimeProperties().Contains(propInfo))
+            {
+                basetype = basetype.GetTypeInfo().BaseType;
+                if (basetype == null)
+                {
+                    throw new ArgumentException(
+                        $"Expresion '{propertyLambda}' refers to a property that is not from type {type}.");
+                }
+            }
+                
             // validate value and property type are the same
             Type propertyType = propInfo.PropertyType;
             if (propertyType != otherType)
