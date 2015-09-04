@@ -50,35 +50,6 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<AuthenticationResponseDto> ReaderLogin(ILoginCredentialsProvider credentials)
-        {
-            var dto = new UserLoginDto
-            {
-                Password = credentials.Password,
-                Username = credentials.UserName
-            };
-
-            return await LoginWithDto(dto);
-        }
-
-        public async Task<AuthenticationResponseDto> ReaderLogin(string userName, string password)
-        {
-            var dto = new UserLoginDto
-            {
-                Password = password,
-                Username = userName
-            };
-            return await LoginWithDto(dto);
-        }
-
-        private async Task<AuthenticationResponseDto> LoginWithDto(UserLoginDto dto)
-        {
-            var path = ReaderUri.Login;
-            var result = await Post<AuthenticationResponseDto>(dto, path);
-            return result;
-        }
-
-
         public override async Task Handle(HttpResponseMessage responseMessage)
         {
             throw new ReaderRepoException(await responseMessage.Content.ReadAsStringAsync());

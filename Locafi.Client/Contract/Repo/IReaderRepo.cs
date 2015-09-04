@@ -12,7 +12,5 @@ namespace Locafi.Client.Contract.Repo
         Task<ReaderDetailDto> GetReaderById(Guid id);
         Task DeleteReader(Guid id);
         Task<ClusterReponseDto> ProcessCluster(ClusterDto cluster);
-        Task<AuthenticationResponseDto> ReaderLogin(ILoginCredentialsProvider credentials);
-        Task<AuthenticationResponseDto> ReaderLogin(string userName, string password);
     }
 }
