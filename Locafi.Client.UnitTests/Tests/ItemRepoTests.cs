@@ -119,7 +119,7 @@ namespace Locafi.Client.UnitTests.Tests
             var movedItem = await _itemRepo.UpdateItemPlace(moveItemDto);
 
             Assert.IsNotNull(movedItem);
-            Assert.AreEqual(item, movedItem);
+            Assert.AreEqual(item, movedItem); // is returning incorrect item
             Assert.AreEqual(movedItem.PlaceId, moveItemDto.NewPlaceId);
         }
 

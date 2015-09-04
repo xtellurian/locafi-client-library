@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Locafi.Client.Data
+namespace Locafi.Client.Model.Dto.TagReservation
 {
     public class TagReservationDto
     {
         public IList<string> TagNumbers { get; set; }
 
-        public TagReservationDto()
-        {
-            TagNumbers = new List<string>();
-        }
     }
 }

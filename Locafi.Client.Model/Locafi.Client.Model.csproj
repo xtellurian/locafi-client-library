@@ -113,11 +113,10 @@
     <Compile Include="RelativeUri\SkuUri.cs" />
     <Compile Include="RelativeUri\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dto\TagReservationDto.cs" />
+    <Compile Include="Dto\TagReservation\TagReservationDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="RelativeUri\InventoryUri.cs" />
     <Compile Include="RelativeUri\OrderUri.cs" />
-    <Compile Include="ApiVersion.cs" />
     <Compile Include="Query\ComparisonOperator.cs" />
     <Compile Include="Query\IRestQuery.cs" />
     <Compile Include="Query\PropertyComparison\InventoryQuery.cs" />

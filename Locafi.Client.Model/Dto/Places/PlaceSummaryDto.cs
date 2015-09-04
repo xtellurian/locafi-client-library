@@ -2,28 +2,15 @@
 
 namespace Locafi.Client.Model.Dto.Places
 {
-    public class PlaceSummaryDto
+    public class PlaceSummaryDto : EntityDtoBase
     {
 
-        public Guid Id { get; set; }
         public string Name { get; set; }
+
         public Guid TemplateId { get; set; }
         public string TemplateName { get; set; }
+
         public string TagNumber { get; set; }
         public string TagTypeName { get; set; }
-        public Guid? CreatedByUserId { get; set; }
-        public string CreatedByUserFullName { get; set; }
-        public DateTimeOffset DateCreated { get; set; } // test change
-        public Guid? LastModifiedByUserId { get; set; }
-        public string LastModifiedByUserFullName { get; set; }
-        public DateTime? DateLastModified { get; set; }
-
-
-        public override bool Equals(object obj)
-        {
-            var summaryDto = obj as PlaceSummaryDto;
-            if (summaryDto == null) return false;
-            return Id.Equals(summaryDto.Id);
-        }
     }
 }
