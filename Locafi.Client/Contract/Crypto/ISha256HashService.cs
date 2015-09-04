@@ -2,6 +2,6 @@
 {
     public interface ISha256HashService
     {
-        string GenerateHash(string data);
+        string GenerateHash(string secret, string data);
     }
 }

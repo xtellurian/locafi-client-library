@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Crypto;
-using PCLCrypto;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace Locafi.Client.Crypto
 {
     public class Sha256HashService : ISha256HashService
     {
-        public string GenerateHash(string data)
+        public string GenerateHash(string secret, string data)
         {
-           var bytes = GetBytes(data);
-            var hasher = WinRTCrypto.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithm.Sha1);
-            var hash = hasher.HashData(bytes);
-            var hashBase64 = Convert.ToBase64String(hash);
+            var key = GetBytes(secret);
+            var dataBytes = GetBytes(data);
+            var hasher = new HMACSHA256(key);
+            var result = hasher.ComputeHash(dataBytes);
+            var hashBase64 = Convert.ToBase64String(result);
             return hashBase64;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Locafi.Client.Contract.Crypto;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,10 +11,13 @@ namespace Locafi.Client.UnitTests.Tests
     public class AuthenticationTests
     {
         private IAuthenticationRepo _authRepo;
+        private ISha256HashService _hashService;
+
         [TestInitialize]
         public void Initialize()
         {
             _authRepo = WebRepoContainer.AuthRepo;
+            _hashService = ServiceContainer.HashService;
         }
         [TestMethod]
         public async Task Authentication_SuccessfulLogin()
@@ -51,6 +55,17 @@ namespace Locafi.Client.UnitTests.Tests
 
             var token = result.TokenGroup.Refresh;
             result = await _authRepo.RefreshLogin(token);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Success);
+            Assert.IsNotNull(result.TokenGroup);
+            Assert.IsFalse(string.IsNullOrEmpty(result.TokenGroup.Token));
+            Assert.IsFalse(string.IsNullOrEmpty(result.TokenGroup.Refresh));
+        }
+        [TestMethod]
+        public async Task Authentication_ReaderLogin()
+        {
+            var password = _hashService.GenerateHash(StringConstants.Secret, StringConstants.ReaderUserName);
+            var result = await _authRepo.ReaderLogin(StringConstants.ReaderUserName, password);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Success);
             Assert.IsNotNull(result.TokenGroup);
