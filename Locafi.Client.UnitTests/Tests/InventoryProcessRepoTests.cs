@@ -165,9 +165,8 @@ namespace Locafi.Client.UnitTests.Tests
             addItem.TagNumber = tag2.TagNumber;
             await _itemRepo.CreateItem(addItem);
 
-            var snapshot = new AddSnapshotDto
+            var snapshot = new AddSnapshotDto(placeId)
             {
-                PlaceId = placeId,
                 Tags = new List<SnapshotTagDto> {tag1, tag2},
                 StartTimeUtc = DateTime.UtcNow,
                 EndTimeUtc = DateTime.UtcNow

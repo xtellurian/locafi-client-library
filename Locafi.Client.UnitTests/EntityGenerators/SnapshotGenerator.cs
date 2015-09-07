@@ -16,13 +16,12 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 
             var name = Guid.NewGuid().ToString();
             var tags = GenerateRandomTags();
-            var snap = new AddSnapshotDto
+            var snap = new AddSnapshotDto(placeId)
             {
                 StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
                 EndTimeUtc = DateTime.UtcNow,
                 Name = name,
-                Tags = tags,
-                PlaceId = placeId
+                Tags = tags
             };
             return snap;
         }

@@ -7,12 +7,18 @@ using Locafi.Client.Model.Dto.Items;
 
 namespace Locafi.Client.Model.Dto.Reader
 {
-    public class ClusterReponseDto
+    public class ClusterResponseDto
     {
-        public List<ItemSummaryDto> Items { get; set; }
-        public List<ClusterTagDto> UnknownTags { get; set; }
+        public Guid? PersonId { get; set; }
+        public string PersonName { get; set; }
 
-        public ClusterReponseDto()
+        public Guid PlaceId { get; set; }
+        public string PlaceName { get; set; }
+
+        public IList<ItemSummaryDto> Items { get; set; }
+        public IList<ClusterTagDto> UnknownTags { get; set; }
+
+        public ClusterResponseDto()
         {
             Items = new List<ItemSummaryDto>();
             UnknownTags = new List<ClusterTagDto>();

@@ -43,10 +43,10 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public async Task<ClusterReponseDto> ProcessCluster(ClusterDto cluster)
+        public async Task<ClusterResponseDto> ProcessCluster(ClusterDto cluster)
         {
             var path = ReaderUri.ProcessCluster;
-            var result = await Post<ClusterReponseDto>(cluster,path);
+            var result = await Post<ClusterResponseDto>(cluster,path);
             return result;
         }
 

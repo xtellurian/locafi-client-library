@@ -53,7 +53,7 @@ namespace Locafi.Client.UnitTests.Tests
             var cluster = await GenerateRandomCluster();
             var result = await _readerRepo.ProcessCluster(cluster);
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result,typeof(ClusterReponseDto));
+            Assert.IsInstanceOfType(result,typeof(ClusterResponseDto));
         }
 
 
