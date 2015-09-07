@@ -15,5 +15,6 @@ namespace Locafi.Client.Contract.Repo
         Task<InventoryDetailDto> Resolve(Guid inventoryId, ResolveInventoryDto reasons);
         Task Delete(Guid id);
         Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query);
+        Task<InventoryDetailDto> Complete(Guid inventoryId);
     }
 }

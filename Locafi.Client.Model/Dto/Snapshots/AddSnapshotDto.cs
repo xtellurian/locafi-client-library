@@ -8,6 +8,14 @@ namespace Locafi.Client.Model.Dto.Snapshots
 {
     public class AddSnapshotDto
     {
+        public AddSnapshotDto(Guid placeId, string name = "")
+        {
+            PlaceId = placeId;
+            Name = name;
+            Tags = new List<SnapshotTagDto>();
+            StartTimeUtc = DateTime.UtcNow;
+        }
+
         public string Name { get; set; }    // friendly name for the snapshot
 
         public Guid PlaceId { get; set; }    // id of location this asset is in
@@ -17,10 +25,6 @@ namespace Locafi.Client.Model.Dto.Snapshots
 
         public IList<SnapshotTagDto> Tags { get; set; }    // list of tags scanned during the snapshot (tag number and tag type)
 
-        public AddSnapshotDto()
-        {
-            Tags = new List<SnapshotTagDto>();
-            StartTimeUtc = DateTime.UtcNow;
-        }
+
     }
 }
