@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Errors;
@@ -57,6 +58,13 @@ namespace Locafi.Client.Repo
         {
             var path = InventoryUri.Resolve(inventoryId);
             var result = await Post<InventoryDetailDto>(reasons, path);
+            return result;
+        }
+
+        public async Task<InventoryDetailDto> Complete(Guid inventoryId)
+        {
+            var path = InventoryUri.Complete(inventoryId);
+            var result = await Post<InventoryDetailDto>(null, path);
             return result;
         }
 

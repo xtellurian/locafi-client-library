@@ -37,14 +37,9 @@ namespace Locafi.Client.Model.Uri
             return $"/{inventoryId}/Resolve";
         }
 
-        /// <summary>
-        /// The relative URI for Completing an Inventory
-        /// </summary>
-        /// <param name="inventoryDto"> The Inventory to Complete</param>
-        /// <returns> The relative URI ie BASE_URL + SERVICE + THIS </returns>
-        public static string CompleteUri(InventorySummaryDto inventoryDto)
+        public static string Complete(Guid inventoryId)
         {
-            return $"/{inventoryDto.Id}/Complete";
+            return $"/{inventoryId}/Complete";
         }
 
         public static string Delete(Guid id)

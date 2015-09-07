@@ -8,7 +8,7 @@ namespace Locafi.Client.Model.Dto.Inventory
 {
     public class ResolveInventoryDto
     {
-        public Dictionary<Guid, Guid> Reasons { get; set; }
+        public IDictionary<Guid, Guid> Reasons { get; set; }
 
         public ResolveInventoryDto()
         {
