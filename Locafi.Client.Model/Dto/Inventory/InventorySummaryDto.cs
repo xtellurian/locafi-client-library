@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +14,14 @@ namespace Locafi.Client.Model.Dto.Inventory
             
         }
 
-        public InventorySummaryDto(InventorySummaryDto inventorySummaryDto) : base(inventorySummaryDto)
+        public InventorySummaryDto(InventorySummaryDto dto) : base(dto)
         {
-            Name = inventorySummaryDto.Name;
-            PlaceId = inventorySummaryDto.PlaceId;
-            Complete = inventorySummaryDto.Complete;
+            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
         }
         public string Name { get; set; }
 

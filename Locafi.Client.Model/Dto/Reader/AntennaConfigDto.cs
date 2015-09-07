@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +14,14 @@ namespace Locafi.Client.Model.Dto.Reader
             
         }
 
-        public AntennaConfigDto(AntennaConfigDto antennaConfigDto): base(antennaConfigDto)
+        public AntennaConfigDto(AntennaConfigDto dto): base(dto)
         {
-            AntennaNo = antennaConfigDto.AntennaNo;
-            AntennaName = antennaConfigDto.AntennaName;
-            InPlaceId = antennaConfigDto.InPlaceId;
+            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
         }
         public int AntennaNo { get; set; }
 

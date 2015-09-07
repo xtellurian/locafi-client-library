@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,14 +14,14 @@ namespace Locafi.Client.Model.Dto.Orders
             
         }
 
-        public OrderSummaryDto(OrderSummaryDto orderSummaryDto) : base(orderSummaryDto)
+        public OrderSummaryDto(OrderSummaryDto dto) : base(dto)
         {
-            ReferenceNumber = orderSummaryDto.ReferenceNumber;
-            Status = orderSummaryDto.Status;
-            Description = orderSummaryDto.Description;
-            SourcePlaceId = orderSummaryDto.SourcePlaceId;
-            DestinationPlaceId = orderSummaryDto.DestinationPlaceId;
-            DeliverToId = orderSummaryDto.DeliverToId;
+            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
         }
         public string ReferenceNumber { get; set; }
         public string Status { get; set; }

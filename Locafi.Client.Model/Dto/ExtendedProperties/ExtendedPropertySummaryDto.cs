@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Enums;
@@ -16,13 +17,14 @@ namespace Locafi.Client.Model.Dto.ExtendedProperties
             
         }
 
-        public ExtendedPropertySummaryDto(ExtendedPropertySummaryDto extendedPropertySummaryDto) : base(extendedPropertySummaryDto)
+        public ExtendedPropertySummaryDto(ExtendedPropertySummaryDto dto) : base(dto)
         {
-            Name = extendedPropertySummaryDto.Name;
-            Description = extendedPropertySummaryDto.Description;
-            IsRequired = extendedPropertySummaryDto.IsRequired;
-            DataType = extendedPropertySummaryDto.DataType;
-            TemplateType = extendedPropertySummaryDto.TemplateType;
+            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
         }
         public string Name { get; set; }
 

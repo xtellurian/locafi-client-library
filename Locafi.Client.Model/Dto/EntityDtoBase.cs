@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Dto.Reader;
 
 namespace Locafi.Client.Model.Dto
 {
@@ -15,13 +17,13 @@ namespace Locafi.Client.Model.Dto
 
         protected EntityDtoBase(EntityDtoBase entityDtoBase)
         {
-            this.Id = entityDtoBase.Id;
-            this.CreatedByUserId = entityDtoBase.CreatedByUserId;
-            this.CreatedByUserFullName = entityDtoBase.CreatedByUserFullName;
-            this.DateCreated = entityDtoBase.DateCreated;
-            this.LastModifiedByUserId = entityDtoBase.LastModifiedByUserId;
-            this.DateLastModified = entityDtoBase.DateLastModified;
-            this.LastModifiedByUserFullName = entityDtoBase.LastModifiedByUserFullName;
+            var type = typeof(EntityDtoBase);
+            var properties = type.GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(entityDtoBase);
+                property.SetValue(this, value);
+            }
         }
 
         public Guid Id { get; set; }

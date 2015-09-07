@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Crypto;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Inventory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests
@@ -83,6 +84,15 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsNotNull(result.TokenGroup);
             Assert.IsNull(result.TokenGroup.Token);
             Assert.IsNull(result.TokenGroup.Refresh);
+        }
+
+        [TestMethod]
+        public void ctor_test()
+        {
+            var inventory = new InventorySummaryDto();
+            inventory.Id = Guid.NewGuid();
+            inventory.Name = "testing";
+            var i2 = new InventorySummaryDto(inventory);
         }
 
     }
