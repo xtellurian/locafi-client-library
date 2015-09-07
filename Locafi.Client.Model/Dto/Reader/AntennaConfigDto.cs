@@ -8,6 +8,17 @@ namespace Locafi.Client.Model.Dto.Reader
 {
     public class AntennaConfigDto : EntityDtoBase
     {
+        public AntennaConfigDto()
+        {
+            
+        }
+
+        public AntennaConfigDto(AntennaConfigDto antennaConfigDto): base(antennaConfigDto)
+        {
+            AntennaNo = antennaConfigDto.AntennaNo;
+            AntennaName = antennaConfigDto.AntennaName;
+            InPlaceId = antennaConfigDto.InPlaceId;
+        }
         public int AntennaNo { get; set; }
 
         public string AntennaName { get; set; }

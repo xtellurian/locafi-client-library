@@ -8,6 +8,17 @@ namespace Locafi.Client.Model.Dto.Inventory
 {
     public class InventorySummaryDto : EntityDtoBase
     {
+        public InventorySummaryDto()
+        {
+            
+        }
+
+        public InventorySummaryDto(InventorySummaryDto inventorySummaryDto) : base(inventorySummaryDto)
+        {
+            Name = inventorySummaryDto.Name;
+            PlaceId = inventorySummaryDto.PlaceId;
+            Complete = inventorySummaryDto.Complete;
+        }
         public string Name { get; set; }
 
         public Guid PlaceId { get; set; }

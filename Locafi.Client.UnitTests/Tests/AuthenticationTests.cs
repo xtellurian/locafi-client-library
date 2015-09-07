@@ -72,5 +72,18 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsFalse(string.IsNullOrEmpty(result.TokenGroup.Token));
             Assert.IsFalse(string.IsNullOrEmpty(result.TokenGroup.Refresh));
         }
+
+        [TestMethod]
+        public async Task Authentication_ReaderLoginBadSerialNumber()
+        {
+            var password = _hashService.GenerateHash(StringConstants.Secret, "skjdbgsijbo");
+            var result = await _authRepo.ReaderLogin(StringConstants.ReaderUserName, password);
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.TokenGroup);
+            Assert.IsNull(result.TokenGroup.Token);
+            Assert.IsNull(result.TokenGroup.Refresh);
+        }
+
     }
 }

@@ -8,6 +8,22 @@ namespace Locafi.Client.Model.Dto
 {
     public abstract class EntityDtoBase
     {
+        protected EntityDtoBase()
+        {
+            
+        }
+
+        protected EntityDtoBase(EntityDtoBase entityDtoBase)
+        {
+            this.Id = entityDtoBase.Id;
+            this.CreatedByUserId = entityDtoBase.CreatedByUserId;
+            this.CreatedByUserFullName = entityDtoBase.CreatedByUserFullName;
+            this.DateCreated = entityDtoBase.DateCreated;
+            this.LastModifiedByUserId = entityDtoBase.LastModifiedByUserId;
+            this.DateLastModified = entityDtoBase.DateLastModified;
+            this.LastModifiedByUserFullName = entityDtoBase.LastModifiedByUserFullName;
+        }
+
         public Guid Id { get; set; }
 
         public Guid? CreatedByUserId { get; set; }

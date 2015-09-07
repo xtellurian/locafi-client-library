@@ -11,6 +11,19 @@ namespace Locafi.Client.Model.Dto.ExtendedProperties
 {
     public class ExtendedPropertySummaryDto : EntityDtoBase
     {
+        public ExtendedPropertySummaryDto()
+        {
+            
+        }
+
+        public ExtendedPropertySummaryDto(ExtendedPropertySummaryDto extendedPropertySummaryDto) : base(extendedPropertySummaryDto)
+        {
+            Name = extendedPropertySummaryDto.Name;
+            Description = extendedPropertySummaryDto.Description;
+            IsRequired = extendedPropertySummaryDto.IsRequired;
+            DataType = extendedPropertySummaryDto.DataType;
+            TemplateType = extendedPropertySummaryDto.TemplateType;
+        }
         public string Name { get; set; }
 
         public string Description { get; set; }
