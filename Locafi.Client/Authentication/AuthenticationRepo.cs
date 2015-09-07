@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -77,9 +78,9 @@ namespace Locafi.Client.Authentication
             return result;
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
         {
-            throw new AuthenticationRepoException(serverMessages);
+            throw new AuthenticationRepoException(serverMessages, statusCode);
         }
 
         public override async Task Handle(HttpResponseMessage response)

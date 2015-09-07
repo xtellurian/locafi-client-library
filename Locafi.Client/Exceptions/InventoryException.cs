@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Locafi.Client.Model.Responses;
 
 namespace Locafi.Client.Exceptions
@@ -16,7 +17,8 @@ namespace Locafi.Client.Exceptions
             
         }
 
-        public InventoryException(IEnumerable<CustomResponseMessage> serverMessages):base(serverMessages)
+        public InventoryException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) 
+            :base(serverMessages, statusCode)
         {
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -92,9 +93,9 @@ namespace Locafi.Client.Repo
             throw new InventoryException(await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
         {
-            throw new InventoryException(serverMessages);
+            throw new InventoryException(serverMessages, statusCode);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -79,7 +80,7 @@ namespace Locafi.Client.Repo
             {
                 var errors =
                     _serialiser.Deserialise<IList<CustomResponseMessage>>(await response.Content.ReadAsStringAsync());
-                await this.Handle(errors);
+                await this.Handle(errors, response.StatusCode);
             }
             catch(JsonException)
             {
@@ -124,7 +125,7 @@ namespace Locafi.Client.Repo
             return result.ToString();
         }
 
-        public abstract Task Handle(IEnumerable<CustomResponseMessage> serverMessages);
+        public abstract Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode);
 
         public abstract Task Handle(HttpResponseMessage response);
     }

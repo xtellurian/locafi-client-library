@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
@@ -59,9 +60,9 @@ namespace Locafi.Client.Repo
             throw new SnapshotRepoException(await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
         {
-            throw new SnapshotRepoException(serverMessages);
+            throw new SnapshotRepoException(serverMessages, statusCode);
         }
     }
 }

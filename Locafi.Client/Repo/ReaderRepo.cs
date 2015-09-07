@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,9 +56,9 @@ namespace Locafi.Client.Repo
             throw new ReaderRepoException(await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
         {
-            throw new ReaderRepoException(serverMessages);
+            throw new ReaderRepoException(serverMessages, statusCode);
         }
     }
 }
