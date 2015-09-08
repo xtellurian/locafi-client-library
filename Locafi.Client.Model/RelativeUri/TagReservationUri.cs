@@ -10,14 +10,9 @@ namespace Locafi.Client.Model.RelativeUri
     {
         public static string SerivceName => "TagReservations";
 
-        public static string ReserveBySku(Guid skuId, int quantity)
+        public static string Reserve(Guid skuId, int quantity)
         {
-            return $"{skuId}/ReserveBySku/{quantity}";
-        }
-
-        public static string ReserveByGtin(string gtin, int quantity)
-        {
-            return $"{gtin}/ReserveByGtin/{quantity}";
+            return $"{skuId}/Reserve/{quantity}";
         }
     }
 }

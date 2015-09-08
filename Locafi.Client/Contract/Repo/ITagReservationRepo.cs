@@ -7,6 +7,5 @@ namespace Locafi.Client.Contract.Repo
     public interface ITagReservationRepo
     {
         Task<TagReservationDto> ReserveTagsForSku(Guid skuId, int quantity);
-        Task<TagReservationDto> ReserveTagsForGtin(string gtin, int quantity);
     }
 }
