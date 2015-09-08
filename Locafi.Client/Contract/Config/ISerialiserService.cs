@@ -1,4 +1,4 @@
-﻿namespace Locafi.Client.Model.ConfigurationContract
+﻿namespace Locafi.Client.Contract.Config
 {
     public interface ISerialiserService
     {

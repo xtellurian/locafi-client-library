@@ -44,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationRepo.cs" />
+    <Compile Include="Contract\Config\IAuthorisedHttpTransferConfigService.cs" />
+    <Compile Include="Contract\Config\IHttpTransferConfigService.cs" />
+    <Compile Include="Contract\Config\ISerialiserService.cs" />
     <Compile Include="Contract\Repo\IAuthenticationRepo.cs" />
     <Compile Include="Contract\Repo\IInventoryRepo.cs" />
     <Compile Include="Contract\Repo\IItemRepo.cs" />

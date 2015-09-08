@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationContract\IAuthorisedHttpTransferConfigService.cs" />
-    <Compile Include="ConfigurationContract\IHttpTransferConfigService.cs" />
-    <Compile Include="ConfigurationContract\ISerialiserService.cs" />
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
