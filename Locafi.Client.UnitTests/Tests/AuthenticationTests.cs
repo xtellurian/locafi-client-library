@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Crypto;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Inventory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

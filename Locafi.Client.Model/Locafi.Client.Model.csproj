@@ -40,6 +40,10 @@
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
     <Compile Include="Dto\Orders\OrderActionResponseDto.cs" />
     <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
+    <Compile Include="Dto\Users\AddUserDto.cs" />
+    <Compile Include="Dto\Users\UpdateUserDto.cs" />
+    <Compile Include="Dto\Users\UserDetailDto.cs" />
+    <Compile Include="Dto\Users\UserSummaryDto.cs" />
     <Compile Include="Enums\Actions\InventoryAction.cs" />
     <Compile Include="Enums\Actions\OrderAction.cs" />
     <Compile Include="Dto\Authentication\AuthenticationResponseDto.cs" />
@@ -116,7 +120,6 @@
     <Compile Include="RelativeUri\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\TagReservation\TagReservationDto.cs" />
-    <Compile Include="Dto\UserDto.cs" />
     <Compile Include="RelativeUri\InventoryUri.cs" />
     <Compile Include="RelativeUri\OrderUri.cs" />
     <Compile Include="Query\ComparisonOperator.cs" />
@@ -127,6 +130,7 @@
     <Compile Include="Query\PropertyComparison\UserQuery.cs" />
     <Compile Include="Query\QueryStrings.cs" />
     <Compile Include="Query\PropertyComparison\PlaceQuery.cs" />
+    <Compile Include="RelativeUri\TagReservationUri.cs" />
     <Compile Include="RelativeUri\TemplateUri.cs" />
     <Compile Include="RelativeUri\UserUri.cs" />
     <Compile Include="Responses\CustomResponseMessage.cs" />

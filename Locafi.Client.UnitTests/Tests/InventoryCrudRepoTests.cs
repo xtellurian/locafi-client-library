@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Data;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Dto.Places;
@@ -122,10 +121,14 @@ namespace Locafi.Client.UnitTests.Tests
         public void Cleanup()
         {
             var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.UserName, StringConstants.TestingUserName, ComparisonOperator.Equals);
+            q1.CreateQuery(u => u.EmailAddress, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
             var result = _userRepo.QueryUsers(q1).Result;
             var testUser = result.FirstOrDefault();
-            
+            if (testUser == null)
+            {
+                Debug.WriteLine("Couldn't return test user - can't clean up afrter Inventory CRUD tests");
+                return;
+            }
             var userId = testUser.Id;
 
             var q = new InventoryQuery(); // get the items made by this user and delete them

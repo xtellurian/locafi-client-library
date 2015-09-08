@@ -3,7 +3,6 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.UnitTests.EntityGenerators;

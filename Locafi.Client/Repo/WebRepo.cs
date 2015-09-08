@@ -66,12 +66,27 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        protected async Task Delete(string key)
+        //protected async Task Delete(string key)
+        //{
+        //    var response = await GetResponse(HttpMethod.Delete, key);
+        //    Debug.WriteLine(response.IsSuccessStatusCode
+        //        ? $"{_service} service deleted  id={key} successfully"
+        //        : $"{_service} service failed to delete id={key}");
+        //}
+
+        protected async Task<bool> Delete(string extra)
         {
-            var response = await GetResponse(HttpMethod.Delete, key);
+            var response = await GetResponse(HttpMethod.Delete, extra);
             Debug.WriteLine(response.IsSuccessStatusCode
-                ? $"{_service} service deleted  id={key} successfully"
-                : $"{_service} service failed to delete id={key}");
+                ? $"{_service} service deleted  extra={extra} successfully"
+                : $"{_service} service failed to delete id={extra}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = _serialiser.Deserialise<bool>(await response.Content.ReadAsStringAsync());
+                return result;
+            }
+            else await HandlePrivate(response);
+            return false; // probably is never called, but is required for compilation
         }
 
         private async Task HandlePrivate(HttpResponseMessage response)

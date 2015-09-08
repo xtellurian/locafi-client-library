@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Dto.Users;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -156,10 +157,15 @@ namespace Locafi.Client.UnitTests.Tests
         public void Cleanup()
         {
             var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.UserName, StringConstants.TestingUserName, ComparisonOperator.Equals);
+            q1.CreateQuery(u => u.EmailAddress, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
             var result = _userRepo.QueryUsers(q1).Result;
             var testUser = result.FirstOrDefault();
 
+            if (testUser == null)
+            {
+                Debug.WriteLine("Couldn't return test user - can't clean up afrter Item Repo CRUD tests");
+                return;
+            }
             var userId = testUser.Id;
 
             var q = new ItemQuery(); // get the items made by this user and delete them
@@ -205,7 +211,7 @@ namespace Locafi.Client.UnitTests.Tests
             return place;
         }
 
-        private async Task<UserDto> GetRandomUser()
+        private async Task<UserSummaryDto> GetRandomUser()
         {
             var ran = new Random();
             var users = await _userRepo.GetAllUsers();

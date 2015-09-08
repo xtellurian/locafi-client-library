@@ -71,13 +71,16 @@
     <Compile Include="Exceptions\ReasonRepoException.cs" />
     <Compile Include="Exceptions\SkuRepoException.cs" />
     <Compile Include="Exceptions\SnapshotRepoException.cs" />
+    <Compile Include="Exceptions\TagReservationRepoException.cs" />
     <Compile Include="Exceptions\TemplateRepoException.cs" />
     <Compile Include="Exceptions\UserRepoException.cs" />
     <Compile Include="Exceptions\WebRepoException.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\IReaderRepo.cs" />
+    <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
     <Compile Include="Repo\ReaderRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
+    <Compile Include="Repo\TagReservationRepo.cs" />
     <Compile Include="Repo\TemplateRepo.cs" />
     <Compile Include="Repo\WebRepo.cs" />
     <Compile Include="Odata\ODataCollection.cs" />

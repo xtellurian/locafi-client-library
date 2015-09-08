@@ -71,6 +71,7 @@
     <Compile Include="Tests\ReaderRepoTests.cs" />
     <Compile Include="Tests\OrderRepoProcessTests.cs" />
     <Compile Include="Tests\InventoryProcessRepoTests.cs" />
+    <Compile Include="Tests\TagReservationRepoTests.cs" />
     <Compile Include="Tests\UserRepoTests.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />

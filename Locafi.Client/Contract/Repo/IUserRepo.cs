@@ -1,13 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Locafi.Client.Data;
+using Locafi.Client.Model.Dto.Users;
 using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface IUserRepo
     {
-        Task<IList<UserDto>> GetAllUsers();
-        Task<IList<UserDto>> QueryUsers(IRestQuery<UserDto> userQuery);
+        Task<IList<UserSummaryDto>> GetAllUsers();
+        Task<IList<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery);
+        Task<UserDetailDto> GetUserById(Guid id);
+        Task<UserDetailDto> CreateUser(AddUserDto addUserDto);
+        Task<UserDetailDto> UpdateUser(UpdateUserDto updateUserDto);
+        Task<bool> DeleteUser(Guid id);
+
     }
 }

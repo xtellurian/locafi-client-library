@@ -5,8 +5,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Data;
 using Locafi.Client.Exceptions;
+using Locafi.Client.Model.Dto.Users;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
@@ -20,27 +20,49 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<UserDto>> GetAllUsers()
+        public async Task<IList<UserSummaryDto>> GetAllUsers()
         {
-            var result = await Get<IList<UserDto>>();
+            var result = await Get<IList<UserSummaryDto>>();
             return result;
         }
 
-        public async Task<IList<UserDto>> QueryUsers(IRestQuery<UserDto> userQuery)
+        public async Task<IList<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery)
         {
             var result = await QueryUsers(userQuery.AsRestQuery());
             return result;
         }
 
-        public async Task<UserDto> GetUserById(Guid id)
+        public async Task<UserDetailDto> GetUserById(Guid id)
         {
-            throw new NotImplementedException(); // not really done properly in api - needs update
-             
+            var path = UserUri.GetUser(id);
+            var result = await Get<UserDetailDto>(path);
+            return result;
         }
 
-        protected async Task<IList<UserDto>> QueryUsers(string queryString)
+        public async Task<UserDetailDto> CreateUser(AddUserDto addUserDto)
         {
-            var result = await Get<IList<UserDto>>(queryString);
+            var path = UserUri.CreateUser;
+            var result = await Post<UserDetailDto>(addUserDto, path);
+            return result;
+        }
+
+        public async Task<UserDetailDto> UpdateUser(UpdateUserDto updateUserDto)
+        {
+            var path = UserUri.UpdateUser(updateUserDto.UserId);
+            var result = await Post<UserDetailDto>(updateUserDto, path);
+            return result;
+        }
+
+        public async Task<bool> DeleteUser(Guid id)
+        {
+            var path = UserUri.DeleteUser(id);
+            var result = await Delete(path);
+            return result;
+        }
+
+        protected async Task<IList<UserSummaryDto>> QueryUsers(string queryString)
+        {
+            var result = await Get<IList<UserSummaryDto>>(queryString);
             return result;
         }
 

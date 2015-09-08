@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Data;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Enums;
