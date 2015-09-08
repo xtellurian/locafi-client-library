@@ -16,10 +16,19 @@ namespace Locafi.Client.UnitTests.Implementations
         }
 
         public string BaseUrl { get; set; }
+        public async Task<string> GetBaseUrlAsync()
+        {
+            return BaseUrl;
+        }
 
         private string _token;
 
         public string GetTokenString()
+        {
+            return _token;
+        }
+
+        public async Task<string> GetTokenStringAsync()
         {
             return _token;
         }

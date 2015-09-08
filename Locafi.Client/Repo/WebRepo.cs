@@ -107,13 +107,22 @@ namespace Locafi.Client.Repo
 
         private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "", string content = null)
         {
-            var baseUrl = _unauthorizedConfigService.BaseUrl;
+            var baseUrl = await _unauthorizedConfigService.GetBaseUrlAsync();
+            
             var path = GetFullPath(baseUrl, _service, extra);
             var message = new HttpRequestMessage(method, path);
             if(content!=null) message.Content = new StringContent(content, Encoding.UTF8, "application/json");
 
             //message.Content.Headers.Add("Content-Type", new List<string> { "application/json" });
-            if(_authorisedUnauthorizedConfigService!=null) message.Headers.Add("Authorization", "Token " + _authorisedUnauthorizedConfigService.GetTokenString());
+            if (_authorisedUnauthorizedConfigService != null)
+            {
+                var token = await _authorisedUnauthorizedConfigService.GetTokenStringAsync();
+                if (token != null)
+                {
+                    message.Headers.Add("Authorization", "Token " + token);
+                }
+                
+            }
 
             var client = new HttpClient();
             Debug.WriteLine($"{method} request at {path}");

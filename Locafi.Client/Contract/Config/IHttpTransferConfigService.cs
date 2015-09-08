@@ -1,7 +1,9 @@
-﻿namespace Locafi.Client.Contract.Config
+﻿using System.Threading.Tasks;
+
+namespace Locafi.Client.Contract.Config
 {
     public interface IHttpTransferConfigService
     {
-        string BaseUrl { get; }
+        Task<string> GetBaseUrlAsync();
     }
 }

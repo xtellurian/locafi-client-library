@@ -1,7 +1,9 @@
-﻿namespace Locafi.Client.Contract.Config
+﻿using System.Threading.Tasks;
+
+namespace Locafi.Client.Contract.Config
 {
     public interface IAuthorisedHttpTransferConfigService : IHttpTransferConfigService
     { 
-        string GetTokenString();
+        Task<string> GetTokenStringAsync();
     }
 }
