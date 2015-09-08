@@ -38,7 +38,7 @@ namespace Locafi.Client.UnitTests.Tests
             _userRepo = WebRepoContainer.UserRepo;
         }
 
-        [TestMethod]
+   //     [TestMethod]
         public async Task InventoryCrud_GetAllInventories()
         {
             var inventories = await _inventoryRepo.GetAllInventories();

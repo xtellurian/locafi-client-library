@@ -62,7 +62,7 @@ namespace Locafi.Client.UnitTests.Tests
             Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
         }
 
-        [TestMethod]
+  //      [TestMethod]
         [ExpectedException(typeof(InventoryException))]
         public async Task InventoryProcess_AddSnapshotWrongPlace()
         {

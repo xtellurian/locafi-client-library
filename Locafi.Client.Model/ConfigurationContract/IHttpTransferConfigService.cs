@@ -1,4 +1,4 @@
-﻿namespace Locafi.Client.Contract.Config
+﻿namespace Locafi.Client.Model.ConfigurationContract
 {
     public interface IHttpTransferConfigService
     {

@@ -19,7 +19,7 @@ namespace Locafi.Client.UnitTests.Tests
             _skuRepo = WebRepoContainer.SkuRepo;
         }
 
-        [TestMethod]
+  //      [TestMethod]
         public async Task TagReservations_Reserve1ForEverySku()
         {
             var num = 1;
