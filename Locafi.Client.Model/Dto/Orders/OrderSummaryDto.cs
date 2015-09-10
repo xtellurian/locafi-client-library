@@ -16,7 +16,7 @@ namespace Locafi.Client.Model.Dto.Orders
 
         public OrderSummaryDto(OrderSummaryDto dto) : base(dto)
         {
-            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
+            var properties = typeof(OrderSummaryDto).GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {
                 var value = property.GetValue(dto);
