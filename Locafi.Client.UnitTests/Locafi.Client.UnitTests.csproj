@@ -59,29 +59,31 @@
   <ItemGroup>
     <Compile Include="EntityGenerators\SnapshotGenerator.cs" />
     <Compile Include="Factory\HttpConfigFactory.cs" />
+    <Compile Include="Implementations\HttpConfig.cs" />
     <Compile Include="Implementations\UnauthorisedHttpTransferConfigService.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="StringConstants.cs" />
-    <Compile Include="Tests\AuthenticationTests.cs" />
-    <Compile Include="Tests\SkuRepoTests.cs" />
-    <Compile Include="Tests\SnapshotRepoTests.cs" />
-    <Compile Include="Tests\PersonRepoTests.cs" />
-    <Compile Include="Tests\TemplateRepoTests.cs" />
-    <Compile Include="Tests\ReasonRepoTests.cs" />
-    <Compile Include="Tests\ReaderRepoTests.cs" />
-    <Compile Include="Tests\OrderRepoProcessTests.cs" />
-    <Compile Include="Tests\InventoryProcessRepoTests.cs" />
-    <Compile Include="Tests\TagReservationRepoTests.cs" />
-    <Compile Include="Tests\UserRepoTests.cs" />
+    <Compile Include="Tests\Rian\AuthenticationTests.cs" />
+    <Compile Include="Tests\Rian\SkuRepoTests.cs" />
+    <Compile Include="Tests\Rian\SnapshotRepoTests.cs" />
+    <Compile Include="Tests\Rian\PersonRepoTests.cs" />
+    <Compile Include="Tests\Rian\TemplateRepoTests.cs" />
+    <Compile Include="Tests\Rian\ReasonRepoTests.cs" />
+    <Compile Include="Tests\Rian\ReaderRepoTests.cs" />
+    <Compile Include="Tests\Rian\OrderRepoProcessTests.cs" />
+    <Compile Include="Tests\Rian\InventoryProcessRepoTests.cs" />
+    <Compile Include="Tests\Rian\TagReservationRepoTests.cs" />
+    <Compile Include="Tests\Rian\ConversionTests.cs" />
+    <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />
-    <Compile Include="Tests\InventoryCrudRepoTests.cs" />
-    <Compile Include="Tests\ItemRepoTests.cs" />
-    <Compile Include="Tests\OdataTests.cs" />
-    <Compile Include="Tests\OrderRepoCrudTests.cs" />
+    <Compile Include="Tests\Rian\InventoryCrudRepoTests.cs" />
+    <Compile Include="Tests\Rian\ItemRepoTests.cs" />
+    <Compile Include="Tests\Rian\OdataTests.cs" />
+    <Compile Include="Tests\Rian\OrderRepoCrudTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\PlaceRepoTests.cs" />
+    <Compile Include="Tests\Rian\PlaceRepoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

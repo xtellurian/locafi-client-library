@@ -43,7 +43,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\AuthenticationRepo.cs" />
+    <Compile Include="Contract\Config\IHttpTransferConfig.cs" />
+    <Compile Include="Repo\AuthenticationRepo.cs" />
     <Compile Include="Contract\Config\IAuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Contract\Config\IHttpTransferConfigService.cs" />
     <Compile Include="Contract\Config\ISerialiserService.cs" />

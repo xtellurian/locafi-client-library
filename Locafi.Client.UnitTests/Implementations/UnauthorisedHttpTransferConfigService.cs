@@ -14,5 +14,10 @@ namespace Locafi.Client.UnitTests.Implementations
         {
             return StringConstants.BaseUrl;
         }
+
+        public async Task<IHttpTransferConfig> GetConfigAsync()
+        {
+            return new HttpConfig() {BaseUrl = StringConstants.BaseUrl};
+        }
     }
 }

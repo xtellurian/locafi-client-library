@@ -16,7 +16,7 @@ namespace Locafi.Client.Model.Dto.Inventory
 
         public InventorySummaryDto(InventorySummaryDto dto) : base(dto)
         {
-            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
+            var properties = typeof(InventorySummaryDto).GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {
                 var value = property.GetValue(dto);

@@ -21,7 +21,7 @@ namespace Locafi.Client.UnitTests.Tests
             _reasonRepo = WebRepoContainer.ReasonRepo;
             _toBeDeleted = new List<Guid>();
         }
-      //  [TestMethod]
+  //      [TestMethod]
         public async Task Reason_GetAll()
         {
             var reasons = await _reasonRepo.GetAllReasons();
