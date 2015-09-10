@@ -85,14 +85,5 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNull(result.TokenGroup.Refresh);
         }
 
-        [TestMethod]
-        public void ctor_test()
-        {
-            var inventory = new InventorySummaryDto();
-            inventory.Id = Guid.NewGuid();
-            inventory.Name = "testing";
-            var i2 = new InventorySummaryDto(inventory);
-        }
-
     }
 }

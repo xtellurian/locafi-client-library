@@ -34,5 +34,9 @@ namespace Locafi.Client.Model.Dto.Reasons
         [JsonConverter(typeof(StringEnumConverter))]
         public ReasonFor ReasonFor { get; set; }
 
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

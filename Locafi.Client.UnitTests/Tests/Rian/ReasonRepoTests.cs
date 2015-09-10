@@ -40,6 +40,16 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(string.Equals(reason.ReasonNo, result.ReasonNo));
             
         }
+        [TestMethod]
+        public async Task Reason_GetReasonFor()
+        {
+            foreach (ReasonFor reasonEnum in Enum.GetValues(typeof(ReasonFor)))
+            {
+                var donwloaded = await _reasonRepo.GetReasonsFor(reasonEnum);
+                Assert.IsNotNull(donwloaded);
+                Assert.IsInstanceOfType(donwloaded, typeof(IEnumerable<ReasonDetailDto>));
+            }
+        }
 
       //  [TestMethod]
         public async Task Reason_Delete()
