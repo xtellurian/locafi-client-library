@@ -20,7 +20,7 @@ namespace Locafi.Client.Model.Dto.Inventory
 
         public InventoryDetailDto(InventoryDetailDto dto) : base(dto)
         {
-            var properties = typeof(InventoryDetailDto).GetTypeInfo().DeclaredProperties;
+            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {
                 var value = property.GetValue(dto);

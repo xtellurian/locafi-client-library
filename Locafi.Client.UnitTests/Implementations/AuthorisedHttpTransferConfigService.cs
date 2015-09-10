@@ -21,12 +21,6 @@ namespace Locafi.Client.UnitTests.Implementations
             return BaseUrl;
         }
 
-        public async Task<IHttpTransferConfig> GetConfigAsync()
-        {
-            var auth = new KeyValuePair<string, string>("Authorization", $"Token {_token}");
-            return new HttpConfig(BaseUrl,auth);
-        }
-
         private string _token;
 
         public string GetTokenString()

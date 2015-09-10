@@ -16,7 +16,7 @@ namespace Locafi.Client.Model.Dto.Reader
 
         public AntennaConfigDto(AntennaConfigDto dto): base(dto)
         {
-            var properties = typeof(AntennaConfigDto).GetTypeInfo().DeclaredProperties;
+            var properties = this.GetType().GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {
                 var value = property.GetValue(dto);

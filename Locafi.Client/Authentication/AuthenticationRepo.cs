@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
+using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Authentication;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using Locafi.Client.Model.Uri;
+using Locafi.Client.Repo;
 
-namespace Locafi.Client.Repo
+namespace Locafi.Client.Authentication
 {
     public class AuthenticationRepo : WebRepo, IAuthenticationRepo
     {

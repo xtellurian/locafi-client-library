@@ -71,7 +71,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
 
- //       [TestMethod]
+        [TestMethod]
         public async Task Place_Query()
         {
             var addPlace = await GenerateRandomAddPlaceDto();
