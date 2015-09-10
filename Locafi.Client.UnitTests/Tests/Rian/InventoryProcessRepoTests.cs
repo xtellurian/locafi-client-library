@@ -15,7 +15,7 @@ using Locafi.Client.Model.Query.PropertyComparison;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Locafi.Client.UnitTests.Tests
+namespace Locafi.Client.UnitTests.Tests.Rian
 {
     [TestClass]
     public class InventoryProcessRepoTests

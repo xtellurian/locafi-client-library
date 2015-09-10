@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
@@ -8,7 +7,7 @@ using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Locafi.Client.UnitTests.Tests
+namespace Locafi.Client.UnitTests.Tests.Rian
 {
     [TestClass]
     public class SnapshotRepoTests

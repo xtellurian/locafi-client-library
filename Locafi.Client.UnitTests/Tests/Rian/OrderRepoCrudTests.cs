@@ -9,7 +9,7 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Locafi.Client.UnitTests.Tests
+namespace Locafi.Client.UnitTests.Tests.Rian
 {
     [TestClass]
     public class OrderRepoCrudTests

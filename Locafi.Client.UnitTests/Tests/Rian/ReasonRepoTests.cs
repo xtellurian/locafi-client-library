@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Reasons;
 using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Locafi.Client.UnitTests.Tests
+namespace Locafi.Client.UnitTests.Tests.Rian
 {
     [TestClass]
     public class ReasonRepoTests

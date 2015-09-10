@@ -1,8 +1,7 @@
-﻿using System;
-using Locafi.Client.Contract.Repo;
+﻿using Locafi.Client.Contract.Repo;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Locafi.Client.UnitTests.Tests
+namespace Locafi.Client.UnitTests.Tests.Rian
 {
     [TestClass]
     public class OrderRepoProcessTests

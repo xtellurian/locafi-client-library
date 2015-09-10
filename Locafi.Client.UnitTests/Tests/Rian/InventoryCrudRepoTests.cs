@@ -2,20 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
-using Locafi.Client.Model.Dto.Places;
-using Locafi.Client.Model.Dto.Snapshots;
-using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
-using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Locafi.Client.UnitTests.Tests
+namespace Locafi.Client.UnitTests.Tests.Rian
 {
     [TestClass]
     public class InventoryCrudRepoTests
