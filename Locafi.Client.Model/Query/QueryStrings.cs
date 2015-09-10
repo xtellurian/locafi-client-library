@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Query
         {
             if (!sub.StartsWith("'")) sub = "'" + sub;
             if (!sub.EndsWith("'")) sub = sub + "'";
-            return $"contains({sub},{propertyName}) eq true";
+            return $"contains({propertyName},{sub}) eq true";
         }
 
         public static string Equals(string propertyName, string value)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Items;
@@ -84,7 +85,15 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(r1);
             Assert.IsInstanceOfType(r1, typeof(IEnumerable<ItemSummaryDto>));
             Assert.IsTrue(r1.Contains(item));
+
+            var q2 = new ItemQuery();
+            q2.CreateQuery(i=>i.Name, item.Name.Remove(item.Name.Length/2), ComparisonOperator.Contains);
+            var r2 = await _itemRepo.QueryItems(q2);
+            Assert.IsNotNull(r2);
+            Assert.IsTrue(r2.Contains(item));
+
             
+
         }
 
         [TestMethod]
