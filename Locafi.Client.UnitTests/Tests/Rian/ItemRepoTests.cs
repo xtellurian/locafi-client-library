@@ -78,7 +78,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var itemToAdd = await CreateRandomAddItemDto();
             var item = await _itemRepo.CreateItem(itemToAdd);
             Assert.IsNotNull(item);
-            
+
             var q1 = new ItemQuery();
             q1.CreateQuery(i => i.CreatedByUserFullName, item.CreatedByUserFullName, ComparisonOperator.Equals);
             var r1 = await _itemRepo.QueryItems(q1);
@@ -86,13 +86,22 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsInstanceOfType(r1, typeof(IEnumerable<ItemSummaryDto>));
             Assert.IsTrue(r1.Contains(item));
 
+
+
+        }
+        [TestMethod]
+        public async Task Item_QuerySubstring()
+        {
+            var itemToAdd = await CreateRandomAddItemDto();
+            var item = await _itemRepo.CreateItem(itemToAdd);
+            Assert.IsNotNull(item);
+
             var q2 = new ItemQuery();
-            q2.CreateQuery(i=>i.Name, item.Name.Remove(item.Name.Length/2), ComparisonOperator.Contains);
+            q2.CreateQuery(i => i.Name, item.Name.Remove(item.Name.Length / 2), ComparisonOperator.Contains);
             var r2 = await _itemRepo.QueryItems(q2);
             Assert.IsNotNull(r2);
             Assert.IsTrue(r2.Contains(item));
 
-            
 
         }
 
