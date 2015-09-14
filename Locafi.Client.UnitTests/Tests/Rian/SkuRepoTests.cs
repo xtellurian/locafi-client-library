@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Skus;
@@ -85,6 +86,13 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             result = await _skuRepo.QuerySkus(query);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Contains(sku));
+
+            var withGtin = skus.Where(s => !string.IsNullOrEmpty(s.Gtin));
+            var skuWithGin = withGtin.FirstOrDefault();
+            Assert.IsNotNull(skuWithGin, "No Gtins :(");
+            query.CreateQuery(s=>s.Gtin, skuWithGin.Gtin,ComparisonOperator.Equals);
+            result = await _skuRepo.QuerySkus(query);
+            Assert.IsTrue(result.Contains(skuWithGin));
 
         }
 

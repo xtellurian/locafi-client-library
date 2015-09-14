@@ -22,6 +22,8 @@ namespace Locafi.Client.Model.Dto.Skus
         }
         public string Name { get; set; }
 
+        public string Gtin { get; set; }
+
         public Guid TemplateId { get; set; }
         
         public string TemplateName { get; set; }
