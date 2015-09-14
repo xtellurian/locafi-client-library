@@ -17,7 +17,7 @@ namespace Locafi.Client.UnitTests
     {
         private static readonly ISerialiserService Serialiser;
         private static IAuthorisedHttpTransferConfigService AuthorisedHttpTransferConfigService 
-            => HttpConfigFactory.Generate(StringConstants.BaseUrl, StringConstants.UserName, StringConstants.Password).Result;
+            => HttpConfigFactory.Generate(StringConstants.BaseUrl, StringConstants.TestingEmailAddress, StringConstants.Password).Result;
         private static readonly IHttpTransferConfigService HttpConfigService;
 
 

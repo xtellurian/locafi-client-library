@@ -9,10 +9,10 @@ namespace Locafi.Client.Contract.Repo
 {
     public interface IAuthenticationRepo
     {
-        Task<AuthenticationResponseDto> Login (string username, string password);
+        Task<AuthenticationResponseDto> Login (string emailAddress, string password);
         Task<AuthenticationResponseDto> RefreshLogin(string refreshToken);
         Task<AuthenticationResponseDto> Login(ILoginCredentialsProvider credentials);
         Task<AuthenticationResponseDto> ReaderLogin(ILoginCredentialsProvider credentials);
-        Task<AuthenticationResponseDto> ReaderLogin(string userName, string password);
+        Task<AuthenticationResponseDto> ReaderLogin(string emailAddress, string password);
     }
 }

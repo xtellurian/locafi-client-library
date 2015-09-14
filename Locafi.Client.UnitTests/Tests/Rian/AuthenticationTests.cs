@@ -22,7 +22,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Authentication_SuccessfulLogin()
         { 
-            var result = await _authRepo.Login(StringConstants.UserName, StringConstants.Password);
+            var result = await _authRepo.Login(StringConstants.TestingEmailAddress, StringConstants.Password);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Success);
             Assert.IsNotNull(result.TokenGroup);
@@ -46,7 +46,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Authentication_RefreshLogin()
         {
-            var result = await _authRepo.Login(StringConstants.UserName, StringConstants.Password);
+            var result = await _authRepo.Login(StringConstants.TestingEmailAddress, StringConstants.Password);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Success);
             Assert.IsNotNull(result.TokenGroup);

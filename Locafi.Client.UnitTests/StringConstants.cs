@@ -8,7 +8,7 @@ namespace Locafi.Client.UnitTests
 {
     public static class StringConstants
     {
-        public static string UserName => "admintester";
+       // public static string UserName => "admintester";
         public static string Password => "t3ster";
         public static string TestingEmailAddress => "testing@ramp.com.au";
         public static string ReaderUserName => "037013190748";

@@ -22,11 +22,11 @@ namespace Locafi.Client.Authentication
         {
         }
 
-        public async Task<AuthenticationResponseDto> Login (string username, string password)
+        public async Task<AuthenticationResponseDto> Login (string emailAddress, string password)
         {
             var dto = new UserLoginDto
             {
-                Username = username,
+                Username = emailAddress,
                 Password = password
             };
             return await LoginWithDto(dto, AuthenticationUri.Login);
@@ -62,12 +62,12 @@ namespace Locafi.Client.Authentication
             return await LoginWithDto(dto, AuthenticationUri.ReaderLogin);
         }
 
-        public async Task<AuthenticationResponseDto> ReaderLogin(string userName, string password)
+        public async Task<AuthenticationResponseDto> ReaderLogin(string emailAddress, string password)
         {
             var dto = new UserLoginDto
             {
                 Password = password,
-                Username = userName
+                Username = emailAddress
             };
             return await LoginWithDto(dto, AuthenticationUri.ReaderLogin);
         }
