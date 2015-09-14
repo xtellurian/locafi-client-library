@@ -29,6 +29,6 @@ namespace Locafi.Client.Contract.Repo
             OrderDisputeDto dispute);
 
         Task<OrderActionResponseDto> Cancel(OrderSummaryDto order);
-        Task DeleteOrder(Guid orderId);
+        Task<bool> DeleteOrder(Guid orderId);
     }
 }

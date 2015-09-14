@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -15,5 +16,6 @@ namespace Locafi.Client.Contract.Repo
         Task<SkuDetailDto> GetSkuDetail(Guid skuId);
         Task<SkuDetailDto> CreateSku(AddSkuDto addSkuDto);
         Task Delete(Guid id);
+        Task<IList<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query);
     }
 }

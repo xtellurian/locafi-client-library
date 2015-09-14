@@ -10,6 +10,7 @@ namespace Locafi.Client.Model.RelativeUri
     {
         public static string ServiceName => "Users";
         public static string CreateUser => "CreateUser";
+        public static string GetUsers => "GetUsers";
         public static string GetUser(Guid id)
         {
             return $"GetUser/{id}";

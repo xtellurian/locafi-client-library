@@ -8,6 +8,7 @@ using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
@@ -32,6 +33,11 @@ namespace Locafi.Client.Repo
             var path = SkuUri.GetSkus;
             var result = await Get<IList<SkuSummaryDto>>(path);
             return result;
+        }
+
+        public async Task<IList<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query)
+        {
+            return await QuerySkus(query.AsRestQuery());
         }
 
         public async Task<SkuDetailDto> GetSkuDetail(Guid skuId)

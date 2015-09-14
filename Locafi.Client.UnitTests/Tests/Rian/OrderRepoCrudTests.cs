@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
@@ -109,6 +110,36 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             }
         }
         [TestMethod]
+        public async Task OrderCrud_DeleteOrder()
+        {
+            // from create success above
+            var ran = new Random();
+            var places = await _placeRepo.GetAllPlaces();
+            var numPlaces = places.Count;
+            var sourcePlace = places[ran.Next(numPlaces - 1)]; // get random places
+            var destinationPlace = places[ran.Next(numPlaces - 1)];
+
+            var persons = await _personRepo.GetAllPersons();
+            var person = persons[0];
+
+            var refNumber = Guid.NewGuid().ToString();
+            var description = Guid.NewGuid().ToString();
+            var skuLineItems = await GenerateSomeSkuLineItems();
+            var itemLineItems = await GenerateSomeItemLineItems();
+            var addOrder = new AddOrderDto(refNumber, description, sourcePlace.Id,
+                destinationPlace.Id, skuLineItems, itemLineItems, person.Id);
+
+            var order = await _orderRepo.Create(addOrder);
+            // use above for deletion
+            Assert.IsNotNull(order);
+            var success = await _orderRepo.DeleteOrder(order.Id);
+            Assert.IsTrue(success);
+            var allOrders = await _orderRepo.GetAllOrders();
+            Assert.IsFalse(allOrders.Contains(order));
+        }
+
+
+        [TestMethod]
         public async Task OrderCrud_QueryOrders()
         {
             var ran = new Random();
@@ -138,7 +169,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         public void Cleanup()
         {
             var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.EmailAddress, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
+            q1.CreateQuery(u => u.UserName, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
             var result = _userRepo.QueryUsers(q1).Result;
             var testUser = result.FirstOrDefault();
 
@@ -154,7 +185,18 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var orders = _orderRepo.QueryOrders(q).Result;
             foreach (var order in orders)
             {
-                _orderRepo.DeleteOrder(order.Id).Wait();
+                try
+                {
+                    _orderRepo.DeleteOrder(order.Id).Wait();
+                }
+                catch (OrderException orderEx)
+                {
+                    Debug.WriteLine($"Order Exception in {this.GetType()} {orderEx.ServerMessages.FirstOrDefault()}");
+                }
+                catch (AggregateException aggEx)
+                {
+                    Debug.WriteLine("Aggregate Exception while trying to delete an order");
+                }
             }
         }
 

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
@@ -61,6 +63,29 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(skus);
             Assert.IsInstanceOfType(skus, typeof(IEnumerable<SkuSummaryDto>));
             Assert.IsTrue(skus.Count > 0);
+        }
+
+        [TestMethod]
+        public async Task Sku_Query()
+        {
+            var skus = await _skuRepo.GetAllSkus();
+            Assert.IsNotNull(skus);
+            Assert.IsTrue(skus.Count > 0); // we have at least 1 sku
+
+            var ran = new Random();
+            var sku = skus[ran.Next(skus.Count - 1)];
+
+            var query = new SkuQuery();
+            query.CreateQuery(s => s.Name, sku.Name, ComparisonOperator.Equals);
+            var result = await _skuRepo.QuerySkus(query);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Contains(sku));
+
+            query.CreateQuery(s => s.TemplateId, sku.TemplateId, ComparisonOperator.Equals);
+            result = await _skuRepo.QuerySkus(query);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Contains(sku));
+
         }
 
         [TestMethod]

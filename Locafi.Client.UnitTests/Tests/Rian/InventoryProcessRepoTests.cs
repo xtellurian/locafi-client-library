@@ -129,7 +129,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         public void Cleanup()
         {
             var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.EmailAddress, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
+            q1.CreateQuery(u => u.UserName, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
             var result = _userRepo.QueryUsers(q1).Result;
             var testUser = result.FirstOrDefault();
 

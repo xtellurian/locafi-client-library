@@ -38,7 +38,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsInstanceOfType(user,typeof(UserSummaryDto));
             // query surname
             var q = new UserQuery();
-            q.CreateQuery(u=>u.EmailAddress,user.EmailAddress,ComparisonOperator.Equals);
+            q.CreateQuery(u=>u.UserName,user.UserName,ComparisonOperator.Equals);
             var result = await _userRepo.QueryUsers(q);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Contains(user));

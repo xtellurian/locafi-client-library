@@ -32,6 +32,6 @@ namespace Locafi.Client.Model.Dto.Users
 
         public string Surname { get; set; }
 
-        public string EmailAddress { get; set; }
+        public string UserName { get; set; }
     }
 }

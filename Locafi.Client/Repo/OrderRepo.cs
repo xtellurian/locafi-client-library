@@ -97,10 +97,10 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task DeleteOrder(Guid orderId)
+        public async Task<bool> DeleteOrder(Guid orderId)
         {
             var path = OrderUri.Delete(orderId);
-            await Delete(path);
+            return await Delete(path);
         }
 
         protected async Task<IList<OrderSummaryDto>> QueryOrders(string queryString)

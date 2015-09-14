@@ -22,7 +22,8 @@ namespace Locafi.Client.Repo
 
         public async Task<IList<UserSummaryDto>> GetAllUsers()
         {
-            var result = await Get<IList<UserSummaryDto>>();
+            var path = UserUri.GetUsers;
+            var result = await Get<IList<UserSummaryDto>>(path);
             return result;
         }
 
@@ -62,7 +63,8 @@ namespace Locafi.Client.Repo
 
         protected async Task<IList<UserSummaryDto>> QueryUsers(string queryString)
         {
-            var result = await Get<IList<UserSummaryDto>>(queryString);
+            var path = $"{UserUri.GetUsers}{queryString}";
+            var result = await Get<IList<UserSummaryDto>>(path);
             return result;
         }
 
