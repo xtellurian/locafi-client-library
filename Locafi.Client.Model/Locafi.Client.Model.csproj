@@ -33,6 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Locafi.Client-StrongNameKeyfile.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
@@ -145,6 +151,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Locafi.Client-StrongNameKeyfile.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
