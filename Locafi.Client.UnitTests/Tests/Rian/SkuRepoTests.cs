@@ -76,7 +76,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var ran = new Random();
             var sku = skus[ran.Next(skus.Count - 1)];
 
-            var query = new SkuQuery();
+            var query = new RegularSkuQuery();
             query.CreateQuery(s => s.Name, sku.Name, ComparisonOperator.Equals);
             var result = await _skuRepo.QuerySkus(query);
             Assert.IsNotNull(result);
