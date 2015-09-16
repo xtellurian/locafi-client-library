@@ -25,7 +25,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var users = await _userRepo.GetAllUsers();
             Assert.IsNotNull(users);
             Assert.IsInstanceOfType(users,typeof(IEnumerable<UserSummaryDto>));
-
+            Assert.IsTrue(users.Count > 0);
         }
 
        [TestMethod]

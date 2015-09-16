@@ -23,7 +23,7 @@ namespace Locafi.Client.Repo
 
         public async Task<TagReservationDto> ReserveTagsForSku(Guid skuId, int quantity)
         {
-            var path = TagReservationUri.Reserve(skuId, quantity);
+            var path = TagReservationUri.ReserveBySku(skuId, quantity);
             var result = await Get<TagReservationDto>(path);
             return result;
         }
