@@ -8,6 +8,7 @@ using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Query;
@@ -27,6 +28,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private IItemRepo _itemRepo;
         private IUserRepo _userRepo;
         private ISkuRepo _skuRepo;
+        private ITagReservationRepo _tagReservationRepo;
 
         [TestInitialize]
         public void Initialize()
@@ -38,8 +40,9 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _itemRepo = WebRepoContainer.ItemRepo;
             _userRepo = WebRepoContainer.UserRepo;
             _skuRepo = WebRepoContainer.SkuRepo;
+            _tagReservationRepo = WebRepoContainer.TagReservationRepo;
         }
-  //      [TestMethod]
+        [TestMethod]
         public async Task InventoryProcess_AddSnapshotSuccess()
         {
             var ran = new Random();
@@ -62,7 +65,84 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
         }
 
-  //      [TestMethod]
+        [TestMethod]
+        public async Task InventoryProcess_LoadTestSnapshot()
+        {
+            var ran = new Random();
+            var name = "Load test " + Guid.NewGuid();
+            var places = await _placeRepo.GetAllPlaces();
+            var place = places[ran.Next(places.Count - 1)];
+            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+
+            
+            var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId, 2000);
+            var startTime = DateTime.Now;
+            var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);
+            Debug.WriteLine("Snap upload: " + (DateTime.Now - startTime).TotalMilliseconds + "ms");
+            Assert.IsNotNull(resultSnapshot);
+            Assert.IsInstanceOfType(resultSnapshot, typeof(SnapshotDetailDto));
+
+            Assert.IsNotNull(inventory);
+            Assert.IsInstanceOfType(inventory, typeof(InventoryDetailDto));
+            startTime = DateTime.Now;
+            var resultInventory = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id);
+            Debug.WriteLine("Add Snap 2 Inv: " + (DateTime.Now - startTime).TotalMilliseconds + "ms");
+            Assert.IsNotNull(resultInventory);
+            Assert.IsInstanceOfType(resultInventory, typeof(InventoryDetailDto));
+            Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
+        }
+        [TestMethod]
+        public async Task InventoryProcess_UploadingNewSkuTagsInSnapshot()
+        {
+            var ran = new Random();
+            var numRealItems = ran.Next(100);
+            var place = await GetRandomPlace(Guid.Empty);
+            // pick a (valid) sku
+            var sku = await GetSkuWithValidCompanyAndItem();
+            // reserve some tag numbers 
+            var reservedTags = await _tagReservationRepo.ReserveTagsForSku(sku.Id, numRealItems);
+            var addSnapshot = new AddSnapshotDto(place.Id);
+            foreach (var tagNumber in reservedTags.TagNumbers)
+            {
+                addSnapshot.Tags.Add(new SnapshotTagDto {TagNumber = tagNumber, TagType = TagType.PassiveRfid});
+            }
+            // create some random tag numbers
+            addSnapshot = AddRandomTagsToSnapshot(addSnapshot, ran.Next(100));
+            // create and send up snapshot
+            var resultSnap = await _snapshotRepo.CreateSnapshot(addSnapshot);
+            Assert.IsNotNull(resultSnap, "Result snapshot was null");
+            // assert we made the right number of items
+            Assert.AreEqual(numRealItems, resultSnap.Items.Count, "Incorrect number of items created");
+            // verify all new items in snapshot return
+            foreach (var itemId in resultSnap.Items)
+            {
+                var item = await _itemRepo.GetItemDetail(itemId);
+                Assert.IsTrue(reservedTags.TagNumbers.Contains(item.TagNumber));
+            }
+        }
+
+        private async Task<SkuDetailDto> GetSkuWithValidCompanyAndItem()
+        {
+            var ran = new Random();
+            var skus = await _skuRepo.GetAllSkus();
+            var count = 0;
+            SkuDetailDto result = null;
+            while (true)
+            {
+                count++;
+                var skuSummary = skus[ran.Next(skus.Count - 1)];
+                var detail = await _skuRepo.GetSkuDetail(skuSummary.Id);
+                if (!string.IsNullOrEmpty(detail.CompanyPrefix) && !string.IsNullOrEmpty(detail.ItemReference))
+                {
+                    result = detail;
+                    break;
+                }
+                if (count > 100) break; // probably won't find a valid sku
+            }
+            return result;
+        }
+
+        //      [TestMethod]
         [ExpectedException(typeof(InventoryException))]
         public async Task InventoryProcess_AddSnapshotWrongPlace()
         {
@@ -145,7 +225,18 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var inventories = _inventoryRepo.QueryInventories(q).Result;
             foreach (var inventory in inventories)
             {
-                _inventoryRepo.Delete(inventory.Id).Wait();
+                try
+                {
+                    _inventoryRepo.Delete(inventory.Id).Wait();
+                }
+                catch (InventoryException)
+                {
+
+                }
+                catch (AggregateException)
+                {
+                    
+                }
             }
 
             var itemQuery = new ItemQuery();
@@ -153,7 +244,18 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var items = _itemRepo.QueryItems(itemQuery).Result;
             foreach (var item in items)
             {
-                _itemRepo.DeleteItem(item.Id).Wait();
+                try
+                {
+                    _itemRepo.DeleteItem(item.Id).Wait();
+                }
+                catch (WebRepoException)
+                {
+
+                }
+                catch (AggregateException)
+                {
+                    
+                }
             }
         }
 
@@ -179,6 +281,15 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             };
             return snapshot;
 
+        }
+
+        private AddSnapshotDto AddRandomTagsToSnapshot(AddSnapshotDto snapshot, int number)
+        {
+            for (var i = 0; i < number; i++)
+            {
+                snapshot.Tags.Add(new SnapshotTagDto {TagNumber = Guid.NewGuid().ToString(),TagType = TagType.PassiveRfid});
+            }
+            return snapshot;
         }
 
 

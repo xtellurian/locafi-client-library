@@ -14,6 +14,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
             Name = name;
             Tags = new List<SnapshotTagDto>();
             StartTimeUtc = DateTime.UtcNow;
+            EndTimeUtc = DateTime.Now;
         }
 
         public string Name { get; set; }    // friendly name for the snapshot

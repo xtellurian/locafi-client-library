@@ -18,7 +18,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _skuRepo = WebRepoContainer.SkuRepo;
         }
 
-      //  [TestMethod]
+        [TestMethod]
         public async Task TagReservations_Reserve1ForEverySku()
         {
             var num = 1;
@@ -27,7 +27,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(skus.Count > 0);
             foreach (var sku in skus)
             {
-                if (string.IsNullOrEmpty(sku.Gtin)) continue;
+                if (string.IsNullOrEmpty(sku.Gtin) || sku.Gtin.Length != 13) continue;
                 var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, num);
                 Assert.IsNotNull(reservation);
                 Assert.IsTrue(reservation.TagNumbers.Count == num);

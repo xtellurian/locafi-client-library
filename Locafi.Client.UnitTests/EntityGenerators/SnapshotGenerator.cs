@@ -9,12 +9,12 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 {
     public static class SnapshotGenerator
     {
-        public static AddSnapshotDto CreateRandomSnapshotForUpload(Guid placeId)
+        public static AddSnapshotDto CreateRandomSnapshotForUpload(Guid placeId, int number = -1)
         {
             var ran = new Random();
-
+            var count = number <= 0 ? ran.Next(50) : number;
             var name = Guid.NewGuid().ToString();
-            var tags = GenerateRandomTags();
+            var tags = GenerateRandomTags(count);
             var snap = new AddSnapshotDto(placeId)
             {
                 StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
@@ -25,12 +25,11 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             return snap;
         }
 
-        private static IList<SnapshotTagDto> GenerateRandomTags()
+        private static IList<SnapshotTagDto> GenerateRandomTags(int number)
         {
-            var ran = new Random();
+
             var tags = new List<SnapshotTagDto>();
-            var numTags = ran.Next(50);
-            for (var n = 0; n < numTags; n++)
+            for (var n = 0; n < number; n++)
             {
                 tags.Add(GenerateRandomTag());
             }

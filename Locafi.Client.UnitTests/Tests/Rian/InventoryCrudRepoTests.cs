@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
@@ -32,7 +33,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _userRepo = WebRepoContainer.UserRepo;
         }
 
-   //     [TestMethod]
+        [TestMethod]
         public async Task InventoryCrud_GetAllInventories()
         {
             var inventories = await _inventoryRepo.GetAllInventories();
@@ -40,7 +41,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsInstanceOfType(inventories, typeof(IEnumerable<InventorySummaryDto>));
         }
 
-   //     [TestMethod]
+        [TestMethod]
         public async Task InventoryCrud_QueryInventories()
         {
             // Create Inventory for us to Query
@@ -64,7 +65,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(result.Contains(inventory));
         }
 
-     //   [TestMethod]
+        [TestMethod]
         public async Task InventoryCrud_GetDetail()
         {
             var inventories = await _inventoryRepo.GetAllInventories();
@@ -78,18 +79,25 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             }
         }
 
-//        [TestMethod]
+        [TestMethod]
         public async Task InventoryCrud_Create()
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-            var result = await _inventoryRepo.CreateInventory(name, place.Id);
+            try
+            {
+                var result = await _inventoryRepo.CreateInventory(name, place.Id);
+                Assert.IsInstanceOfType(result, typeof(InventoryDetailDto));
+                Assert.IsTrue(string.Equals(result.Name, name));
+                Assert.AreEqual(place.Id, result.PlaceId);
+            }
+            catch (InventoryException invEx)
+            {
+                Assert.IsNotNull(null, $"Inventory Exception - PlaceName: {place.Name}, {invEx.ServerMessages.FirstOrDefault()?.Message}");
+            }
 
-            Assert.IsInstanceOfType(result, typeof (InventoryDetailDto));
-            Assert.IsTrue(string.Equals(result.Name, name));
-            Assert.AreEqual(place.Id, result.PlaceId);
         }
 
 
@@ -130,7 +138,17 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var inventories = _inventoryRepo.QueryInventories(q).Result;
             foreach (var inventory in inventories)
             {
-               _inventoryRepo.Delete(inventory.Id).Wait();
+                try
+                {
+                    _inventoryRepo.Delete(inventory.Id).Wait();
+                }
+                catch (WebRepoException)
+                {
+                }
+                catch (AggregateException)
+                {
+                    
+                }
             }
         }
 
