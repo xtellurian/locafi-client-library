@@ -107,6 +107,7 @@
     <Compile Include="Dto\Templates\TemplateExtendedPropertyDto.cs" />
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
+    <Compile Include="Enums\OrderStatus.cs" />
     <Compile Include="Enums\ReasonFor.cs" />
     <Compile Include="Enums\TagFor.cs" />
     <Compile Include="Enums\TagType.cs" />

@@ -69,10 +69,11 @@
     <Compile Include="Tests\Rian\TemplateRepoTests.cs" />
     <Compile Include="Tests\Rian\ReasonRepoTests.cs" />
     <Compile Include="Tests\Rian\ReaderRepoTests.cs" />
-    <Compile Include="Tests\Rian\OrderRepoProcessTests.cs" />
+    <Compile Include="Tests\Rian\OrderAllocationTests.cs" />
     <Compile Include="Tests\Rian\InventoryProcessRepoTests.cs" />
     <Compile Include="Tests\Rian\TagReservationRepoTests.cs" />
     <Compile Include="Tests\Rian\ConversionsBetweenDtos.cs" />
+    <Compile Include="Tests\Rian\OrderReceivingTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />

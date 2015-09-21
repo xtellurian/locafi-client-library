@@ -22,6 +22,11 @@ namespace Locafi.Client.Model.Dto.Snapshots
             TagType = TagType.PassiveRfid;
         }
 
+        public SnapshotTagDto(string tagNumber) : this()
+        {
+            TagNumber = tagNumber;
+        }
+
         public override bool Equals(object obj)
         {
             var tag = obj as SnapshotTagDto;

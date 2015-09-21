@@ -73,7 +73,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             }
         }
         [TestMethod]
-        public async Task Item_QueryItems()
+        public async Task Item_QueryItemsForSpecificItem()
         {
             var itemToAdd = await CreateRandomAddItemDto();
             var item = await _itemRepo.CreateItem(itemToAdd);
@@ -87,8 +87,16 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(r1.Contains(item));
 
 
-
         }
+        [TestMethod]
+        public async Task Item_QueryUsingTopTake()
+        {
+            var query = new ItemQuery();
+            query.CreateQuery(i=>i.Name, "", ComparisonOperator.Contains, 10, 0);
+            var items = await _itemRepo.QueryItems(query);
+            Assert.IsTrue(items.Count == 10);
+        }
+
         [TestMethod]
         public async Task Item_QuerySubstring()
         {
@@ -115,6 +123,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var count = await _itemRepo.GetItemCount();
             Assert.IsTrue(count > 0);
         }
+
+        
 
         [TestMethod]
         public async Task Item_MoveItem()

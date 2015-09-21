@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Orders
 {
@@ -24,7 +27,9 @@ namespace Locafi.Client.Model.Dto.Orders
             }
         }
         public string ReferenceNumber { get; set; }
-        public string Status { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))] // an enum here in the client
+        public OrderStatus Status { get; set; } // is a string on the server
         public string Description { get; set; }
         public Guid SourcePlaceId { get; set; }
         public Guid DestinationPlaceId { get; set; }
