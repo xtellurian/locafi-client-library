@@ -35,7 +35,13 @@ namespace Locafi.Script
                     break;
             }
 
-            Thread.Sleep(1500);
+
+            Console.WriteLine("Press Enter key to exit");
+
+             var line = Console.ReadLine();
+
+            Program.Exit();
+
         }
 
         private static async Task SetupAuth(string authUsername, string password)
@@ -54,11 +60,35 @@ namespace Locafi.Script
             var userQuery = new UserQuery();
             userQuery.CreateQuery(U => U.UserName, userToclean, ComparisonOperator.Equals);
             var users = await userRepo.QueryUsers(userQuery);
-            var userId = users.FirstOrDefault().Id;
+            var user = users.FirstOrDefault();
+            if (user == null)
+            {
 
+                return;
+            }
+            var userId = user.Id;
+            // clean items
+            var itemQuery = ItemQuery.NewQuery(i=>i.CreatedByUserId, userId, ComparisonOperator.Equals);
+            await Cleaner.CleanItems(itemQuery);
 
-            await Cleaner.CleanItems(userId);
-            await Cleaner.CleanPlaces(userId);
+            // clean places
+            var placeQuery = PlaceQuery.NewQuery(p=>p.CreatedByUserId, userId, ComparisonOperator.Equals);
+            await Cleaner.CleanPlaces(placeQuery);
+
+            // clean orders
+            var orderQuery = OrderQuery.NewQuery(o => o.CreatedByUserId, userId, ComparisonOperator.Equals);
+            await Cleaner.CleanOrders(orderQuery);
+
+            // clean inventories
+            var inventoryQuery = InventoryQuery.NewQuery(i => i.CreatedByUserId, userId, ComparisonOperator.Equals);
+            await Cleaner.CleanInventories(inventoryQuery);
+
+            // clean snapshots
+            var snapshotQuery = SnapshotQuery.NewQuery(s => s.CreatedByUserId, userId, ComparisonOperator.Equals);
+            await Cleaner.CleanSnapshots(snapshotQuery);
+
+           
+
         }
     }
 }

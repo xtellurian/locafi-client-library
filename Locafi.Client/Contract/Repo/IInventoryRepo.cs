@@ -17,7 +17,7 @@ namespace Locafi.Client.Contract.Repo
         Task<InventoryDetailDto> CreateInventory(string name, Guid placeId);
         Task<InventoryDetailDto> AddSnapshot(InventorySummaryDto inventory, Guid snapshotId);
         Task<InventoryDetailDto> Resolve(Guid inventoryId, ResolveInventoryDto reasons);
-        Task Delete(Guid id);
+        Task<bool> Delete(Guid id);
         Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query);
         Task<InventoryDetailDto> Complete(Guid inventoryId);
     }

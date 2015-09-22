@@ -8,6 +8,7 @@ using Locafi.Client.Contract.Errors;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Snapshots;
+using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
@@ -43,10 +44,15 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task Delete(Guid id)
+        public async Task<IList<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query)
+        {
+            return await QuerySnapshots(query.AsRestQuery());
+        }
+
+        public async Task<bool> Delete(Guid id)
         {
             var path = SnapshotUri.DeleteSnapshot(id);
-            await Delete(path);
+            return await Delete(path);
         }
 
         protected async Task<IList<SnapshotSummaryDto>> QuerySnapshots(string queryString)

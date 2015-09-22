@@ -116,6 +116,7 @@
     <Compile Include="Query\PropertyComparison\EntityQuery.cs" />
     <Compile Include="Query\PropertyComparison\OrderQuery.cs" />
     <Compile Include="Query\PropertyComparison\RegularSkuQuery.cs" />
+    <Compile Include="Query\PropertyComparison\SnapshotQuery.cs" />
     <Compile Include="RelativeUri\AuthenticationUri.cs" />
     <Compile Include="RelativeUri\ItemUri.cs" />
     <Compile Include="Conversion\PlaceDtoConversions.cs" />

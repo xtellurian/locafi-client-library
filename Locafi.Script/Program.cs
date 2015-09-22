@@ -13,6 +13,7 @@ namespace Locafi.Script
 {
     class Program
     {
+        private static bool _isRunning = true;
         static void Main(string[] args)
         {
             if (args.Length < 3)
@@ -34,9 +35,17 @@ namespace Locafi.Script
                     return;
             }
 
-            MainProgram.Entry(userName, password,realCommand, args[3]);
+            MainProgram.Entry(userName, password, realCommand, args[3]);
 
-            Thread.Sleep(Timeout.Infinite);
+            while (_isRunning)
+            {
+                
+            }
+        }
+
+        public static void Exit()
+        {
+            _isRunning = false;
         }
 
 

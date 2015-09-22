@@ -69,10 +69,10 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task Delete(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
             var path = InventoryUri.Delete(id);
-            await Delete(path);
+            return await Delete(path);
         }
 
         public async Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query)

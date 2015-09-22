@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto;
+using Locafi.Client.Model.Dto.Inventory;
+using Locafi.Client.Model.Dto.Items;
+using Locafi.Client.Model.Dto.Orders;
+using Locafi.Client.Model.Dto.Places;
+using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
+using Locafi.Script.Terminal;
 
 namespace Locafi.Script
 {
@@ -18,51 +25,81 @@ namespace Locafi.Script
             Console.WriteLine($"Deleting {entityDtoBases.Count()} {name}(s)");
             var successCount = 0;
             var failedCount = 0;
-            foreach (var entity in entityDtoBases)
+            using (var progress = new ProgressBar())
             {
-                try
+                var total = entityDtoBases.Count;
+                var count = 1;
+                foreach (var entity in entityDtoBases)
                 {
-                    if (await asyncDeleteAction(entity))
+                    try
                     {
-                        successCount++;
+                        if (await asyncDeleteAction(entity))
+                        {
+                            successCount++;
+                        }
+                        else
+                        {
+                            failedCount++;
+                        }
                     }
-                    else
+                    catch
                     {
                         failedCount++;
                     }
-                }
-                catch
-                {
-                    failedCount++;
+                    count++;
+                    progress.Report((double)count / total);
                 }
             }
             Console.WriteLine($"Deleted {successCount} {name}(s)");
             Console.WriteLine($"Failed {failedCount} {name}(s)");
+            Console.WriteLine("*");
+
         }
 
-        public static async Task CleanItems(Guid userId)
+        public static async Task CleanItems(IRestQuery<ItemSummaryDto> query)
         {
             Console.WriteLine("--- Cleaning Items ---");
             var itemRepo = WebRepoContainer.ItemRepo;
-            var query = new ItemQuery();
-            query.CreateQuery(i => i.CreatedByUserId, userId, ComparisonOperator.Equals);
             var items = await itemRepo.QueryItems(query);
 
             await DeleteEntities(items, i => itemRepo.DeleteItem(i.Id), "Item");
 
         }
 
-        public static async Task CleanPlaces(Guid userId)
+        public static async Task CleanPlaces(IRestQuery<PlaceSummaryDto> query)
         {
             Console.WriteLine("--- Cleaning Places ---");
             var placeRepo = WebRepoContainer.PlaceRepo;
-            var query = new PlaceQuery();
-            query.CreateQuery(p=>p.CreatedByUserId, userId, ComparisonOperator.Equals);
             var places = await placeRepo.QueryPlaces(query);
 
             await DeleteEntities(places, p => placeRepo.Delete(p.Id), "place");
         }
 
-        
+        public static async Task CleanInventories(IRestQuery<InventorySummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Inventories ---");
+            var inventoryRepo = WebRepoContainer.InventoryRepo;
+            var inventories = await inventoryRepo.QueryInventories(query);
+
+            await DeleteEntities(inventories, p => inventoryRepo.Delete(p.Id), "inventory");
+        }
+
+        public static async Task CleanSnapshots(IRestQuery<SnapshotSummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Snapshots ---");
+            var snapshotRepo = WebRepoContainer.SnapshotRepo;
+            var snapshots = await snapshotRepo.QuerySnapshots(query);
+
+            await DeleteEntities(snapshots, p => snapshotRepo.Delete(p.Id), "snapshot");
+        }
+
+        public static async Task CleanOrders(IRestQuery<OrderSummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Orders ---");
+            var orderRepo = WebRepoContainer.OrderRepo;
+            var orders = await orderRepo.QueryOrders(query);
+
+            await DeleteEntities(orders, o => orderRepo.DeleteOrder(o.Id), "order");
+        }
     }
 }
