@@ -71,7 +71,7 @@
     <Compile Include="Tests\Rian\ReasonRepoTests.cs" />
     <Compile Include="Tests\Rian\ReaderRepoTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderAllocationTests.cs" />
-    <Compile Include="Tests\Rian\InventoryProcessRepoTests.cs" />
+    <Compile Include="Tests\Rian\Inventory\InventoryProcessRepoTests.cs" />
     <Compile Include="Tests\Rian\TagReservationRepoTests.cs" />
     <Compile Include="Tests\Rian\ConversionsBetweenDtos.cs" />
     <Compile Include="Tests\Rian\Orders\OrderReceivingTests.cs" />
@@ -79,7 +79,7 @@
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />
-    <Compile Include="Tests\Rian\InventoryCrudRepoTests.cs" />
+    <Compile Include="Tests\Rian\Inventory\InventoryCrudRepoTests.cs" />
     <Compile Include="Tests\Rian\ItemRepoTests.cs" />
     <Compile Include="Tests\Rian\OdataTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderRepoCrudTests.cs" />
