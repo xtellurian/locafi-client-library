@@ -116,13 +116,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             
         }
-        [TestCleanup]
-        public async void Cleanup()
-        {
-            foreach (var id in _toDelete)
-            {
-                await _skuRepo.Delete(id);
-            }
-        }
+     
     }
 }

@@ -86,14 +86,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
         }
 
-        [TestCleanup]
-        public async void Cleanup()
-        {
-            foreach (var id in _toCleanup)
-            {
-                await _snapshotRepo.Delete(id);
-            }
-        }
+      
         private async Task<PlaceSummaryDto> GetRandomPlace()
         {
             var ran = new Random();

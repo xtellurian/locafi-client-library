@@ -51,10 +51,10 @@ namespace Locafi.Client.Repo
             return await QueryPlaces(query.AsRestQuery());
         }
 
-        public async Task Delete(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
             var path = PlaceUri.DeletePlace(id);
-            await Delete(path);
+            return await Delete(path);
         }
 
         protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = null)

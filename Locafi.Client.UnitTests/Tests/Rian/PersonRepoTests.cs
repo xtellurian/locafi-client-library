@@ -57,14 +57,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNull(detail, "detail != null third");
         }
 
-        [TestCleanup]
-        public async void Cleanup()
-        {
-            foreach (var id in _toCleanup)
-            {
-                await _personRepo.DeletePerson(id);
-            }
-        }
+      
 
         #region PrivateMethods
 

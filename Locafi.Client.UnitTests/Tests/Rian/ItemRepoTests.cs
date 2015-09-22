@@ -180,30 +180,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNull(sameItem);
         }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.UserName, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
-            var result = _userRepo.QueryUsers(q1).Result;
-            var testUser = result.FirstOrDefault();
-
-            if (testUser == null)
-            {
-                Debug.WriteLine("Couldn't return test user - can't clean up afrter Item Repo CRUD tests");
-                return;
-            }
-            var userId = testUser.Id;
-
-            var q = new ItemQuery(); // get the items made by this user and delete them
-            q.CreateQuery(e => e.CreatedByUserId, userId, ComparisonOperator.Equals);
-            var items = _itemRepo.QueryItems(q).Result;
-            foreach (var item in items)
-            {
-                _itemRepo.DeleteItem(item.Id).Wait();
-            }
-        }
-
         #region PrivateMethods
         private async Task<AddItemDto> CreateRandomAddItemDto()
         {

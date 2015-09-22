@@ -157,49 +157,13 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 skuLineItems, itemLineItems, person.Id);
             var order = await _orderRepo.Create(addOrder);
             Assert.IsNotNull(order);
-            
+
             var query = new OrderQuery();
-            query.CreateQuery(o=>o.DestinationPlaceId, order.DestinationPlaceId, ComparisonOperator.Equals);
+            query.CreateQuery(o => o.DestinationPlaceId, order.DestinationPlaceId, ComparisonOperator.Equals);
             var queryResult = await _orderRepo.QueryOrders(query);
             Assert.IsNotNull(queryResult, "queryResult != null");
             Assert.IsTrue(queryResult.Contains(order));
         }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.UserName, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
-            var result = _userRepo.QueryUsers(q1).Result;
-            var testUser = result.FirstOrDefault();
-
-            if (testUser == null)
-            {
-                Debug.WriteLine("Couldn't return test user - can't clean up afrter Order CRUD tests");
-                return;
-            }
-            var userId = testUser.Id;
-
-            var q = new OrderQuery(); // get the items made by this user and delete them
-            q.CreateQuery(e => e.CreatedByUserId, userId, ComparisonOperator.Equals);
-            var orders = _orderRepo.QueryOrders(q).Result;
-            foreach (var order in orders)
-            {
-                try
-                {
-                    _orderRepo.DeleteOrder(order.Id).Wait();
-                }
-                catch (OrderException orderEx)
-                {
-                    Debug.WriteLine($"Order Exception in {this.GetType()} {orderEx.ServerMessages.FirstOrDefault()}");
-                }
-                catch (AggregateException aggEx)
-                {
-                    Debug.WriteLine("Aggregate Exception while trying to delete an order");
-                }
-            }
-        }
-
 
     }
 }

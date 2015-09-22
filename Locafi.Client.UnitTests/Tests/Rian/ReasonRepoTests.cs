@@ -62,14 +62,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsFalse(allReasons.Contains(result));
         }
 
-        [TestCleanup]
-        public async void Cleanup()
-        {
-            foreach (var g in _toBeDeleted)
-            {
-                await _reasonRepo.Delete(g);
-            }
-        }
+      
 
 
         private AddReasonDto MakeRandomAddReason()

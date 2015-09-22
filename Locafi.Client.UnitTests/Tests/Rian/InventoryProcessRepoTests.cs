@@ -171,7 +171,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var otherPlace = places.Where(p => p.Id != place.Id).ToList()[ran.Next(places.Count - 2)];
             var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
 
-            var localSnapshot = await SimulateRealInventorySnapshot(place.Id, otherPlace.Id);//TODO: fix this method
+            var localSnapshot = await SimulateRealInventorySnapshot(place.Id, otherPlace.Id); //TODO: fix this method
             var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);
             Assert.IsNotNull(resultSnapshot, "Failed to creat snapshot");
             var resultInventory = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id);
@@ -201,62 +201,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var resolvedInventory = await _inventoryRepo.Resolve(resultInventory.Id, resolution);
 
             Assert.IsNotNull(resolvedInventory);
-            Assert.IsInstanceOfType(resolvedInventory, typeof(InventoryDetailDto));
+            Assert.IsInstanceOfType(resolvedInventory, typeof (InventoryDetailDto));
 
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.UserName, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
-            var result = _userRepo.QueryUsers(q1).Result;
-            var testUser = result.FirstOrDefault();
-
-            if (testUser == null)
-            {
-                Debug.WriteLine("Couldn't return test user - can't clean up afrter Inventory Process tests");
-                return;
-            }
-            var userId = testUser.Id;
-
-            var q = new InventoryQuery(); // get the items made by this user and delete them
-            q.CreateQuery(e => e.CreatedByUserId, userId, ComparisonOperator.Equals);
-            var inventories = _inventoryRepo.QueryInventories(q).Result;
-            foreach (var inventory in inventories)
-            {
-                try
-                {
-                    _inventoryRepo.Delete(inventory.Id).Wait();
-                }
-                catch (InventoryException)
-                {
-
-                }
-                catch (AggregateException)
-                {
-                    
-                }
-            }
-
-            var itemQuery = new ItemQuery();
-            itemQuery.CreateQuery(i=> i.CreatedByUserId, userId, ComparisonOperator.Equals);
-            var items = _itemRepo.QueryItems(itemQuery).Result;
-            foreach (var item in items)
-            {
-                try
-                {
-                    _itemRepo.DeleteItem(item.Id).Wait();
-                }
-                catch (WebRepoException)
-                {
-
-                }
-                catch (AggregateException)
-                {
-                    
-                }
-            }
         }
 
 

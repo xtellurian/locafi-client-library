@@ -129,17 +129,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsFalse(allPlaces.Any(p=> p.Id == place.Id)); // check our place is actually gone
         }
 
-       
-
-        [TestCleanup]
-        public async void Cleanup()
-        {
-            foreach (var id in _toCleanup)
-            {
-               await _placeRepo.Delete(id); //TODO: when implemented
-            }
-        }
-
 #region Private Methods
 
 

@@ -119,40 +119,5 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsFalse(inventories.Contains(inventory), "inventories.Contains(inventory)"); // assert the one we made no longer exists
         }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            var q1 = new UserQuery();// get this user
-            q1.CreateQuery(u => u.UserName, StringConstants.TestingEmailAddress, ComparisonOperator.Equals);
-            var result = _userRepo.QueryUsers(q1).Result;
-            var testUser = result.FirstOrDefault();
-            if (testUser == null)
-            {
-                Debug.WriteLine("Couldn't return test user - can't clean up afrter Inventory CRUD tests");
-                return;
-            }
-            var userId = testUser.Id;
-
-            var q = new InventoryQuery(); // get the items made by this user and delete them
-            q.CreateQuery(e => e.CreatedByUserId, userId, ComparisonOperator.Equals);
-            var inventories = _inventoryRepo.QueryInventories(q).Result;
-            foreach (var inventory in inventories)
-            {
-                try
-                {
-                    _inventoryRepo.Delete(inventory.Id).Wait();
-                }
-                catch (WebRepoException)
-                {
-                }
-                catch (AggregateException)
-                {
-                    
-                }
-            }
-        }
-
-      
-
     }
 }
