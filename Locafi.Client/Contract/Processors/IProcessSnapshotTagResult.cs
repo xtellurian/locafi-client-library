@@ -9,7 +9,7 @@ namespace Locafi.Client.Contract.Processors
 {
     public interface IProcessSnapshotTagResult
     {
-        bool IsSuccessful { get; }
+        bool IsTagExpected { get; }
         StrategyState State { get; }
         ProcessSnapshotTagResultCategory ResultCategory { get; }
     }

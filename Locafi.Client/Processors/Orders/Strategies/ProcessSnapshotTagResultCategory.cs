@@ -10,7 +10,9 @@ namespace Locafi.Client.Processors.Orders.Strategies
     {
         Ok,
         LineOverAllocated,
-        UnknownTag
+        LineOverReceived,
+        UnknownTag,
+        TagNumberMismatch
 
     }
 }

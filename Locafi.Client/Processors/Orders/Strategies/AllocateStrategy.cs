@@ -50,7 +50,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
             }
             else
             {
-                allocateState.AddUniqueItem(snapshotTag);
+                allocateState.AddTag(snapshotTag);
                 // check if tag is in list of unique items
                 if (orderDetail.RequiredItems.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
                 {
@@ -75,7 +75,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 QuantityOfSkuAddedthisRound = new Dictionary<Guid, int>();
             }
 
-            internal void AddUniqueItem(SnapshotTagDto tag)
+            internal void AddTag(SnapshotTagDto tag)
             {
                 TagsAddedThisRound.Add(tag);
             }

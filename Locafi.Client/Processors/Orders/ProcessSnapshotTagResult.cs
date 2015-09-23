@@ -10,19 +10,19 @@ namespace Locafi.Client.Processors.Orders
 {
     public class ProcessSnapshotTagResult : IProcessSnapshotTagResult
     {
-        public ProcessSnapshotTagResult(bool isSuccessful, StrategyState state, ProcessSnapshotTagResultCategory resultCategory = ProcessSnapshotTagResultCategory.Ok)
+        public ProcessSnapshotTagResult(bool isTagExpected, StrategyState state, ProcessSnapshotTagResultCategory resultCategory = ProcessSnapshotTagResultCategory.Ok)
         {
-            IsSuccessful = isSuccessful;
+            IsTagExpected = isTagExpected;
             State = state;
             ResultCategory = resultCategory;
 
-            if (!isSuccessful && resultCategory == ProcessSnapshotTagResultCategory.Ok)
+            if (!isTagExpected && resultCategory == ProcessSnapshotTagResultCategory.Ok)
             {
                 throw new ArgumentException("Result cannot be OK when success is false");
             }
         }
 
-        public bool IsSuccessful { get; }
+        public bool IsTagExpected { get; }
         public StrategyState State { get; }
         public ProcessSnapshotTagResultCategory ResultCategory { get; }
     }

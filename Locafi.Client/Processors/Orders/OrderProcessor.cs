@@ -57,7 +57,7 @@ namespace Locafi.Client.Processors.Orders
             var result = _strategy.ProcessTag(snapshotTag, OrderDetail, _state);
             _state = result.State;
             Tags.Add(snapshotTag);
-            if (!result.IsSuccessful)
+            if (!result.IsTagExpected)
             {
                 switch (result.ResultCategory)
                 {

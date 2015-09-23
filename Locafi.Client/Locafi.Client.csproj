@@ -87,6 +87,7 @@
     <Compile Include="Processors\Encoding\SgtinTagCoder.cs" />
     <Compile Include="Processors\Orders\OrderProcessor.cs" />
     <Compile Include="Processors\Orders\ProcessSnapshotTagResult.cs" />
+    <Compile Include="Processors\Orders\Strategies\ReceiveStrategy.cs" />
     <Compile Include="Processors\Orders\Strategies\InitStrategyState.cs" />
     <Compile Include="Processors\Orders\Strategies\ProcessSnapshotTagResultCategory.cs" />
     <Compile Include="Processors\Orders\Strategies\AllocateStrategy.cs" />

@@ -46,19 +46,19 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             foreach (var tag in reservation.TagNumbers.Select(tagNumber => new SnapshotTagDto(tagNumber)))
             {
                 var result = strategy.ProcessTag(tag, order,state );
-                Assert.IsTrue(result.IsSuccessful);
+                Assert.IsTrue(result.IsTagExpected);
                 state = result.State;
             }
             var badTag = new SnapshotTagDto("xx");
             var badResult = strategy.ProcessTag(badTag, order, state);
-            Assert.IsFalse(badResult.IsSuccessful);
+            Assert.IsFalse(badResult.IsTagExpected);
             Assert.AreEqual(badResult.ResultCategory, ProcessSnapshotTagResultCategory.UnknownTag);
 
             // add all a second tiem
             foreach (var tag in reservation.TagNumbers.Select(tagNumber => new SnapshotTagDto(tagNumber)))
             {
                 var result = strategy.ProcessTag(tag, order, state);
-                Assert.IsTrue(result.IsSuccessful);
+                Assert.IsTrue(result.IsTagExpected);
                 state = result.State;
             }
         }
