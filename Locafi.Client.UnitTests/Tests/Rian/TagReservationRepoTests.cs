@@ -18,7 +18,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _skuRepo = WebRepoContainer.SkuRepo;
         }
 
-        [TestMethod]
+ //       [TestMethod]
         public async Task TagReservations_Reserve1ForEverySku()
         {
             var num = 1;

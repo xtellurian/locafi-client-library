@@ -69,7 +69,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 Assert.AreEqual(snap, result);
             }
         }
-        [TestMethod]
+  //      [TestMethod]
         public async Task Snapshot_Delete()
         {
             // create snapshot

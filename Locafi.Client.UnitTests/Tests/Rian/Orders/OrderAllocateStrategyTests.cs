@@ -25,7 +25,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
         }
 
         [TestMethod]
-        public async Task Strategy_Allocate()
+        public async Task Strategy_AllocateSimple()
         {
             var ran = new Random();
             IProcessSnapshotTagOrderStrategy strategy = new AllocateStrategy();
@@ -33,7 +33,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             var skus = await _skuRepo.GetAllSkus();
             var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
             var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
-
+            Assert.IsTrue(reservation.TagNumbers.Count == quantity, "Tag Reservation and quantity are Equal");
             var order = new OrderDetailDto();
             StrategyState state = new InitStrategyState(null, null);
             order.RequiredSkus.Add(new OrderSkuLineItemDto
@@ -46,7 +46,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             foreach (var tag in reservation.TagNumbers.Select(tagNumber => new SnapshotTagDto(tagNumber)))
             {
                 var result = strategy.ProcessTag(tag, order,state );
-                Assert.IsTrue(result.IsTagExpected);
+                Assert.IsTrue(result.IsTagExpected, "Adding the first time");
                 state = result.State;
             }
             var badTag = new SnapshotTagDto("xx");
@@ -58,7 +58,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             foreach (var tag in reservation.TagNumbers.Select(tagNumber => new SnapshotTagDto(tagNumber)))
             {
                 var result = strategy.ProcessTag(tag, order, state);
-                Assert.IsTrue(result.IsTagExpected);
+                Assert.IsTrue(result.IsTagExpected, "Adding a second time");
                 state = result.State;
             }
         }

@@ -25,7 +25,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 // check if the sku is a part of the order
             {
                 var skuDetail = orderDetail.RequiredSkus.FirstOrDefault(t => string.Equals(t.SgtinRef, gtin));
-                //check if Tag is already allocated
+                //check if Tag is already allocated / added to the stae
                 if (state.AlreadyAllocated.Any(tag => string.Equals(tag.TagNumber , snapshotTag.TagNumber)) ||
                     allocateState.TagsAddedThisRound.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
                 {
@@ -34,9 +34,10 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 }
                 else
                 { 
+                    // add tag to the state
                     allocateState.AddSkuLineItem(skuDetail.SkuId, snapshotTag);
                     // Is Extra Item Allowed?
-                    if (skuDetail.QtyAllocated + allocateState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] <
+                    if (skuDetail.QtyAllocated + allocateState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] <=
                         skuDetail.Quantity) // extra item is allowed
                     {
                         return new ProcessSnapshotTagResult(true, allocateState);

@@ -28,7 +28,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             _tagReservationRepo = WebRepoContainer.TagReservationRepo;
             _snapshotRepo = WebRepoContainer.SnapshotRepo;
         }
-        [TestMethod]
+  //      [TestMethod]
         public async Task OrderProcessor_AllocateExact()
         {
             var ran = new Random();

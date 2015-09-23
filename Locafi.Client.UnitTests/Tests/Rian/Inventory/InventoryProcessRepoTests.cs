@@ -91,7 +91,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsInstanceOfType(resultInventory, typeof(InventoryDetailDto));
             Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
         }
-        [TestMethod]
+  //      [TestMethod]
         public async Task InventoryProcess_UploadingNewSkuTagsInSnapshot()
         {
             var ran = new Random();
