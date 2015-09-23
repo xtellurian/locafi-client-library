@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
-using Locafi.Client.Contract.Errors;
+using Locafi.Client.Contract.ErrorHandlers;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Orders;

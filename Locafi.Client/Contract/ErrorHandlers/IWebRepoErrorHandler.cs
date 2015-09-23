@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Responses;
 
-namespace Locafi.Client.Contract.Errors
+namespace Locafi.Client.Contract.ErrorHandlers
 {
     public interface IWebRepoErrorHandler
     {

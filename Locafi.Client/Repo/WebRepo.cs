@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
-using Locafi.Client.Contract.Errors;
+using Locafi.Client.Contract.ErrorHandlers;
 using Locafi.Client.Model.Responses;
 using Newtonsoft.Json;
 
