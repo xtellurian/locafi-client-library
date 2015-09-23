@@ -9,6 +9,8 @@ namespace Locafi.Client.Exceptions
 {
     public class OrderProcessException : System.Exception
     {
+        public IProcessSnapshotTagResult ProcessResult { get; set; }
+
         public OrderProcessException()
         {
             
@@ -16,7 +18,7 @@ namespace Locafi.Client.Exceptions
 
         public OrderProcessException(IProcessSnapshotTagResult processResult)
         {
-            
+            ProcessResult = processResult;
         }
     }
 }

@@ -8,7 +8,10 @@ namespace Locafi.Client.Model.Dto.Orders
     {
         public OrderDetailDto()
         {
-            
+            SourceSnapshotIds = new List<Guid>();
+            DestinationSnapshotIds = new List<Guid>();
+            RequiredSkus = new List<OrderSkuLineItemDto>();
+            RequiredItems = new List<OrderItemLineItemDto>();
         }
 
         public OrderDetailDto(OrderDetailDto dto): base(dto)

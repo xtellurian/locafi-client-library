@@ -15,7 +15,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
             AlreadyAllocated = alreadyAllocated?.ToList() ?? new List<IRfidTag>();
             AlreadyReceived = alreadyReceived?.ToList() ?? new List<IRfidTag>();
         }
-        public IList<IRfidTag> AlreadyAllocated { get; protected set; }
-        public IList<IRfidTag> AlreadyReceived { get; protected set; }
+        public IList<IRfidTag> AlreadyAllocated { get; private set; }
+        public IList<IRfidTag> AlreadyReceived { get; private set; }
     }
 }

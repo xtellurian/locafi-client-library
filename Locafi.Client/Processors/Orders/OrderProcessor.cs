@@ -56,16 +56,13 @@ namespace Locafi.Client.Processors.Orders
             if(_state==null) throw new NullReferenceException("State was not initialised");
             var result = _strategy.ProcessTag(snapshotTag, OrderDetail, _state);
             _state = result.State;
-            if (result.IsSuccessful)
-            {
-                Tags.Add(snapshotTag);
-            }
-            else
+            Tags.Add(snapshotTag);
+            if (!result.IsSuccessful)
             {
                 switch (result.ResultCategory)
                 {
                     case ProcessSnapshotTagResultCategory.LineOverAllocated:
-
+                        throw new OrderProcessException(result);
                         break;
                     case ProcessSnapshotTagResultCategory.UnknownTag:
                         await OnUnknownTag(snapshotTag);

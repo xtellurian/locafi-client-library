@@ -60,10 +60,13 @@
     <Compile Include="EntityGenerators\SnapshotGenerator.cs" />
     <Compile Include="Factory\HttpConfigFactory.cs" />
     <Compile Include="Implementations\UnauthorisedHttpTransferConfigService.cs" />
+    <Compile Include="Mocks\SnapshotRepoMock.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="StringConstants.cs" />
     <Compile Include="Tests\Rian\AuthenticationTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
+    <Compile Include="Tests\Rian\Orders\OrderAllocateStrategyTests.cs" />
+    <Compile Include="Tests\Rian\Orders\OrderProcessorTests.cs" />
     <Compile Include="Tests\Rian\SkuRepoTests.cs" />
     <Compile Include="Tests\Rian\SnapshotRepoTests.cs" />
     <Compile Include="Tests\Rian\PersonRepoTests.cs" />
