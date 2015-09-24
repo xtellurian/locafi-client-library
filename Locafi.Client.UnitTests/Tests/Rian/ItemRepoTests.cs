@@ -55,7 +55,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(check);
             Assert.AreEqual(result,check);
         }
-   //     [TestMethod]
+        [TestMethod]
         public async Task Item_UseExtendedProperties()
         {
             var addItemDto = await CreateRandomAddItemDto();
