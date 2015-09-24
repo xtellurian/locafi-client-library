@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Templates
 {
@@ -20,7 +23,8 @@ namespace Locafi.Client.Model.Dto.Templates
 
         public bool TemplateExtendedPropertyIsRequired { get; set; }
 
-        public string ExtendedPropertyDataType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TemplateDataTypes ExtendedPropertyDataType { get; set; }
 
     }
 }

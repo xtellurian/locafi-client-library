@@ -57,7 +57,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(snaps.Contains(result));
         }
 
-        [TestMethod]
+   //     [TestMethod]
         public async Task Snapshot_GetById() // assumes some exist already
         {
             var snaps = await _snapshotRepo.GetAllSnapshots();

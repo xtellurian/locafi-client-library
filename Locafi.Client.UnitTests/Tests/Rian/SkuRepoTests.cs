@@ -26,7 +26,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _toDelete = new List<Guid>();
         }
 
-    //    [TestMethod]
+  //      [TestMethod]
         public async Task Sku_Create()
         {
             var ran = new Random();
@@ -38,9 +38,17 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Item);
             var template = templates[ran.Next(templates.Count - 1)];
             var templateDetail = await _templateRepo.GetById(template.Id);
-            foreach (var extendedProp in templateDetail.TemplateExtendedPropertyList)
+            var extendedProperties = new List<WriteSkuExtendedPropertyDto>();
+            foreach (var extendedPropRequired in templateDetail.TemplateExtendedPropertyList)
             {
-                //extendedProp.
+                var extendedProperty = new WriteSkuExtendedPropertyDto();
+                extendedProperty.ExtendedPropertyId = extendedPropRequired.ExtendedPropertyId;
+                //extendedProperty.
+                switch (extendedPropRequired.ExtendedPropertyDataType)
+                {
+                  //  case TemplateDataTypes.Bool:
+
+                }
             }
             var sku = new AddSkuDto
             {
@@ -49,7 +57,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 ItemReference = itemReference,
                 ItemTemplateId = template.Id,
                 Name = name,
-                SkuExtendedPropertyList = new List<WriteSkuExtendedPropertyDto>()
+             //   SkuExtendedPropertyList = 
             };
 
             var result = await _skuRepo.CreateSku(sku);
@@ -100,7 +108,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
         }
 
-        [TestMethod]
+   //     [TestMethod]
         public async Task Sku_GetDetails()
         {
             var ran = new Random();
