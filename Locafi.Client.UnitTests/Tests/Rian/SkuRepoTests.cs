@@ -108,7 +108,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
         }
 
-   //     [TestMethod]
+        [TestMethod]
         public async Task Sku_GetDetails()
         {
             var ran = new Random();
@@ -122,11 +122,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 Assert.AreEqual(sku,detail);
             }
 
-        }
-
-        public async Task GetSkuRefFromSgtin()
-        {
-            
         }
      
     }
