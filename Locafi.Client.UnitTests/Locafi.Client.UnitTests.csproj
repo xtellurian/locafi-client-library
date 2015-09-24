@@ -67,6 +67,7 @@
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderAllocateStrategyTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderProcessorTests.cs" />
+    <Compile Include="Tests\Rian\Orders\OrderReceiveStrategyTests.cs" />
     <Compile Include="Tests\Rian\SkuRepoTests.cs" />
     <Compile Include="Tests\Rian\SnapshotRepoTests.cs" />
     <Compile Include="Tests\Rian\PersonRepoTests.cs" />

@@ -10,12 +10,14 @@ namespace Locafi.Client.Model.Enums
     {
         Cancelled,
         Created,
+        Allocating,
         PartiallyAllocated,
         Allocated,
         Dispatched,
+        Receiving,
         PartiallyReceived,
         Received,
         Disputed,
         Closed
-}
+    }
 }
