@@ -14,15 +14,22 @@ namespace Locafi.Client.UnitTests.Factory
     public static class HttpConfigFactory
     {
 
-        public static async Task<AuthorisedHttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd)
+        public static async Task<AuthorisedHttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd, bool isReader = false)
         {
             var user = new UserLoginDto
             {
                 Username = usrname,
                 Password = passwrd
             };
-            var result = await Post(baseUrl + "Authentication/Login/", user);
-
+            string result;
+            if (isReader)
+            {
+                result = await Post(baseUrl + "Authentication/ReaderLogin/", user);
+            }
+            else
+            {                
+                result = await Post(baseUrl + "Authentication/Login/", user);                
+            }
             var configService = new AuthorisedHttpTransferConfigService(result)
             {
                 BaseUrl = baseUrl

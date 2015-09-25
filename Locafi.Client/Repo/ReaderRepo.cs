@@ -11,6 +11,7 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Authentication;
 using Locafi.Client.Model.Dto.Reader;
+using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
@@ -34,6 +35,13 @@ namespace Locafi.Client.Repo
         public async Task<ReaderDetailDto> GetReaderById(Guid id)
         {
             var path = ReaderUri.GetReader(id);
+            var result = await Get<ReaderDetailDto>(path);
+            return result;
+        }
+
+        public async Task<ReaderDetailDto> GetReaderBySerial(string serial)
+        {
+            var path = ReaderUri.GetReader(serial);
             var result = await Get<ReaderDetailDto>(path);
             return result;
         }
