@@ -21,10 +21,10 @@ namespace Locafi.Client.Processors.Orders.Strategies
             var allocateState = state as AllocateState ?? new AllocateState(state.AlreadyAllocated, state.AlreadyReceived); // init state
             
             var gtin = SgtinTagCoder.GetGtin(snapshotTag.TagNumber);
-            if (orderDetail.RequiredSkus.Any(rs => string.Equals(rs.SgtinRef, gtin)))
+            if (orderDetail.RequiredSkus.Any(rs => string.Equals(rs.Gtin, gtin)))
                 // check if the sku is a part of the order
             {
-                var skuDetail = orderDetail.RequiredSkus.FirstOrDefault(t => string.Equals(t.SgtinRef, gtin));
+                var skuDetail = orderDetail.RequiredSkus.FirstOrDefault(t => string.Equals(t.Gtin, gtin));
                 //check if Tag is already allocated / added to the stae
                 if (state.AlreadyAllocated.Any(tag => string.Equals(tag.TagNumber , snapshotTag.TagNumber)) ||
                     allocateState.TagsAddedThisRound.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
@@ -45,7 +45,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
                     else
                     {
                         // we have too many of this sku
-                        return new ProcessSnapshotTagStrategyResult(false, null,skuDetail, null, ProcessSnapshotTagResultCategory.LineOverAllocated);
+                        return new ProcessSnapshotTagStrategyResult(false, state ,skuDetail, null, ProcessSnapshotTagResultCategory.LineOverAllocated);
                     }
                 }
             }

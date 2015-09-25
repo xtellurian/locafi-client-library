@@ -20,6 +20,11 @@ namespace Locafi.Client.Processors.Orders
             ItemLineItem = itemLineItem;
             ResultCategory = resultCategory;
 
+            if (state == null)
+            {
+                throw new NullReferenceException("Strategy State cannot be null");
+            }
+
             if (!isTagExpected && resultCategory == ProcessSnapshotTagResultCategory.Ok)
             {
                 throw new ArgumentException("Result cannot be OK when success is false");
