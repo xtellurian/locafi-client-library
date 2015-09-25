@@ -2,7 +2,7 @@
 
 namespace Locafi.Client.Model.Query.PropertyComparison
 {
-    public class RegularSkuQuery : PropertyQueryBase<SkuSummaryDto>
+    public class SkuQuery : PropertyQueryBase<SkuSummaryDto>
     {
     }
 }
