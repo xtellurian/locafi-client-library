@@ -1,4 +1,4 @@
-﻿namespace Locafi.Client.Model.Actions
+﻿namespace Locafi.Client.Model.Enums.Actions
 {
     public enum OrderAction
     {
