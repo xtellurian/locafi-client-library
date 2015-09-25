@@ -11,8 +11,6 @@ namespace Locafi.Client.Processors.Orders.Strategies
         Ok,
         LineOverAllocated,
         LineOverReceived,
-        UnknownTag,
-        TagNumberMismatch
-
+        UnknownTag
     }
 }

@@ -76,7 +76,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             nextResult = strategy.ProcessTag(new SnapshotTagDto(nextResveration.TagNumbers.FirstOrDefault()), order,
                 state);
             Assert.IsFalse(nextResult.IsTagExpected);
-            Assert.AreEqual(ProcessSnapshotTagResultCategory.TagNumberMismatch, nextResult.ResultCategory); // because tag was never allocated
+            Assert.AreEqual(ProcessSnapshotTagResultCategory.LineOverReceived, nextResult.ResultCategory); // because tag was never allocated
             state = nextResult.State;
         }
 

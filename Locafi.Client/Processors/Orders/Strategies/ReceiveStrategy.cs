@@ -65,15 +65,31 @@ namespace Locafi.Client.Processors.Orders.Strategies
             else
             {
                 // tag is not part of allocation
-                if (skuDetail == null)
+                if (skuDetail != null)
                 {
-                    return new ProcessSnapshotTagStrategyResult(false, receivedState, null, null,
-                        ProcessSnapshotTagResultCategory.UnknownTag);
+                    // sku is in order but tag was never allocated
+                    // check quantity of sku
+                    if (!receivedState.QuantityOfSkuAddedthisRound.ContainsKey(skuDetail.SkuId))
+                    {
+                        receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] = 0;
+                    }
+                    receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId]++;
+                    if (skuDetail.QtyReceived + receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] > skuDetail.QtyAllocated)
+                    // over received
+                    {
+                        return new ProcessSnapshotTagStrategyResult(false, receivedState, skuDetail, null,
+                            ProcessSnapshotTagResultCategory.LineOverReceived);
+                    }
+                    else
+                    {
+                        return new ProcessSnapshotTagStrategyResult(true, receivedState, skuDetail);
+                    }
+                  
                 }
                 else
                 {
-                    // sku is in order but tag was never allocated
-                    return new ProcessSnapshotTagStrategyResult(false, receivedState,skuDetail, null, ProcessSnapshotTagResultCategory.TagNumberMismatch );
+                    return new ProcessSnapshotTagStrategyResult(false, receivedState, null, null,
+                      ProcessSnapshotTagResultCategory.UnknownTag);
                 }
             }
 

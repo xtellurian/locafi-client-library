@@ -61,13 +61,12 @@ namespace Locafi.Client.Processors.Orders
             switch (result.ResultCategory)
             {
                 case ProcessSnapshotTagResultCategory.LineOverAllocated:
+                    result.SkuLineItem.QtyAllocated++;
                     return new ProcessTagResult(true, false,result.SkuLineItem);
                     break;
                 case ProcessSnapshotTagResultCategory.LineOverReceived:
+                    result.SkuLineItem.QtyReceived++;
                     return new ProcessTagResult(true, false, result.SkuLineItem);
-                    break;
-                case ProcessSnapshotTagResultCategory.TagNumberMismatch:
-                    return new ProcessTagResult(false, true, result.SkuLineItem, result.ItemLineItem);
                     break;
                 case ProcessSnapshotTagResultCategory.UnknownTag:
                     OnUnknownTag(snapshotTag);
