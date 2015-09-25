@@ -4,9 +4,11 @@
     {
         Create,
         Allocate,
+        SubmitAllocate,
         DisputeAllocate,
         Dispatch,
         Receive,
+        SubmitReceive,
         DisputeReceive,
         AdHocReceive,
         AdHocDisputeReceive,
