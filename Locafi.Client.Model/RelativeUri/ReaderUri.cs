@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Uri
+namespace Locafi.Client.Model.RelativeUri
 {
     public static class ReaderUri
     {
@@ -16,6 +11,11 @@ namespace Locafi.Client.Model.Uri
         public static string GetReader(Guid id)
         {
             return $"GetReader/{id}";
+        }
+
+        public static string GetReader(string serial)
+        {
+            return $"GetReaderBySerial/{serial}";
         }
 
         public static string Delete(Guid id)

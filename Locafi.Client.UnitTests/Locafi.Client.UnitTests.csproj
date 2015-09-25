@@ -63,6 +63,7 @@
     <Compile Include="Mocks\SnapshotRepoMock.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="StringConstants.cs" />
+    <Compile Include="Tests\Anthony\ReaderRepoTests.cs" />
     <Compile Include="Tests\Rian\AuthenticationTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderAllocateStrategyTests.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Tests\Rian\ConversionsBetweenDtos.cs" />
     <Compile Include="Tests\Rian\Orders\OrderReceivingTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
+    <Compile Include="WebRepoAsAuthorisedReaderContainer.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />
