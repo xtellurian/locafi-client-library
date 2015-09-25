@@ -9,7 +9,7 @@ namespace Locafi.Client.Model.Dto.Orders
         public int PackingSize { get; set; }
         public int QtyAllocated { get; set; }
         public int QtyReceived { get; set; }
-        public string SgtinRef { get; set; }
+        public string Gtin { get; set; }
         public string Name { get; set; }
     }
 }
