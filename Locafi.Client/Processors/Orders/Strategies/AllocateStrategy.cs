@@ -30,7 +30,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
                     allocateState.TagsAddedThisRound.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
                 {
                     // return OK
-                    return new ProcessSnapshotTagStrategyResult(true, allocateState);
+                    return new ProcessSnapshotTagStrategyResult(true, allocateState, ProcessSnapshotTagResultCategory.AllocateOk);
                 }
                 else
                 { 
@@ -40,12 +40,12 @@ namespace Locafi.Client.Processors.Orders.Strategies
                     if (skuDetail.QtyAllocated + allocateState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] <=
                         skuDetail.Quantity) // extra item is allowed
                     {
-                        return new ProcessSnapshotTagStrategyResult(true, allocateState, skuDetail);
+                        return new ProcessSnapshotTagStrategyResult(true, allocateState, ProcessSnapshotTagResultCategory.AllocateOk, skuDetail);
                     }
                     else
                     {
                         // we have too many of this sku
-                        return new ProcessSnapshotTagStrategyResult(false, state ,skuDetail, null, ProcessSnapshotTagResultCategory.LineOverAllocated);
+                        return new ProcessSnapshotTagStrategyResult(false, state, ProcessSnapshotTagResultCategory.LineOverAllocated, skuDetail, null);
                     }
                 }
             }
@@ -58,12 +58,12 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 if (item!=null)
                 {
                     // OK
-                    return new ProcessSnapshotTagStrategyResult(true, allocateState, null, item);
+                    return new ProcessSnapshotTagStrategyResult(true, allocateState,ProcessSnapshotTagResultCategory.AllocateOk, null, item);
                 }
                 else
                 {
                     // unknown tag
-                    return new ProcessSnapshotTagStrategyResult(false, allocateState, null, null, ProcessSnapshotTagResultCategory.UnknownTag);
+                    return new ProcessSnapshotTagStrategyResult(false, allocateState, ProcessSnapshotTagResultCategory.UnknownTag, null, null);
                 }
             }
                 

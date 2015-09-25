@@ -8,7 +8,8 @@ namespace Locafi.Client.Processors.Orders.Strategies
 {
     public enum ProcessSnapshotTagResultCategory
     {
-        Ok,
+        AllocateOk,
+        ReceiveOk,
         LineOverAllocated,
         LineOverReceived,
         UnknownTag

@@ -34,7 +34,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
         public async Task OrderDispatch_DispatchSuccess()
         {
             var ran = new Random();
-            var quantity = ran.Next(10);
+            var quantity = ran.Next(1, 10);
             // create new order
             var refNumber = Guid.NewGuid().ToString();
             string description = Guid.NewGuid().ToString();

@@ -68,7 +68,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             var nextResult = strategy.ProcessTag(new SnapshotTagDto(extraReservation.TagNumbers.FirstOrDefault()), order,
                 state);
             Assert.IsTrue(nextResult.IsTagExpected, "tag in allocation, but over allocated");
-            Assert.AreEqual(ProcessSnapshotTagResultCategory.Ok, nextResult.ResultCategory); // because tag was never allocated
+            Assert.AreEqual(ProcessSnapshotTagResultCategory.ReceiveOk, nextResult.ResultCategory); // because tag was never allocated
             state = nextResult.State;
 
             // get one more tag for and add to receive, a tag that was never allocated

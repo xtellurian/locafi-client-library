@@ -11,8 +11,8 @@ namespace Locafi.Client.Processors.Orders
 {
     public class ProcessSnapshotTagStrategyResult : IProcessSnapshotTagStrategyResult
     {
-        public ProcessSnapshotTagStrategyResult(bool isTagExpected, StrategyState state, OrderSkuLineItemDto skuLineItem= null, 
-            OrderItemLineItemDto itemLineItem = null, ProcessSnapshotTagResultCategory resultCategory = ProcessSnapshotTagResultCategory.Ok)
+        public ProcessSnapshotTagStrategyResult(bool isTagExpected, StrategyState state, ProcessSnapshotTagResultCategory resultCategory, 
+            OrderSkuLineItemDto skuLineItem= null, OrderItemLineItemDto itemLineItem = null)
         {
             IsTagExpected = isTagExpected;
             State = state;
@@ -25,7 +25,7 @@ namespace Locafi.Client.Processors.Orders
                 throw new NullReferenceException("Strategy State cannot be null");
             }
 
-            if (!isTagExpected && resultCategory == ProcessSnapshotTagResultCategory.Ok)
+            if (!isTagExpected && (resultCategory == ProcessSnapshotTagResultCategory.AllocateOk || resultCategory == ProcessSnapshotTagResultCategory.ReceiveOk))
             {
                 throw new ArgumentException("Result cannot be OK when success is false");
             }

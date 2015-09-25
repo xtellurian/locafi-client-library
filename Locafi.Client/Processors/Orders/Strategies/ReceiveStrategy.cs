@@ -20,7 +20,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
             var gtin = SgtinTagCoder.GetGtin(snapshotTag.TagNumber);
             if (receivedState.TagsAddedThisRound.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
             {
-                return new ProcessSnapshotTagStrategyResult(true, receivedState);
+                return new ProcessSnapshotTagStrategyResult(true, receivedState, ProcessSnapshotTagResultCategory.ReceiveOk);
             }
             receivedState.AddTag(snapshotTag);
             var skuDetail = orderDetail.RequiredSkus.FirstOrDefault(d => string.Equals(d.Gtin, gtin));
@@ -39,12 +39,11 @@ namespace Locafi.Client.Processors.Orders.Strategies
                         skuDetail.QtyReceived + receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId])
                         // over received
                     {
-                        return new ProcessSnapshotTagStrategyResult(false, receivedState, skuDetail, null,
-                            ProcessSnapshotTagResultCategory.LineOverReceived);
+                        return new ProcessSnapshotTagStrategyResult(false, receivedState, ProcessSnapshotTagResultCategory.LineOverReceived, skuDetail, null);
                     }
                     else
                     {
-                        return new ProcessSnapshotTagStrategyResult(true, receivedState, skuDetail);
+                        return new ProcessSnapshotTagStrategyResult(true, receivedState, ProcessSnapshotTagResultCategory.ReceiveOk, skuDetail);
                     }
                 }
                 else
@@ -52,11 +51,11 @@ namespace Locafi.Client.Processors.Orders.Strategies
                     var item = orderDetail.RequiredItems.FirstOrDefault(i => string.Equals(i.TagNumber, snapshotTag.TagNumber));
                     if (item != null)
                     {
-                        return new ProcessSnapshotTagStrategyResult(true, state, null, item);
+                        return new ProcessSnapshotTagStrategyResult(true, state, ProcessSnapshotTagResultCategory.ReceiveOk, null, item);
                     }
                     else
                     {
-                        return new ProcessSnapshotTagStrategyResult(false, receivedState, null, null, ProcessSnapshotTagResultCategory.UnknownTag);
+                        return new ProcessSnapshotTagStrategyResult(false, receivedState, ProcessSnapshotTagResultCategory.UnknownTag, null, null);
                     }
                     
                 }
@@ -77,18 +76,18 @@ namespace Locafi.Client.Processors.Orders.Strategies
                     if (skuDetail.QtyReceived + receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] > skuDetail.QtyAllocated)
                     // over received
                     {
-                        return new ProcessSnapshotTagStrategyResult(false, receivedState, skuDetail, null,
-                            ProcessSnapshotTagResultCategory.LineOverReceived);
+                        return new ProcessSnapshotTagStrategyResult(false, receivedState,
+                            ProcessSnapshotTagResultCategory.LineOverReceived, skuDetail);
                     }
                     else
                     {
-                        return new ProcessSnapshotTagStrategyResult(true, receivedState, skuDetail);
+                        return new ProcessSnapshotTagStrategyResult(true, receivedState,ProcessSnapshotTagResultCategory.ReceiveOk, skuDetail);
                     }
                   
                 }
                 else
                 {
-                    return new ProcessSnapshotTagStrategyResult(false, receivedState, null, null,
+                    return new ProcessSnapshotTagStrategyResult(false, receivedState,
                       ProcessSnapshotTagResultCategory.UnknownTag);
                 }
             }
