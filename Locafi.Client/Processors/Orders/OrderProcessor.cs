@@ -60,19 +60,29 @@ namespace Locafi.Client.Processors.Orders
 
             switch (result.ResultCategory)
             {
+                case ProcessSnapshotTagResultCategory.AllocateOk:
+                    if (result.ItemLineItem != null) result.ItemLineItem.IsAllocated = true;
+                    result.SkuLineItem.QtyAllocated++;                    
+                    return new ProcessTagResult(false, false, result.SkuLineItem);
                 case ProcessSnapshotTagResultCategory.LineOverAllocated:
+                    if (result.ItemLineItem != null) result.ItemLineItem.IsAllocated = true; // shouldn't ever really happen
                     result.SkuLineItem.QtyAllocated++;
                     return new ProcessTagResult(true, false,result.SkuLineItem);
-                    break;
+                case ProcessSnapshotTagResultCategory.ReceiveOk:
+                    if (result.ItemLineItem != null) result.ItemLineItem.IsReceived = true;
+                    result.SkuLineItem.QtyReceived++;
+                    return new ProcessTagResult(false, false, result.SkuLineItem);
                 case ProcessSnapshotTagResultCategory.LineOverReceived:
+                    if (result.ItemLineItem != null) result.ItemLineItem.IsReceived = true; // shouldnt ever happen
                     result.SkuLineItem.QtyReceived++;
                     return new ProcessTagResult(true, false, result.SkuLineItem);
                     break;
                 case ProcessSnapshotTagResultCategory.UnknownTag:
                     await OnUnknownTag(snapshotTag);
-                    return new ProcessTagResult(false, true);
+                    return new ProcessTagResult(false, true, result.SkuLineItem, result.ItemLineItem);
                     break;
-                        
+                      
+                            
                 default:
                     return new ProcessTagResult(false, false, result.SkuLineItem, result.ItemLineItem);
                     break;

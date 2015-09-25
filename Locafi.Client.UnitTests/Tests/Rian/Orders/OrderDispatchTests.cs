@@ -30,9 +30,10 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             _tagReservationRepo = WebRepoContainer.TagReservationRepo;
             _reasonRepo = WebRepoContainer.ReasonRepo;
         }
+        
         [TestMethod]
         public async Task OrderDispatch_DispatchSuccess()
-        {
+        { 
             var ran = new Random();
             var quantity = ran.Next(1, 10);
             // create new order
