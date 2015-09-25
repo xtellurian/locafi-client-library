@@ -54,7 +54,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             foreach (var number in reservation.TagNumbers)
             {
                 var snapTag = new SnapshotTagDto(number);
-                var result = processor.AddSnapshotTag(snapTag);
+                var result = await processor.AddSnapshotTag(snapTag);
                 Assert.IsFalse(result.IsDisputeRequired, "Dispute not required");
                 Assert.IsFalse(result.IsUnrecognisedTag, "Tag Recognised");
             }
@@ -91,14 +91,14 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             {
                 var number = reservation.TagNumbers[i];
                 var snapTag = new SnapshotTagDto(number);
-                var result = processor.AddSnapshotTag(snapTag);
+                var result = await processor.AddSnapshotTag(snapTag);
                 Assert.IsFalse(result.IsDisputeRequired, "Dispute not required");
                 Assert.IsFalse(result.IsUnrecognisedTag, "Tag recognised");
             }
 
             var lastNumber = reservation.TagNumbers[quantity];
             var tag = new SnapshotTagDto(lastNumber);
-            var lastResult = processor.AddSnapshotTag(tag);
+            var lastResult = await processor.AddSnapshotTag(tag);
             Assert.IsTrue(lastResult.IsDisputeRequired, "Dispute Required");
             Assert.IsFalse(lastResult.IsUnrecognisedTag, "Tag Recognised");
 

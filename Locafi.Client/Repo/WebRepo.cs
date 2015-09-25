@@ -66,14 +66,6 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        //protected async Task Delete(string key)
-        //{
-        //    var response = await GetResponse(HttpMethod.Delete, key);
-        //    Debug.WriteLine(response.IsSuccessStatusCode
-        //        ? $"{_service} service deleted  id={key} successfully"
-        //        : $"{_service} service failed to delete id={key}");
-        //}
-
         protected async Task<bool> Delete(string extra)
         {
             var response = await GetResponse(HttpMethod.Delete, extra);

@@ -51,7 +51,7 @@ namespace Locafi.Client.Processors.Orders
             _state = new InitStrategyState(sourceTags, destinationTags);
         }
 
-        public virtual IProcessTagResult AddSnapshotTag(SnapshotTagDto snapshotTag)
+        public virtual async Task<IProcessTagResult> AddSnapshotTag(SnapshotTagDto snapshotTag)
         {
             if(_state==null) throw new NullReferenceException("State was not initialised");
             var result = _strategy.ProcessTag(snapshotTag, OrderDetail, _state);
@@ -69,7 +69,7 @@ namespace Locafi.Client.Processors.Orders
                     return new ProcessTagResult(true, false, result.SkuLineItem);
                     break;
                 case ProcessSnapshotTagResultCategory.UnknownTag:
-                    OnUnknownTag(snapshotTag);
+                    await OnUnknownTag(snapshotTag);
                     return new ProcessTagResult(false, true);
                     break;
                         
@@ -80,7 +80,7 @@ namespace Locafi.Client.Processors.Orders
             
         }
 
-        private async void OnUnknownTag(SnapshotTagDto snapshotTag)
+        private async Task OnUnknownTag(SnapshotTagDto snapshotTag)
         {
             var query = ItemQuery.NewQuery(i => i.TagNumber, snapshotTag.TagNumber,
                 ComparisonOperator.Equals);
