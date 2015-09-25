@@ -51,31 +51,44 @@ namespace Locafi.Client.Processors.Orders
             _state = new InitStrategyState(sourceTags, destinationTags);
         }
 
-        public virtual async Task AddSnapshotTag(SnapshotTagDto snapshotTag)
+        public virtual IProcessTagResult AddSnapshotTag(SnapshotTagDto snapshotTag)
         {
             if(_state==null) throw new NullReferenceException("State was not initialised");
             var result = _strategy.ProcessTag(snapshotTag, OrderDetail, _state);
             _state = result.State;
             Tags.Add(snapshotTag);
-            if (!result.IsTagExpected)
+
+            switch (result.ResultCategory)
             {
-                switch (result.ResultCategory)
-                {
-                    case ProcessSnapshotTagResultCategory.LineOverAllocated:
-                        throw new OrderProcessException(result);
-                        break;
-                    case ProcessSnapshotTagResultCategory.UnknownTag:
-                        await OnUnknownTag(snapshotTag);
-                        break;
-                }
+                case ProcessSnapshotTagResultCategory.LineOverAllocated:
+                    return new ProcessTagResult(true, false,result.SkuLineItem);
+                    break;
+                case ProcessSnapshotTagResultCategory.LineOverReceived:
+                    return new ProcessTagResult(true, false, result.SkuLineItem);
+                    break;
+                case ProcessSnapshotTagResultCategory.TagNumberMismatch:
+                    return new ProcessTagResult(false, true, result.SkuLineItem, result.ItemLineItem);
+                    break;
+                case ProcessSnapshotTagResultCategory.UnknownTag:
+                    OnUnknownTag(snapshotTag);
+                    return new ProcessTagResult(false, true);
+                    break;
+                        
+                default:
+                    return new ProcessTagResult(false, false);
+                    break;
             }
+            
         }
 
-        private async Task OnUnknownTag(SnapshotTagDto snapshotTag)
+        private async void OnUnknownTag(SnapshotTagDto snapshotTag)
         {
             var query = ItemQuery.NewQuery(i => i.TagNumber, snapshotTag.TagNumber,
                 ComparisonOperator.Equals);
+
             var results = await _itemRepo.QueryItems(query);
+
+            
             foreach (var item in results)
             {
                 UnknownItems.Add(item);

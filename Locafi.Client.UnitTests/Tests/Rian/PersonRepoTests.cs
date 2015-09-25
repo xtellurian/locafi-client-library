@@ -30,7 +30,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(persons, "persons != null");
             Assert.IsInstanceOfType(persons, typeof(IEnumerable<PersonSummaryDto>));
         }
-   //     [TestMethod]
+
+        [TestMethod]
         public async Task Person_Create()
         {
             var addPerson = await RandomAddPerson();
@@ -44,7 +45,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(string.Equals(addPerson.Surname, detail.Surname));
             Assert.IsTrue(string.Equals(addPerson.TagNumber, detail.TagNumber));
         }
-//       [TestMethod]
+
+        [TestMethod]
         public async Task Person_Delete()
         {
             var addPerson = await RandomAddPerson();

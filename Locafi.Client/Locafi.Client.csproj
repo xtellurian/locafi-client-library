@@ -54,7 +54,8 @@
     <Compile Include="Contract\Config\IHttpTransferConfigService.cs" />
     <Compile Include="Contract\Config\ISerialiserService.cs" />
     <Compile Include="Contract\Processors\IProcessOrderSnapshotTagStrategy.cs" />
-    <Compile Include="Contract\Processors\IProcessSnapshotTagResult.cs" />
+    <Compile Include="Contract\Processors\IProcessSnapshotTagStrategyResult.cs" />
+    <Compile Include="Contract\Processors\IProcessTagResult.cs" />
     <Compile Include="Contract\Repo\IAuthenticationRepo.cs" />
     <Compile Include="Contract\Repo\IInventoryRepo.cs" />
     <Compile Include="Contract\Repo\IItemRepo.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Exceptions\InventoryException.cs" />
     <Compile Include="Exceptions\ItemException.cs" />
     <Compile Include="Exceptions\OrderException.cs" />
-    <Compile Include="Exceptions\OrderProcessException.cs" />
     <Compile Include="Exceptions\PersonException.cs" />
     <Compile Include="Exceptions\PlaceRepoException.cs" />
     <Compile Include="Exceptions\ReaderRepoException.cs" />
@@ -86,7 +86,8 @@
     <Compile Include="Exceptions\WebRepoException.cs" />
     <Compile Include="Processors\Encoding\SgtinTagCoder.cs" />
     <Compile Include="Processors\Orders\OrderProcessor.cs" />
-    <Compile Include="Processors\Orders\ProcessSnapshotTagResult.cs" />
+    <Compile Include="Processors\Orders\ProcessSnapshotTagStrategyResult.cs" />
+    <Compile Include="Processors\Orders\ProcessTagResult.cs" />
     <Compile Include="Processors\Orders\Strategies\ReceiveStrategy.cs" />
     <Compile Include="Processors\Orders\Strategies\InitStrategyState.cs" />
     <Compile Include="Processors\Orders\Strategies\ProcessSnapshotTagResultCategory.cs" />

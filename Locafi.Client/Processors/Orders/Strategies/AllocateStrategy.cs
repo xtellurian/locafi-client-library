@@ -16,7 +16,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
     /// </summary>
     public class AllocateStrategy : IProcessSnapshotTagOrderStrategy
     {
-        public IProcessSnapshotTagResult ProcessTag(SnapshotTagDto snapshotTag, OrderDetailDto orderDetail, StrategyState state)
+        public IProcessSnapshotTagStrategyResult ProcessTag(SnapshotTagDto snapshotTag, OrderDetailDto orderDetail, StrategyState state)
         {
             var allocateState = state as AllocateState ?? new AllocateState(state.AlreadyAllocated, state.AlreadyReceived); // init state
             
@@ -30,7 +30,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
                     allocateState.TagsAddedThisRound.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
                 {
                     // return OK
-                    return new ProcessSnapshotTagResult(true, allocateState);
+                    return new ProcessSnapshotTagStrategyResult(true, allocateState);
                 }
                 else
                 { 
@@ -40,12 +40,12 @@ namespace Locafi.Client.Processors.Orders.Strategies
                     if (skuDetail.QtyAllocated + allocateState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] <=
                         skuDetail.Quantity) // extra item is allowed
                     {
-                        return new ProcessSnapshotTagResult(true, allocateState);
+                        return new ProcessSnapshotTagStrategyResult(true, allocateState, skuDetail);
                     }
                     else
                     {
                         // we have too many of this sku
-                        return new ProcessSnapshotTagResult(false, null, ProcessSnapshotTagResultCategory.LineOverAllocated);
+                        return new ProcessSnapshotTagStrategyResult(false, null,skuDetail, null, ProcessSnapshotTagResultCategory.LineOverAllocated);
                     }
                 }
             }
@@ -53,15 +53,17 @@ namespace Locafi.Client.Processors.Orders.Strategies
             {
                 allocateState.AddTag(snapshotTag);
                 // check if tag is in list of unique items
-                if (orderDetail.RequiredItems.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
+                var item =
+                    orderDetail.RequiredItems.FirstOrDefault(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber));
+                if (item!=null)
                 {
                     // OK
-                    return new ProcessSnapshotTagResult(true, allocateState);
+                    return new ProcessSnapshotTagStrategyResult(true, allocateState, null, item);
                 }
                 else
                 {
                     // unknown tag
-                    return new ProcessSnapshotTagResult(false, allocateState, ProcessSnapshotTagResultCategory.UnknownTag);
+                    return new ProcessSnapshotTagStrategyResult(false, allocateState, null, null, ProcessSnapshotTagResultCategory.UnknownTag);
                 }
             }
                 

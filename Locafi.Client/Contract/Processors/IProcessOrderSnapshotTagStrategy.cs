@@ -6,6 +6,6 @@ namespace Locafi.Client.Contract.Processors
 {
     public interface IProcessSnapshotTagOrderStrategy
     {
-        IProcessSnapshotTagResult ProcessTag(SnapshotTagDto snapshotTag, OrderDetailDto orderDetail, StrategyState state);
+        IProcessSnapshotTagStrategyResult ProcessTag(SnapshotTagDto snapshotTag, OrderDetailDto orderDetail, StrategyState state);
     }
 }

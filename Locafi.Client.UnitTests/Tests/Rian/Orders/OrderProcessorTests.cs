@@ -28,7 +28,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             _tagReservationRepo = WebRepoContainer.TagReservationRepo;
             _snapshotRepo = WebRepoContainer.SnapshotRepo;
         }
-  //      [TestMethod]
+        [TestMethod]
         public async Task OrderProcessor_AllocateExact()
         {
             var ran = new Random();
@@ -54,16 +54,18 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             foreach (var number in reservation.TagNumbers)
             {
                 var snapTag = new SnapshotTagDto(number);
-                await processor.AddSnapshotTag(snapTag);
+                var result = processor.AddSnapshotTag(snapTag);
+                Assert.IsFalse(result.IsDisputeRequired, "Dispute not required");
+                Assert.IsFalse(result.IsUnrecognisedTag, "Tag Recognised");
             }
 
             Assert.IsTrue(processor.Tags.Count == quantity);
             Assert.IsTrue(processor.UnknownItems.Count == 0);
         }
 
-        [ExpectedException(typeof(OrderProcessException))]
+
         [TestMethod]
-        public async Task OrderProcess_OverAllocateWithException()
+        public async Task OrderProcess_OverAllocate()
         {
             IProcessSnapshotTagOrderStrategy allocateStrategy = new AllocateStrategy();
             var quantity = 3;
@@ -84,11 +86,21 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
 
             await processor.InitialiseState(_snapshotRepo);
 
-            foreach (var number in reservation.TagNumbers)
+
+            for(var i = 0; i< quantity; i++)
             {
+                var number = reservation.TagNumbers[i];
                 var snapTag = new SnapshotTagDto(number);
-                await processor.AddSnapshotTag(snapTag);
+                var result = processor.AddSnapshotTag(snapTag);
+                Assert.IsFalse(result.IsDisputeRequired, "Dispute not required");
+                Assert.IsFalse(result.IsUnrecognisedTag, "Tag recognised");
             }
+
+            var lastNumber = reservation.TagNumbers[quantity];
+            var tag = new SnapshotTagDto(lastNumber);
+            var lastResult = processor.AddSnapshotTag(tag);
+            Assert.IsTrue(lastResult.IsDisputeRequired, "Dispute Required");
+            Assert.IsFalse(lastResult.IsUnrecognisedTag, "Tag Recognised");
 
         }
     }
