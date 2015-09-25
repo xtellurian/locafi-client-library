@@ -44,7 +44,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                SgtinRef = sku.Gtin,
+                Gtin = sku.Gtin,
             });
             foreach (var tag in reservation.TagNumbers.Select(tagNumber => new SnapshotTagDto(tagNumber)))
             {

@@ -23,7 +23,7 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 return new ProcessSnapshotTagStrategyResult(true, receivedState);
             }
             receivedState.AddTag(snapshotTag);
-            var skuDetail = orderDetail.RequiredSkus.FirstOrDefault(d => string.Equals(d.SgtinRef, gtin));
+            var skuDetail = orderDetail.RequiredSkus.FirstOrDefault(d => string.Equals(d.Gtin, gtin));
             // check if part of allocated snaps
             if (receivedState.AlreadyAllocated.Any(tag => string.Equals(tag.TagNumber, snapshotTag.TagNumber)))
             {

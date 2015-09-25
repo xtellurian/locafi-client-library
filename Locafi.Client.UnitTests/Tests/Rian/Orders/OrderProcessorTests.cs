@@ -45,7 +45,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                SgtinRef = sku.Gtin,
+                Gtin = sku.Gtin,
             });
             var processor = new OrderProcessor(_itemRepo, order, allocateStrategy);
 
@@ -80,7 +80,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                SgtinRef = sku.Gtin,
+                Gtin = sku.Gtin,
             });
             var processor = new OrderProcessor(_itemRepo, order, allocateStrategy);
 
