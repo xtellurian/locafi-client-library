@@ -74,7 +74,7 @@ namespace Locafi.Client.Processors.Orders
                     break;
                         
                 default:
-                    return new ProcessTagResult(false, false);
+                    return new ProcessTagResult(false, false, result.SkuLineItem, result.ItemLineItem);
                     break;
             }
             
