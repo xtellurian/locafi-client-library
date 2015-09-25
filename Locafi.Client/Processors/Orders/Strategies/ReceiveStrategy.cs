@@ -30,21 +30,8 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 
                 if (skuDetail != null) // gtin is in order
                 {
-                    if (!receivedState.QuantityOfSkuAddedthisRound.ContainsKey(skuDetail.SkuId))
-                    {
-                        receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] = 0;
-                    }
-                    receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] ++;
-                    if (skuDetail.QtyAllocated >
-                        skuDetail.QtyReceived + receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId])
-                        // over received
-                    {
-                        return new ProcessSnapshotTagStrategyResult(false, receivedState, ProcessSnapshotTagResultCategory.LineOverReceived, skuDetail, null);
-                    }
-                    else
-                    {
-                        return new ProcessSnapshotTagStrategyResult(true, receivedState, ProcessSnapshotTagResultCategory.ReceiveOk, skuDetail);
-                    }
+                    skuDetail.QtyReceived++;
+                    return skuDetail.QtyAllocated > skuDetail.QtyReceived ? new ProcessSnapshotTagStrategyResult(false, receivedState, ProcessSnapshotTagResultCategory.LineOverReceived, skuDetail, null) : new ProcessSnapshotTagStrategyResult(true, receivedState, ProcessSnapshotTagResultCategory.ReceiveOk, skuDetail);
                 }
                 else
                 {
@@ -66,14 +53,9 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 // tag is not part of allocation
                 if (skuDetail != null)
                 {
+                    skuDetail.QtyReceived++;
                     // sku is in order but tag was never allocated
-                    // check quantity of sku
-                    if (!receivedState.QuantityOfSkuAddedthisRound.ContainsKey(skuDetail.SkuId))
-                    {
-                        receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] = 0;
-                    }
-                    receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId]++;
-                    if (skuDetail.QtyReceived + receivedState.QuantityOfSkuAddedthisRound[skuDetail.SkuId] > skuDetail.QtyAllocated)
+                    if (skuDetail.QtyReceived > skuDetail.QtyAllocated)
                     // over received
                     {
                         return new ProcessSnapshotTagStrategyResult(false, receivedState,
@@ -100,7 +82,6 @@ namespace Locafi.Client.Processors.Orders.Strategies
             public ReceiveState(IList<IRfidTag> alreadyAllocated, IList<IRfidTag> alreadyReceived) : base(alreadyAllocated, alreadyReceived)
             {
                 TagsAddedThisRound = new List<SnapshotTagDto>();
-                QuantityOfSkuAddedthisRound = new Dictionary<Guid, int>();
             }
 
             internal void AddTag(SnapshotTagDto tag)
@@ -108,7 +89,6 @@ namespace Locafi.Client.Processors.Orders.Strategies
                 TagsAddedThisRound.Add(tag);
             }
 
-            public IDictionary<Guid, int> QuantityOfSkuAddedthisRound { get; private set; }
             public IList<SnapshotTagDto> TagsAddedThisRound { get; private set; }
         }
     }

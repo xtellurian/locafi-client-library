@@ -6,6 +6,7 @@ namespace Locafi.Client.Contract.Processors
 {
     public interface IProcessSnapshotTagOrderStrategy
     {
+        // strategies are responsible for updating the QtyAllocated and QtyReceived Fields for each Sku
         IProcessSnapshotTagStrategyResult ProcessTag(SnapshotTagDto snapshotTag, OrderDetailDto orderDetail, StrategyState state);
     }
 }
