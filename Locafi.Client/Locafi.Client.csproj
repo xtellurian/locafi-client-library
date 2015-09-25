@@ -39,7 +39,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Locafi.Client-StrongnameKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
@@ -175,7 +176,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Locafi.Client-StrongnameKey.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
