@@ -19,28 +19,40 @@ namespace Locafi.Client.Model.Query.PropertyComparison
         /// <param name="take">The numvber of result to take</param>
         public void CreateQuery<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op,  int take = 100, int skip = 0)
         {
+            Take = take;
+            Skip = skip;
             var propInfo = Validate(propertyLambda);
 
+            GenerateQueryString(value, op, propInfo);
+        }
+
+        private void GenerateQueryString<TProperty>(TProperty value, ComparisonOperator op, PropertyInfo propInfo)
+        {
             switch (op)
             {
                 case ComparisonOperator.Equals:
-                    QueryString = $"?{QueryStrings.Page.TopAndSkip(take, skip)}&{QueryStrings.Filter.Equals(propInfo.Name, ConvertToOdataValue(value))}";
+                    FilterString =
+                        $"{QueryStrings.Filter.Equals(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.Contains:
-                    QueryString = $"?{QueryStrings.Page.TopAndSkip(take, skip)}&{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
+                    FilterString =
+                        $"{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.GreaterThan:
-                    QueryString = $"?{QueryStrings.Page.TopAndSkip(take, skip)}&{QueryStrings.Filter.GreaterThan(propInfo.Name, ConvertToOdataValue(value))}";
+                    FilterString =
+                        $"{QueryStrings.Filter.GreaterThan(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.LessThan:
-                    QueryString = $"?{QueryStrings.Page.TopAndSkip(take, skip)}&{QueryStrings.Filter.LessThan(propInfo.Name, ConvertToOdataValue(value))}";
+                    FilterString =
+                        $"{QueryStrings.Filter.LessThan(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
                 default:
-                    QueryString = $"?{QueryStrings.Page.TopAndSkip(take, skip)}&{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
+                    FilterString =
+                        $"{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
             }
         }
-        
+
         private string ConvertToOdataValue<TProperty>(TProperty p)
         {
             var type = typeof (TProperty);
@@ -99,10 +111,13 @@ namespace Locafi.Client.Model.Query.PropertyComparison
         }
 
 
-        public string QueryString { get; private set; }
+        public string FilterString { get; private set; }
         public virtual string AsRestQuery()
         {
-            return QueryString;
+            return $"?{QueryStrings.Page.TopAndSkip(Take, Skip)}&{FilterString}";
         }
+
+        public int Take { get; set; }
+        public int Skip { get; set; }
     }
 }
