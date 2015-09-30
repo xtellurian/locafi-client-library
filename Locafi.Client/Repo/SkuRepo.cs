@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
@@ -35,9 +36,16 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        [Obsolete]
         public async Task<IList<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query)
         {
             return await QuerySkus(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<SkuSummaryDto>> QuerySkusAsync(IRestQuery<SkuSummaryDto> query)
+        {
+            var result = await QuerySkus(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<SkuDetailDto> GetSkuDetail(Guid skuId)

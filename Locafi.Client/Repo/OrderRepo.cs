@@ -35,9 +35,16 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        [Obsolete]
         public async Task<IList<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query)
         {
             return await QueryOrders(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<OrderSummaryDto>> QueryOrdersAsync(IRestQuery<OrderSummaryDto> query)
+        {
+            var result = await QueryOrders(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<OrderDetailDto> Create(AddOrderDto addOrder)

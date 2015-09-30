@@ -16,6 +16,8 @@ namespace Locafi.Client.Contract.Repo
         Task<SnapshotDetailDto> GetSnapshot(Guid snapshotId);
         Task<IList<SnapshotSummaryDto>> GetAllSnapshots();
         Task<bool> Delete(Guid id);
+        [Obsolete]
         Task<IList<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query);
+        Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsAsync(IRestQuery<SnapshotSummaryDto> query);
     }
 }

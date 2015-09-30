@@ -35,5 +35,10 @@ namespace Locafi.Client.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsAsync(IRestQuery<SnapshotSummaryDto> query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

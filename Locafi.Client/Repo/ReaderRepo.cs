@@ -32,6 +32,8 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        
+
         public async Task<ReaderDetailDto> GetReaderById(Guid id)
         {
             var path = ReaderUri.GetReader(id);

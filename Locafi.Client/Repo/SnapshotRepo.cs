@@ -44,9 +44,16 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        [Obsolete]
         public async Task<IList<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query)
         {
             return await QuerySnapshots(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsAsync(IRestQuery<SnapshotSummaryDto> query)
+        {
+            var result = await QuerySnapshots(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<bool> Delete(Guid id)

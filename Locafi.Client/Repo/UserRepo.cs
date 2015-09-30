@@ -26,11 +26,17 @@ namespace Locafi.Client.Repo
             var result = await Get<IList<UserSummaryDto>>(path);
             return result;
         }
-
+        [Obsolete]
         public async Task<IList<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery)
         {
             var result = await QueryUsers(userQuery.AsRestQuery());
             return result;
+        }
+
+        public async Task<IQueryResult<UserSummaryDto>> QueryUsersAsync(IRestQuery<UserSummaryDto> query)
+        {
+            var result = await QueryUsers(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<UserDetailDto> GetUserById(Guid id)

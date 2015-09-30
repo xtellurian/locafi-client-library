@@ -55,14 +55,7 @@ namespace Locafi.Client.Repo
         public async Task<IQueryResult<PlaceSummaryDto>> QueryPlacesAsync(IRestQuery<PlaceSummaryDto> query)
         {
             var results = await QueryPlaces(query.AsRestQuery());
-            IRestQuery<PlaceSummaryDto> continuationQuery = null;
-            if (results.Count == query.Take)
-            {
-                // there may me more results
-                query.Skip = query.Skip + query.Take; // go to next batch of entites
-                continuationQuery = query;
-            }
-            return new QueryResult<PlaceSummaryDto>(results, continuationQuery);
+            return results.AsQueryResult(query);
         }
 
         public async Task<bool> Delete(Guid id)

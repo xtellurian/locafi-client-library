@@ -74,10 +74,17 @@ namespace Locafi.Client.Repo
             return await Delete(path);
         }
 
+        [Obsolete]
         public async Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query)
         {
             var result = await QueryInventories(query.AsRestQuery());
             return result;
+        }
+
+        public async Task<IQueryResult<InventorySummaryDto>> QueryInventoriesAsync(IRestQuery<InventorySummaryDto> query)
+        {
+            var result = await QueryInventories(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         protected async Task<IList<InventorySummaryDto>> QueryInventories(string queryString)

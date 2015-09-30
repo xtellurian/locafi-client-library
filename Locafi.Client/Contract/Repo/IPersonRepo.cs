@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Persons;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -15,5 +16,6 @@ namespace Locafi.Client.Contract.Repo
         Task<PersonDetailDto> GetPersonById(Guid id);
         Task<PersonDetailDto> CreatePerson(AddPersonDto addPerson);
         Task DeletePerson(Guid id);
+        Task<IQueryResult<PersonSummaryDto>> QueryPersonsAsync(IRestQuery<PersonSummaryDto> query);
     }
 }
