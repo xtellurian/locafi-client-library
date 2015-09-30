@@ -41,11 +41,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
+    <Compile Include="Dto\Devices\ClusterResponseDto.cs" />
+    <Compile Include="Dto\Devices\ClusterTagDto.cs" />
+    <Compile Include="Dto\Devices\CusterDto.cs" />
+    <Compile Include="Dto\Devices\IpConfigDetailDto.cs" />
+    <Compile Include="Dto\Devices\PeripheralDeviceActuatorDetailDto.cs" />
+    <Compile Include="Dto\Devices\PeripheralDeviceDetailDto.cs" />
+    <Compile Include="Dto\Devices\PeripheralDeviceSensorDetailDto.cs" />
+    <Compile Include="Dto\Devices\PeripheralDeviceSummaryDto.cs" />
+    <Compile Include="Dto\Devices\RfidReaderAntennaDto.cs" />
+    <Compile Include="Dto\Devices\RfidReaderDetailDto.cs" />
+    <Compile Include="Dto\Devices\RfidReaderSummaryDto.cs" />
+    <Compile Include="Dto\Devices\SerialConfigDetailDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
     <Compile Include="Dto\Orders\OrderActionResponseDto.cs" />
     <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
+    <Compile Include="Dto\PortalRules\PortalRuleDetailDto.cs" />
+    <Compile Include="Dto\PortalRules\PortalRulePlaceDetailDto.cs" />
     <Compile Include="Dto\Users\AddUserDto.cs" />
     <Compile Include="Dto\Users\UpdateUserDto.cs" />
     <Compile Include="Dto\Users\UserDetailDto.cs" />
@@ -82,13 +96,6 @@
     <Compile Include="Dto\Places\PlaceSummaryDto.cs" />
     <Compile Include="Dto\Places\UpdatePlaceDto.cs" />
     <Compile Include="Dto\Authentication\RefreshLoginDto.cs" />
-    <Compile Include="Dto\Reader\AntennaConfigDto.cs" />
-    <Compile Include="Dto\Reader\ClusterDto.cs" />
-    <Compile Include="Dto\Reader\ClusterResponseDto.cs" />
-    <Compile Include="Dto\Reader\ClusterTagDto.cs" />
-    <Compile Include="Dto\Reader\ReaderDetailDto.cs" />
-    <Compile Include="Dto\Reader\ReaderSummaryDto.cs" />
-    <Compile Include="Dto\Reader\RssoConfigDto.cs" />
     <Compile Include="Dto\Reasons\AddReasonDto.cs" />
     <Compile Include="Dto\Reasons\ReasonDetailDto.cs" />
     <Compile Include="Dto\Skus\AddSkuDto.cs" />
@@ -108,7 +115,12 @@
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
     <Compile Include="Enums\OrderStatus.cs" />
+    <Compile Include="Enums\PeripheralDeviceType.cs" />
+    <Compile Include="Enums\PortalRuleType.cs" />
+    <Compile Include="Enums\ReaderMode.cs" />
+    <Compile Include="Enums\ReaderType.cs" />
     <Compile Include="Enums\ReasonFor.cs" />
+    <Compile Include="Enums\SearchMode.cs" />
     <Compile Include="Enums\TagFor.cs" />
     <Compile Include="Enums\TagType.cs" />
     <Compile Include="Enums\TemplateDataTypes.cs" />

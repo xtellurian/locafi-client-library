@@ -7,15 +7,13 @@ using Locafi.Client.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Locafi.Client.Model.Dto.Reader
+namespace Locafi.Client.Model.Dto.Devices
 {
-    public class RssiConfigDto
+    public class PeripheralDeviceSummaryDto : EntityDtoBase
     {
-        public double RssiMin { get; set; }
-
-        public double RssiMax { get; set; }
-
+        public string Name { get; set; }
+        public string IpAddress { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public TagFor TagFor { get; set; }  // TagFor Enum
+        public PeripheralDeviceType DeviceType { get; set; }
     }
 }
