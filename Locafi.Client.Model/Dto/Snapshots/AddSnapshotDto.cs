@@ -8,6 +8,10 @@ namespace Locafi.Client.Model.Dto.Snapshots
 {
     public class AddSnapshotDto
     {
+        public AddSnapshotDto()
+        {
+            
+        }
         public AddSnapshotDto(Guid placeId, string name = "")
         {
             PlaceId = placeId;
