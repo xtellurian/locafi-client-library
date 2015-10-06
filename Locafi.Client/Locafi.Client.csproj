@@ -85,6 +85,7 @@
     <Compile Include="Exceptions\TemplateRepoException.cs" />
     <Compile Include="Exceptions\UserRepoException.cs" />
     <Compile Include="Exceptions\WebRepoException.cs" />
+    <Compile Include="Exceptions\WebRepoUnauthorisedException.cs" />
     <Compile Include="Processors\Encoding\SgtinTagCoder.cs" />
     <Compile Include="Processors\Orders\OrderProcessor.cs" />
     <Compile Include="Processors\Orders\ProcessSnapshotTagStrategyResult.cs" />
