@@ -54,6 +54,8 @@
     <Compile Include="Contract\Config\IAuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Contract\Config\IHttpTransferConfigService.cs" />
     <Compile Include="Contract\Config\ISerialiserService.cs" />
+    <Compile Include="Contract\Http\IHttpTransferer.cs" />
+    <Compile Include="Contract\Http\SimpleHttpTransferer.cs" />
     <Compile Include="Contract\Processors\IProcessOrderSnapshotTagStrategy.cs" />
     <Compile Include="Contract\Processors\IProcessSnapshotTagStrategyResult.cs" />
     <Compile Include="Contract\Processors\IProcessTagResult.cs" />

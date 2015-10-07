@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Responses;
 using Newtonsoft.Json;
@@ -19,23 +20,25 @@ namespace Locafi.Client.Repo
         private readonly IHttpTransferConfigService _unauthorizedConfigService;
         private readonly string _service;
         private IAuthorisedHttpTransferConfigService _authorisedUnauthorizedConfigService;
+        private readonly IHttpTransferer _transferer;
         private readonly ISerialiserService _serialiser;
 
-        protected WebRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service) 
-            : this(serialiser, service) // this as error handler, authorised base
+        protected WebRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service) 
+            : this(transferer, serialiser, service) // this as error handler, authorised base
         {
             _authorisedUnauthorizedConfigService = authorisedUnauthorizedConfigService;
             _unauthorizedConfigService = authorisedUnauthorizedConfigService;
         }
 
-        protected WebRepo(IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service) 
-            : this(serialiser, service) // internal error handler, unauth
+        protected WebRepo(IHttpTransferer transferer, IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service) 
+            : this(transferer, serialiser, service) // internal error handler, unauth
         {
             _unauthorizedConfigService = unauthorizedConfigService;
         }
 
-        private WebRepo(ISerialiserService serialiser, string service) // base ctor
+        private WebRepo(IHttpTransferer transferer, ISerialiserService serialiser, string service) // base ctor
         {
+            _transferer = transferer;
             _serialiser = serialiser;
             _service = service;
         }
@@ -112,6 +115,7 @@ namespace Locafi.Client.Repo
             {
                 _authorisedUnauthorizedConfigService = await handler(_unauthorizedConfigService);
                 var response = await resourceGetter(null);
+                if(response.StatusCode== HttpStatusCode.Unauthorized) throw new WebRepoUnauthorisedException();
                 return response;
             }
             else
@@ -141,29 +145,8 @@ namespace Locafi.Client.Repo
             var baseUrl = await _unauthorizedConfigService.GetBaseUrlAsync();
             
             var path = GetFullPath(baseUrl, _service, extra);
-            var message = new HttpRequestMessage(method, path);
-            if(content!=null) message.Content = new StringContent(content, Encoding.UTF8, "application/json");
-
-            //message.Content.Headers.Add("Content-Type", new List<string> { "application/json" });
-            if (_authorisedUnauthorizedConfigService != null)
-            {
-                var token = await _authorisedUnauthorizedConfigService.GetTokenStringAsync();
-                if (token != null)
-                {
-                    message.Headers.Add("Authorization", "Token " + token);
-                }
-                
-            }
-
-            var client = new HttpClient();
-            Debug.WriteLine($"{method} request at {path}");
-            if(content!=null) Debug.WriteLine($"Payload:\n {content}");
-            var response = await client.SendAsync(message);
-            var serverMessage = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine(response.IsSuccessStatusCode
-                ? $"{method} request success at {path}"
-                : $"Error executing {method} request at {path}");
-            Debug.WriteLine($"Response from server:\n{serverMessage}");
+            var token = await _authorisedUnauthorizedConfigService.GetTokenStringAsync();
+            var response = await _transferer.GetResponse(method, path, content, token);
             return response;
         }
 

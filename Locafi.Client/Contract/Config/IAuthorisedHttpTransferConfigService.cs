@@ -10,7 +10,11 @@ namespace Locafi.Client.Contract.Config
     public interface IAuthorisedHttpTransferConfigService : IHttpTransferConfigService
     { 
         Task<string> GetTokenStringAsync();
-
+        /// <summary>
+        /// A function that is used by WebRepo to try and get a new AuthorisedConfigService
+        /// You should pass in a Func that uses your Refresh Token to re-authenticate
+        /// The input argument to the Func is the internal HttpConfig from the WebRepo.
+        /// </summary>
         Func<IHttpTransferConfigService, Task<IAuthorisedHttpTransferConfigService>> OnUnauthorised { get; set; }
     }
 }

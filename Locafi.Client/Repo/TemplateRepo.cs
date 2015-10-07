@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Templates;
@@ -17,7 +18,12 @@ namespace Locafi.Client.Repo
     public class TemplateRepo : WebRepo, ITemplateRepo, IWebRepoErrorHandler
     {
         public TemplateRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(authorisedUnauthorizedConfigService, serialiser, TemplateUri.ServiceName)
+            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, TemplateUri.ServiceName)
+        {
+        }
+
+        public TemplateRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, TemplateUri.ServiceName)
         {
         }
 

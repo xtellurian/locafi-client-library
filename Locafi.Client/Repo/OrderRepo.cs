@@ -4,23 +4,29 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
-using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class OrderRepo : WebRepo, IOrderRepo, IWebRepoErrorHandler
+    public class OrderRepo : WebRepo, IOrderRepo
     {
         public OrderRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(unauthorizedConfigService, serialiser, OrderUri.ServiceName)
+            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, OrderUri.ServiceName)
         {
         }
 
+        public OrderRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, OrderUri.ServiceName)
+        {
+        }
+    
         public async Task<IList<OrderSummaryDto>> GetAllOrders()
         {
             var path = OrderUri.GetOrders;

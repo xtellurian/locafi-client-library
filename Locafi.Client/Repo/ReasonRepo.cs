@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Reasons;
@@ -17,7 +18,12 @@ namespace Locafi.Client.Repo
     public class ReasonRepo : WebRepo, IReasonRepo, IWebRepoErrorHandler
     {
         public ReasonRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(authorisedUnauthorizedConfigService, serialiser, ReasonUri.ServiceName)
+            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, ReasonUri.ServiceName)
+        {
+        }
+
+        public ReasonRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, ReasonUri.ServiceName)
         {
         }
 

@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Items;
@@ -18,11 +19,15 @@ namespace Locafi.Client.Repo
         private readonly ISerialiserService _serialiser;
 
         public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedUnauthorizedConfig, ISerialiserService serialiser) 
-            : base(transferAuthorisedUnauthorizedConfig, serialiser, ItemUri.ServiceName)
+            : base(new SimpleHttpTransferer(), transferAuthorisedUnauthorizedConfig, serialiser, ItemUri.ServiceName)
         {
             _serialiser = serialiser;
         }
 
+        public ItemRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, ItemUri.ServiceName)
+        {
+        }
         public async Task<long> GetItemCount()
         {
             var path = ItemUri.GetCount;
