@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Authentication;
@@ -21,7 +22,12 @@ namespace Locafi.Client.Repo
     {
         public ReaderRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService,
             ISerialiserService serialiser)
-            : base(authorisedUnauthorizedConfigService, serialiser, ReaderUri.ServiceName)
+            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, ReaderUri.ServiceName)
+        {
+        }
+
+        public ReaderRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, ReaderUri.ServiceName)
         {
         }
 

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Places;
@@ -14,14 +15,17 @@ using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class PlaceRepo : WebRepo, IPlaceRepo, IWebRepoErrorHandler
+    public class PlaceRepo : WebRepo, IPlaceRepo
     {
-        private readonly ISerialiserService _serialiser;
 
         public PlaceRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(authorisedUnauthorizedConfigService, serialiser, PlaceUri.ServiceName)
+            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, PlaceUri.ServiceName)
         {
-            _serialiser = serialiser;
+        }
+
+        public PlaceRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, PlaceUri.ServiceName)
+        {
         }
 
         public async Task<IList<PlaceSummaryDto>> GetAllPlaces()

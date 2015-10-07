@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
@@ -17,7 +18,12 @@ namespace Locafi.Client.Repo
     public class InventoryRepo : WebRepo, IInventoryRepo
     {
         public InventoryRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(authorisedUnauthorizedConfigService, serialiser, InventoryUri.ServiceName)
+            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, InventoryUri.ServiceName)
+        {
+        }
+
+        public InventoryRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, InventoryUri.ServiceName)
         {
         }
 

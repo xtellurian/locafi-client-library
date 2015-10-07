@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Users;
@@ -16,7 +17,12 @@ namespace Locafi.Client.Repo
     public class UserRepo : WebRepo, IUserRepo
     {
         public UserRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(unauthorizedConfigService, serialiser, UserUri.ServiceName)
+            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, UserUri.ServiceName)
+        {
+        }
+
+        public UserRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, UserUri.ServiceName)
         {
         }
 

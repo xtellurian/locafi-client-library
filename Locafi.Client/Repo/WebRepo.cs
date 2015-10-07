@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
+using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Responses;
 using Newtonsoft.Json;
 
@@ -17,24 +19,26 @@ namespace Locafi.Client.Repo
     {
         private readonly IHttpTransferConfigService _unauthorizedConfigService;
         private readonly string _service;
-        private readonly IAuthorisedHttpTransferConfigService _authorisedUnauthorizedConfigService;
+        private IAuthorisedHttpTransferConfigService _authorisedUnauthorizedConfigService;
+        private readonly IHttpTransferer _transferer;
         private readonly ISerialiserService _serialiser;
 
-        protected WebRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service) 
-            : this(serialiser, service) // this as error handler, authorised base
+        protected WebRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service) 
+            : this(transferer, serialiser, service) // this as error handler, authorised base
         {
             _authorisedUnauthorizedConfigService = authorisedUnauthorizedConfigService;
             _unauthorizedConfigService = authorisedUnauthorizedConfigService;
         }
 
-        protected WebRepo(IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service) 
-            : this(serialiser, service) // internal error handler, unauth
+        protected WebRepo(IHttpTransferer transferer, IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service) 
+            : this(transferer, serialiser, service) // internal error handler, unauth
         {
             _unauthorizedConfigService = unauthorizedConfigService;
         }
 
-        private WebRepo(ISerialiserService serialiser, string service) // base ctor
+        private WebRepo(IHttpTransferer transferer, ISerialiserService serialiser, string service) // base ctor
         {
+            _transferer = transferer;
             _serialiser = serialiser;
             _service = service;
         }
@@ -42,14 +46,26 @@ namespace Locafi.Client.Repo
         protected async Task<T> Get<T>(string extra = "")
         {
             var response = await GetResponse(HttpMethod.Get, extra);
-            if (!response.IsSuccessStatusCode) return default(T);
+            // try to reauthorise
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                response = await TryReauth(o => GetResponse(HttpMethod.Get, extra));
+            }
+            // if it didn't work
+            if (!response.IsSuccessStatusCode)
+            {
+                return default(T);
+            }
+            // get payload data
             var data = await response.Content.ReadAsStringAsync();
+            // if we are getting a value type
             if (typeof (T).GetTypeInfo().IsValueType)
             {
                 T result = (T)Convert.ChangeType(data, typeof (T));
                 if (result == null) await HandlePrivate(response);
                 return result;
             }
+            // we are getting a reference type
             else
             {
                 var result = _serialiser.Deserialise<T>(data);
@@ -60,7 +76,14 @@ namespace Locafi.Client.Repo
 
         protected async Task<T> Post<T>(object data, string extra = "") where T : class, new()
         {
-            var response = await GetResponse(HttpMethod.Post, extra, _serialiser.Serialise(data));
+            var serialisedData = _serialiser.Serialise(data); // serialise
+            var response = await GetResponse(HttpMethod.Post, extra, serialisedData); // get response
+            // try to reauthorise
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                response = await TryReauth(o => GetResponse(HttpMethod.Post, extra, serialisedData));
+            }
+
             var result = response.IsSuccessStatusCode ? _serialiser.Deserialise<T>(await response.Content.ReadAsStringAsync()) : null;
             if(result==null) await HandlePrivate(response);
             return result;
@@ -69,6 +92,10 @@ namespace Locafi.Client.Repo
         protected async Task<bool> Delete(string extra)
         {
             var response = await GetResponse(HttpMethod.Delete, extra);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                response = await TryReauth(o => GetResponse(HttpMethod.Delete, extra));
+            }
             Debug.WriteLine(response.IsSuccessStatusCode
                 ? $"{_service} service deleted  extra={extra} successfully"
                 : $"{_service} service failed to delete id={extra}");
@@ -79,6 +106,22 @@ namespace Locafi.Client.Repo
             }
             else await HandlePrivate(response);
             return false; // probably is never called, but is required for compilation
+        }
+
+        private async Task<HttpResponseMessage> TryReauth(Func<object, Task<HttpResponseMessage>> resourceGetter)
+        {
+            var handler = _authorisedUnauthorizedConfigService.OnUnauthorised;
+            if (handler != null)
+            {
+                _authorisedUnauthorizedConfigService = await handler(_unauthorizedConfigService);
+                var response = await resourceGetter(null);
+                if(response.StatusCode== HttpStatusCode.Unauthorized) throw new WebRepoUnauthorisedException();
+                return response;
+            }
+            else
+            {
+                throw new WebRepoUnauthorisedException();
+            }
         }
 
         private async Task HandlePrivate(HttpResponseMessage response)
@@ -102,29 +145,8 @@ namespace Locafi.Client.Repo
             var baseUrl = await _unauthorizedConfigService.GetBaseUrlAsync();
             
             var path = GetFullPath(baseUrl, _service, extra);
-            var message = new HttpRequestMessage(method, path);
-            if(content!=null) message.Content = new StringContent(content, Encoding.UTF8, "application/json");
-
-            //message.Content.Headers.Add("Content-Type", new List<string> { "application/json" });
-            if (_authorisedUnauthorizedConfigService != null)
-            {
-                var token = await _authorisedUnauthorizedConfigService.GetTokenStringAsync();
-                if (token != null)
-                {
-                    message.Headers.Add("Authorization", "Token " + token);
-                }
-                
-            }
-
-            var client = new HttpClient();
-            Debug.WriteLine($"{method} request at {path}");
-            if(content!=null) Debug.WriteLine($"Payload:\n {content}");
-            var response = await client.SendAsync(message);
-            var serverMessage = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine(response.IsSuccessStatusCode
-                ? $"{method} request success at {path}"
-                : $"Error executing {method} request at {path}");
-            Debug.WriteLine($"Response from server:\n{serverMessage}");
+            var token = await _authorisedUnauthorizedConfigService.GetTokenStringAsync();
+            var response = await _transferer.GetResponse(method, path, content, token);
             return response;
         }
 

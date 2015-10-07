@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.UnitTests;
 
@@ -28,6 +29,8 @@ namespace Locafi.Script.Implementations
         {
             return StringConstants.Token;
         }
+
+        public Func<IHttpTransferConfigService, Task<IAuthorisedHttpTransferConfigService>> OnUnauthorised { get; set; }
 
         public void SetTokenString(string token)
         {
