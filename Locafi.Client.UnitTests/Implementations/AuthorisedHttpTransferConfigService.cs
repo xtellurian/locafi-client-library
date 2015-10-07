@@ -27,11 +27,6 @@ namespace Locafi.Client.UnitTests.Implementations
             return BaseUrl;
         }
 
-        public string GetTokenString()
-        {
-            return _tokenGroup?.Token;
-        }
-
         public async Task<TokenGroup> GetTokenGroupAsync()
         {
             return _tokenGroup;
