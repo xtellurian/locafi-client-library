@@ -10,6 +10,7 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
 using Locafi.Client.Contract.Http;
 using Locafi.Client.Exceptions;
+using Locafi.Client.Model.Dto.Authentication;
 using Locafi.Client.Model.Responses;
 using Newtonsoft.Json;
 
@@ -110,13 +111,22 @@ namespace Locafi.Client.Repo
 
         private async Task<HttpResponseMessage> TryReauth(Func<object, Task<HttpResponseMessage>> resourceGetter)
         {
-            var handler = _authorisedUnauthorizedConfigService.OnUnauthorised;
-            if (handler != null)
+            var authRepo = _authorisedUnauthorizedConfigService.AuthenticationRepo;
+            var token = await _authorisedUnauthorizedConfigService.GetTokenGroupAsync();
+            if (authRepo!=null && token!=null)
             {
-                _authorisedUnauthorizedConfigService = await handler(_unauthorizedConfigService);
-                var response = await resourceGetter(null);
-                if(response.StatusCode== HttpStatusCode.Unauthorized) throw new WebRepoUnauthorisedException();
-                return response;
+                var result = await authRepo.RefreshLogin(token.Refresh);
+                if (result.Success)
+                {
+                    await _authorisedUnauthorizedConfigService.SetTokenGroupAsync(result.TokenGroup);
+                    var response = await resourceGetter(null);
+                    if (response.StatusCode == HttpStatusCode.Unauthorized) throw new WebRepoUnauthorisedException();
+                    return response;
+                }
+                else
+                {
+                    throw new WebRepoUnauthorisedException();
+                }
             }
             else
             {
@@ -145,8 +155,12 @@ namespace Locafi.Client.Repo
             var baseUrl = await _unauthorizedConfigService.GetBaseUrlAsync();
             
             var path = GetFullPath(baseUrl, _service, extra);
-            var token = await _authorisedUnauthorizedConfigService.GetTokenStringAsync();
-            var response = await _transferer.GetResponse(method, path, content, token);
+            TokenGroup token = null;
+            if (_authorisedUnauthorizedConfigService != null)
+            {
+                token = await _authorisedUnauthorizedConfigService.GetTokenGroupAsync();
+            }
+            var response = await _transferer.GetResponse(method, path, content, token?.Token);
             return response;
         }
 

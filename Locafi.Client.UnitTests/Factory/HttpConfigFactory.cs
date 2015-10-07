@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Authentication;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Authentication;
@@ -32,25 +33,13 @@ namespace Locafi.Client.UnitTests.Factory
             {                
                 result = await Post(baseUrl + "Authentication/Login/", user);                
             }
-            var configService = new AuthorisedHttpTransferConfigService(result, o => GenerateReauthedConfig(result.Refresh, baseUrl))
+            var configService = new UnauthorisedHttpTransferConfigService();
+            var authRepo = new AuthenticationRepo(configService, new Serialiser());
+            var authConfigService = new AuthorisedHttpTransferConfigService(authRepo, result)
             {
                 BaseUrl = baseUrl
             };
-            return configService;
-        }
-
-        private static async Task<IAuthorisedHttpTransferConfigService> GenerateReauthedConfig(string refreshToken, string baseUrl)
-        {
-            var dto = new RefreshLoginDto(refreshToken);
-            var path = AuthenticationUri.RefreshLogin;
-            var result = await Post(path, dto);
-
-            var service = new AuthorisedHttpTransferConfigService(result,
-                o => GenerateReauthedConfig(result.Refresh, baseUrl))
-            {
-                BaseUrl = baseUrl
-            };
-            return service;
+            return authConfigService;
         }
 
         private static async Task<TokenGroup> Post(string url, UserLoginDto loginDto)

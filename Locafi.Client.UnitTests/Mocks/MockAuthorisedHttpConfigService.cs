@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Repo;
+using Locafi.Client.Model.Dto.Authentication;
 
 namespace Locafi.Client.UnitTests.Mocks
 {
@@ -12,11 +14,6 @@ namespace Locafi.Client.UnitTests.Mocks
         public MockAuthorisedHttpConfigService()
         {
             
-        }
-
-        public MockAuthorisedHttpConfigService(Func<IHttpTransferConfigService, Task<IAuthorisedHttpTransferConfigService>> onUnauthorised)
-        {
-            OnUnauthorised = onUnauthorised;
         }
 
         public async Task<string> GetBaseUrlAsync()
@@ -29,6 +26,15 @@ namespace Locafi.Client.UnitTests.Mocks
             return "";
         }
 
-        public Func<IHttpTransferConfigService, Task<IAuthorisedHttpTransferConfigService>> OnUnauthorised { get; set; }
+        public IAuthenticationRepo AuthenticationRepo { get; set; }
+        public async Task<TokenGroup> GetTokenGroupAsync()
+        {
+            return new TokenGroup();
+        }
+
+        public async Task SetTokenGroupAsync(TokenGroup tokenGroup)
+        {
+            
+        }
     }
 }

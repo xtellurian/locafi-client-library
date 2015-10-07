@@ -4,23 +4,21 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Authentication;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Authentication;
 
 namespace Locafi.Client.UnitTests.Implementations
 {
     public class AuthorisedHttpTransferConfigService : IAuthorisedHttpTransferConfigService
     {
-        private readonly TokenGroup _tokenGroup;
+        private TokenGroup _tokenGroup;
 
-        public AuthorisedHttpTransferConfigService(TokenGroup tokenGroup)
+        public AuthorisedHttpTransferConfigService(IAuthenticationRepo authenticationRepo, TokenGroup tokenGroup)
         {
+            AuthenticationRepo = authenticationRepo;
             _tokenGroup = tokenGroup;
-        }
-
-        public AuthorisedHttpTransferConfigService(TokenGroup tokenGroup, Func<IHttpTransferConfigService, Task<IAuthorisedHttpTransferConfigService>> onUnauthorised) : this(tokenGroup)
-        {
-            OnUnauthorised = onUnauthorised;
         }
 
         public string BaseUrl { get; set; }
@@ -34,12 +32,18 @@ namespace Locafi.Client.UnitTests.Implementations
             return _tokenGroup?.Token;
         }
 
-        public async Task<string> GetTokenStringAsync()
+        public async Task<TokenGroup> GetTokenGroupAsync()
         {
-            return _tokenGroup?.Token;
+            return _tokenGroup;
         }
 
-        public Func<IHttpTransferConfigService, Task<IAuthorisedHttpTransferConfigService>> OnUnauthorised { get; set; }
+        public async Task SetTokenGroupAsync(TokenGroup tokenGroup)
+        {
+            _tokenGroup = tokenGroup;
+        }
+
+        public IAuthenticationRepo AuthenticationRepo { get; set; }
+
 
     }
 }

@@ -3,7 +3,7 @@ using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Repo;
 using Locafi.Client.UnitTests;
-using Locafi.Client.UnitTests.Factory;
+using Locafi.Script.Factory;
 using Locafi.Script.Implementations;
 
 namespace Locafi.Script
