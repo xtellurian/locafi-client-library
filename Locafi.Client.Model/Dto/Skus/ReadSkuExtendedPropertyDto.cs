@@ -19,5 +19,16 @@ namespace Locafi.Client.Model.Dto.Skus
 
         //    public string DefaultValue { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            var dto = obj as ReadSkuExtendedPropertyDto;
+            if (dto == null) return false;
+            return dto.Id == this.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }
