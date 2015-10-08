@@ -40,6 +40,7 @@
     <AssemblyOriginatorKeyFile>Locafi.Client-StrongNameKeyfile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Conversion\ExtendedPropertyConversions.cs" />
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />

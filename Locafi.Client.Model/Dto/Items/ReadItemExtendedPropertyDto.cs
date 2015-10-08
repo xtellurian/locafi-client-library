@@ -1,13 +1,14 @@
 ﻿using System;
+using Locafi.Client.Model.Dto.Skus;
 
 namespace Locafi.Client.Model.Dto.Items
 {
-    public class ReadItemExtendedPropertyDto
+    public class ReadItemExtendedPropertyDto : WriteItemExtendedPropertyDto
     {
 
-        public Guid? SkuExtendedPropertyId { get; set; }
+  //      public Guid? SkuExtendedPropertyId { get; set; }
 
-        public Guid ExtendedPropertyId { get; set; }
+//        public Guid ExtendedPropertyId { get; set; }
 
         public string Name { get; set; }
 
@@ -17,7 +18,7 @@ namespace Locafi.Client.Model.Dto.Items
 
         public string DataType { get; set; }
 
-        public string Value { get; set; }
+ //       public string Value { get; set; }
 
     }
 }
