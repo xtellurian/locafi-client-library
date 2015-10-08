@@ -23,12 +23,12 @@ namespace Locafi.Client.Model.Dto.Skus
         {
             var dto = obj as ReadSkuExtendedPropertyDto;
             if (dto == null) return false;
-            return dto.Id == this.Id;
+            return dto.Id == this.Id && string.Equals(dto.ExtendedPropertyName, this.ExtendedPropertyName);
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return Id.GetHashCode() + ExtendedPropertyName.GetHashCode(); // because Legacy DB has all equal IDs for these
         }
     }
 }
