@@ -97,12 +97,12 @@ namespace Locafi.Client.Repo
 
         public async override Task Handle(HttpResponseMessage responseMessage)
         {
-            throw new ItemException(await responseMessage.Content.ReadAsStringAsync());
+            throw new ItemRepoException(await responseMessage.Content.ReadAsStringAsync());
         }
 
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
         {
-            throw new ItemException(serverMessages, statusCode);
+            throw new ItemRepoException(serverMessages, statusCode);
         }
     }
 }

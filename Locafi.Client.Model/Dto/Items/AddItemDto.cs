@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -18,6 +19,9 @@ namespace Locafi.Client.Model.Dto.Items
             Description = description;
             ParentItemId = parentItemId;
             PersonId = personId;
+
+            var t = new ReadSkuExtendedPropertyDto();
+           
         }
 
         public Guid? ParentItemId { get; set; }

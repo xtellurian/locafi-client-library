@@ -75,7 +75,7 @@
     <Compile Include="Crypto\Sha256HashService.cs" />
     <Compile Include="Exceptions\AuthenticationRepoException.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
-    <Compile Include="Exceptions\ItemException.cs" />
+    <Compile Include="Exceptions\ItemRepoException.cs" />
     <Compile Include="Exceptions\OrderException.cs" />
     <Compile Include="Exceptions\PersonException.cs" />
     <Compile Include="Exceptions\PlaceRepoException.cs" />

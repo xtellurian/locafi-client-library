@@ -158,11 +158,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var order = await _orderRepo.Create(addOrder);
             Assert.IsNotNull(order);
 
-            var query = new OrderQuery();
-            query.CreateQuery(o => o.DestinationPlaceId, order.DestinationPlaceId, ComparisonOperator.Equals);
-            var queryResult = await _orderRepo.QueryOrders(query);
+            var query = OrderQuery.NewQuery(o => o.DestinationPlaceId, order.DestinationPlaceId,
+                ComparisonOperator.Equals);
+
+            var queryResult = await _orderRepo.QueryOrdersAsync(query);
             Assert.IsNotNull(queryResult, "queryResult != null");
-            Assert.IsTrue(queryResult.Contains(order));
+            Assert.IsTrue(queryResult.Entities.Contains(order));
         }
 
     }
