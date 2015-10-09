@@ -1,5 +1,6 @@
 ﻿using System;
 using Locafi.Client.Model.Dto.Items;
+using Locafi.Client.Model.Enums;
 
 namespace Locafi.Client.Model.Dto.Skus
 {
@@ -13,7 +14,9 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public bool ExtendedPropertyIsRequired { get; set; }
 
-        public string ExtendedPropertyDataType { get; set; }
+      //  public string ExtendedPropertyDataType { get; set; }
+
+        public TemplateDataTypes ExtendedPropertyDataType { get; set; }
 
         //    public bool IsAllowDefaultValue { get; set; }
 
