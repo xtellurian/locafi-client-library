@@ -15,5 +15,15 @@ namespace Locafi.Client.Model.Dto.Items
         public DateTime DateMoved { get; set; } // why needed, should use date of request?
 
         public Guid MovedByUserId { get; set; } // why needed, should use person making request? (what about fixed reader telling you the persion from a tag, probably different controller/function)
+
+        public static UpdateItemPlaceDto FromItemDetail(ItemDetailDto detail)
+        {
+            return new UpdateItemPlaceDto
+            {
+                ItemId = detail.Id,
+                OldPlaceId = detail.PlaceId,
+
+            };
+        }
     }
 }

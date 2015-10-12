@@ -156,8 +156,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             var dto = new UpdateItemTagDto
             {
-                ChangedByUserId = user.Id,
-                DateChanged = DateTime.UtcNow,
                 ItemId = item.Id,
 
             };

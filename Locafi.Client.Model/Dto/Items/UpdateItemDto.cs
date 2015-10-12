@@ -20,5 +20,18 @@ namespace Locafi.Client.Model.Dto.Items
         {
             ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>();
         }
+
+        public static UpdateItemDto FromItemDetail(ItemDetailDto detail)
+        {
+            return new UpdateItemDto
+            {
+                Description = detail.Description,
+                ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(detail.ItemExtendedPropertyList),
+                ItemId = detail.Id,
+                Name = detail.Name,
+                PlaceId = detail.PlaceId,
+                SkuId = detail.SkuId
+            };
+        }
     }
 }
