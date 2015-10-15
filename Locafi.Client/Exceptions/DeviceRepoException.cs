@@ -8,14 +8,14 @@ using Locafi.Client.Model.Responses;
 
 namespace Locafi.Client.Exceptions
 {
-    public class ReaderRepoException : WebRepoException
+    public class DeviceRepoException : WebRepoException
     {
-        public ReaderRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) 
+        public DeviceRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) 
             : base(serverMessages, statusCode)
         {
         }
 
-        public ReaderRepoException(string message) : base(message)
+        public DeviceRepoException(string message) : base(message)
         {
         }
     }
