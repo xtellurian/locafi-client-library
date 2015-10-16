@@ -21,7 +21,7 @@ namespace Locafi.Script
         public static IOrderRepo OrderRepo => new OrderRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static IPlaceRepo PlaceRepo => new PlaceRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IPersonRepo PersonRepo => new PersonRepo(AuthorisedHttpTransferConfigService, Serialiser);
-        public static IReaderRepo ReaderRepo => new ReaderRepo(AuthorisedHttpTransferConfigService,Serialiser);
+        public static IDeviceRepo DeviceRepo => new DeviceRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static IReasonRepo ReasonRepo => new ReasonRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static ISnapshotRepo SnapshotRepo => new SnapshotRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static ISkuRepo SkuRepo => new SkuRepo(AuthorisedHttpTransferConfigService, Serialiser);
