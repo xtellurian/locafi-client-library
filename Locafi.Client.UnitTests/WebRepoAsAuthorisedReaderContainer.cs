@@ -18,7 +18,7 @@ namespace Locafi.Client.UnitTests
         private static string GetReaderPassword(string readerUserName)
         {
             var hasher = new Sha256HashService();
-            return hasher.GenerateHash(readerUserName, StringConstants.Secret);
+            return hasher.GenerateHash(StringConstants.Secret, readerUserName);
         }
 
         public static IAuthenticationRepo AuthRepo => new AuthenticationRepo(HttpConfigService, Serialiser);

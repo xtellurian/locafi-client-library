@@ -63,7 +63,6 @@
     <Compile Include="Contract\Repo\IOrderRepo.cs" />
     <Compile Include="Contract\Repo\IPersonRepo.cs" />
     <Compile Include="Contract\Repo\IPlaceRepo.cs" />
-    <Compile Include="Contract\Repo\IReaderRepo.cs" />
     <Compile Include="Contract\Repo\IReasonRepo.cs" />
     <Compile Include="Contract\Repo\ISkuRepo.cs" />
     <Compile Include="Contract\Repo\ISnapshotRepo.cs" />
@@ -95,10 +94,10 @@
     <Compile Include="Processors\Orders\Strategies\ProcessSnapshotTagResultCategory.cs" />
     <Compile Include="Processors\Orders\Strategies\AllocateStrategy.cs" />
     <Compile Include="Processors\Orders\Strategies\StrategyState.cs" />
+    <Compile Include="Contract\Repo\IDeviceRepo.cs" />
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
-    <Compile Include="Repo\ReaderRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
     <Compile Include="Repo\TagReservationRepo.cs" />
     <Compile Include="Repo\TemplateRepo.cs" />

@@ -12,7 +12,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
     [TestClass]
     public class DeviceRepoTests
     {
-        private IDeviceRepo _deviceRepoAsReader;
+        private IDeviceRepo _deviceRepoAsDevice;
         private IDeviceRepo _deviceRepoAsUser;
         private IPlaceRepo _placeRepo;
         private IPersonRepo _personRepo;
@@ -20,12 +20,39 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestInitialize]
         public void Initialize()
         {
-            _deviceRepoAsReader = WebRepoAsAuthorisedReaderContainer.DeviceRepo;
+            _deviceRepoAsDevice = WebRepoAsAuthorisedReaderContainer.DeviceRepo;
             _deviceRepoAsUser = WebRepoContainer.DeviceRepo;
             _placeRepo = WebRepoContainer.PlaceRepo;
             _personRepo = WebRepoContainer.PersonRepo;
         }
+        //TODO: Write tests for creation and deletion of peripheral devices, readers
         //Peripheral Device Test Methods
+        [TestMethod]
+        public async Task PeripheralDevice_GetAll()
+        {
+            var devices = await _deviceRepoAsUser.GetDevices();
+            Assert.IsNotNull(devices);
+            Assert.IsInstanceOfType(devices, typeof(IEnumerable<PeripheralDeviceSummaryDto>));
+            Assert.IsTrue(devices.Count > 0);
+        }
+
+        [TestMethod]
+        public async Task PeripheralDevice_GetByIdAsUser()
+        {
+            var devices = await _deviceRepoAsUser.GetDevices();
+            var device = await _deviceRepoAsUser.GetDevice(devices.First().Id);
+            Assert.IsNotNull(device);
+            Assert.IsInstanceOfType(device, typeof(PeripheralDeviceDetailDto));
+        }
+
+        [TestMethod]
+        public async Task PeripheralDevice_GetByIdAsDevice()
+        {
+            var devices = await _deviceRepoAsUser.GetDevices();
+            var device = await _deviceRepoAsDevice.GetDevice(devices.First().Id);
+            Assert.IsNotNull(device);
+            Assert.IsInstanceOfType(device, typeof(PeripheralDeviceDetailDto));
+        }
 
         //RFID Reader Test Methods
         [TestMethod]
@@ -53,17 +80,17 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         }
 
         [TestMethod]
-        public async Task RfidReader_GetBySerialAsReader()
+        public async Task RfidReader_GetBySerialAsDevice()
         {
-            var reader = await _deviceRepoAsReader.GetReader(StringConstants.ReaderUserName);
+            var reader = await _deviceRepoAsDevice.GetReader(StringConstants.ReaderUserName);
             Assert.IsNotNull(reader);
         }
 
         [TestMethod]
-        public async Task RfidReader_GetByIdAsReader()
+        public async Task RfidReader_GetByIdAsDevice()
         {
-            var readerOriginal = await _deviceRepoAsReader.GetReader(StringConstants.ReaderUserName);
-            var readerTest = await _deviceRepoAsReader.GetReader(readerOriginal.Id);
+            var readerOriginal = await _deviceRepoAsDevice.GetReader(StringConstants.ReaderUserName);
+            var readerTest = await _deviceRepoAsDevice.GetReader(readerOriginal.Id);
             Assert.IsTrue(readerOriginal.Id == readerTest.Id);
         }
 
@@ -71,11 +98,12 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         public async Task RfidReader_ClusterTagsOnly()
         {
             var cluster = await GenerateRandomCluster();
-            var result = await _deviceRepoAsReader.ProcessCluster(cluster);
+            var result = await _deviceRepoAsDevice.ProcessCluster(cluster);
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(ClusterResponseDto));
         }
 
+        #region Private Methods
         private async Task<ClusterDto> GenerateRandomCluster()
         {
             var ran = new Random();
@@ -118,5 +146,6 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
                 }
             }
         }
+        #endregion
     }
 }
