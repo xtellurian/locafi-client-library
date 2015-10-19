@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Items;
 
-namespace Locafi.Client.Model.Dto.Reader
+namespace Locafi.Client.Model.Dto.Devices
 {
+    // tells the client to do something after it uploads a cluster
     public class ClusterResponseDto
     {
         public Guid? PersonId { get; set; }
@@ -15,8 +16,8 @@ namespace Locafi.Client.Model.Dto.Reader
         public Guid PlaceId { get; set; }
         public string PlaceName { get; set; }
 
-        public IList<ItemSummaryDto> Items { get; set; }
-        public IList<ClusterTagDto> UnknownTags { get; set; }
+        public List<ItemSummaryDto> Items { get; set; }
+        public List<ClusterTagDto> UnknownTags { get; set; }
 
         public ClusterResponseDto()
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Locafi.Client.Model.Dto.Reader;
+using Locafi.Client.Model.Dto.Devices;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.RFID;
 

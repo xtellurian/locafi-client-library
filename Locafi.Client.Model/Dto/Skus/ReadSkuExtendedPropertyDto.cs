@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public string ExtendedPropertyDataType { get; set; }
 
-        public bool IsAllowDefaultValue { get; set; }
+        public bool IsSkuLevelProperty { get; set; }
 
         public string DefaultValue { get; set; }
     }

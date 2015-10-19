@@ -63,7 +63,7 @@
     <Compile Include="Mocks\SnapshotRepoMock.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="StringConstants.cs" />
-    <Compile Include="Tests\Anthony\ReaderRepoTests.cs" />
+    <Compile Include="Tests\Anthony\DeviceRepoTests.cs" />
     <Compile Include="Tests\Rian\AuthenticationTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderAllocateStrategyTests.cs" />
@@ -74,7 +74,6 @@
     <Compile Include="Tests\Rian\PersonRepoTests.cs" />
     <Compile Include="Tests\Rian\TemplateRepoTests.cs" />
     <Compile Include="Tests\Rian\ReasonRepoTests.cs" />
-    <Compile Include="Tests\Rian\ReaderRepoTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderAllocationTests.cs" />
     <Compile Include="Tests\Rian\Inventory\InventoryProcessRepoTests.cs" />
     <Compile Include="Tests\Rian\TagReservationRepoTests.cs" />
