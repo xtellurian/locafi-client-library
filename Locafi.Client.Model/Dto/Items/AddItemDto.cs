@@ -19,8 +19,7 @@ namespace Locafi.Client.Model.Dto.Items
             Description = description;
             ParentItemId = parentItemId;
             PersonId = personId;
-
-            var t = new ReadSkuExtendedPropertyDto();
+            ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>();
            
         }
 
