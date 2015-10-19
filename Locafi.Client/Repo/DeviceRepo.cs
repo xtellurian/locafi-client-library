@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Devices;
@@ -17,7 +18,8 @@ namespace Locafi.Client.Repo
 {
     public class DeviceRepo : WebRepo, IWebRepoErrorHandler, IDeviceRepo
     {
-        public DeviceRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) : base(authorisedUnauthorizedConfigService, serialiser, DeviceUri.ServiceName)
+        public DeviceRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(),authorisedUnauthorizedConfigService, serialiser, DeviceUri.ServiceName)
         {
         }
 
