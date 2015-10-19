@@ -16,12 +16,12 @@ namespace Locafi.Client.Model.Dto.Items
 
         public Guid MovedByUserId { get; set; } // why needed, should use person making request? (what about fixed reader telling you the persion from a tag, probably different controller/function)
 
-        public static UpdateItemPlaceDto FromItemDetail(ItemDetailDto detail)
+        public static UpdateItemPlaceDto FromItemDetail(ItemSummaryDto summary)
         {
             return new UpdateItemPlaceDto
             {
-                ItemId = detail.Id,
-                OldPlaceId = detail.PlaceId,
+                ItemId = summary.Id,
+                OldPlaceId = summary.PlaceId,
 
             };
         }
