@@ -8,7 +8,7 @@ namespace Locafi.Client.Model.RelativeUri
 {
     public static class TagReservationUri
     {
-        public static string SerivceName => "TagReservations";
+        public static string ServiceName => "TagReservations";
 
         public static string ReserveBySku(Guid skuId, int quantity)
         {

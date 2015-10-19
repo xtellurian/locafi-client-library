@@ -13,11 +13,13 @@ namespace Locafi.Client.Contract.Repo
     public interface IUserRepo
     {
         Task<IList<UserSummaryDto>> GetAllUsers();
+        [Obsolete]
         Task<IList<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery);
         Task<UserDetailDto> GetUserById(Guid id);
         Task<UserDetailDto> CreateUser(AddUserDto addUserDto);
         Task<UserDetailDto> UpdateUser(UpdateUserDto updateUserDto);
         Task<bool> DeleteUser(Guid id);
 
+        Task<IQueryResult<UserSummaryDto>> QueryUsersAsync(IRestQuery<UserSummaryDto> query);
     }
 }

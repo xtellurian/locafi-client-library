@@ -22,7 +22,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private IPersonRepo _personRepo;
         private ISkuRepo _skuRepo;
         private IUserRepo _userRepo;
-        private IList<Guid> _toDelete;
 
         [TestInitialize]
         public void Setup()
@@ -32,7 +31,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _personRepo = WebRepoContainer.PersonRepo;
             _skuRepo = WebRepoContainer.SkuRepo;
             _userRepo = WebRepoContainer.UserRepo;
-            _toDelete = new List<Guid>();
         }
 
         [TestMethod]
@@ -43,7 +41,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var result = await _itemRepo.CreateItem(addItemDto);
 
             Assert.IsNotNull(result);
-            _toDelete.Add(result.Id);
             Assert.IsTrue(string.Equals(addItemDto.Name, result.Name));
             Assert.IsTrue(string.Equals(addItemDto.Description, result.Description));
             Assert.AreEqual(addItemDto.PlaceId, result.PlaceId);
@@ -60,18 +57,18 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             var addItemDto = await CreateRandomAddItemDto();
             var result = await _itemRepo.CreateItem(addItemDto);
-            Assert.IsNotNull(result);
-            _toDelete.Add(result.Id);
+            Assert.IsNotNull(result, "failed to create item");
 
             var skuDetail = await _skuRepo.GetSkuDetail(result.SkuId);
             foreach(var skuDetailExtendedProperty in skuDetail.SkuExtendedPropertyList)
             {
                 var itemExtendedProperty = result.ItemExtendedPropertyList
                     .FirstOrDefault(e => e.SkuExtendedPropertyId == skuDetailExtendedProperty.Id);
-                Assert.IsNotNull(itemExtendedProperty);
-                Assert.AreEqual(skuDetailExtendedProperty.DefaultValue,itemExtendedProperty.Value);
+                Assert.IsNotNull(itemExtendedProperty, "Extended property was null");
+                Assert.AreEqual(skuDetailExtendedProperty.DefaultValue,itemExtendedProperty.Value, "Was not default value");
             }
         }
+
         [TestMethod]
         public async Task Item_QueryItemsForSpecificItem()
         {
@@ -119,7 +116,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var itemToAdd = await CreateRandomAddItemDto();
             var result = await _itemRepo.CreateItem(itemToAdd);
             Assert.IsNotNull(result, "result != null");
-            _toDelete.Add(result.Id);
             var count = await _itemRepo.GetItemCount();
             Assert.IsTrue(count > 0);
         }
@@ -160,8 +156,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             var dto = new UpdateItemTagDto
             {
-                ChangedByUserId = user.Id,
-                DateChanged = DateTime.UtcNow,
                 ItemId = item.Id,
 
             };

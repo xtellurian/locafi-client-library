@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Skus;
@@ -14,10 +16,15 @@ using Locafi.Client.Model.Uri;
 
 namespace Locafi.Client.Repo
 {
-    public class SkuRepo : WebRepo, ISkuRepo, IWebRepoErrorHandler
+    public class SkuRepo : WebRepo, ISkuRepo
     {
         public SkuRepo(IAuthorisedHttpTransferConfigService downloader, ISerialiserService entitySerialiser)
-            : base(downloader, entitySerialiser, SkuUri.ServiceName)
+            : base(new SimpleHttpTransferer(), downloader, entitySerialiser, SkuUri.ServiceName)
+        {
+        }
+
+        public SkuRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, SkuUri.ServiceName)
         {
         }
 
@@ -35,9 +42,16 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        [Obsolete]
         public async Task<IList<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query)
         {
             return await QuerySkus(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<SkuSummaryDto>> QuerySkusAsync(IRestQuery<SkuSummaryDto> query)
+        {
+            var result = await QuerySkus(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<SkuDetailDto> GetSkuDetail(Guid skuId)

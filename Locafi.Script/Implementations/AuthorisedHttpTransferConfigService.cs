@@ -1,14 +1,18 @@
 ﻿using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
-using Locafi.Client.UnitTests;
+using Locafi.Client.Contract.Repo;
+using Locafi.Client.Model.Dto.Authentication;
 
 namespace Locafi.Script.Implementations
 {
     public class AuthorisedHttpTransferConfigService : IAuthorisedHttpTransferConfigService
     {
-        public AuthorisedHttpTransferConfigService(string token)
+        private TokenGroup _tokenGroup;
+
+        public AuthorisedHttpTransferConfigService(IAuthenticationRepo authenticationRepo, TokenGroup tokenGroup)
         {
-            _token = token;
+            AuthenticationRepo = authenticationRepo;
+            _tokenGroup = tokenGroup;
         }
 
         public string BaseUrl { get; set; }
@@ -17,21 +21,23 @@ namespace Locafi.Script.Implementations
             return BaseUrl;
         }
 
-        private string _token;
-
         public string GetTokenString()
         {
-            return _token;
+            return _tokenGroup?.Token;
         }
 
-        public async Task<string> GetTokenStringAsync()
+        public async Task<TokenGroup> GetTokenGroupAsync()
         {
-            return StringConstants.Token;
+            return _tokenGroup;
         }
 
-        public void SetTokenString(string token)
+        public async Task SetTokenGroupAsync(TokenGroup tokenGroup)
         {
-            _token = token;
+            _tokenGroup = tokenGroup;
         }
+
+        public IAuthenticationRepo AuthenticationRepo { get; set; }
+
+
     }
 }

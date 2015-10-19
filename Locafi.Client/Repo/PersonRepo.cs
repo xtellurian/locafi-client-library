@@ -5,9 +5,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Persons;
+using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
@@ -16,7 +18,12 @@ namespace Locafi.Client.Repo
     public class PersonRepo : WebRepo, IPersonRepo, IWebRepoErrorHandler
     {
         public PersonRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(unauthorizedConfigService, serialiser, PersonUri.ServiceName)
+            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, PersonUri.ServiceName)
+        {
+        }
+
+        public PersonRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, PersonUri.ServiceName)
         {
         }
 
@@ -25,6 +32,12 @@ namespace Locafi.Client.Repo
             var path = PersonUri.GetPersons;
             var items = await Get<IList<PersonSummaryDto>>(path);
             return items;
+        }
+
+        public async Task<IQueryResult<PersonSummaryDto>> QueryPersonsAsync(IRestQuery<PersonSummaryDto> query)
+        {
+            var result = await QueryPersons(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<PersonDetailDto> GetPersonById(Guid id)

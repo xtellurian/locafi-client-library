@@ -27,7 +27,7 @@ namespace Locafi.Client.Model.Dto.Users
         }
         public Guid? TagId { get; set; }
 
-      //  public string UserName { get; set; }
+        public string EmailAddress { get; set; }
 
         public IList<ReadEntityExtendedPropertyDto> UserExtendedPropeertyList { get; set; }
 

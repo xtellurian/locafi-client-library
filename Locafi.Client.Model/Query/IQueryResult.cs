@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Query
 {
-    public interface IRestQuery<T>
+    public interface IQueryResult<T>
     {
-        string AsRestQuery();
-        int Take { get; set; }
-        int Skip { get; set; }
+        IList<T> Entities { get; }
+        IRestQuery<T> ContinuationQuery { get; }
     }
 }

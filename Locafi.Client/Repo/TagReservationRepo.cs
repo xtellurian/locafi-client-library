@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.TagReservation;
@@ -17,7 +18,12 @@ namespace Locafi.Client.Repo
     public class TagReservationRepo : WebRepo, ITagReservationRepo
     {
         public TagReservationRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-            : base(authorisedUnauthorizedConfigService, serialiser, TagReservationUri.SerivceName)
+            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, TagReservationUri.ServiceName)
+        {
+        }
+
+        public TagReservationRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, TagReservationUri.ServiceName)
         {
         }
 

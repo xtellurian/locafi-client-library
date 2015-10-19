@@ -4,8 +4,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Authentication;
+using Locafi.Client.Contract.Config;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Authentication;
+using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.UnitTests.Implementations;
 using Newtonsoft.Json;
 
@@ -21,7 +24,7 @@ namespace Locafi.Client.UnitTests.Factory
                 Username = usrname,
                 Password = passwrd
             };
-            string result;
+            TokenGroup result;
             if (isReader)
             {
                 result = await Post(baseUrl + "Authentication/ReaderLogin/", user);
@@ -30,14 +33,16 @@ namespace Locafi.Client.UnitTests.Factory
             {                
                 result = await Post(baseUrl + "Authentication/Login/", user);                
             }
-            var configService = new AuthorisedHttpTransferConfigService(result)
+            var configService = new UnauthorisedHttpTransferConfigService();
+            var authRepo = new AuthenticationRepo(configService, new Serialiser());
+            var authConfigService = new AuthorisedHttpTransferConfigService(authRepo, result)
             {
                 BaseUrl = baseUrl
             };
-            return configService;
+            return authConfigService;
         }
 
-        private static async Task<string> Post(string url, UserLoginDto loginDto)
+        private static async Task<TokenGroup> Post(string url, UserLoginDto loginDto)
         {
             var message = new HttpRequestMessage(HttpMethod.Post, url)
             {
@@ -50,7 +55,23 @@ namespace Locafi.Client.UnitTests.Factory
 
             var result = response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<AuthenticationResponseDto>(await response.Content.ReadAsStringAsync()) : null;
 
-            return result?.TokenGroup.Token;
+            return result?.TokenGroup;
+        }
+
+        private static async Task<TokenGroup> Post(string url, RefreshLoginDto loginDto)
+        {
+            var message = new HttpRequestMessage(HttpMethod.Post, url)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json")
+            };
+
+
+            var client = new HttpClient();
+            var response = await client.SendAsync(message);
+
+            var result = response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<AuthenticationResponseDto>(await response.Content.ReadAsStringAsync()) : null;
+
+            return result?.TokenGroup;
         }
 
     }

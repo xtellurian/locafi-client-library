@@ -40,6 +40,7 @@
     <AssemblyOriginatorKeyFile>Locafi.Client-StrongNameKeyfile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Conversion\ExtendedPropertyConversions.cs" />
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
     <Compile Include="Dto\Devices\AddIpConfigDto.cs" />
     <Compile Include="Dto\Devices\AddPeripheralDeviceActuatorDto.cs" />
@@ -132,10 +133,13 @@
     <Compile Include="Enums\TagType.cs" />
     <Compile Include="Enums\TemplateDataTypes.cs" />
     <Compile Include="Enums\TemplateFor.cs" />
+    <Compile Include="Query\IQueryResult.cs" />
     <Compile Include="Query\PropertyComparison\EntityQuery.cs" />
     <Compile Include="Query\PropertyComparison\OrderQuery.cs" />
     <Compile Include="Query\PropertyComparison\SkuQuery.cs" />
     <Compile Include="Query\PropertyComparison\SnapshotQuery.cs" />
+    <Compile Include="Query\QueryExtensions.cs" />
+    <Compile Include="Query\QueryResult.cs" />
     <Compile Include="RelativeUri\AuthenticationUri.cs" />
     <Compile Include="RelativeUri\DeviceUri.cs" />
     <Compile Include="RelativeUri\ItemUri.cs" />

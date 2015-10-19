@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Snapshots;
@@ -18,7 +19,12 @@ namespace Locafi.Client.Repo
     public class SnapshotRepo : WebRepo, ISnapshotRepo, IWebRepoErrorHandler
     {
         public SnapshotRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(unauthorizedConfigService, serialiser, SnapshotUri.ServiceName)
+            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, SnapshotUri.ServiceName)
+        {
+        }
+
+        public SnapshotRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, SnapshotUri.ServiceName)
         {
         }
 
@@ -44,9 +50,16 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        [Obsolete]
         public async Task<IList<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query)
         {
             return await QuerySnapshots(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsAsync(IRestQuery<SnapshotSummaryDto> query)
+        {
+            var result = await QuerySnapshots(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<bool> Delete(Guid id)

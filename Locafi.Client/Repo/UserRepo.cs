@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Users;
@@ -16,7 +17,12 @@ namespace Locafi.Client.Repo
     public class UserRepo : WebRepo, IUserRepo
     {
         public UserRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(unauthorizedConfigService, serialiser, UserUri.ServiceName)
+            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, UserUri.ServiceName)
+        {
+        }
+
+        public UserRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, UserUri.ServiceName)
         {
         }
 
@@ -26,11 +32,17 @@ namespace Locafi.Client.Repo
             var result = await Get<IList<UserSummaryDto>>(path);
             return result;
         }
-
+        [Obsolete]
         public async Task<IList<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery)
         {
             var result = await QueryUsers(userQuery.AsRestQuery());
             return result;
+        }
+
+        public async Task<IQueryResult<UserSummaryDto>> QueryUsersAsync(IRestQuery<UserSummaryDto> query)
+        {
+            var result = await QueryUsers(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<UserDetailDto> GetUserById(Guid id)

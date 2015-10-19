@@ -19,5 +19,6 @@ namespace Locafi.Client.Model.Dto.Templates
 
         public IList<AddTemplateExtendedPropertyDto> TemplateExtendedPropertyList { get; set; }
 
+
     }
 }

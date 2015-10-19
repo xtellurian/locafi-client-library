@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto;
@@ -77,13 +78,38 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var place = await _placeRepo.CreatePlace(addPlace);
             Assert.IsNotNull(place);
 
+            var q = PlaceQuery.NewQuery((p) => p.Name, place.Name, ComparisonOperator.Contains);
+            var r = await _placeRepo.QueryPlacesAsync(q);
+            Assert.IsNotNull(r);
+            Assert.IsInstanceOfType(r, typeof(IQueryResult<PlaceSummaryDto>));
+            Assert.IsTrue(r.Entities.Contains(place));
+
+            q = PlaceQuery.NewQuery((p) => p.Name, "", ComparisonOperator.Contains, 2); // get first 2 places
+            r = await _placeRepo.QueryPlacesAsync(q);
+            Assert.IsNotNull(r);
+            Assert.IsInstanceOfType(r, typeof(IQueryResult<PlaceSummaryDto>));
+            Assert.IsNotNull(r.ContinuationQuery);
+            var r2 = await _placeRepo.QueryPlacesAsync(r.ContinuationQuery);
+            Assert.IsNotNull(r2);
+            Assert.IsNotNull(r2.Entities);
+            Assert.AreEqual(r2.Entities.Count, 2);
+            
+        }
+
+        [TestMethod]
+        public async Task Place_Query_Obsolete()
+        {
+            var addPlace = await GenerateRandomAddPlaceDto();
+            var place = await _placeRepo.CreatePlace(addPlace);
+            Assert.IsNotNull(place);
+
             var q = new PlaceQuery();
             q.CreateQuery((p) => p.Name, place.Name, ComparisonOperator.Contains);
             var r = await _placeRepo.QueryPlaces(q);
             Assert.IsNotNull(r);
             Assert.IsTrue(r.Contains(place));
 
-            q.CreateQuery(p=> p.LastModifiedByUserId, place.LastModifiedByUserId, ComparisonOperator.Equals);
+            q.CreateQuery(p => p.LastModifiedByUserId, place.LastModifiedByUserId, ComparisonOperator.Equals);
             r = await _placeRepo.QueryPlaces(q);
             Assert.IsNotNull(r);
             Assert.IsTrue(r.Contains(place));

@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Items;
@@ -18,22 +19,32 @@ namespace Locafi.Client.Repo
         private readonly ISerialiserService _serialiser;
 
         public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedUnauthorizedConfig, ISerialiserService serialiser) 
-            : base(transferAuthorisedUnauthorizedConfig, serialiser, ItemUri.ServiceName)
+            : base(new SimpleHttpTransferer(), transferAuthorisedUnauthorizedConfig, serialiser, ItemUri.ServiceName)
         {
             _serialiser = serialiser;
         }
 
+        public ItemRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedUnauthorizedConfigService, serialiser, ItemUri.ServiceName)
+        {
+        }
         public async Task<long> GetItemCount()
         {
             var path = ItemUri.GetCount;
             var result = await Get<long>(path);
             return result;
         }
-
+        [Obsolete]
         public async Task<IList<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query)
         {
             var result = await QueryItems(query.AsRestQuery());
             return result;
+        }
+
+        public async Task<IQueryResult<ItemSummaryDto>> QueryItemsAsync(IRestQuery<ItemSummaryDto> query)
+        {
+            var result = await QueryItems(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<ItemDetailDto> GetItemDetail(Guid id)
@@ -86,12 +97,12 @@ namespace Locafi.Client.Repo
 
         public async override Task Handle(HttpResponseMessage responseMessage)
         {
-            throw new ItemException(await responseMessage.Content.ReadAsStringAsync());
+            throw new ItemRepoException(await responseMessage.Content.ReadAsStringAsync());
         }
 
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
         {
-            throw new ItemException(serverMessages, statusCode);
+            throw new ItemRepoException(serverMessages, statusCode);
         }
     }
 }

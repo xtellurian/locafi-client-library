@@ -14,8 +14,10 @@ namespace Locafi.Client.Contract.Repo
     {
         Task<IList<PlaceSummaryDto>> GetAllPlaces();
         Task<PlaceDetailDto> CreatePlace(AddPlaceDto addPlaceDto);
+        [Obsolete]
         Task<IList<PlaceSummaryDto>> QueryPlaces(IRestQuery<PlaceSummaryDto> query);
         Task<bool> Delete(Guid placeId);
         Task<PlaceDetailDto> GetPlaceById(Guid id);
+        Task<IQueryResult<PlaceSummaryDto>> QueryPlacesAsync(IRestQuery<PlaceSummaryDto> query);
     }
 }

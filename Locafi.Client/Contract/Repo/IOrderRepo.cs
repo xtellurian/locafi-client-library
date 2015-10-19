@@ -14,6 +14,7 @@ namespace Locafi.Client.Contract.Repo
     {
         Task<IList<OrderSummaryDto>> GetAllOrders();
         Task<OrderDetailDto> GetOrderById(Guid id);
+        [Obsolete]
         Task<IList<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query);
 
         Task<OrderDetailDto> Create(AddOrderDto orderDetail);
@@ -30,5 +31,6 @@ namespace Locafi.Client.Contract.Repo
 
         Task<OrderActionResponseDto> Cancel(OrderSummaryDto order);
         Task<bool> DeleteOrder(Guid orderId);
+        Task<IQueryResult<OrderSummaryDto>> QueryOrdersAsync(IRestQuery<OrderSummaryDto> query);
     }
 }

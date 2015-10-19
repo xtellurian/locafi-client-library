@@ -8,13 +8,13 @@ using Locafi.Client.Model.Responses;
 
 namespace Locafi.Client.Exceptions
 {
-    public class ItemException : WebRepoException
+    public class ItemRepoException : WebRepoException
     {
-        public ItemException(string message) : base(message)
+        public ItemRepoException(string message) : base(message)
         {
         }
 
-        public ItemException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public ItemRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
             : base(serverMessages, statusCode)
         {
         }

@@ -4,15 +4,21 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Authentication;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Repo;
+using Locafi.Client.Model.Dto.Authentication;
 
 namespace Locafi.Client.UnitTests.Implementations
 {
     public class AuthorisedHttpTransferConfigService : IAuthorisedHttpTransferConfigService
     {
-        public AuthorisedHttpTransferConfigService(string token)
+        private TokenGroup _tokenGroup;
+
+        public AuthorisedHttpTransferConfigService(IAuthenticationRepo authenticationRepo, TokenGroup tokenGroup)
         {
-            _token = token;
+            AuthenticationRepo = authenticationRepo;
+            _tokenGroup = tokenGroup;
         }
 
         public string BaseUrl { get; set; }
@@ -21,21 +27,18 @@ namespace Locafi.Client.UnitTests.Implementations
             return BaseUrl;
         }
 
-        private string _token;
-
-        public string GetTokenString()
+        public async Task<TokenGroup> GetTokenGroupAsync()
         {
-            return _token;
+            return _tokenGroup;
         }
 
-        public async Task<string> GetTokenStringAsync()
+        public async Task SetTokenGroupAsync(TokenGroup tokenGroup)
         {
-            return _token;
+            _tokenGroup = tokenGroup;
         }
 
-        public void SetTokenString(string token)
-        {
-            _token = token;
-        }
+        public IAuthenticationRepo AuthenticationRepo { get; set; }
+
+
     }
 }
