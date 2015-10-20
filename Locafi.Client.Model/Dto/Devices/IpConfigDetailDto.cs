@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Devices
 {
-    public class IpConfigDetailDto
-    {
-        public Guid Id { get; set; }
-
+    public class IpConfigDetailDto : EntityDtoBase
+    {    
         public string IpAddress { get; set; }
 
         public string SubnetMask { get; set; }
@@ -21,5 +20,21 @@ namespace Locafi.Client.Model.Dto.Devices
         public string MacAddress { get; set; }
 
         public string Hostname { get; set; }
+
+        public IpConfigDetailDto()
+        {
+            
+        }
+
+        public IpConfigDetailDto(IpConfigDetailDto dto) : base(dto)
+        {
+            var type = typeof(IpConfigDetailDto);
+            var properties = type.GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
+        }
     }
 }

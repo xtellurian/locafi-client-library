@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Enums;
@@ -32,5 +33,21 @@ namespace Locafi.Client.Model.Dto.Devices
         public int LdcFieldTimeout { get; set; }    // Specifies in milliseconds the time the Reader will wait before entering low duty cycle mode. (0 - 65535)
 
         public List<RfidReaderAntennaDto> Antennas { get; set; }
+
+        public RfidReaderDetailDto()
+        {
+            
+        }
+
+        public RfidReaderDetailDto(RfidReaderDetailDto dto) : base(dto)
+        {
+            var type = typeof(RfidReaderDetailDto);
+            var properties = type.GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
+        }
     }
 }

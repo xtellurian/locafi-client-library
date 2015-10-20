@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Items;
@@ -23,6 +24,17 @@ namespace Locafi.Client.Model.Dto.Devices
         {
             Items = new List<ItemSummaryDto>();
             UnknownTags = new List<ClusterTagDto>();
+        }
+
+        public ClusterResponseDto(ClusterResponseDto dto)
+        {
+            var type = typeof(ClusterResponseDto);
+            var properties = type.GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
         }
     }
 }
