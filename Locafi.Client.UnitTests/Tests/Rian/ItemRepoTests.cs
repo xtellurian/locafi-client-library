@@ -113,10 +113,11 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Item_Count()
         {
+            var query = ItemQuery.NewQuery(i => i.Name, "n", ComparisonOperator.Equals);
             var itemToAdd = await CreateRandomAddItemDto();
             var result = await _itemRepo.CreateItem(itemToAdd);
             Assert.IsNotNull(result, "result != null");
-            var count = await _itemRepo.GetItemCount();
+            var count = await _itemRepo.GetItemCount(query);
             Assert.IsTrue(count > 0);
         }
 

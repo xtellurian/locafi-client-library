@@ -23,9 +23,9 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var transferer = new UnauthorisedMockHttpTransferer();
             var config = new MockAuthorisedHttpConfigService();
 
-            var itemRepo = new ItemRepo(transferer, config, new Serialiser());
+            var skuRepo = new SkuRepo(transferer, config, new Serialiser());
 
-            var c = await itemRepo.GetItemCount();
+            var c = await skuRepo.GetAllSkus();
 
         }
         [TestMethod]

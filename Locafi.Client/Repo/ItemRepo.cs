@@ -9,6 +9,7 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 
@@ -28,10 +29,10 @@ namespace Locafi.Client.Repo
            : base(transferer, authorisedUnauthorizedConfigService, serialiser, ItemUri.ServiceName)
         {
         }
-        public async Task<long> GetItemCount()
+        public async Task<int> GetItemCount(IRestQuery<ItemSummaryDto> query)
         {
-            var path = ItemUri.GetCount;
-            var result = await Get<long>(path);
+            var path = $"{ItemUri.GetItemCount}{query.AsRestQuery()}";
+            var result = await Get<int>(path);
             return result;
         }
         [Obsolete]

@@ -1,14 +1,13 @@
 ﻿using System;
 using Locafi.Client.Model.Dto.Items;
 
-namespace Locafi.Client.Model.Uri
+namespace Locafi.Client.Model.RelativeUri
 {
     public static class ItemUri
     {
         public static string ServiceName => "Items";
-        public static string GetCount => @"GetItems/GetCount";
+        public static string GetItemCount => @"GetItems/GetCount";
         public static string GetItems => "GetItems";
-        
         public static string CreateItem => @"CreateItem";
 
         public static string GetItem(Guid id)
