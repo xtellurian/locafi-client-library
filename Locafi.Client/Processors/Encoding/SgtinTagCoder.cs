@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Locafi.Client.Processors.Encoding
 {
-    public class SgtinTagCoder
+    internal class SgtinTagCoder
     {
         /* EAN-13 / GTIN-13
          * - 13 characters
@@ -1364,7 +1364,7 @@ namespace Locafi.Client.Processors.Encoding
         }
     }
 
-    public class SgtinInfo
+    internal class SgtinInfo
     {
         public byte Header { get; set; }
         public byte Filter { get; set; }

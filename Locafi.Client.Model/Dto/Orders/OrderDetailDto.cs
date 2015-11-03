@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using Locafi.Client.Model.RFID;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 
 namespace Locafi.Client.Model.Dto.Orders
 {
@@ -8,10 +13,13 @@ namespace Locafi.Client.Model.Dto.Orders
     {
         public OrderDetailDto()
         {
-            SourceSnapshotIds = new List<Guid>();
-            DestinationSnapshotIds = new List<Guid>();
-            RequiredSkus = new List<OrderSkuLineItemDto>();
-            RequiredItems = new List<OrderItemLineItemDto>();
+            
+            ExpectedSkus = new List<OrderSkuLineItemDto>();
+            AdditionalSkus = new List<OrderSkuLineItemDto>();
+            ExpectedItems = new List<OrderItemLineItemDto>();
+            AdditionalItems = new List<OrderItemLineItemDto>();
+            ExcludedTagNumbers = new List<string>();
+            UnknownTags = new List<IRfidTag>();
         }
 
         public OrderDetailDto(OrderDetailDto dto): base(dto)
@@ -24,11 +32,16 @@ namespace Locafi.Client.Model.Dto.Orders
                 property.SetValue(this, value);
             }
         }
-        public IList<Guid> SourceSnapshotIds { get; set; }
-        public IList<Guid> DestinationSnapshotIds { get; set; }
-        public IList<OrderSkuLineItemDto> RequiredSkus { get; set; }
-        public IList<OrderItemLineItemDto> RequiredItems { get; set; }
+        
+        public IList<OrderSkuLineItemDto> ExpectedSkus { get; set; }
+        public IList<OrderSkuLineItemDto> AdditionalSkus { get; set; }
+        public IList<OrderItemLineItemDto> ExpectedItems { get; set; }
+        public IList<OrderItemLineItemDto> AdditionalItems { get; set; }
+        public IList<string> ExcludedTagNumbers { get; set; } 
         public string ServerMessage { get; set; }
+
+        [JsonIgnore]
+        public IList<IRfidTag> UnknownTags { get; set; }
 
     }
 }

@@ -56,8 +56,6 @@
     <Compile Include="Contract\Config\ISerialiserService.cs" />
     <Compile Include="Contract\Http\IHttpTransferer.cs" />
     <Compile Include="Contract\Http\SimpleHttpTransferer.cs" />
-    <Compile Include="Contract\Processors\IProcessOrderSnapshotTagStrategy.cs" />
-    <Compile Include="Contract\Processors\IProcessSnapshotTagStrategyResult.cs" />
     <Compile Include="Contract\Processors\IProcessTagResult.cs" />
     <Compile Include="Contract\Repo\IAuthenticationRepo.cs" />
     <Compile Include="Contract\Repo\IInventoryRepo.cs" />
@@ -88,15 +86,12 @@
     <Compile Include="Exceptions\UserRepoException.cs" />
     <Compile Include="Exceptions\WebRepoException.cs" />
     <Compile Include="Exceptions\WebRepoUnauthorisedException.cs" />
+    <Compile Include="Processors\Encoding\Sgtin.cs" />
     <Compile Include="Processors\Encoding\SgtinTagCoder.cs" />
+    <Compile Include="Processors\Orders\OrderAllocator.cs" />
     <Compile Include="Processors\Orders\OrderProcessor.cs" />
-    <Compile Include="Processors\Orders\ProcessSnapshotTagStrategyResult.cs" />
+    <Compile Include="Processors\Orders\OrderReceiver.cs" />
     <Compile Include="Processors\Orders\ProcessTagResult.cs" />
-    <Compile Include="Processors\Orders\Strategies\ReceiveStrategy.cs" />
-    <Compile Include="Processors\Orders\Strategies\InitStrategyState.cs" />
-    <Compile Include="Processors\Orders\Strategies\ProcessSnapshotTagResultCategory.cs" />
-    <Compile Include="Processors\Orders\Strategies\AllocateStrategy.cs" />
-    <Compile Include="Processors\Orders\Strategies\StrategyState.cs" />
     <Compile Include="Contract\Repo\IDeviceRepo.cs" />
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />

@@ -76,22 +76,19 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var item = await _itemRepo.CreateItem(itemToAdd);
             Assert.IsNotNull(item);
 
-            var q1 = new ItemQuery();
-            q1.CreateQuery(i => i.CreatedByUserFullName, item.CreatedByUserFullName, ComparisonOperator.Equals);
-            var r1 = await _itemRepo.QueryItems(q1);
+            var query = ItemQuery.NewQuery(i => i.Id, item.Id, ComparisonOperator.Equals);
+            var r1 = await _itemRepo.QueryItemsAsync(query);
             Assert.IsNotNull(r1);
-            Assert.IsInstanceOfType(r1, typeof(IEnumerable<ItemSummaryDto>));
-            Assert.IsTrue(r1.Contains(item));
+            Assert.IsTrue(r1.Entities.Contains(item));
 
 
         }
         [TestMethod]
         public async Task Item_QueryUsingTopTake()
         {
-            var query = new ItemQuery();
-            query.CreateQuery(i=>i.Name, "", ComparisonOperator.Contains, 10, 0);
-            var items = await _itemRepo.QueryItems(query);
-            Assert.IsTrue(items.Count == 10);
+            var query = ItemQuery.NewQuery(i => i.Name, "", ComparisonOperator.Contains, 10, 0);
+            var items = await _itemRepo.QueryItemsAsync(query);
+            Assert.IsTrue(items.Entities.Count == 10);
         }
 
         [TestMethod]

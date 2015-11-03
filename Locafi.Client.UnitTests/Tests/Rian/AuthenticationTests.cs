@@ -61,8 +61,9 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsFalse(string.IsNullOrEmpty(result.TokenGroup.Token));
             Assert.IsFalse(string.IsNullOrEmpty(result.TokenGroup.Refresh));
         }
+
         [TestMethod]
-        public async Task Authentication_ReaderLogin()
+        public async Task Authentication_ReaderLogin() // changed implemention on server side
         {
             var password = _hashService.GenerateHash(StringConstants.Secret, StringConstants.ReaderUserName);
             var result = await _authRepo.ReaderLogin(StringConstants.ReaderUserName, password);
@@ -74,7 +75,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         }
 
         [TestMethod]
-        public async Task Authentication_ReaderLoginBadSerialNumber()
+        public async Task Authentication_ReaderLoginBadSerialNumber() // changed implemention on server side
         {
             var password = _hashService.GenerateHash(StringConstants.Secret, "skjdbgsijbo");
             var result = await _authRepo.ReaderLogin(StringConstants.ReaderUserName, password);

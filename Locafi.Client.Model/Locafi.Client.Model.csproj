@@ -122,7 +122,7 @@
     <Compile Include="Dto\Templates\TemplateExtendedPropertyDto.cs" />
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
-    <Compile Include="Enums\OrderStatus.cs" />
+    <Compile Include="Enums\OrderState.cs" />
     <Compile Include="Enums\PeripheralDeviceType.cs" />
     <Compile Include="Enums\PortalRuleType.cs" />
     <Compile Include="Enums\ReaderMode.cs" />

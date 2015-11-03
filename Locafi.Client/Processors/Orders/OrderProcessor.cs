@@ -4,100 +4,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Processors;
-using Locafi.Client.Contract.Repo;
-using Locafi.Client.Exceptions;
-using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Dto.Snapshots;
-using Locafi.Client.Model.Query;
-using Locafi.Client.Model.Query.PropertyComparison;
-using Locafi.Client.Processors.Orders.Strategies;
+using Locafi.Client.Model.RFID;
+using Locafi.Client.Processors.Encoding;
 
-namespace Locafi.Client.Processors.Orders
+namespace Locafi.Client.Processors.Orders.Processors
 {
-    public class OrderProcessor
+    public abstract class OrderProcessor
     {
-        public OrderDetailDto OrderDetail { get; }
-        public IList<SnapshotTagDto> Tags { get; }
-        public IList<ItemSummaryDto> UnknownItems { get; } 
+        private readonly List<SnapshotTagDto> _snapshotTags;
+        public OrderDetailDto OrderDetail { get; set; }
 
-        private readonly IItemRepo _itemRepo;
-        private readonly IProcessSnapshotTagOrderStrategy _strategy;
-        private StrategyState _state;
-
-        public OrderProcessor(IItemRepo itemRepo, OrderDetailDto orderDetail, IProcessSnapshotTagOrderStrategy strategy)
+        protected OrderProcessor(OrderDetailDto orderDetail)
         {
             OrderDetail = orderDetail;
-            UnknownItems = new List<ItemSummaryDto>();
-            _itemRepo = itemRepo;
-            _strategy = strategy;
-            Tags = new List<SnapshotTagDto>();
+            _snapshotTags = new List<SnapshotTagDto>();
         }
 
-        public async Task InitialiseState(ISnapshotRepo snapshotRepo)
+        public IList<SnapshotTagDto> GetSnapshotTags()
         {
-            var sourceTags = new List<SnapshotTagDto>();
-            var destinationTags = new List<SnapshotTagDto>();
-            foreach (var snapshot in OrderDetail.SourceSnapshotIds)
-            {
-                var detail = await snapshotRepo.GetSnapshot(snapshot);
-                sourceTags.AddRange(detail.Tags);
-            }
-            foreach (var snapshot in OrderDetail.DestinationSnapshotIds)
-            {
-                var detail = await snapshotRepo.GetSnapshot(snapshot);
-                destinationTags.AddRange(detail.Tags);
-            }
-            _state = new InitStrategyState(sourceTags, destinationTags);
+            return _snapshotTags;
         }
 
-        public virtual async Task<IProcessTagResult> AddSnapshotTag(SnapshotTagDto snapshotTag)
+        public virtual IProcessTagResult Add(IRfidTag tag)
         {
-            if(_state==null) throw new NullReferenceException("State was not initialised");
-            var result = _strategy.ProcessTag(snapshotTag, OrderDetail, _state);
-            _state = result.State;
-            Tags.Add(snapshotTag);
-
-            switch (result.ResultCategory)
-            {
-                case ProcessSnapshotTagResultCategory.AllocateOk:
-                    if (result.ItemLineItem != null) result.ItemLineItem.IsAllocated = true;                
-                    return new ProcessTagResult(false, false, result.SkuLineItem);
-                case ProcessSnapshotTagResultCategory.LineOverAllocated:
-                    if (result.ItemLineItem != null) result.ItemLineItem.IsAllocated = true; // shouldn't ever really happen
-                    return new ProcessTagResult(true, false,result.SkuLineItem);
-                case ProcessSnapshotTagResultCategory.ReceiveOk:
-                    if (result.ItemLineItem != null) result.ItemLineItem.IsReceived = true;
-                    return new ProcessTagResult(false, false, result.SkuLineItem);
-                case ProcessSnapshotTagResultCategory.LineOverReceived:
-                    if (result.ItemLineItem != null) result.ItemLineItem.IsReceived = true; // shouldnt ever happen
-                    return new ProcessTagResult(true, false, result.SkuLineItem);
-                    break;
-                case ProcessSnapshotTagResultCategory.UnknownTag:
-                    await OnUnknownTag(snapshotTag);
-                    return new ProcessTagResult(false, true, result.SkuLineItem, result.ItemLineItem);
-                    break;
-                      
-                            
-                default:
-                    return new ProcessTagResult(false, false, result.SkuLineItem, result.ItemLineItem);
-                    break;
-            }
-            
+            if(!_snapshotTags.Any(t=>string.Equals(t.TagNumber, tag.TagNumber))) _snapshotTags.Add(new SnapshotTagDto(tag.TagNumber));
+            return null;
         }
 
-        private async Task OnUnknownTag(SnapshotTagDto snapshotTag)
+        protected OrderSkuLineItemDto GetSkuLineItem(IRfidTag tag)
         {
-            var query = ItemQuery.NewQuery(i => i.TagNumber, snapshotTag.TagNumber,
-                ComparisonOperator.Equals);
+            if (!Sgtin.IsSgtinTag(tag)) return null;
+            var gtin = Sgtin.GetGtin(tag);
+            return OrderDetail.ExpectedSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
+        }
 
-            var results = await _itemRepo.QueryItems(query);
-
-            
-            foreach (var item in results)
-            {
-                UnknownItems.Add(item);
-            }
+        protected OrderItemLineItemDto GetItemLineItem(IRfidTag tag)
+        {
+            return OrderDetail.ExpectedItems.FirstOrDefault(i => string.Equals(i.TagNumber, tag.TagNumber));
         }
     }
 }
