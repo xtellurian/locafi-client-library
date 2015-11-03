@@ -3,15 +3,11 @@
     public enum OrderAction
     {
         Create,
-        Allocate,
-        SubmitAllocate,
-        DisputeAllocate,
+        Allocate, // ie, when a client is scanning tags
+        SubmitAllocate,  // ie when a client uploads a snapshot
         Dispatch,
         Receive,
         SubmitReceive,
-        DisputeReceive,
-        AdHocReceive,
-        AdHocDisputeReceive,
         Cancel
     }
 }
