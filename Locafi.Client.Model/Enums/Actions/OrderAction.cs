@@ -12,6 +12,7 @@ namespace Locafi.Client.Model.Enums.Actions
         Dispatch = 8,
         Receive = 16,
         SubmitReceive = 32,
-        Cancel = 64
+        Complete = 64,
+        Cancel = 128
     }
 }
