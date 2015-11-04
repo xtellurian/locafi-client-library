@@ -10,7 +10,7 @@ namespace Locafi.Client
         private const string ApiLocatorUrl =
             @"https://microsoft-apiapp9db5d7eaeefa415a9a58fc01c3227e14.azurewebsites.net/api/apilocation";
 
-        public static async Task<IList<string>> GetApiBaseUrl(string userName)
+        public static async Task<IDictionary<string, string>> GetApiBaseUrl(string userName)
         {
             var path = $"{ApiLocatorUrl}?userName={userName}";
             var message = new HttpRequestMessage(HttpMethod.Get, path);
@@ -19,7 +19,7 @@ namespace Locafi.Client
             var response = await client.SendAsync(message);
             var serverMessage = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<IList<string>>(serverMessage);
+            return JsonConvert.DeserializeObject<Dictionary<string,string>>(serverMessage);
         }
     }
 }
