@@ -79,6 +79,7 @@
     <Compile Include="Tests\Rian\TagReservationRepoTests.cs" />
     <Compile Include="Tests\Rian\ConversionsBetweenDtos.cs" />
     <Compile Include="Tests\Rian\Orders\OrderProcessorReceiveTests.cs" />
+    <Compile Include="Tests\Rian\ApiLocatorTests.cs" />
     <Compile Include="Tests\Rian\WebRepoTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="WebRepoAsAuthorisedReaderContainer.cs" />

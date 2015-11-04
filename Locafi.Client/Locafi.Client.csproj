@@ -93,6 +93,7 @@
     <Compile Include="Processors\Orders\OrderReceiver.cs" />
     <Compile Include="Processors\Orders\ProcessTagResult.cs" />
     <Compile Include="Contract\Repo\IDeviceRepo.cs" />
+    <Compile Include="LocafiApiLocator.cs" />
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
