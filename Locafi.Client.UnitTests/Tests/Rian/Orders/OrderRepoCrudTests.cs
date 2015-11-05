@@ -94,6 +94,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
             var ran = new Random();
+            var items = new List<AddOrderItemLineItemDto>();
 
             // get skus that aren't sgtin
             var skus = (await _skuRepo.GetAllSkus()).Where(s => string.IsNullOrEmpty(s.Gtin) || s.Gtin.Length != 13).ToList();
@@ -112,8 +113,24 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             } while (availableItems < numItems && skuSearchTries < (numItems * 2));
 
-            var items = new List<AddOrderItemLineItemDto>();
-            for (int count = 0; count < numItems; count++)
+            // don't try and get more than there are available, create new items here
+            if (availableItems < numItems)
+            {
+                // get a place to use to create the items
+                var places = await WebRepoContainer.PlaceRepo.GetAllPlaces();
+                var place = places[ran.Next(places.Count - 1)];
+                while (availableItems < numItems)
+                {
+                    // create a new item 
+                    var item = await _itemRepo.CreateItem(new Model.Dto.Items.AddItemDto(sku.Id, place.Id, "Test Generated Item - " + Guid.NewGuid().ToString().Substring(0, 8)) { TagNumber = Guid.NewGuid().ToString() });
+                    // we need this one in our list so add it straight in
+                    items.Add(new AddOrderItemLineItemDto() { ItemId = item.Id });
+
+                    availableItems++;
+                }
+            }
+            
+            while (items.Count < numItems)
             {
                 var q1 = new ItemQuery();
                 q1.CreateQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals, 1, ran.Next(availableItems));
@@ -126,8 +143,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                         ItemId = item.Entities.First().Id
                     });
                 }
-                else
-                    count--;
             }
 
             return items; //TODO: actually make some
