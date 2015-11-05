@@ -8,7 +8,7 @@ namespace Locafi.Client
     public static class LocafiApiLocator
     {
         private const string ApiLocatorUrl =
-            @"https://microsoft-apiapp9db5d7eaeefa415a9a58fc01c3227e14.azurewebsites.net/api/apilocation";
+            @"https://microsoft-apiapp9db5d7eaeefa415a9a58fc01c3227e14.azurewebsites.net/find";
 
         public static async Task<IDictionary<string, string>> GetApiBaseUrl(string userName)
         {

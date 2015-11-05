@@ -11,7 +11,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task ApiLocator_GetBaseUri()
         {
-            var result = await LocafiApiLocator.GetApiBaseUrl("something"); // at the moment, there are no usernames, it all returns the same;
+            var result = await LocafiApiLocator.GetApiBaseUrl("admin@ramp.com.au"); // this should have an API assocaited with it
             Assert.IsInstanceOfType(result, typeof(IDictionary<string,string>));
             Assert.IsTrue(result.Count > 0); // we got at least one URI
         }
