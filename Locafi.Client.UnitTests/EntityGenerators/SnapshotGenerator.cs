@@ -8,6 +8,8 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model.Dto.Orders;
 
 namespace Locafi.Client.UnitTests.EntityGenerators
 {
@@ -29,14 +31,22 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             return snap;
         }
 
-        public static async Task<AddSnapshotDto> CreateNewGtinSnapshotForUpload(Guid placeId, int totalTagNumber = -1, int randomTagNumber = -1)
+        public static async Task<AddSnapshotDto> CreateNewGtinSnapshotForUpload(Guid placeId, int totalTagNumber = -1, int randomTagNumber = -1, Guid? skuId = null)
         {
             ISkuRepo _skuRepo = WebRepoContainer.SkuRepo;
-            var skus = await _skuRepo.GetAllSkus();
-            // find a sku with a gtin
-            var sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
-            if (sku == null)
-                return null;
+            SkuSummaryDto sku;
+            if (skuId == null)
+            {
+                var skus = await _skuRepo.GetAllSkus();
+                // find a sku with a gtin
+                sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
+                if (sku == null)
+                    return null;
+            }
+            else
+            {
+                sku = await _skuRepo.GetSkuDetail((Guid)skuId);
+            }
 
             var ran = new Random();
             var totalCount = totalTagNumber <= 0 ? ran.Next(50) : totalTagNumber;
@@ -54,14 +64,21 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             return snap;
         }
 
-        public static async Task<AddSnapshotDto> CreateExistingGtinSnapshotForUpload(Guid placeId, int totalTagNumber = -1, int randomTagNumber = -1)
+        public static async Task<AddSnapshotDto> CreateExistingGtinSnapshotForUpload(Guid placeId, int totalTagNumber = -1, int randomTagNumber = -1, Guid? skuId = null)
         {
             ISkuRepo _skuRepo = WebRepoContainer.SkuRepo;
-            var skus = await _skuRepo.GetAllSkus();
-            // find a sku with a gtin
-            var sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
-            if (sku == null)
-                return null;
+            SkuSummaryDto sku;
+            if (skuId == null)
+            {
+                var skus = await _skuRepo.GetAllSkus();
+                // find a sku with a gtin
+                sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
+                if (sku == null)
+                    return null;
+            }else
+            {
+                sku = await _skuRepo.GetSkuDetail((Guid)skuId);
+            }
 
             IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
             
@@ -86,6 +103,55 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             // generate some new tags if there aren't enough already exisiting tags for this sku
             tags = tags.Concat(await GenerateGtinTags(sku.Id, totalCount - randomCount - items.Entities.Count)).ToList();
             tags = tags.Concat(GenerateRandomTags(randomCount)).ToList();
+            var snap = new AddSnapshotDto(placeId)
+            {
+                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTimeUtc = DateTime.UtcNow,
+                Name = name,
+                Tags = tags
+            };
+            return snap;
+        }
+
+        public static async Task<AddSnapshotDto> CreateExistingItemSnapshotForUpload(Guid placeId, List<Guid> itemIds)
+        {
+            IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
+            var name = Guid.NewGuid().ToString();
+
+            ItemDetailDto item;
+            IList<SnapshotTagDto> tags = new List<SnapshotTagDto>();
+            foreach (var id in itemIds)
+            {
+                item = await _itemRepo.GetItemDetail(id);
+                tags.Add(new SnapshotTagDto
+                {
+                    TagNumber = item.TagNumber
+                });
+            }
+
+            var snap = new AddSnapshotDto(placeId)
+            {
+                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTimeUtc = DateTime.UtcNow,
+                Name = name,
+                Tags = tags
+            };
+            return snap;
+        }
+
+        public static AddSnapshotDto CreateSnapshotForUpload(Guid placeId, List<string> tasgNumbers)
+        {
+            var name = Guid.NewGuid().ToString();
+
+            IList<SnapshotTagDto> tags = new List<SnapshotTagDto>();
+            foreach (var tagNumber in tasgNumbers)
+            {
+                tags.Add(new SnapshotTagDto
+                {
+                    TagNumber = tagNumber
+                });
+            }
+
             var snap = new AddSnapshotDto(placeId)
             {
                 StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
