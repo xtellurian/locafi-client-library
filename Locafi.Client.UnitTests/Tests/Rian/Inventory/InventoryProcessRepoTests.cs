@@ -43,15 +43,16 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _tagReservationRepo = WebRepoContainer.TagReservationRepo;
         }
         [TestMethod]
-        public async Task InventoryProcess_AddSnapshotSuccess()
+        public async Task InventoryProcess_AddRandomSnapshotSuccess()
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+//            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
 
-            var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId);
+            var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId, 100);
             var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);
             Assert.IsNotNull(resultSnapshot);
             Assert.IsInstanceOfType(resultSnapshot, typeof(SnapshotDetailDto));
@@ -63,6 +64,111 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(resultInventory);
             Assert.IsInstanceOfType(resultInventory, typeof(InventoryDetailDto));
             Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
+        }
+
+        [TestMethod]
+        public async Task InventoryProcess_AddNewGtinSnapshotSuccess()
+        {
+            var ran = new Random();
+            var name = Guid.NewGuid().ToString();
+            var places = await _placeRepo.GetAllPlaces();
+            var place = places[ran.Next(places.Count - 1)];
+//            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
+
+
+            var localSnapshot = await SnapshotGenerator.CreateNewGtinSnapshotForUpload(inventory.PlaceId,5000);
+            var t1 = DateTime.UtcNow;
+            var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);
+            Assert.IsNotNull(resultSnapshot);
+            Assert.IsInstanceOfType(resultSnapshot, typeof(SnapshotDetailDto));
+
+            // add the snapshot
+            Assert.IsNotNull(inventory);
+            Assert.IsInstanceOfType(inventory, typeof(InventoryDetailDto));
+            var resultInventory = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id);
+
+            Assert.IsNotNull(resultInventory);
+            Assert.IsInstanceOfType(resultInventory, typeof(InventoryDetailDto));
+            Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
+
+            // resolve the inventory
+            _reasonRepo = WebRepoContainer.ReasonRepo;
+            var reasons = await _reasonRepo.GetAllReasons();
+            var unknownReason = reasons.Where(r => r.Name == "Unknown").FirstOrDefault();
+            var resolveInventoryDto = new ResolveInventoryDto();
+            foreach (var item in resultInventory.MissingItems)
+            {
+                resolveInventoryDto.Reasons.Add(item, unknownReason.Id);
+            }
+            foreach (var item in resultInventory.FoundItemsUnexpected)
+            {
+                resolveInventoryDto.Reasons.Add(item, unknownReason.Id);
+            }
+            var resolveResult = await _inventoryRepo.Resolve(inventory.Id, resolveInventoryDto);
+            Assert.IsNotNull(resolveResult);
+            Assert.IsInstanceOfType(resolveResult, typeof(InventoryDetailDto));
+
+            // complete the inventory
+            var completeResult = await _inventoryRepo.Complete(inventory.Id);
+            Assert.IsNotNull(completeResult);
+            Assert.IsInstanceOfType(completeResult, typeof(InventoryDetailDto));
+            Assert.IsTrue(completeResult.Complete);
+            var t2 = DateTime.UtcNow;
+            var span = t2 - t1;
+        }
+
+        [TestMethod]
+        public async Task InventoryProcess_AddExistingGtinSnapshotSuccess()
+        {
+            // create the inventory
+            var ran = new Random();
+            var name = Guid.NewGuid().ToString();
+            var places = await _placeRepo.GetAllPlaces();
+            var place = places[ran.Next(places.Count - 1)];
+//            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
+
+            // create a snapshot
+            var localSnapshot = await SnapshotGenerator.CreateExistingGtinSnapshotForUpload(inventory.PlaceId, 5000);
+            var t1 = DateTime.UtcNow;
+            var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);
+            Assert.IsNotNull(resultSnapshot);
+            Assert.IsInstanceOfType(resultSnapshot, typeof(SnapshotDetailDto));
+
+            // add the snapshot
+            Assert.IsNotNull(inventory);
+            Assert.IsInstanceOfType(inventory, typeof(InventoryDetailDto));
+            var resultInventory = await _inventoryRepo.AddSnapshot(inventory, resultSnapshot.Id);
+
+            Assert.IsNotNull(resultInventory);
+            Assert.IsInstanceOfType(resultInventory, typeof(InventoryDetailDto));
+            Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
+
+            // resolve the inventory
+            _reasonRepo = WebRepoContainer.ReasonRepo;
+            var reasons = await _reasonRepo.GetAllReasons();
+            var unknownReason = reasons.Where(r => r.Name == "Unknown").FirstOrDefault();
+            var resolveInventoryDto = new ResolveInventoryDto();
+            foreach(var item in resultInventory.MissingItems)
+            {
+                resolveInventoryDto.Reasons.Add(item, unknownReason.Id);
+            }
+            foreach(var item in resultInventory.FoundItemsUnexpected)
+            {
+                resolveInventoryDto.Reasons.Add(item, unknownReason.Id);
+            }
+            var resolveResult = await _inventoryRepo.Resolve(inventory.Id, resolveInventoryDto);
+            Assert.IsNotNull(resolveResult);
+            Assert.IsInstanceOfType(resolveResult, typeof(InventoryDetailDto));
+
+            // complete the inventory
+            var completeResult = await _inventoryRepo.Complete(inventory.Id);
+            Assert.IsNotNull(completeResult);
+            Assert.IsInstanceOfType(completeResult, typeof(InventoryDetailDto));
+            Assert.IsTrue(completeResult.Complete);
+            var t2 = DateTime.UtcNow;
+            var span = t2 - t1;
         }
 
         [TestMethod]
