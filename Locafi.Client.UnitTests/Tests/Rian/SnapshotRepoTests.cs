@@ -15,6 +15,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private ISnapshotRepo _snapshotRepo;
         private IPlaceRepo _placeRepo;
         private IList<Guid> _toCleanup;
+        private ISkuRepo _skuRepo;
 
         [TestInitialize]
         public void Initialize()
@@ -22,13 +23,14 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             _snapshotRepo = WebRepoContainer.SnapshotRepo;
             _placeRepo = WebRepoContainer.PlaceRepo;
             _toCleanup = new List<Guid>();
+            _skuRepo = WebRepoContainer.SkuRepo;
         }
 
         [TestMethod]
-        public async Task Snapshot_Create() 
+        public async Task Snapshot_Create_RandomTags() 
         {
             var place = await GetRandomPlace();
-            var newSnap = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
+            var newSnap = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id,5000);
             var result = await _snapshotRepo.CreateSnapshot(newSnap);
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result,typeof(SnapshotDetailDto));
@@ -39,6 +41,44 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             }
             Assert.IsNotNull(result.Items);
             Assert.AreEqual(newSnap.PlaceId,result.PlaceId);
+
+            _toCleanup.Add(result.Id); // add to cleanup
+        }
+
+        [TestMethod]
+        public async Task Snapshot_Create_NewGtinTags()
+        {
+            var place = await GetRandomPlace();
+            var newSnap = await SnapshotGenerator.CreateNewGtinSnapshotForUpload(place.Id, 5000);
+            var result = await _snapshotRepo.CreateSnapshot(newSnap);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(SnapshotDetailDto));
+            Assert.IsTrue(result.Tags.Count == newSnap.Tags.Count);
+            foreach (var tag in result.Tags)
+            {
+                Assert.IsTrue(newSnap.Tags.Contains(tag));
+            }
+            Assert.IsNotNull(result.Items);
+            Assert.AreEqual(newSnap.PlaceId, result.PlaceId);
+
+            _toCleanup.Add(result.Id); // add to cleanup
+        }
+
+        [TestMethod]
+        public async Task Snapshot_Create_ExistingGtinTags()
+        {
+            var place = await GetRandomPlace();
+            var newSnap = await SnapshotGenerator.CreateExistingGtinSnapshotForUpload(place.Id, 5000);
+            var result = await _snapshotRepo.CreateSnapshot(newSnap);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(SnapshotDetailDto));
+            Assert.IsTrue(result.Tags.Count == newSnap.Tags.Count);
+            foreach (var tag in result.Tags)
+            {
+                Assert.IsTrue(newSnap.Tags.Contains(tag));
+            }
+            Assert.IsNotNull(result.Items);
+            Assert.AreEqual(newSnap.PlaceId, result.PlaceId);
 
             _toCleanup.Add(result.Id); // add to cleanup
         }
