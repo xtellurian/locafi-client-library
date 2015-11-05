@@ -29,7 +29,8 @@ namespace Locafi.Client.Model.Dto.Orders
         public string ReferenceNumber { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))] // an enum here in the client
-        public OrderStatus Status { get; set; } // is a string on the server
+        public OrderState State { get; set; } // is a string on the server
+        public string Status { get; set; }
         public string Description { get; set; }
         public Guid SourcePlaceId { get; set; }
         public Guid DestinationPlaceId { get; set; }

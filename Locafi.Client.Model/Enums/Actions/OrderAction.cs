@@ -1,17 +1,18 @@
-﻿namespace Locafi.Client.Model.Enums.Actions
+﻿using System;
+
+namespace Locafi.Client.Model.Enums.Actions
 {
+    [Flags]
     public enum OrderAction
     {
-        Create,
-        Allocate,
-        SubmitAllocate,
-        DisputeAllocate,
-        Dispatch,
-        Receive,
-        SubmitReceive,
-        DisputeReceive,
-        AdHocReceive,
-        AdHocDisputeReceive,
-        Cancel
+        None = 0,
+        Create = 1,
+        Allocate = 2, // ie, when a client is scanning tags
+        SubmitAllocate = 4,  // ie when a client uploads a snapshot
+        Dispatch = 8,
+        Receive = 16,
+        SubmitReceive = 32,
+        Complete = 64,
+        Cancel = 128
     }
 }

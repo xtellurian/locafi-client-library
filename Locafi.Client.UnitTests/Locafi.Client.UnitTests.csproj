@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="EntityGenerators\SnapshotGenerator.cs" />
     <Compile Include="Factory\HttpConfigFactory.cs" />
+    <Compile Include="Implementations\TestTag.cs" />
     <Compile Include="Implementations\UnauthorisedHttpTransferConfigService.cs" />
     <Compile Include="Mocks\MockAuthorisedHttpConfigService.cs" />
     <Compile Include="Mocks\SnapshotRepoMock.cs" />
@@ -68,19 +69,17 @@
     <Compile Include="Tests\Anthony\DeviceRepoTests.cs" />
     <Compile Include="Tests\Rian\AuthenticationTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
-    <Compile Include="Tests\Rian\Orders\OrderAllocateStrategyTests.cs" />
-    <Compile Include="Tests\Rian\Orders\OrderProcessorTests.cs" />
-    <Compile Include="Tests\Rian\Orders\OrderReceiveStrategyTests.cs" />
+    <Compile Include="Tests\Rian\Orders\OrderProcessorAllocateTests.cs" />
     <Compile Include="Tests\Rian\SkuRepoTests.cs" />
     <Compile Include="Tests\Rian\SnapshotRepoTests.cs" />
     <Compile Include="Tests\Rian\PersonRepoTests.cs" />
     <Compile Include="Tests\Rian\TemplateRepoTests.cs" />
     <Compile Include="Tests\Rian\ReasonRepoTests.cs" />
-    <Compile Include="Tests\Rian\Orders\OrderAllocationTests.cs" />
     <Compile Include="Tests\Rian\Inventory\InventoryProcessRepoTests.cs" />
     <Compile Include="Tests\Rian\TagReservationRepoTests.cs" />
     <Compile Include="Tests\Rian\ConversionsBetweenDtos.cs" />
-    <Compile Include="Tests\Rian\Orders\OrderReceivingTests.cs" />
+    <Compile Include="Tests\Rian\Orders\OrderProcessorReceiveTests.cs" />
+    <Compile Include="Tests\Rian\ApiLocatorTests.cs" />
     <Compile Include="Tests\Rian\WebRepoTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="WebRepoAsAuthorisedReaderContainer.cs" />

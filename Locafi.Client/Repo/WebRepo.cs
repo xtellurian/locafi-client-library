@@ -55,7 +55,7 @@ namespace Locafi.Client.Repo
             // if it didn't work
             if (!response.IsSuccessStatusCode)
             {
-                return default(T);
+                await HandlePrivate(response);
             }
             // get payload data
             var data = await response.Content.ReadAsStringAsync();

@@ -10,16 +10,14 @@ namespace Locafi.Client.Processors.Orders
 {
     class ProcessTagResult : IProcessTagResult
     {
-        public ProcessTagResult(bool isDisputeRequired, bool isUnrecognisedTag, OrderSkuLineItemDto skuLineItem = null, OrderItemLineItemDto itemLineItem = null)
+        public ProcessTagResult(bool isRecognised, OrderSkuLineItemDto skuLineItem = null, OrderItemLineItemDto itemLineItem = null)
         {
-            IsDisputeRequired = isDisputeRequired;
-            IsUnrecognisedTag = isUnrecognisedTag;
+            IsRecognised = isRecognised;
             SkuLineItem = skuLineItem;
             ItemLineItem = itemLineItem;
         }
 
-        public bool IsDisputeRequired { get; }
-        public bool IsUnrecognisedTag { get; }
+        public bool IsRecognised { get; }
         public OrderSkuLineItemDto SkuLineItem { get; }
         public OrderItemLineItemDto ItemLineItem { get; }
     }

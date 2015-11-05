@@ -10,8 +10,7 @@ namespace Locafi.Client.Contract.Processors
 {
     public interface IProcessTagResult
     {
-        bool IsDisputeRequired { get; }
-        bool IsUnrecognisedTag { get; }
+        bool IsRecognised { get; }
         OrderSkuLineItemDto SkuLineItem { get; }
         OrderItemLineItemDto ItemLineItem { get; }
         
