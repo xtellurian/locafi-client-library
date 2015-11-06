@@ -3,7 +3,6 @@ using Locafi.Client.Contract.Processors;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.RFID;
 using Locafi.Client.Processors.Encoding;
-using Locafi.Client.Processors.Orders.Processors;
 
 namespace Locafi.Client.Processors.Orders
 {
@@ -13,6 +12,8 @@ namespace Locafi.Client.Processors.Orders
         {
         }
 
+        private readonly object _skuLock = new object();
+        private readonly object _unknownTagLock = new object();
         public override IProcessTagResult Add(IRfidTag tag)
         {
             base.Add(tag);
@@ -21,7 +22,11 @@ namespace Locafi.Client.Processors.Orders
             var expectedSku = base.GetSkuLineItem(tag);
             if (expectedSku != null)
             {
-                expectedSku.AllocatedTagNumbers.Add(tag.TagNumber);
+                lock (_skuLock)
+                {
+                    if (!expectedSku.AllocatedTagNumbers.Contains(tag.TagNumber)) expectedSku.AllocatedTagNumbers.Add(tag.TagNumber);
+                }
+                
                 return new ProcessTagResult(true, skuLineItem:expectedSku);
             }
 
@@ -31,7 +36,11 @@ namespace Locafi.Client.Processors.Orders
                 expectedItem.IsAllocated = true;
                 return new ProcessTagResult(true, itemLineItem:expectedItem);
             }
-            OrderDetail.UnknownTags.Add(tag);
+            lock (_unknownTagLock)
+            {
+                OrderDetail.UnknownTags.Add(tag);
+            }
+            
             return new ProcessTagResult(false);
         }
 
