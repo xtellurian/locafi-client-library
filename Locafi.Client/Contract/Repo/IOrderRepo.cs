@@ -21,7 +21,7 @@ namespace Locafi.Client.Contract.Repo
         Task<OrderActionResponseDto> Allocate(OrderSummaryDto orderDetail, Guid snapshotId);
         Task<OrderActionResponseDto> Receive(OrderSummaryDto order, Guid snapshotId);
         Task<OrderActionResponseDto> Dispatch(OrderSummaryDto orderDetail);
-
+        Task<OrderActionResponseDto> Complete(OrderSummaryDto orderDetail);
 
         Task<OrderActionResponseDto> DisputeAllocate(OrderSummaryDto orderSummary, OrderDisputeDto dispute, Guid snapshotId);
         Task<OrderActionResponseDto> DisputeDispatch(OrderSummaryDto orderSummary, OrderDisputeDto dispute);
