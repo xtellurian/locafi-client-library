@@ -73,8 +73,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = Guid.NewGuid().ToString();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-//            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
-            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
+            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+//            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
 
 
             var localSnapshot = await SnapshotGenerator.CreateNewGtinSnapshotForUpload(inventory.PlaceId,5000);
@@ -126,8 +126,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = Guid.NewGuid().ToString();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-//            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
-            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
+            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            //var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
 
             // create a snapshot
             var localSnapshot = await SnapshotGenerator.CreateExistingGtinSnapshotForUpload(inventory.PlaceId, 5000);
@@ -146,7 +146,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
 
             // resolve the inventory
-            _reasonRepo = WebRepoContainer.ReasonRepo;
             var reasons = await _reasonRepo.GetAllReasons();
             var unknownReason = reasons.Where(r => r.Name == "Unknown").FirstOrDefault();
             var resolveInventoryDto = new ResolveInventoryDto();

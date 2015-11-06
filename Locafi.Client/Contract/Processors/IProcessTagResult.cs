@@ -13,7 +13,7 @@ namespace Locafi.Client.Contract.Processors
         bool IsRecognised { get; }
         OrderSkuLineItemDto SkuLineItem { get; }
         OrderItemLineItemDto ItemLineItem { get; }
-        
+        string Gtin { get; }
 
     }
 }

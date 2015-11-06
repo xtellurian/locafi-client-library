@@ -37,6 +37,11 @@ namespace Locafi.Client.Processors.Orders
             return OrderDetail.ExpectedSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
         }
 
+        protected string GetGtin(IRfidTag tag)
+        {
+            return !Sgtin.IsSgtinTag(tag) ? null : Sgtin.GetGtin(tag);
+        }
+
         protected OrderItemLineItemDto GetItemLineItem(IRfidTag tag)
         {
             return OrderDetail.ExpectedItems.FirstOrDefault(i => string.Equals(i.TagNumber, tag.TagNumber));

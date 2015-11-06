@@ -18,7 +18,7 @@ namespace Locafi.Client.Processors.Orders
         {
             base.Add(tag);
 
-
+            var gtin = GetGtin(tag);
             var expectedSku = base.GetSkuLineItem(tag);
             if (expectedSku != null)
             {
@@ -27,21 +27,21 @@ namespace Locafi.Client.Processors.Orders
                     if (!expectedSku.AllocatedTagNumbers.Contains(tag.TagNumber)) expectedSku.AllocatedTagNumbers.Add(tag.TagNumber);
                 }
                 
-                return new ProcessTagResult(true, skuLineItem:expectedSku);
+                return new ProcessTagResult(true,gtin, skuLineItem:expectedSku);
             }
 
             var expectedItem = base.GetItemLineItem(tag);
             if (expectedItem != null)
             {
                 expectedItem.IsAllocated = true;
-                return new ProcessTagResult(true, itemLineItem:expectedItem);
+                return new ProcessTagResult(true, gtin, itemLineItem:expectedItem);
             }
             lock (_unknownTagLock)
             {
                 OrderDetail.UnknownTags.Add(tag);
             }
             
-            return new ProcessTagResult(false);
+            return new ProcessTagResult(false, gtin);
         }
 
 
