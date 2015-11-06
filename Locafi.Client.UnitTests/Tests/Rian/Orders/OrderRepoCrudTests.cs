@@ -68,22 +68,21 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             var ran = new Random();
             var skus = (await _skuRepo.GetAllSkus()).Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).ToList();
-            var sku = skus[ran.Next(skus.Count - 1)];
-            skus.Remove(sku);
-            var sku2 = skus[ran.Next(skus.Count - 1)];
 
             // check that we have enough skus for the line items that we want
             Assert.IsTrue(numLines < skus.Count);
 
             var result = new List<AddOrderSkuLineItemDto>();
 
-            for (int i = 0; i < numLines; i++)
+            while(result.Count < numLines)
             {
+                var sku = skus[ran.Next(skus.Count - 1)];
+                skus.Remove(sku);
                 result.Add(new AddOrderSkuLineItemDto
                 {
                     PackingSize = 1,
                     Quantity = qtyPerLine,
-                    SkuId = skus[ran.Next(skus.Count - 1)].Id
+                    SkuId = sku.Id
                 });
             }
 
@@ -705,6 +704,309 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 Assert.AreEqual(expectedSku.Quantity, expectedSku.AllocatedTagNumbers.Count);
             Assert.AreEqual(allocateResult.OrderDetail.AdditionalItems.Count, 0); // check that our additional items are gone
             Assert.AreEqual(allocateResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+        }
+
+        [TestMethod]
+        public async Task Order_ReceiveOverSkuQuantity()
+        {
+            // create the order
+            var ran = new Random();
+            var places = await _placeRepo.GetAllPlaces();
+            var numPlaces = places.Count;
+            var sourcePlace = places[ran.Next(numPlaces - 1)]; // get random places
+            var destinationPlace = places[ran.Next(numPlaces - 1)];
+
+            var persons = await _personRepo.GetAllPersons();
+            var person = persons[0];
+
+            int NumberOfSkuLines = 2;
+            int QtyPerSkuLine = 10;
+            int NumberOfItemLines = 2;
+            var refNumber = Guid.NewGuid().ToString();
+            var description = Guid.NewGuid().ToString();
+            var skuLineItems = await GenerateSomeSkuLineItems(NumberOfSkuLines, QtyPerSkuLine);
+            var itemLineItems = await GenerateSomeItemLineItems(NumberOfItemLines);
+            var addOrder = new AddOrderDto(refNumber, description, sourcePlace.Id,
+                destinationPlace.Id, skuLineItems, itemLineItems, person.Id);
+
+            var result = await _orderRepo.Create(addOrder);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.DestinationPlaceId, addOrder.DestinationPlaceId);
+            Assert.AreEqual(result.SourcePlaceId, addOrder.SourcePlaceId);
+            Assert.AreEqual(result.DeliverToId, addOrder.DeliverToId);
+
+            // create snapshots to fully allocate the order (one for each line item as that is easiest)
+            var addSsDtos = new List<AddSnapshotDto>();
+            // create sku line snapshots
+            foreach (var skuLine in result.ExpectedSkus)
+            {
+                addSsDtos.Add(await SnapshotGenerator.CreateExistingGtinSnapshotForUpload(result.DestinationPlaceId, skuLine.Quantity, -1, skuLine.SkuId));
+            }
+
+            // create unique item snapshot
+            if (result.ExpectedItems.Count > 0)
+                addSsDtos.Add(SnapshotGenerator.CreateSnapshotForUpload(result.DestinationPlaceId, result.ExpectedItems.Select(i => i.TagNumber).ToList()));
+
+            var t1 = DateTime.UtcNow;
+            var snapshotDtos = new List<SnapshotDetailDto>();
+            foreach (var addSsDto in addSsDtos)
+            {
+                snapshotDtos.Add(await _snapshotRepo.CreateSnapshot(addSsDto));
+            }
+
+            // add snapshots to the order
+            OrderActionResponseDto receiveResult = null;
+            foreach (var ssDto in snapshotDtos)
+            {
+                receiveResult = await _orderRepo.Receive(result, ssDto.Id);
+            }
+
+            Assert.IsNotNull(receiveResult);
+            Assert.IsTrue(receiveResult.Success);
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in receiveResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsReceived);
+            foreach (var expectedSku in receiveResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+                Assert.AreEqual(expectedSku.Quantity, expectedSku.ReceivedTagNumbers.Count);
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+            var t2 = DateTime.UtcNow;
+            var span = t2 - t1;
+
+            // now over Receive some sku's
+            int skuOverReceiveAmount = 1;
+            // create snapshots for over allocating and removing the over allocating
+            var skuOverReceive_AddSnapshotDto = await SnapshotGenerator.CreateNewGtinSnapshotForUpload(result.DestinationPlaceId, skuOverReceiveAmount, -1, result.ExpectedSkus[0].SkuId);
+            var addSkuOverReceiveSnapshot = await _snapshotRepo.CreateSnapshot(skuOverReceive_AddSnapshotDto);
+            skuOverReceive_AddSnapshotDto.SnapshotType = Model.Enums.SnapshotType.Remove;
+            var removeSkuOverReceiveSnapshot = await _snapshotRepo.CreateSnapshot(skuOverReceive_AddSnapshotDto);
+
+            // add the over Receive snapshot
+            receiveResult = await _orderRepo.Receive(result, addSkuOverReceiveSnapshot.Id);
+
+            // check that we're over
+            Assert.IsNotNull(receiveResult);
+            Assert.IsTrue(receiveResult.Success);
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in receiveResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsReceived);
+            foreach (var expectedSku in receiveResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+            {
+                if (expectedSku.SkuId == result.ExpectedSkus[0].SkuId)
+                    Assert.AreEqual(expectedSku.Quantity + skuOverReceiveAmount, expectedSku.ReceivedTagNumbers.Count);
+                else
+                    Assert.AreEqual(expectedSku.Quantity, expectedSku.ReceivedTagNumbers.Count);
+            }
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+
+            // add the remove over Receive snapshot
+            receiveResult = await _orderRepo.Receive(result, removeSkuOverReceiveSnapshot.Id);
+
+            // check that we're not over anymore
+            Assert.IsNotNull(receiveResult);
+            Assert.IsTrue(receiveResult.Success);
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in receiveResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsReceived);
+            foreach (var expectedSku in receiveResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+                Assert.AreEqual(expectedSku.Quantity, expectedSku.ReceivedTagNumbers.Count);
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+        }
+
+        [TestMethod]
+        public async Task Order_CompleteOrderCycleExactQuantities()
+        {
+            // create the order
+            var ran = new Random();
+            var places = await _placeRepo.GetAllPlaces();
+            var numPlaces = places.Count;
+            var sourcePlace = places[ran.Next(numPlaces - 1)]; // get random places
+            var destinationPlace = places[ran.Next(numPlaces - 1)];
+
+            var persons = await _personRepo.GetAllPersons();
+            var person = persons[0];
+
+            int NumberOfSkuLines = 2;
+            int QtyPerSkuLine = 10;
+            int NumberOfItemLines = 2;
+            var refNumber = Guid.NewGuid().ToString();
+            var description = Guid.NewGuid().ToString();
+            var skuLineItems = await GenerateSomeSkuLineItems(NumberOfSkuLines, QtyPerSkuLine);
+            var itemLineItems = await GenerateSomeItemLineItems(NumberOfItemLines);
+            var addOrder = new AddOrderDto(refNumber, description, sourcePlace.Id,
+                destinationPlace.Id, skuLineItems, itemLineItems, person.Id);
+
+            var result = await _orderRepo.Create(addOrder);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.DestinationPlaceId, addOrder.DestinationPlaceId);
+            Assert.AreEqual(result.SourcePlaceId, addOrder.SourcePlaceId);
+            Assert.AreEqual(result.DeliverToId, addOrder.DeliverToId);
+
+            // create snapshots to fully allocate the order (one for each line item as that is easiest)
+            var addSsDtos = new List<AddSnapshotDto>();
+            // create sku line AddSnapshotDto's
+            foreach (var skuLine in result.ExpectedSkus)
+            {
+                addSsDtos.Add(await SnapshotGenerator.CreateExistingGtinSnapshotForUpload(result.SourcePlaceId, skuLine.Quantity, -1, skuLine.SkuId));
+            }
+
+            // create unique item AddSnapshotDto
+            if (result.ExpectedItems.Count > 0)
+                addSsDtos.Add(SnapshotGenerator.CreateSnapshotForUpload(result.SourcePlaceId, result.ExpectedItems.Select(i => i.TagNumber).ToList()));
+
+            // create the snapshots
+            var snapshotDtos = new List<SnapshotDetailDto>();
+            foreach (var addSsDto in addSsDtos)
+            {
+                snapshotDtos.Add(await _snapshotRepo.CreateSnapshot(addSsDto));
+            }
+
+            // add snapshots to the order
+            OrderActionResponseDto allocateResult = null;
+            foreach (var ssDto in snapshotDtos)
+            {
+                allocateResult = await _orderRepo.Allocate(result, ssDto.Id);
+            }
+
+            Assert.IsNotNull(allocateResult);
+            Assert.IsTrue(allocateResult.Success);
+            Assert.AreEqual(allocateResult.OrderDetail.State, Model.Enums.OrderState.Allocatable);
+            Assert.AreEqual(allocateResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(allocateResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in allocateResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsAllocated);
+            foreach (var expectedSku in allocateResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+                Assert.AreEqual(expectedSku.Quantity, expectedSku.AllocatedTagNumbers.Count);
+            Assert.AreEqual(allocateResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(allocateResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+            foreach (var additionalItem in allocateResult.OrderDetail.AdditionalItems)  // check that all our additional items are allocated
+                Assert.IsTrue(additionalItem.IsAllocated);
+            foreach (var additionalSku in allocateResult.OrderDetail.AdditionalSkus)    // check that all our additional sku's are allocated
+                Assert.AreEqual(QtyPerSkuLine, additionalSku.AllocatedTagNumbers.Count);
+
+            // Now dispatch the order
+            OrderActionResponseDto dispatchResult =  await _orderRepo.Dispatch(result);
+
+            Assert.IsNotNull(dispatchResult);
+            Assert.IsTrue(dispatchResult.Success);
+            Assert.AreEqual(dispatchResult.OrderDetail.State, Model.Enums.OrderState.Receivable);
+            Assert.AreEqual(dispatchResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(dispatchResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in dispatchResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsAllocated);
+            foreach (var expectedSku in dispatchResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+                Assert.AreEqual(expectedSku.Quantity, expectedSku.AllocatedTagNumbers.Count);
+            Assert.AreEqual(dispatchResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(dispatchResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+            foreach (var additionalItem in dispatchResult.OrderDetail.AdditionalItems)  // check that all our additional items are allocated
+                Assert.IsTrue(additionalItem.IsAllocated);
+            foreach (var additionalSku in dispatchResult.OrderDetail.AdditionalSkus)    // check that all our additional sku's are allocated
+                Assert.AreEqual(QtyPerSkuLine, additionalSku.AllocatedTagNumbers.Count);
+
+            // create snapshots to fully receive the order (one for each line item as that is easiest)
+            var addReceiveSsDtos = new List<AddSnapshotDto>();
+            // create sku line snapshots
+            foreach (var skuLine in result.ExpectedSkus)
+            {
+                addReceiveSsDtos.Add(await SnapshotGenerator.CreateExistingGtinSnapshotForUpload(result.DestinationPlaceId, skuLine.Quantity, -1, skuLine.SkuId));
+            }
+
+            // create unique item snapshot
+            if (result.ExpectedItems.Count > 0)
+                addReceiveSsDtos.Add(SnapshotGenerator.CreateSnapshotForUpload(result.DestinationPlaceId, result.ExpectedItems.Select(i => i.TagNumber).ToList()));
+
+            var receiveSnapshotDtos = new List<SnapshotDetailDto>();
+            foreach (var addSsDto in addReceiveSsDtos)
+            {
+                receiveSnapshotDtos.Add(await _snapshotRepo.CreateSnapshot(addSsDto));
+            }
+
+            // add snapshots to the order
+            OrderActionResponseDto receiveResult = null;
+            foreach (var ssDto in receiveSnapshotDtos)
+            {
+                receiveResult = await _orderRepo.Receive(result, ssDto.Id);
+            }
+
+            Assert.IsNotNull(receiveResult);
+            Assert.IsTrue(receiveResult.Success);
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in receiveResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsReceived);
+            foreach (var expectedSku in receiveResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+                Assert.AreEqual(expectedSku.Quantity, expectedSku.ReceivedTagNumbers.Count);
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+
+            // now over Receive some sku's
+            int skuOverReceiveAmount = 1;
+            // create snapshots for over allocating and removing the over allocating
+            var skuOverReceive_AddSnapshotDto = await SnapshotGenerator.CreateNewGtinSnapshotForUpload(result.DestinationPlaceId, skuOverReceiveAmount, -1, result.ExpectedSkus[0].SkuId);
+            var addSkuOverReceiveSnapshot = await _snapshotRepo.CreateSnapshot(skuOverReceive_AddSnapshotDto);
+            skuOverReceive_AddSnapshotDto.SnapshotType = Model.Enums.SnapshotType.Remove;
+            var removeSkuOverReceiveSnapshot = await _snapshotRepo.CreateSnapshot(skuOverReceive_AddSnapshotDto);
+
+            // add the over Receive snapshot
+            receiveResult = await _orderRepo.Receive(result, addSkuOverReceiveSnapshot.Id);
+
+            // check that we're over
+            Assert.IsNotNull(receiveResult);
+            Assert.IsTrue(receiveResult.Success);
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in receiveResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsReceived);
+            foreach (var expectedSku in receiveResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+            {
+                if (expectedSku.SkuId == result.ExpectedSkus[0].SkuId)
+                    Assert.AreEqual(expectedSku.Quantity + skuOverReceiveAmount, expectedSku.ReceivedTagNumbers.Count);
+                else
+                    Assert.AreEqual(expectedSku.Quantity, expectedSku.ReceivedTagNumbers.Count);
+            }
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+
+            // add the remove over Receive snapshot
+            receiveResult = await _orderRepo.Receive(result, removeSkuOverReceiveSnapshot.Id);
+
+            // check that we're not over anymore
+            Assert.IsNotNull(receiveResult);
+            Assert.IsTrue(receiveResult.Success);
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(receiveResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in receiveResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsReceived);
+            foreach (var expectedSku in receiveResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+                Assert.AreEqual(expectedSku.Quantity, expectedSku.ReceivedTagNumbers.Count);
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(receiveResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+
+            // now complete the order
+            OrderActionResponseDto completeResult = await _orderRepo.Complete(result);
+
+            Assert.IsNotNull(completeResult);
+            Assert.IsTrue(completeResult.Success);
+            Assert.AreEqual(completeResult.OrderDetail.State, Model.Enums.OrderState.Closed);
+            Assert.AreEqual(completeResult.OrderDetail.ExpectedSkus.Count, NumberOfSkuLines);   // check that we've still got all the sku lines we should have
+            Assert.AreEqual(completeResult.OrderDetail.ExpectedItems.Count, NumberOfItemLines); // check that we've still got all the item lines we should have
+            foreach (var expectedItem in completeResult.OrderDetail.ExpectedItems)  // check that all our items are allocated
+                Assert.IsTrue(expectedItem.IsAllocated);
+            foreach (var expectedSku in completeResult.OrderDetail.ExpectedSkus)    // check that all our sku's are allocated
+                Assert.AreEqual(expectedSku.Quantity, expectedSku.AllocatedTagNumbers.Count);
+            Assert.AreEqual(completeResult.OrderDetail.AdditionalItems.Count, 0);   // check that we ahve no additional items
+            Assert.AreEqual(completeResult.OrderDetail.AdditionalSkus.Count, 0);    // check that we have no additional sku's
+            foreach (var additionalItem in completeResult.OrderDetail.AdditionalItems)  // check that all our additional items are allocated
+                Assert.IsTrue(additionalItem.IsAllocated);
+            foreach (var additionalSku in completeResult.OrderDetail.AdditionalSkus)    // check that all our additional sku's are allocated
+                Assert.AreEqual(QtyPerSkuLine, additionalSku.AllocatedTagNumbers.Count);
         }
     }
 }

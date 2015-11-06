@@ -81,6 +81,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<OrderActionResponseDto> Complete(OrderSummaryDto orderDetail)
+        {
+            var path = OrderUri.Complete(orderDetail);
+            var result = await Post<OrderActionResponseDto>(orderDetail, path);
+            return result;
+        }
+
         public async Task<OrderActionResponseDto> DisputeDispatch(OrderSummaryDto orderSummary, OrderDisputeDto dispute)
         {
             var path = OrderUri.DisputeDispatch(orderSummary);

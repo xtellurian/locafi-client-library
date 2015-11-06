@@ -87,8 +87,12 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             var randomCount = randomTagNumber <= 0 ? 0 : randomTagNumber;
             var name = Guid.NewGuid().ToString();
 
+            var q2 = new ItemQuery();
+            q2.CreateQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals);
+            int availableItems = await _itemRepo.GetItemCount(q2);
+
             var q1 = new ItemQuery();
-            q1.CreateQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals, totalCount - randomCount);
+            q1.CreateQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals, totalCount - randomCount, ran.Next(availableItems - totalCount - randomCount));
             var items = await _itemRepo.QueryItemsAsync(q1);
 
             IList<SnapshotTagDto> tags = new List<SnapshotTagDto>();

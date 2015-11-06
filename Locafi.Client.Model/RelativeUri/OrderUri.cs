@@ -24,6 +24,11 @@ namespace Locafi.Client.Model.RelativeUri
             return $"/{GetOrder(orderSummary.Id)}/Dispatch";
         }
 
+        public static string Complete(OrderSummaryDto orderSummary)
+        {
+            return $"/{GetOrder(orderSummary.Id)}/Complete";
+        }
+
         public static string DisputeDispatch(OrderSummaryDto orderSummary)
         {
             return $"/{GetOrder(orderSummary.Id)}/DisputeDispatch";
@@ -37,7 +42,7 @@ namespace Locafi.Client.Model.RelativeUri
 
         public static string Receive(OrderSummaryDto orderSummary, Guid snapshotId)
         {
-            return $"/{orderSummary.Id}/Receive/{snapshotId}";
+            return $"{GetOrder(orderSummary.Id)}/Receive/{snapshotId}";
         }
 
         public static string DisputeReceive(OrderSummaryDto orderSummary, Guid snapshotId)
