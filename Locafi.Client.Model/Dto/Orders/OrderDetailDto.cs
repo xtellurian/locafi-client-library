@@ -42,6 +42,7 @@ namespace Locafi.Client.Model.Dto.Orders
 
         [JsonIgnore]
         public IList<IRfidTag> UnknownTags { get; set; }
+        
 
     }
 }

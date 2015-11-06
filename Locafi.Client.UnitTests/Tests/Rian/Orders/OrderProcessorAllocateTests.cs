@@ -60,6 +60,38 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             Assert.AreEqual(order, processor.OrderDetail);
         }
 
+        [TestMethod]
+        public async Task OrderProcessor_AllocateDuplicates()
+        {
+            var quantity = 1;
+            var skus = await _skuRepo.GetAllSkus();
+            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
+            var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
+
+
+            var order = new OrderDetailDto();
+            var tagNumber = reservation.TagNumbers.FirstOrDefault();
+
+            order.ExpectedSkus.Add(new OrderSkuLineItemDto
+            {
+                Name = sku.Name,
+                PackingSize = 1,
+                Quantity = quantity,
+                Gtin = sku.Gtin
+            });
+            var processor = new OrderAllocator(order);
+
+            for (var i = 0; i < 10; i++)
+            {
+                var result = processor.Add(new TestTag(tagNumber));
+                Assert.IsTrue(result.IsRecognised, "Tag Recognised");
+            }
+            Assert.IsTrue(processor.GetSnapshotTags().Count == quantity, "got 1 snapshot tag" );
+            Assert.IsTrue(order.ExpectedSkus.FirstOrDefault().AllocatedTagNumbers.Count == 1, "Got one tag");
+
+            Assert.IsTrue(processor.OrderDetail.UnknownTags.Count == 0, "no Unknown tags");
+        }
+
 
         [TestMethod]
         public async Task OrderProcessor_OverAllocate()

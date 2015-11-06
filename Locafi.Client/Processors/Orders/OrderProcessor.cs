@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Locafi.Client.Contract.Processors;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.RFID;
 using Locafi.Client.Processors.Encoding;
 
-namespace Locafi.Client.Processors.Orders.Processors
+namespace Locafi.Client.Processors.Orders
 {
     public abstract class OrderProcessor
     {
