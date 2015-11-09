@@ -15,8 +15,8 @@ namespace Locafi.Client.Processors.Orders
         {
         }
 
-        private object _skuLock = new object();
-        private object _unknownTagLock = new object();
+        private readonly object _skuLock = new object();
+
         public override IProcessTagResult Add(IRfidTag tag)
         {
             base.Add(tag);
@@ -37,6 +37,33 @@ namespace Locafi.Client.Processors.Orders
             {
                 expectedItem.IsAllocated = true;
                 return new ProcessTagResult(true, gtin, itemLineItem:expectedItem);
+
+            }
+            OrderDetail.UnknownTags.Add(tag);
+            return new ProcessTagResult(false, gtin);
+        }
+
+        public override IProcessTagResult Remove(IRfidTag tag)
+        {
+            base.Remove(tag);
+
+            var gtin = GetGtin(tag);
+            var expectedSku = base.GetSkuLineItem(tag);
+            if (expectedSku != null)
+            {
+                lock (_skuLock)
+                {
+                    if (expectedSku.ReceivedTagNumbers.Contains(tag.TagNumber)) expectedSku.ReceivedTagNumbers.Remove(tag.TagNumber);
+                }
+
+                return new ProcessTagResult(true, gtin, expectedSku);
+            }
+
+            var expectedItem = base.GetItemLineItem(tag);
+            if (expectedItem != null)
+            {
+                expectedItem.IsAllocated = false;
+                return new ProcessTagResult(true, gtin, itemLineItem: expectedItem);
 
             }
             OrderDetail.UnknownTags.Add(tag);

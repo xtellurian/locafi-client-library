@@ -44,7 +44,31 @@ namespace Locafi.Client.Processors.Orders
             return new ProcessTagResult(false, gtin);
         }
 
+        public override IProcessTagResult Remove(IRfidTag tag)
+        {
+            base.Remove(tag);
 
+            var gtin = GetGtin(tag);
+            var expectedSku = base.GetSkuLineItem(tag);
+            if (expectedSku != null)
+            {
+                lock (_skuLock)
+                {
+                    if (expectedSku.AllocatedTagNumbers.Contains(tag.TagNumber)) expectedSku.AllocatedTagNumbers.Remove(tag.TagNumber);
+                }
+
+                return new ProcessTagResult(true, gtin, skuLineItem: expectedSku);
+            }
+
+            var expectedItem = base.GetItemLineItem(tag);
+            if (expectedItem != null)
+            {
+                expectedItem.IsAllocated = false;
+                return new ProcessTagResult(true, gtin, itemLineItem: expectedItem);
+            }
+
+            return new ProcessTagResult(false, gtin);
+        }
     }
 }
 

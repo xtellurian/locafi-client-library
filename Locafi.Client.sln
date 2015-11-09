@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client.UnitTests", "Locafi.Client.UnitTests\Locafi.Client.UnitTests.csproj", "{6E09B6E0-4D05-4762-82CA-6DECC486AD5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Client", "Locafi.Client\Locafi.Client.csproj", "{F359B947-EE36-4811-A76E-B3D1D105B69D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{416E7AA9-3C0F-443C-9B8B-68B4B3385BE4} = {416E7AA9-3C0F-443C-9B8B-68B4B3385BE4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locafi.Script", "Locafi.Script\Locafi.Script.csproj", "{ABDAC777-5F06-455A-A9C2-AF4062DCE386}"
 EndProject

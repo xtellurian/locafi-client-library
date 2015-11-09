@@ -54,7 +54,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
                 Assert.IsTrue(result.IsRecognised, "Tag Recognised");
             }
 
-            Assert.IsTrue(processor.GetSnapshotTags().Count == quantity);
+            Assert.IsTrue(processor.GetAddTags().Count == quantity);
             Assert.IsTrue(processor.OrderDetail.UnknownTags.Count == 0);
             Assert.IsTrue(order.ExpectedSkus.FirstOrDefault().AllocatedTagNumbers.Count == quantity, "Allocated Count == quantity");
             Assert.AreEqual(order, processor.OrderDetail);
@@ -86,10 +86,51 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
                 var result = processor.Add(new TestTag(tagNumber));
                 Assert.IsTrue(result.IsRecognised, "Tag Recognised");
             }
-            Assert.IsTrue(processor.GetSnapshotTags().Count == quantity, "got 1 snapshot tag" );
+            Assert.IsTrue(processor.GetAddTags().Count == quantity, "got 1 snapshot tag" );
             Assert.IsTrue(order.ExpectedSkus.FirstOrDefault().AllocatedTagNumbers.Count == 1, "Got one tag");
 
             Assert.IsTrue(processor.OrderDetail.UnknownTags.Count == 0, "no Unknown tags");
+        }
+
+        [TestMethod]
+        public async Task OrderProcessor_RemoveAllocate()
+        {
+            var ran = new Random();
+
+            var quantity = ran.Next(1, 10);
+            var skus = await _skuRepo.GetAllSkus();
+            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
+            var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
+
+            var order = new OrderDetailDto();
+
+            order.ExpectedSkus.Add(new OrderSkuLineItemDto
+            {
+                Name = sku.Name,
+                PackingSize = 1,
+                Quantity = quantity,
+                Gtin = sku.Gtin,
+            });
+            var processor = new OrderAllocator(order);
+
+            foreach (var number in reservation.TagNumbers)
+            {
+                var result = processor.Add(new TestTag(number));
+                Assert.IsTrue(result.IsRecognised, "Tag Recognised");
+            }
+
+            Assert.IsTrue(processor.GetAddTags().Count == quantity);
+            Assert.IsTrue(processor.OrderDetail.UnknownTags.Count == 0);
+            Assert.IsTrue(order.ExpectedSkus.FirstOrDefault().AllocatedTagNumbers.Count == quantity, "Allocated Count == quantity");
+            Assert.AreEqual(order, processor.OrderDetail);
+            foreach (var number in reservation.TagNumbers)
+            {
+                var result = processor.Remove(new TestTag(number));
+                Assert.IsTrue(result.IsRecognised);
+            }
+
+            Assert.IsTrue(processor.GetRemoveTags().Count == quantity);
+
         }
 
 

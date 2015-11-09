@@ -10,23 +10,36 @@ namespace Locafi.Client.Processors.Orders
 {
     public abstract class OrderProcessor
     {
-        private readonly List<SnapshotTagDto> _snapshotTags;
+        private readonly List<SnapshotTagDto> _snapshotAddTags;
+        private readonly List<SnapshotTagDto> _snapshotRemoveTags;
         public OrderDetailDto OrderDetail { get; set; }
 
         protected OrderProcessor(OrderDetailDto orderDetail)
         {
             OrderDetail = orderDetail;
-            _snapshotTags = new List<SnapshotTagDto>();
+            _snapshotAddTags = new List<SnapshotTagDto>();
+            _snapshotRemoveTags = new List<SnapshotTagDto>();
         }
 
-        public IList<SnapshotTagDto> GetSnapshotTags()
+        public IList<SnapshotTagDto> GetAddTags()
         {
-            return _snapshotTags;
+            return _snapshotAddTags;
         }
+
+        public IList<SnapshotTagDto> GetRemoveTags()
+        {
+            return _snapshotRemoveTags;
+        } 
 
         public virtual IProcessTagResult Add(IRfidTag tag)
         {
-            if(!_snapshotTags.Any(t=>string.Equals(t.TagNumber, tag.TagNumber))) _snapshotTags.Add(new SnapshotTagDto(tag.TagNumber));
+            if(!_snapshotAddTags.Any(t=>string.Equals(t.TagNumber, tag.TagNumber))) _snapshotAddTags.Add(new SnapshotTagDto(tag.TagNumber));
+            return null;
+        }
+
+        public virtual IProcessTagResult Remove(IRfidTag tag)
+        {
+            if (!_snapshotRemoveTags.Any(t => string.Equals(t.TagNumber, tag.TagNumber))) _snapshotRemoveTags.Add(new SnapshotTagDto(tag.TagNumber));
             return null;
         }
 

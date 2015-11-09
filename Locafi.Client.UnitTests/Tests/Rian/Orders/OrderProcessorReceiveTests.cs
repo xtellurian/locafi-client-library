@@ -51,10 +51,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
                 Assert.IsTrue(result.IsRecognised, "Tag Recognised");
             }
 
-            Assert.IsTrue(processor.GetSnapshotTags().Count == quantity);
+            Assert.IsTrue(processor.GetAddTags().Count == quantity);
             Assert.IsTrue(processor.OrderDetail.UnknownTags.Count == 0);
             Assert.IsTrue(order.ExpectedSkus.FirstOrDefault().ReceivedTagNumbers.Count == quantity, "Allocated Count == quantity");
             Assert.AreEqual(order, processor.OrderDetail);
         }
+
+      
     }
 }
