@@ -43,6 +43,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
                 Quantity = quantity,
                 Gtin = sku.Gtin,
             });
+
             var processor = new OrderReceiver(order);
 
             foreach (var number in reservation.TagNumbers)

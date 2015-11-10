@@ -19,7 +19,7 @@ namespace Locafi.Client.Processors.Orders
             base.Add(tag);
 
             var gtin = GetGtin(tag);
-            var expectedSku = base.GetSkuLineItem(tag);
+            var expectedSku = base.GetExpectedSkuLineItem(tag);
             if (expectedSku != null)
             {
                 lock (_skuLock)
@@ -49,7 +49,7 @@ namespace Locafi.Client.Processors.Orders
             base.Remove(tag);
 
             var gtin = GetGtin(tag);
-            var expectedSku = base.GetSkuLineItem(tag);
+            var expectedSku = base.GetExpectedSkuLineItem(tag);
             if (expectedSku != null)
             {
                 lock (_skuLock)

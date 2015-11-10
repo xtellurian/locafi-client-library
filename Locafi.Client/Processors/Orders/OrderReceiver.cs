@@ -15,21 +15,35 @@ namespace Locafi.Client.Processors.Orders
         {
         }
 
-        private readonly object _skuLock = new object();
-
+        private readonly object _expectedSkuLock = new object();
+        private readonly object _additionalSkuLock = new object();
         public override IProcessTagResult Add(IRfidTag tag)
         {
             base.Add(tag);
             var gtin = GetGtin(tag);
-            var expectedSku = base.GetSkuLineItem(tag);
+            var expectedSku = base.GetExpectedSkuLineItem(tag);
             if (expectedSku != null)
             {
-                lock (_skuLock)
+                lock (_expectedSkuLock)
                 {
-                    if(!expectedSku.ReceivedTagNumbers.Contains(tag.TagNumber)) expectedSku.ReceivedTagNumbers.Add(tag.TagNumber);
+                    if (!expectedSku.ReceivedTagNumbers.Contains(tag.TagNumber))
+                        expectedSku.ReceivedTagNumbers.Add(tag.TagNumber);
                 }
-                
+
                 return new ProcessTagResult(true, gtin, expectedSku);
+            }
+            else
+            {
+                var additionalSku = base.GetAdditionalSkuLineItem(tag);
+                if (additionalSku != null)
+                {
+                    lock (_additionalSkuLock)
+                    {
+                        if (!additionalSku.ReceivedTagNumbers.Contains(tag.TagNumber))
+                            additionalSku.ReceivedTagNumbers.Add(tag.TagNumber);
+                    }
+                    return new ProcessTagResult(true, gtin, additionalSku);
+                }
             }
 
             var expectedItem = base.GetItemLineItem(tag);
@@ -48,10 +62,10 @@ namespace Locafi.Client.Processors.Orders
             base.Remove(tag);
 
             var gtin = GetGtin(tag);
-            var expectedSku = base.GetSkuLineItem(tag);
+            var expectedSku = base.GetExpectedSkuLineItem(tag);
             if (expectedSku != null)
             {
-                lock (_skuLock)
+                lock (_expectedSkuLock)
                 {
                     if (expectedSku.ReceivedTagNumbers.Contains(tag.TagNumber)) expectedSku.ReceivedTagNumbers.Remove(tag.TagNumber);
                 }

@@ -43,11 +43,18 @@ namespace Locafi.Client.Processors.Orders
             return null;
         }
 
-        protected OrderSkuLineItemDto GetSkuLineItem(IRfidTag tag)
+        protected OrderSkuLineItemDto GetExpectedSkuLineItem(IRfidTag tag)
         {
             if (!Sgtin.IsSgtinTag(tag)) return null;
             var gtin = Sgtin.GetGtin(tag);
             return OrderDetail.ExpectedSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
+        }
+
+        protected OrderSkuLineItemDto GetAdditionalSkuLineItem(IRfidTag tag)
+        {
+            if (!Sgtin.IsSgtinTag(tag)) return null;
+            var gtin = Sgtin.GetGtin(tag);
+            return OrderDetail.AdditionalSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
         }
 
         protected string GetGtin(IRfidTag tag)
