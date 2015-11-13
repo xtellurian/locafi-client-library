@@ -66,8 +66,14 @@
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
     <Compile Include="Dto\Orders\OrderActionResponseDto.cs" />
     <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
-    <Compile Include="Dto\PortalRules\PortalRuleDetailDto.cs" />
-    <Compile Include="Dto\PortalRules\PortalRulePlaceDetailDto.cs" />
+    <Compile Include="Dto\Portal\AddPortalDto.cs" />
+    <Compile Include="Dto\Portal\AddPortalRuleDto.cs" />
+    <Compile Include="Dto\Portal\PortalDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalRuleDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalRulePlaceDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalSummaryDto.cs" />
+    <Compile Include="Dto\Portal\UpdatePortalDto.cs" />
+    <Compile Include="Dto\Portal\UpdatePortalRuleDto.cs" />
     <Compile Include="Dto\Users\AddUserDto.cs" />
     <Compile Include="Dto\Users\UpdateUserDto.cs" />
     <Compile Include="Dto\Users\UserDetailDto.cs" />

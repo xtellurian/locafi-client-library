@@ -11,6 +11,6 @@ namespace Locafi.Client.Model.RelativeUri
         public static string ServiceName => "Authentication";
         public static string Login => "Login";
         public static string RefreshLogin => "RefreshLogin";
-        public static string ReaderLogin => "ReaderLogin";
+        public static string ReaderLogin => "PortalLogin";
     }
 }
