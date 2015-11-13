@@ -78,6 +78,7 @@
     <Compile Include="Exceptions\OrderException.cs" />
     <Compile Include="Exceptions\PersonException.cs" />
     <Compile Include="Exceptions\PlaceRepoException.cs" />
+    <Compile Include="Exceptions\PortalRepoException.cs" />
     <Compile Include="Exceptions\ReasonRepoException.cs" />
     <Compile Include="Exceptions\SkuRepoException.cs" />
     <Compile Include="Exceptions\SnapshotRepoException.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
+    <Compile Include="Repo\PortalRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
     <Compile Include="Repo\TagReservationRepo.cs" />
     <Compile Include="Repo\TemplateRepo.cs" />

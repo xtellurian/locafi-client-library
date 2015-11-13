@@ -7,7 +7,7 @@ using Locafi.Client.Model.Dto.Devices;
 
 namespace Locafi.Client.Model.Dto.Portal
 {
-    class PortalDetailDto : PortalSummaryDto
+    public class PortalDetailDto : PortalSummaryDto
     {
         public PortalDetailDto()
         {
