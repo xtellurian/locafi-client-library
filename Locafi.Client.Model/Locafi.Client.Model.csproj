@@ -68,6 +68,13 @@
     <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
     <Compile Include="Dto\PortalRules\PortalRuleDetailDto.cs" />
     <Compile Include="Dto\PortalRules\PortalRulePlaceDetailDto.cs" />
+    <Compile Include="Dto\SkuGroups\AddSkuGroupDto.cs" />
+    <Compile Include="Dto\SkuGroups\AddSkuGroupNameDto.cs" />
+    <Compile Include="Dto\SkuGroups\SkuGroupDetailDto.cs" />
+    <Compile Include="Dto\SkuGroups\SkuGroupNameDetailDto.cs" />
+    <Compile Include="Dto\SkuGroups\SkuGroupSummaryDto.cs" />
+    <Compile Include="Dto\SkuGroups\UpdateSkuGroupDto.cs" />
+    <Compile Include="Dto\SkuGroups\UpdateSkuGroupNameDto.cs" />
     <Compile Include="Dto\Users\AddUserDto.cs" />
     <Compile Include="Dto\Users\UpdateUserDto.cs" />
     <Compile Include="Dto\Users\UserDetailDto.cs" />
