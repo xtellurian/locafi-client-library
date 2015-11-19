@@ -19,4 +19,3 @@ namespace Locafi.Client.Model.Dto.Portal
         public IList<RfidReaderDetailDto> RfidReaders { get; set; }
     }
 }
-}

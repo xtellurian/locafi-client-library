@@ -67,6 +67,7 @@
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="StringConstants.cs" />
     <Compile Include="Tests\Anthony\DeviceRepoTests.cs" />
+    <Compile Include="Tests\Anthony\PortalRepoTests.cs" />
     <Compile Include="Tests\Rian\AuthenticationTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderProcessorAllocateTests.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Tests\Rian\ApiLocatorTests.cs" />
     <Compile Include="Tests\Rian\WebRepoTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
-    <Compile Include="WebRepoAsAuthorisedReaderContainer.cs" />
+    <Compile Include="WebRepoAsAuthorisedPortalContainer.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />

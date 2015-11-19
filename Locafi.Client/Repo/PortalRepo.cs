@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
 using Locafi.Client.Contract.Http;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Portal;
 using Locafi.Client.Model.RelativeUri;
@@ -15,13 +16,10 @@ using Locafi.Client.Model.Responses;
 
 namespace Locafi.Client.Repo
 {
-    public class PortalRepo : WebRepo, IWebRepoErrorHandler
+    public class PortalRepo : WebRepo, IWebRepoErrorHandler, IPortalRepo
     {
-        public PortalRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service) : base(transferer, authorisedUnauthorizedConfigService, serialiser, service)
-        {
-        }
-
-        public PortalRepo(IHttpTransferer transferer, IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service) : base(transferer, unauthorizedConfigService, serialiser, service)
+        public PortalRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(),authorisedUnauthorizedConfigService, serialiser, PortalUri.ServiceName)
         {
         }
 
@@ -59,10 +57,10 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public async Task<IList<PortalRuleDetailDto>> GetPortalRules()
+        public async Task<IList<PortalRuleSummaryDto>> GetPortalRules()
         {
             var path = PortalUri.GetPortalRules();
-            var result = await Get<IList<PortalRuleDetailDto>>(path);
+            var result = await Get<IList<PortalRuleSummaryDto>>(path);
             return result;
         }
 

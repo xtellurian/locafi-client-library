@@ -71,6 +71,7 @@
     <Compile Include="Dto\Portal\PortalDetailDto.cs" />
     <Compile Include="Dto\Portal\PortalRuleDetailDto.cs" />
     <Compile Include="Dto\Portal\PortalRulePlaceDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalRuleSummaryDto.cs" />
     <Compile Include="Dto\Portal\PortalSummaryDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalRuleDto.cs" />

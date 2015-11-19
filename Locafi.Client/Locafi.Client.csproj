@@ -98,6 +98,8 @@
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
+    <Compile Include="Contract\Repo\IPortalRepo.cs" />
+    <Compile Include="Repo\ItemRepo.cs" />
     <Compile Include="Repo\PortalRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
     <Compile Include="Repo\TagReservationRepo.cs" />
@@ -106,7 +108,6 @@
     <Compile Include="Odata\ODataCollection.cs" />
     <Compile Include="Odata\RandomOdataExampleCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repo\ItemRepo.cs" />
     <Compile Include="Repo\SkuRepo.cs" />
     <Compile Include="Repo\OrderRepo.cs" />
     <Compile Include="Repo\PersonRepo.cs" />

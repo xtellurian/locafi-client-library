@@ -57,7 +57,7 @@ namespace Locafi.Client.Authentication
         }
 
 
-        public async Task<AuthenticationResponseDto> ReaderLogin(ILoginCredentialsProvider credentials)
+        public async Task<AuthenticationResponseDto> PortalLogin(ILoginCredentialsProvider credentials)
         {
             var dto = new UserLoginDto
             {
@@ -68,7 +68,7 @@ namespace Locafi.Client.Authentication
             return await LoginWithDto(dto, AuthenticationUri.PortalLogin);
         }
 
-        public async Task<AuthenticationResponseDto> ReaderLogin(string serial, string password)
+        public async Task<AuthenticationResponseDto> PortalLogin(string serial, string password)
         {
             var dto = new UserLoginDto
             {

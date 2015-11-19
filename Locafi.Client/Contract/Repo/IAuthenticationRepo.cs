@@ -12,7 +12,7 @@ namespace Locafi.Client.Contract.Repo
         Task<AuthenticationResponseDto> Login (string emailAddress, string password);
         Task<AuthenticationResponseDto> RefreshLogin(string refreshToken);
         Task<AuthenticationResponseDto> Login(ILoginCredentialsProvider credentials);
-        Task<AuthenticationResponseDto> ReaderLogin(ILoginCredentialsProvider credentials);
-        Task<AuthenticationResponseDto> ReaderLogin(string serial, string password);
+        Task<AuthenticationResponseDto> PortalLogin(ILoginCredentialsProvider credentials);
+        Task<AuthenticationResponseDto> PortalLogin(string serial, string password);
     }
 }

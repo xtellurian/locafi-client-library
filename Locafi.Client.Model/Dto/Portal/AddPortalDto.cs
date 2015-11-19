@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portal
 {
-    public class AddPortalDto : EntityDtoBase
+    public class AddPortalDto
     {
         public string Name { get; set; }
         public string SerialNumber { get; set; }
