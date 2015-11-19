@@ -13,6 +13,7 @@ namespace Locafi.Client.Model.Dto.Portal
     {
         public string Name { get; set; }
         public Guid RfidPortalId { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public PortalRuleType RuleType { get; set; }
 

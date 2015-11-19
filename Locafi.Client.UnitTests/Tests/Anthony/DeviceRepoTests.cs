@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Devices;
+using Locafi.Client.Model.Enums;
+using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Locafi.Client.UnitTests.Tests.Anthony
@@ -25,7 +27,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
             _placeRepo = WebRepoContainer.PlaceRepo;
             _personRepo = WebRepoContainer.PersonRepo;
         }
-        //TODO: Write tests for creation and deletion of peripheral devices, readers
+        
         //Peripheral Device Test Methods
         [TestMethod]
         public async Task PeripheralDevice_GetAll()
@@ -67,31 +69,37 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetBySerialAsUser()
         {
-            var reader = await _deviceRepoAsUser.GetReader(StringConstants.PortalUsername);
+            var readerSerial = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().SerialNumber;
+            var reader = await _deviceRepoAsUser.GetReader(readerSerial);
             Assert.IsNotNull(reader);
+            Assert.IsTrue(reader.SerialNumber == readerSerial);
         }
 
         [TestMethod]
         public async Task RfidReader_GetByIdAsUser()
         {
-            var readerOriginal = await _deviceRepoAsUser.GetReader(StringConstants.PortalUsername);
-            var readerTest = await _deviceRepoAsUser.GetReader(readerOriginal.Id);
-            Assert.IsTrue(readerOriginal.Id == readerTest.Id);
+            var readerId = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().Id;
+            var readerTest = await _deviceRepoAsUser.GetReader(readerId);
+            Assert.IsNotNull(readerTest);
+            Assert.IsTrue(readerId == readerTest.Id);
         }
 
         [TestMethod]
         public async Task RfidReader_GetBySerialAsPortal()
         {
-            var reader = await _deviceRepoAsPortal.GetReader(StringConstants.PortalUsername);
+            var readerSerial = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().SerialNumber;
+            var reader = await _deviceRepoAsPortal.GetReader(readerSerial);
             Assert.IsNotNull(reader);
+            Assert.IsTrue(reader.SerialNumber == readerSerial);
         }
 
         [TestMethod]
         public async Task RfidReader_GetByIdAsPortal()
         {
-            var readerOriginal = await _deviceRepoAsPortal.GetReader(StringConstants.PortalUsername);
-            var readerTest = await _deviceRepoAsPortal.GetReader(readerOriginal.Id);
-            Assert.IsTrue(readerOriginal.Id == readerTest.Id);
+            var readerId = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().Id;
+            var readerTest = await _deviceRepoAsPortal.GetReader(readerId);
+            Assert.IsNotNull(readerTest);
+            Assert.IsTrue(readerId == readerTest.Id);
         }
 
         [TestMethod]
@@ -103,7 +111,61 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
             Assert.IsInstanceOfType(result, typeof(ClusterResponseDto));
         }
 
-        #region Private Methods
+        [TestMethod]
+        public async Task RfidReader_CreateRfidReader()
+        {
+            var addReader = DeviceGenerator.CreateRandomRfidReader();
+            var newReader = await _deviceRepoAsUser.CreateReader(addReader);
+            Assert.IsNotNull(newReader);
+            Assert.IsInstanceOfType(newReader, typeof(RfidReaderDetailDto));
+            await _deviceRepoAsUser.DeleteReader(newReader.Id);
+        }
+
+        [TestMethod]
+        public async Task RfidReader_DeleteRfidReader()
+        {
+            try
+            {
+                var addReader = DeviceGenerator.CreateRandomRfidReader();
+                var newReader = await _deviceRepoAsUser.CreateReader(addReader);
+                await _deviceRepoAsUser.DeleteReader(newReader.Id);
+                Assert.IsTrue(true);
+            }
+            catch
+            {
+                Assert.Fail();
+            }
+            
+        }
+
+        [TestMethod]
+        public async Task PeripheralDevice_CreateDevice()
+        {
+            var addDevice = DeviceGenerator.CreateRandomPeripheralDevice();
+            var newDevice = await _deviceRepoAsUser.CreateDevice(addDevice);
+            Assert.IsNotNull(newDevice);
+            Assert.IsInstanceOfType(newDevice, typeof(PeripheralDeviceDetailDto));
+            await _deviceRepoAsUser.DeleteDevice(newDevice.Id);
+        }
+
+        [TestMethod]
+        public async Task PeripheralDevice_DeleteDevice()
+        {
+            try
+            {
+                var addDevice = DeviceGenerator.CreateRandomPeripheralDevice();
+                var newDevice = await _deviceRepoAsUser.CreateDevice(addDevice);
+                await _deviceRepoAsUser.DeleteDevice(newDevice.Id);
+                Assert.IsTrue(true);
+            }
+            catch
+            {
+                Assert.Fail();
+            }
+        }
+
+        #region Private Methods        
+        
         private async Task<ClusterDto> GenerateRandomCluster()
         {
             var ran = new Random();
