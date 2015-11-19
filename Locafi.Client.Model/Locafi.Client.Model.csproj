@@ -156,6 +156,7 @@
     <Compile Include="RelativeUri\PersonUri.cs" />
     <Compile Include="RelativeUri\PlaceUri.cs" />
     <Compile Include="RelativeUri\ReasonUri.cs" />
+    <Compile Include="RelativeUri\SkuGroupUri.cs" />
     <Compile Include="RelativeUri\SkuUri.cs" />
     <Compile Include="RelativeUri\SnapshotUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

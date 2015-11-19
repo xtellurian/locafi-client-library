@@ -79,6 +79,7 @@
     <Compile Include="Exceptions\PersonException.cs" />
     <Compile Include="Exceptions\PlaceRepoException.cs" />
     <Compile Include="Exceptions\ReasonRepoException.cs" />
+    <Compile Include="Exceptions\SkuGroupRepoException.cs" />
     <Compile Include="Exceptions\SkuRepoException.cs" />
     <Compile Include="Exceptions\SnapshotRepoException.cs" />
     <Compile Include="Exceptions\TagReservationRepoException.cs" />
@@ -97,7 +98,9 @@
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
+    <Compile Include="Contract\Repo\ISkuGroupRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
+    <Compile Include="Repo\SkuGroupRepo.cs" />
     <Compile Include="Repo\TagReservationRepo.cs" />
     <Compile Include="Repo\TemplateRepo.cs" />
     <Compile Include="Repo\WebRepo.cs" />

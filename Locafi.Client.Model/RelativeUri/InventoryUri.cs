@@ -1,7 +1,7 @@
 ﻿using System;
 using Locafi.Client.Model.Dto.Inventory;
 
-namespace Locafi.Client.Model.Uri
+namespace Locafi.Client.Model.RelativeUri
 {
     public static class InventoryUri
     {
