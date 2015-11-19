@@ -11,7 +11,7 @@ namespace Locafi.Script.Factory
     public static class HttpConfigFactory
     {
 
-        public static async Task<AuthorisedHttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd, bool isReader = false)
+        public static async Task<AuthorisedHttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd, bool isPortal = false)
         {
             var user = new UserLoginDto
             {
@@ -19,9 +19,9 @@ namespace Locafi.Script.Factory
                 Password = passwrd
             };
             TokenGroup result;
-            if (isReader)
+            if (isPortal)
             {
-                result = await Post(baseUrl + "Authentication/ReaderLogin/", user);
+                result = await Post(baseUrl + "Authentication/PortalLogin/", user);
             }
             else
             {

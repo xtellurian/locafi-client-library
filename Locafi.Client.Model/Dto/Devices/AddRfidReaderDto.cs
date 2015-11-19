@@ -20,8 +20,6 @@ namespace Locafi.Client.Model.Dto.Devices
 
         public AddPeripheralDeviceDto PeripherialDevice { get; set; }
 
-        public AddIpConfigDto IpConfig { get; set; }
-
         [JsonConverter(typeof(StringEnumConverter))]
         public ReaderMode ReaderMode { get; set; }  // ReaderMode Enum
 

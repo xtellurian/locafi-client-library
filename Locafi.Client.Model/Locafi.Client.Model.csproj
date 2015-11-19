@@ -71,6 +71,7 @@
     <Compile Include="Dto\Portal\PortalDetailDto.cs" />
     <Compile Include="Dto\Portal\PortalRuleDetailDto.cs" />
     <Compile Include="Dto\Portal\PortalRulePlaceDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalRuleSummaryDto.cs" />
     <Compile Include="Dto\Portal\PortalSummaryDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalRuleDto.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Conversion\RfidTagConversions.cs" />
     <Compile Include="RelativeUri\PersonUri.cs" />
     <Compile Include="RelativeUri\PlaceUri.cs" />
+    <Compile Include="RelativeUri\PortalUri.cs" />
     <Compile Include="RelativeUri\ReasonUri.cs" />
     <Compile Include="RelativeUri\SkuUri.cs" />
     <Compile Include="RelativeUri\SnapshotUri.cs" />

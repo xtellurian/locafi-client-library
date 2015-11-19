@@ -7,7 +7,7 @@ using Locafi.Client.Model.Dto.Devices;
 
 namespace Locafi.Client.Model.Dto.Portal
 {
-    class PortalDetailDto : PortalSummaryDto
+    public class PortalDetailDto : PortalSummaryDto
     {
         public PortalDetailDto()
         {
@@ -18,5 +18,4 @@ namespace Locafi.Client.Model.Dto.Portal
         public IList<PeripheralDeviceDetailDto> PeripheralDevices { get; set; }
         public IList<RfidReaderDetailDto> RfidReaders { get; set; }
     }
-}
 }
