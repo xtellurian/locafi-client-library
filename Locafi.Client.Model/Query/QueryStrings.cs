@@ -4,28 +4,28 @@
     {
         public static class Filter
         {
-            private static string FilterStart => "$filter=";
+            public static string FilterStart => "$filter=";
 
             public static string Contains(string propertyName, string sub)
             {
                 if (!sub.StartsWith("'")) sub = "'" + sub;
                 if (!sub.EndsWith("'")) sub = sub + "'";
-                return $"{FilterStart}contains({propertyName},{sub}) eq true";
+                return $"contains({propertyName},{sub}) eq true";
             }
 
             public static string Equals(string propertyName, string value)
             {
-                return $"{FilterStart}{propertyName} eq {value}";
+                return $"{propertyName} eq {value}";
             }
 
             public static string GreaterThan(string propertyName, string value)
             {
-                return $"{FilterStart}{propertyName} gt {value}";
+                return $"{propertyName} gt {value}";
             }
 
             public static string LessThan(string propertyName, string value)
             {
-                return $"{FilterStart}{propertyName} lt {value}";
+                return $"{propertyName} lt {value}";
             }
         }
 

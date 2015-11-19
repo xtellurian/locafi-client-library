@@ -82,6 +82,7 @@
     <Compile Include="Tests\Rian\ApiLocatorTests.cs" />
     <Compile Include="Tests\Rian\SkuGroupNameTests.cs" />
     <Compile Include="Tests\Rian\SkuGroupTests.cs" />
+    <Compile Include="Tests\Rian\QueryBuilderTests.cs" />
     <Compile Include="Tests\Rian\WebRepoTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="Tests\Rian\WebRepoTestsBase.cs" />
