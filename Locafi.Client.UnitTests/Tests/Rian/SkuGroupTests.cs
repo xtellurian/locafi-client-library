@@ -21,7 +21,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             // first we need a name
             var groupNames =
                 await
-                    SkuGroupRepo.GetNames(SkuGroupNameQuery.NewQuery(g => g.Name, TestGroupName,
+                    SkuGroupRepo.QuerySkuGroupNames(SkuGroupNameQuery.NewQuery(g => g.Name, TestGroupName,
                         ComparisonOperator.Equals));
             Assert.IsTrue(groupNames.Entities.Count <= 1, "There should not be multiple of these"); // there should be at most 1 group name like this
             

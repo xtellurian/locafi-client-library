@@ -7,7 +7,7 @@ namespace Locafi.Client.Contract.Repo
 {
     public interface ISkuGroupRepo
     {
-        Task<IQueryResult<SkuGroupNameDetailDto>> GetNames(IRestQuery<SkuGroupNameDetailDto> query);
+        Task<IQueryResult<SkuGroupNameDetailDto>> QuerySkuGroupNames(IRestQuery<SkuGroupNameDetailDto> query);
         Task<SkuGroupNameDetailDto> GetNameById(Guid id);
         Task<SkuGroupNameDetailDto> CreateSkuGroupName(AddSkuGroupNameDto addSkuGroupNameDto);
         Task<SkuGroupNameDetailDto> UpdateSkuGroupName(Guid id, UpdateSkuGroupNameDto updateSkuGroupNameDto);

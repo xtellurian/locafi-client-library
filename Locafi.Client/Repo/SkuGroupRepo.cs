@@ -23,7 +23,7 @@ namespace Locafi.Client.Repo
         {
         }
 #region Sku Group Names
-        public async Task<IQueryResult<SkuGroupNameDetailDto>> GetNames(IRestQuery<SkuGroupNameDetailDto> query)
+        public async Task<IQueryResult<SkuGroupNameDetailDto>> QuerySkuGroupNames(IRestQuery<SkuGroupNameDetailDto> query)
         {
             var result = await QuerySkuGroupNames(query.AsRestQuery());
             return result.AsQueryResult(query);
