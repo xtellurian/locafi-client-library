@@ -63,7 +63,9 @@
     <Compile Include="Contract\Repo\IOrderRepo.cs" />
     <Compile Include="Contract\Repo\IPersonRepo.cs" />
     <Compile Include="Contract\Repo\IPlaceRepo.cs" />
+    <Compile Include="Contract\Repo\IPortalRepo.cs" />
     <Compile Include="Contract\Repo\IReasonRepo.cs" />
+    <Compile Include="Contract\Repo\ISkuGroupRepo.cs" />
     <Compile Include="Contract\Repo\ISkuRepo.cs" />
     <Compile Include="Contract\Repo\ISnapshotRepo.cs" />
     <Compile Include="Contract\Repo\ITemplateRepo.cs" />
@@ -99,10 +101,8 @@
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
-    <Compile Include="Contract\Repo\IPortalRepo.cs" />
     <Compile Include="Repo\ItemRepo.cs" />
     <Compile Include="Repo\PortalRepo.cs" />
-    <Compile Include="Contract\Repo\ISkuGroupRepo.cs" />
     <Compile Include="Repo\ReasonRepo.cs" />
     <Compile Include="Repo\SkuGroupRepo.cs" />
     <Compile Include="Repo\TagReservationRepo.cs" />
