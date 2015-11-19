@@ -75,8 +75,6 @@
     <Compile Include="Dto\Portal\PortalSummaryDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalRuleDto.cs" />
-    <Compile Include="Dto\PortalRules\PortalRuleDetailDto.cs" />
-    <Compile Include="Dto\PortalRules\PortalRulePlaceDetailDto.cs" />
     <Compile Include="Dto\SkuGroups\AddSkuGroupDto.cs" />
     <Compile Include="Dto\SkuGroups\AddSkuGroupNameDto.cs" />
     <Compile Include="Dto\SkuGroups\SkuGroupDetailDto.cs" />
