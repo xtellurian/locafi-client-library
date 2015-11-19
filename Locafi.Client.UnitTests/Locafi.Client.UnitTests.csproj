@@ -89,7 +89,6 @@
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="WebRepoAsAuthorisedPortalContainer.cs" />
     <Compile Include="Tests\Rian\WebRepoTestsBase.cs" />
-    <Compile Include="WebRepoAsAuthorisedReaderContainer.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />
     <Compile Include="Implementations\Serialiser.cs" />
