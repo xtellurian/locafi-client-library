@@ -8,6 +8,16 @@ namespace Locafi.Client.Model.Dto.SkuGroups
 {
     public class AddSkuGroupNameDto
     {
+        public AddSkuGroupNameDto()
+        {
+            
+        }
+
+        public AddSkuGroupNameDto(string name)
+        {
+            Name = name;
+        }
+
         public string Name { get; set; }
     }
 }

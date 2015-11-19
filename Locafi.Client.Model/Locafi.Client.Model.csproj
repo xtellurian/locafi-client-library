@@ -144,6 +144,7 @@
     <Compile Include="Query\IQueryResult.cs" />
     <Compile Include="Query\PropertyComparison\EntityQuery.cs" />
     <Compile Include="Query\PropertyComparison\OrderQuery.cs" />
+    <Compile Include="Query\PropertyComparison\SkuGroupNameQuery.cs" />
     <Compile Include="Query\PropertyComparison\SkuQuery.cs" />
     <Compile Include="Query\PropertyComparison\SnapshotQuery.cs" />
     <Compile Include="Query\QueryExtensions.cs" />

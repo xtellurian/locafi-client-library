@@ -80,8 +80,11 @@
     <Compile Include="Tests\Rian\ConversionsBetweenDtos.cs" />
     <Compile Include="Tests\Rian\Orders\OrderProcessorReceiveTests.cs" />
     <Compile Include="Tests\Rian\ApiLocatorTests.cs" />
+    <Compile Include="Tests\Rian\SkuGroupNameTests.cs" />
+    <Compile Include="Tests\Rian\SkuGroupTests.cs" />
     <Compile Include="Tests\Rian\WebRepoTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
+    <Compile Include="Tests\Rian\WebRepoTestsBase.cs" />
     <Compile Include="WebRepoAsAuthorisedReaderContainer.cs" />
     <Compile Include="WebRepoContainer.cs" />
     <Compile Include="Implementations\AuthorisedHttpTransferConfigService.cs" />

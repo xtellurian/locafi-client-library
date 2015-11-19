@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Authentication;
 using Locafi.Client.Contract.Config;
+using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Repo;
 using Locafi.Client.UnitTests.Factory;
@@ -31,6 +32,7 @@ namespace Locafi.Client.UnitTests
         public static IReasonRepo ReasonRepo => new ReasonRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static ISnapshotRepo SnapshotRepo => new SnapshotRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static ISkuRepo SkuRepo => new SkuRepo(AuthorisedHttpTransferConfigService, Serialiser);
+        public static ISkuGroupRepo SkuGroupRepo => new SkuGroupRepo(new SimpleHttpTransferer(),AuthorisedHttpTransferConfigService, Serialiser );
         public static ITagReservationRepo TagReservationRepo => new TagReservationRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static ITemplateRepo TemplateRepo => new TemplateRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static IUserRepo UserRepo => new UserRepo(AuthorisedHttpTransferConfigService, Serialiser);
