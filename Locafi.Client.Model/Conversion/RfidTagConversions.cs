@@ -2,6 +2,7 @@
 using System.Linq;
 using Locafi.Client.Model.Dto.Devices;
 using Locafi.Client.Model.Dto.Snapshots;
+using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.RFID;
 
 namespace Locafi.Client.Model.Conversion
@@ -14,7 +15,7 @@ namespace Locafi.Client.Model.Conversion
             return new SnapshotTagDto
             {
                 TagNumber = tag.TagNumber,
-                TagType = tag.TagType
+                TagType = TagType.PassiveRfid
             };
         }
 
@@ -26,12 +27,12 @@ namespace Locafi.Client.Model.Conversion
         #endregion
 
         #region ClusterTagDto
-        public static ClusterTagDto ConvertToClusterTagDto(this IRfidTag tag)
+        public static ClusterTagDto ConvertToClusterTagDto(this IRfidTag tag, TagType tagType = TagType.PassiveRfid)
         {
             return new ClusterTagDto
             {
                 TagNumber = tag.TagNumber,
-                TagType = tag.TagType
+                TagType = tagType
             };
         }
 
