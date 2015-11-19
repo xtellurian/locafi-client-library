@@ -63,10 +63,10 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         }
 
         [TestMethod]
-        public async Task Authentication_ReaderLogin() // changed implemention on server side
+        public async Task Authentication_PortalLogin() // changed implemention on server side
         {
-            var password = _hashService.GenerateHash(StringConstants.Secret, StringConstants.ReaderUserName);
-            var result = await _authRepo.ReaderLogin(StringConstants.ReaderUserName, password);
+            var password = _hashService.GenerateHash(StringConstants.Secret, StringConstants.PortalUsername);
+            var result = await _authRepo.PortalLogin(StringConstants.PortalUsername, password);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Success);
             Assert.IsNotNull(result.TokenGroup);
@@ -75,10 +75,10 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         }
 
         [TestMethod]
-        public async Task Authentication_ReaderLoginBadSerialNumber() // changed implemention on server side
+        public async Task Authentication_PortalLoginBadSerialNumber() // changed implemention on server side
         {
             var password = _hashService.GenerateHash(StringConstants.Secret, "skjdbgsijbo");
-            var result = await _authRepo.ReaderLogin(StringConstants.ReaderUserName, password);
+            var result = await _authRepo.PortalLogin(StringConstants.PortalUsername, password);
             Assert.IsNotNull(result);
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.TokenGroup);

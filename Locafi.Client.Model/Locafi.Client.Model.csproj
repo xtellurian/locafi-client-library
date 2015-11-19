@@ -66,6 +66,15 @@
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
     <Compile Include="Dto\Orders\OrderActionResponseDto.cs" />
     <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
+    <Compile Include="Dto\Portal\AddPortalDto.cs" />
+    <Compile Include="Dto\Portal\AddPortalRuleDto.cs" />
+    <Compile Include="Dto\Portal\PortalDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalRuleDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalRulePlaceDetailDto.cs" />
+    <Compile Include="Dto\Portal\PortalRuleSummaryDto.cs" />
+    <Compile Include="Dto\Portal\PortalSummaryDto.cs" />
+    <Compile Include="Dto\Portal\UpdatePortalDto.cs" />
+    <Compile Include="Dto\Portal\UpdatePortalRuleDto.cs" />
     <Compile Include="Dto\PortalRules\PortalRuleDetailDto.cs" />
     <Compile Include="Dto\PortalRules\PortalRulePlaceDetailDto.cs" />
     <Compile Include="Dto\SkuGroups\AddSkuGroupDto.cs" />
@@ -159,6 +168,7 @@
     <Compile Include="Conversion\RfidTagConversions.cs" />
     <Compile Include="RelativeUri\PersonUri.cs" />
     <Compile Include="RelativeUri\PlaceUri.cs" />
+    <Compile Include="RelativeUri\PortalUri.cs" />
     <Compile Include="RelativeUri\ReasonUri.cs" />
     <Compile Include="RelativeUri\SkuGroupUri.cs" />
     <Compile Include="RelativeUri\SkuUri.cs" />

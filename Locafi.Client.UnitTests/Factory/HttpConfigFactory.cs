@@ -27,7 +27,7 @@ namespace Locafi.Client.UnitTests.Factory
             TokenGroup result;
             if (isReader)
             {
-                result = await Post(baseUrl + "Authentication/ReaderLogin/", user);
+                result = await Post(baseUrl + "Authentication/PortalLogin/", user);
             }
             else
             {                

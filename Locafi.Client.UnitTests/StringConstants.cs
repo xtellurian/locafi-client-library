@@ -11,9 +11,9 @@ namespace Locafi.Client.UnitTests
        // public static string UserName => "admintester";
         public static string Password => "t3ster";
         public static string TestingEmailAddress => "testing@ramp.com.au";
-        public static string ReaderUserName => "37013190748";
+        public static string PortalUsername => "0123456789";
         public static string Secret => "Locafi_";
         public static string BaseUrl => @"http://legacylocafiapiv2.azurewebsites.net/api/";
-      //  public static string BaseUrl => @"http://192.168.0.98:50135/api/";
+        //public static string BaseUrl => @"http://192.168.0.98:50135/api/";
     }
 }
