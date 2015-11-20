@@ -12,6 +12,10 @@ namespace Locafi.Client.Model.RelativeUri
 
         public static string GetSkuGroups => "GetSkuGroups";
 
+        public static string GetSkyGroupsForPlace(Guid placeId)
+        {
+            return $"GetSkuGroupsForPlace/{placeId}";
+        }
         public static string GetSkuGroupDetail(Guid id)
         {
             return $"GetSkuGroup/{id}";

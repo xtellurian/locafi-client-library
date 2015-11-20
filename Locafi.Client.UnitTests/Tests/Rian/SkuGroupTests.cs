@@ -54,6 +54,11 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(group.Skus.Contains(sku), "GroupDetail contains Sku");
             Assert.IsTrue(group.Places.Contains(place), "GroupDetail contains place");
 
+            // get by place
+            var groupsByPlace = await SkuGroupRepo.GetSkuGroupsForPlace(place.Id);
+            Assert.IsNotNull(groupsByPlace, "groupsByPlace != null");
+            Assert.IsTrue(groupsByPlace.Contains(group), "groupsByPlace.Contains(group)");
+
             //update group name
             var updateDto = new UpdateSkuGroupDto(id, groupName2.Id); // change group name to group name 2
             groupDetail = await SkuGroupRepo.UpdateSkuGroup(id, updateDto);

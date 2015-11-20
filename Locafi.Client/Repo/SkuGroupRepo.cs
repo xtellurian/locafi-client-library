@@ -72,6 +72,13 @@ namespace Locafi.Client.Repo
             return result.AsQueryResult(query);
         }
 
+        public async Task<IList<SkuGroupSummaryDto>> GetSkuGroupsForPlace(Guid placeId)
+        {
+            var path = SkuGroupUri.GetSkyGroupsForPlace(placeId);
+            var result = await Get<IList<SkuGroupSummaryDto>>(path);
+            return result;
+        }
+
         public async Task<SkuGroupDetailDto> GetSkuGroupDetail(Guid id)
         {
             var path = SkuGroupUri.GetSkuGroupDetail(id);

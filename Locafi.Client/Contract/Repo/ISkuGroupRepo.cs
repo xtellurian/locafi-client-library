@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.SkuGroups;
 using Locafi.Client.Model.Query;
@@ -17,5 +18,6 @@ namespace Locafi.Client.Contract.Repo
         Task<SkuGroupDetailDto> CreateSkuGroup(AddSkuGroupDto addSkuGroupDto);
         Task<SkuGroupDetailDto> UpdateSkuGroup(Guid id, UpdateSkuGroupDto updateSkuGroupDto);
         Task<bool> DeleteSkuGroup(Guid id);
+        Task<IList<SkuGroupSummaryDto>> GetSkuGroupsForPlace(Guid placeId);
     }
 }
