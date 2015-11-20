@@ -11,5 +11,10 @@ namespace Locafi.Client.Model.Dto.SkuGroups
         public Guid SkuGroupNameId { get; set; }
 
         public string SkuGroupName { get; set; }
+        
+        public override string ToString()
+        {
+            return this.SkuGroupName;
+        }
     }
 }
