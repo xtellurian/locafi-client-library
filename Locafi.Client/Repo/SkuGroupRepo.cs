@@ -18,8 +18,8 @@ namespace Locafi.Client.Repo
 {
     public class SkuGroupRepo : WebRepo, ISkuGroupRepo
     {
-        public SkuGroupRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-            : base(transferer, authorisedUnauthorizedConfigService, serialiser, SkuGroupUri.ServiceName)
+        public SkuGroupRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
+            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, SkuGroupUri.ServiceName)
         {
         }
 #region Sku Group Names
