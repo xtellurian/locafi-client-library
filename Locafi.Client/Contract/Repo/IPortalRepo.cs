@@ -18,5 +18,6 @@ namespace Locafi.Client.Contract.Repo
         Task<PortalRuleDetailDto> CreatePortalRule(AddPortalRuleDto addPortalRuleDto);
         Task<PortalRuleDetailDto> UpdatePortalRule(UpdatePortalRuleDto updatePortalRuleDto);
         Task DeletePortalRule(Guid id);
+        Task<PortalDetailDto> GetPortal(string serial);
     }
 }
