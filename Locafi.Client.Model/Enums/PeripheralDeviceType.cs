@@ -9,7 +9,7 @@ namespace Locafi.Client.Model.Enums
     public enum PeripheralDeviceType
     {
         SpeedwayR220 = 1,
-        SpeedwayR440 = 2,
+        SpeedwayR420 = 2,
         Barionet50 = 3
     }
 }
