@@ -18,6 +18,11 @@ namespace Locafi.Client.Model.RelativeUri
             return $"GetPortal/{id}";
         }
 
+        public static string GetPortal(string serial)
+        {
+            return $"GetPortalBySerial/{serial}";
+        }
+
         public static string UpdatePortal(Guid id)
         {
             return $"GetPortal/{id}/UpdatePortal";

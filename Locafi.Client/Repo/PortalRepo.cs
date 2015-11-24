@@ -37,6 +37,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<PortalDetailDto> GetPortal(string serial)
+        {
+            var path = PortalUri.GetPortal(serial);
+            var result = await Get<PortalDetailDto>(path);
+            return result;
+        }
+
         public async Task<PortalDetailDto> CreatePortal(AddPortalDto addPortalDto)
         {
             var path = PortalUri.CreatePortal;

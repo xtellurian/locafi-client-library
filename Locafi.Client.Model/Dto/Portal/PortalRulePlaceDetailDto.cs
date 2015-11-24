@@ -6,7 +6,7 @@ namespace Locafi.Client.Model.Dto.Portal
     {
         public Guid Id { get; set; }
 
-        public long PlaceInId { get; set; }
+        public Guid PlaceInId { get; set; }
 
         public string PlaceInName { get; set; }
 
@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Dto.Portal
 
         public string SensorInName { get; set; }
 
-        public long? PlaceOutId { get; set; }
+        public Guid? PlaceOutId { get; set; }
 
         public string PlaceOutName { get; set; }
 

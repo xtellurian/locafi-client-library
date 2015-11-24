@@ -56,6 +56,14 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         }
 
         [TestMethod]
+        public async Task Portal_GetPortalBySerialAsPortal()
+        {
+            var portal = await _portalRepoAsPortal.GetPortal(StringConstants.PortalUsername);
+            Assert.IsNotNull(portal);
+            Assert.IsInstanceOfType(portal, typeof(PortalDetailDto));
+        }
+
+        [TestMethod]
         public async Task Portal_CreatePortal()
         {
             var newPortal = await _portalRepo.CreatePortal(CreateRandomPortal());             
