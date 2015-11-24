@@ -23,6 +23,7 @@ namespace Locafi.Client.Model.Dto.Inventory
                 property.SetValue(this, value);
             }
         }
+        public Guid? SkuGroupId { get; set; }
         public string Name { get; set; }
 
         public Guid PlaceId { get; set; }

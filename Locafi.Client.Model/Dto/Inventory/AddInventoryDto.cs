@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Dto.Inventory
             SnapshotIds = new List<Guid>();
         }
         public string Name { get; set; }
-
+        public Guid? SkuGroupId { get; set; }
         public Guid PlaceId { get; set; }
 
         public List<Guid> SnapshotIds { get; set; }
