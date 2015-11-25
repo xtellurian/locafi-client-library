@@ -27,7 +27,7 @@ namespace Locafi.Client.Model.Dto.Inventory
                 property.SetValue(this, value);
             }
         }
-
+        public string SkuGroupName { get; set; }
         public List<Guid> SnapshotIds { get; set; }
         public List<Guid> FoundItemsExpected { get; set; }
         public List<Guid> FoundItemsUnexpected { get; set; }
