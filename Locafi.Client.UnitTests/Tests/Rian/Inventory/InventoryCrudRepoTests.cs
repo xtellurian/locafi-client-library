@@ -79,6 +79,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             Assert.IsInstanceOfType(result, typeof (InventoryDetailDto));
             Assert.IsTrue(string.Equals(result.Name, name));
             Assert.AreEqual(place.Id, result.PlaceId);
+
             // cool that worked, now delete it
             await InventoryRepo.Delete(result.Id);
             
@@ -89,6 +90,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
 
             result = await InventoryRepo.CreateInventory(place.Id, "", group.Id);
             Assert.AreEqual(group.Id, result.SkuGroupId, "Groups Are Equal");
+
+            // ok, now lets get that again by id
+            result = await InventoryRepo.GetInventory(result.Id);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.SkuGroupId, group.Id);
+
             // cool now delete it
             await InventoryRepo.Delete(result.Id);
         }
