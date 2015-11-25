@@ -66,7 +66,7 @@ namespace Locafi.Client.Repo
         #endregion
 
         
-        public async Task<IQueryResult<SkuGroupSummaryDto>> QuerySkuGroups(IRestQuery<SkuGroupSummaryDto> query)
+        public async Task<IQueryResult<SkuGroupSummaryDto>> QuerySkuGroups(IRestQuery<SkuGroupSummaryDto> query )
         {
             var result = await QuerySkuGroups(query.AsRestQuery());
             return result.AsQueryResult(query);

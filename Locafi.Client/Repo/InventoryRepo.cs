@@ -42,12 +42,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<InventoryDetailDto> CreateInventory(string name, Guid placeId)
+        public async Task<InventoryDetailDto> CreateInventory(Guid placeId, string name = null, Guid? skuGroupId = null)
         {
             var dto = new AddInventoryDto
             {
                 Name = name,
-                PlaceId = placeId
+                PlaceId = placeId,
+                SkuGroupId = skuGroupId
             };
             var path = InventoryUri.CreateInventory;
             var result = await Post<InventoryDetailDto>(dto, path);

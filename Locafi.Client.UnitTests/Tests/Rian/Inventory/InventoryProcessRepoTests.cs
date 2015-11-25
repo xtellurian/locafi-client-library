@@ -50,7 +50,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
 //            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
-            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
+            var inventory = await _inventoryRepo.CreateInventory(new Guid("00000000-0000-0000-0000-000000060556"), name);
 
             var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId, 100);
             var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);
@@ -73,7 +73,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = Guid.NewGuid().ToString();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(place.Id, name);
 //            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
 
 
@@ -126,7 +126,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = Guid.NewGuid().ToString();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(place.Id, name);
             //var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
 
             // create a snapshot
@@ -177,7 +177,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = "Load test " + Guid.NewGuid();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(place.Id, name);
 
             
             var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId, 2000);
@@ -255,7 +255,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = Guid.NewGuid().ToString();
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
-            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(place.Id, name);
 
             place = await GetRandomPlace(inventory.PlaceId); // get a place not this palce
             var snapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
@@ -274,7 +274,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var places = await _placeRepo.GetAllPlaces();
             var place = places[ran.Next(places.Count - 1)];
             var otherPlace = places.Where(p => p.Id != place.Id).ToList()[ran.Next(places.Count - 2)];
-            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var inventory = await _inventoryRepo.CreateInventory(place.Id, name);
 
             var localSnapshot = await SimulateRealInventorySnapshot(place.Id, otherPlace.Id); //TODO: fix this method
             var resultSnapshot = await _snapshotRepo.CreateSnapshot(localSnapshot);

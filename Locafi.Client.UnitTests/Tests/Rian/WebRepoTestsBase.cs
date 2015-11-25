@@ -15,7 +15,9 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private IPersonRepo _personRepo;
         private ISkuRepo _skuRepo;
         private ISkuGroupRepo _skuGroupRepo;
+        private IInventoryRepo _inventoryRepo;
 
+        protected IInventoryRepo InventoryRepo => _inventoryRepo ?? (_inventoryRepo = WebRepoContainer.InventoryRepo);
         protected IPlaceRepo PlaceRepo => _placeRepo ?? (_placeRepo = WebRepoContainer.PlaceRepo);
         protected IItemRepo ItemRepo => _itemRepo ?? (_itemRepo = WebRepoContainer.ItemRepo);
         protected IPersonRepo PersonRepo => _personRepo ?? (_personRepo = WebRepoContainer.PersonRepo);

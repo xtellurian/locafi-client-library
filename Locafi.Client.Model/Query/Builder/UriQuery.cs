@@ -24,5 +24,10 @@ namespace Locafi.Client.Model.Query.Builder
 
         public int Take { get; set; }
         public int Skip { get; set; }
+
+        public static IRestQuery<T> NoFilter(int skip, int take)
+        {
+            return new UriQuery<T>("",take,skip );
+        } 
     }
 }
