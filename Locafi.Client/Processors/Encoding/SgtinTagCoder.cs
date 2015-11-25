@@ -1,5 +1,16 @@
-﻿using System;
+﻿/*
+
+DO NOT MODIFY THIS CLASS
+
+This is a class shared between server and client. It should not be modified on the client without comparible modifications on the server.
+You can modify Sgtin.cs instead.
+
+*/
+
+
+using System;
 using System.Collections.Generic;
+
 
 namespace Locafi.Client.Processors.Encoding
 {

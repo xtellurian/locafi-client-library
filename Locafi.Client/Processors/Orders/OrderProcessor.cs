@@ -45,21 +45,21 @@ namespace Locafi.Client.Processors.Orders
 
         protected OrderSkuLineItemDto GetExpectedSkuLineItem(IRfidTag tag)
         {
-            if (!Sgtin.IsSgtinTag(tag)) return null;
-            var gtin = Sgtin.GetGtin(tag);
+            if (!tag.HasSgtin()) return null;
+            var gtin = tag.GetGtin();
             return OrderDetail.ExpectedSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
         }
 
         protected OrderSkuLineItemDto GetAdditionalSkuLineItem(IRfidTag tag)
         {
-            if (!Sgtin.IsSgtinTag(tag)) return null;
-            var gtin = Sgtin.GetGtin(tag);
+            if (!tag.HasSgtin()) return null;
+            var gtin = tag.GetGtin();
             return OrderDetail.AdditionalSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
         }
 
         protected string GetGtin(IRfidTag tag)
         {
-            return !Sgtin.IsSgtinTag(tag) ? null : Sgtin.GetGtin(tag);
+            return tag.GetGtin();
         }
 
         protected OrderItemLineItemDto GetItemLineItem(IRfidTag tag)

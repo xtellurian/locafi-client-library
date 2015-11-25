@@ -9,18 +9,15 @@ namespace Locafi.Client.Processors.Encoding
 {
     public static class Sgtin
     {
-        public static bool IsTagOfSkuType(IRfidTag tag, string gtin)
+        public static bool HasSgtin(this IRfidTag tag, string gtin = null)
         {
+            if(gtin==null) return SgtinTagCoder.IsSgtinFormat(tag.TagNumber); // if there is no gtin to check against
+
             var tagGtin = SgtinTagCoder.GetGtin(tag.TagNumber);
             return string.Equals(tagGtin, gtin);
         }
 
-        public static bool IsSgtinTag(IRfidTag tag)
-        {
-            return SgtinTagCoder.IsSgtinFormat(tag.TagNumber);
-        }
-
-        public static string GetGtin(IRfidTag tag)
+        public static string GetGtin(this IRfidTag tag)
         {
             return SgtinTagCoder.GetGtin(tag.TagNumber);
         }
