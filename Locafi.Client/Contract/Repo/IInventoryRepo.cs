@@ -22,5 +22,6 @@ namespace Locafi.Client.Contract.Repo
         Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query);
         Task<InventoryDetailDto> Complete(Guid inventoryId);
         Task<IQueryResult<InventorySummaryDto>> QueryInventoriesAsync(IRestQuery<InventorySummaryDto> query);
+        Task<InventoryDetailDto> AddItem(InventorySummaryDto inventory, Guid itemId);
     }
 }

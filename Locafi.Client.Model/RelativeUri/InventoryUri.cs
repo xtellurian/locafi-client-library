@@ -26,6 +26,10 @@ namespace Locafi.Client.Model.RelativeUri
             return $"/{inventoryDto.Id}/AddSnapshot/{snapshotId}";
         }
 
+        public static string AddItem(InventorySummaryDto inventoryDto, Guid itemId)
+        {
+            return $"/{inventoryDto.Id}/AddItem/{itemId}";
+        }
 
         /// <summary>
         /// The relative URI for Resolving an Inventory by uploading a set of reasons

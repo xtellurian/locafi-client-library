@@ -9,6 +9,7 @@ using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Inventory;
+using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
@@ -58,6 +59,13 @@ namespace Locafi.Client.Repo
         public async Task<InventoryDetailDto> AddSnapshot(InventorySummaryDto inventory, Guid snapshotId)
         {
             var path = InventoryUri.AddSnapshot(inventory, snapshotId);
+            var result = await Post<InventoryDetailDto>(inventory, path);
+            return result;
+        }
+
+        public async Task<InventoryDetailDto> AddItem(InventorySummaryDto inventory, Guid itemId)
+        {
+            var path = InventoryUri.AddItem(inventory, itemId);
             var result = await Post<InventoryDetailDto>(inventory, path);
             return result;
         }
