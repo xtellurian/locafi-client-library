@@ -10,6 +10,8 @@ namespace Locafi.Client.Model.Dto.Skus
             SkuExtendedPropertyList = new List<WriteSkuExtendedPropertyDto>();
         }
         public string Name { get; set; }
+        
+        public string SkuNumber { get; set; }
 
         public string Description { get; set; }
 
