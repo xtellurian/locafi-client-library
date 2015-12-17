@@ -12,12 +12,14 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using System.Collections;
+using Locafi.Client.Model.Dto.Skus;
 
 namespace Locafi.Client.Repo
 {
     public class OrderRepo : WebRepo, IOrderRepo
     {
-        public OrderRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
+        public OrderRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser)
             : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, OrderUri.ServiceName)
         {
         }
@@ -26,7 +28,7 @@ namespace Locafi.Client.Repo
            : base(transferer, authorisedUnauthorizedConfigService, serialiser, OrderUri.ServiceName)
         {
         }
-    
+
         public async Task<IList<OrderSummaryDto>> GetAllOrders()
         {
             var path = OrderUri.GetOrders;
@@ -45,6 +47,11 @@ namespace Locafi.Client.Repo
         public async Task<IList<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query)
         {
             return await QueryOrders(query.AsRestQuery());
+        }
+
+        public async Task<IList<SkuDetailDto>> GetOrderPrintInfoById(Guid id)
+        {
+            return await Get<IList<SkuDetailDto>>(OrderUri.GetPrintInfo(id));
         }
 
         public async Task<IQueryResult<OrderSummaryDto>> QueryOrdersAsync(IRestQuery<OrderSummaryDto> query)
@@ -70,7 +77,7 @@ namespace Locafi.Client.Repo
         public async Task<OrderActionResponseDto> DisputeAllocate(OrderSummaryDto orderSummary, OrderDisputeDto dispute, Guid snapshotId)
         {
             var path = OrderUri.DisputeAllocate(orderSummary, snapshotId);
-            var result = await Post<OrderActionResponseDto>(dispute , path);
+            var result = await Post<OrderActionResponseDto>(dispute, path);
             return result;
         }
 
