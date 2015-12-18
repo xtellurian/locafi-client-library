@@ -19,15 +19,29 @@ namespace Locafi.Client.Processors.Orders
             base.Add(tag);
 
             var gtin = GetGtin(tag);
-            var expectedSku = base.GetExpectedSkuLineItem(tag);
+            var expectedSku = base.GetExpectedSkuLineItem(tag); // check if this is an expected SKU
             if (expectedSku != null)
             {
                 lock (_skuLock)
                 {
-                    if (!expectedSku.AllocatedTagNumbers.Contains(tag.TagNumber)) expectedSku.AllocatedTagNumbers.Add(tag.TagNumber);
+                    if (!expectedSku.AllocatedTagNumbers.Contains(tag.TagNumber))
+                        expectedSku.AllocatedTagNumbers.Add(tag.TagNumber);
                 }
-                
-                return new ProcessTagResult(true,gtin, skuLineItem:expectedSku);
+
+                return new ProcessTagResult(true, gtin, skuLineItem: expectedSku);
+            }
+            else
+            {
+                var additionalSku = base.GetAdditionalSkuLineItem(tag); // check if this is an additional SKU
+                if (additionalSku != null)
+                {
+                    lock (_skuLock)
+                    {
+                        if (!additionalSku.AllocatedTagNumbers.Contains(tag.TagNumber))
+                            additionalSku.AllocatedTagNumbers.Add(tag.TagNumber);
+                    }
+                    return new ProcessTagResult(true, gtin, additionalSku);
+                }
             }
 
             var expectedItem = base.GetItemLineItem(tag);
