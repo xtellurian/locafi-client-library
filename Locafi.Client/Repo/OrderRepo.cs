@@ -49,7 +49,7 @@ namespace Locafi.Client.Repo
             return await QueryOrders(query.AsRestQuery());
         }
 
-        public async Task<IList<SkuDetailDto>> GetOrderPrintInfoById(Guid id)
+        public async Task<IList<SkuDetailDto>> GetSkuPrintInfoById(Guid id)
         {
             return await Get<IList<SkuDetailDto>>(OrderUri.GetPrintInfo(id));
         }

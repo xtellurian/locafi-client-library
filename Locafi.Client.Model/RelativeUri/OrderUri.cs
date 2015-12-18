@@ -67,7 +67,7 @@ namespace Locafi.Client.Model.RelativeUri
 
         public static string GetPrintInfo(Guid id)
         {
-            return $"{GetOrder(id)}/GetPrintInfo";
+            return $"{GetOrder(id)}/GetSkuPrintInfo";
         }
 
     }

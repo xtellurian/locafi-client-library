@@ -18,7 +18,7 @@ namespace Locafi.Client.Contract.Repo
         [Obsolete]
         Task<IList<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query);
 
-        Task<IList<SkuDetailDto>> GetOrderPrintInfoById(Guid id);
+        Task<IList<SkuDetailDto>> GetSkuPrintInfoById(Guid id);
 
         Task<OrderDetailDto> Create(AddOrderDto orderDetail);
         Task<OrderActionResponseDto> Allocate(OrderSummaryDto orderDetail, Guid snapshotId);
