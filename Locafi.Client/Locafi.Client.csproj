@@ -75,6 +75,7 @@
     <Compile Include="Crypto\Sha256HashService.cs" />
     <Compile Include="Exceptions\AuthenticationRepoException.cs" />
     <Compile Include="Exceptions\DeviceRepoException.cs" />
+    <Compile Include="Exceptions\ErrorRepoException.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
     <Compile Include="Exceptions\ItemRepoException.cs" />
     <Compile Include="Exceptions\OrderException.cs" />
@@ -99,6 +100,8 @@
     <Compile Include="Contract\Repo\IDeviceRepo.cs" />
     <Compile Include="LocafiApiLocator.cs" />
     <Compile Include="Repo\DeviceRepo.cs" />
+    <Compile Include="Repo\ErrorRepo.cs" />
+    <Compile Include="Contract\Repo\IErrorRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
     <Compile Include="Repo\ItemRepo.cs" />

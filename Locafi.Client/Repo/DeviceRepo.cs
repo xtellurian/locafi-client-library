@@ -26,7 +26,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<PeripheralDeviceSummaryDto>> GetDevices()
         {
             var path = DeviceUri.GetDevices;
-            var result = await Get<IList<PeripheralDeviceSummaryDto>>(path);
+            var result = await Get<List<PeripheralDeviceSummaryDto>>(path);
             return result;
         }
 
@@ -53,7 +53,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<RfidReaderSummaryDto>> GetReaders()
         {
             var path = DeviceUri.GetReaders;
-            var result = await Get<IList<RfidReaderSummaryDto>>(path);
+            var result = await Get<List<RfidReaderSummaryDto>>(path);
             return result;
         }
 

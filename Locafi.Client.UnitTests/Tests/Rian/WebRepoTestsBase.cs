@@ -29,7 +29,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         protected ISkuGroupRepo SkuGroupRepo => _skuGroupRepo ?? (_skuGroupRepo = WebRepoContainer.SkuGroupRepo);
         protected ISnapshotRepo SnapshotRepo => _snapshotRepo ?? (_snapshotRepo = WebRepoContainer.SnapshotRepo);
         protected ITagReservationRepo TagReservationRepo => _tagReservationRepo ?? (_tagReservationRepo = WebRepoContainer.TagReservationRepo);
-
+        protected IErrorRepo ErrorRepo => WebRepoContainer.ErrorRepo; // new one every time
         protected WebRepoTestsBase()
         {
             

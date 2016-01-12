@@ -63,6 +63,8 @@
     <Compile Include="Implementations\TestTag.cs" />
     <Compile Include="Implementations\UnauthorisedHttpTransferConfigService.cs" />
     <Compile Include="Mocks\MockAuthorisedHttpConfigService.cs" />
+    <Compile Include="Mocks\MockHttpTransferrer.cs" />
+    <Compile Include="Mocks\MockSerialiser.cs" />
     <Compile Include="Mocks\SnapshotRepoMock.cs" />
     <Compile Include="Mocks\UnauthorisedMockHttpTransferer.cs" />
     <Compile Include="ServiceContainer.cs" />
@@ -85,6 +87,8 @@
     <Compile Include="Tests\Rian\SkuGroupNameTests.cs" />
     <Compile Include="Tests\Rian\SkuGroupTests.cs" />
     <Compile Include="Tests\Rian\QueryBuilderTests.cs" />
+    <Compile Include="Tests\Rian\ErrorLogsIntegrationTests.cs" />
+    <Compile Include="Tests\Rian\ErrorLogsUnitTest.cs" />
     <Compile Include="Tests\Rian\WebRepoTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="WebRepoAsAuthorisedPortalContainer.cs" />

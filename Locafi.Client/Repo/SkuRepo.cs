@@ -38,7 +38,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<SkuSummaryDto>> GetAllSkus()
         {
             var path = SkuUri.GetSkus;
-            var result = await Get<IList<SkuSummaryDto>>(path);
+            var result = await Get<List<SkuSummaryDto>>(path);
             return result;
         }
 
@@ -70,7 +70,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<SkuSummaryDto>> QuerySkus(string filterString)
         {
             var path = $"{SkuUri.GetSkus}{filterString}";
-            var result = await Get<IList<SkuSummaryDto>>(path);
+            var result = await Get<List<SkuSummaryDto>>(path);
             return result;
         }
 

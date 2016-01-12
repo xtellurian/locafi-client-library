@@ -32,7 +32,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<InventorySummaryDto>> GetAllInventories()
         {
             var path = InventoryUri.GetInventories;
-            var result = await Get<IList<InventorySummaryDto>>(path);
+            var result = await Get<List<InventorySummaryDto>>(path);
             return result;
         }
 
@@ -106,7 +106,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<InventorySummaryDto>> QueryInventories(string queryString)
         {
             var path = $"{InventoryUri.GetInventories}{queryString}";
-            var result = await Get<IList<InventorySummaryDto>>(path);
+            var result = await Get<List<InventorySummaryDto>>(path);
             return result;
         }
 

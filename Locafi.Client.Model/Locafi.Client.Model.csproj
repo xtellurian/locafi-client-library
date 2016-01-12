@@ -61,6 +61,9 @@
     <Compile Include="Dto\Devices\RfidReaderDetailDto.cs" />
     <Compile Include="Dto\Devices\RfidReaderSummaryDto.cs" />
     <Compile Include="Dto\Devices\SerialConfigDetailDto.cs" />
+    <Compile Include="Dto\ErrorLogs\AddErrorLogDto.cs" />
+    <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
+    <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
@@ -136,6 +139,7 @@
     <Compile Include="Dto\Templates\TemplateExtendedPropertyDto.cs" />
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
+    <Compile Include="Enums\ErrorLevel.cs" />
     <Compile Include="Enums\OrderState.cs" />
     <Compile Include="Enums\PeripheralDeviceType.cs" />
     <Compile Include="Enums\PortalRuleType.cs" />
@@ -161,6 +165,7 @@
     <Compile Include="Query\QueryStringBuilderBase.cs" />
     <Compile Include="RelativeUri\AuthenticationUri.cs" />
     <Compile Include="RelativeUri\DeviceUri.cs" />
+    <Compile Include="RelativeUri\ErrorLogUri.cs" />
     <Compile Include="RelativeUri\ItemUri.cs" />
     <Compile Include="Conversion\PlaceDtoConversions.cs" />
     <Compile Include="Conversion\RfidTagConversions.cs" />

@@ -60,7 +60,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<SkuGroupNameDetailDto>> QuerySkuGroupNames(string queryString)
         {
             var path = $"{SkuGroupUri.Names.GetNames}{queryString}";
-            var result = await Get<IList<SkuGroupNameDetailDto>>(path);
+            var result = await Get<List<SkuGroupNameDetailDto>>(path);
             return result;
         }
         #endregion
@@ -75,7 +75,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<SkuGroupSummaryDto>> GetSkuGroupsForPlace(Guid placeId)
         {
             var path = SkuGroupUri.GetSkyGroupsForPlace(placeId);
-            var result = await Get<IList<SkuGroupSummaryDto>>(path);
+            var result = await Get<List<SkuGroupSummaryDto>>(path);
             return result;
         }
 
@@ -110,7 +110,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<SkuGroupSummaryDto>> QuerySkuGroups(string queryString)
         {
             var path = $"{SkuGroupUri.GetSkuGroups}{queryString}";
-            var result = await Get<IList<SkuGroupSummaryDto>>(path);
+            var result = await Get<List<SkuGroupSummaryDto>>(path);
             return result;
         }
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)

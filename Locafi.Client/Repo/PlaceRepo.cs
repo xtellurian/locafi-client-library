@@ -31,7 +31,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<PlaceSummaryDto>> GetAllPlaces()
         {
             var path = PlaceUri.GetPlaces;
-            var result = await Get<IList<PlaceSummaryDto>>(path);
+            var result = await Get<List<PlaceSummaryDto>>(path);
             return result;
         }
 
@@ -71,7 +71,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = null)
         {
             var path = $"{PlaceUri.GetPlaces}{queryString}";
-            var result = await Get<IList<PlaceSummaryDto>>(path);
+            var result = await Get<List<PlaceSummaryDto>>(path);
             return result;
         }
 

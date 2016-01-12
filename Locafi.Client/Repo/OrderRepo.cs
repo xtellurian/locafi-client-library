@@ -32,7 +32,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<OrderSummaryDto>> GetAllOrders()
         {
             var path = OrderUri.GetOrders;
-            var result = await Get<IList<OrderSummaryDto>>(path);
+            var result = await Get<List<OrderSummaryDto>>(path);
             return result;
         }
 
@@ -51,7 +51,7 @@ namespace Locafi.Client.Repo
 
         public async Task<IList<SkuDetailDto>> GetSkuPrintInfoById(Guid id)
         {
-            return await Get<IList<SkuDetailDto>>(OrderUri.GetPrintInfo(id));
+            return await Get<List<SkuDetailDto>>(OrderUri.GetPrintInfo(id));
         }
 
         public async Task<IQueryResult<OrderSummaryDto>> QueryOrdersAsync(IRestQuery<OrderSummaryDto> query)
@@ -133,7 +133,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<OrderSummaryDto>> QueryOrders(string queryString)
         {
             var path = $"{OrderUri.GetOrders}/{queryString}";
-            var result = await Get<IList<OrderSummaryDto>>(path);
+            var result = await Get<List<OrderSummaryDto>>(path);
             return result;
         }
 

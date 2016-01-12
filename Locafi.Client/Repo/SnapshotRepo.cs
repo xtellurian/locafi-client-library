@@ -46,7 +46,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<SnapshotSummaryDto>> GetAllSnapshots()
         {
             var path = SnapshotUri.GetSnapshots;
-            var result = await Get<IList<SnapshotSummaryDto>>(path);
+            var result = await Get<List<SnapshotSummaryDto>>(path);
             return result;
         }
 
@@ -71,7 +71,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<SnapshotSummaryDto>> QuerySnapshots(string queryString)
         {
             var path = $"{SnapshotUri.GetSnapshots}/{queryString}";
-            var result = await Get<IList<SnapshotSummaryDto>>(path);
+            var result = await Get<List<SnapshotSummaryDto>>(path);
             return result;
         }
 

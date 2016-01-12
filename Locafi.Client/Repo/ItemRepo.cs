@@ -92,7 +92,7 @@ namespace Locafi.Client.Repo
         protected async Task<IList<ItemSummaryDto>> QueryItems (string filterString)
         {
             var path = $"{ItemUri.GetItems}{filterString}";
-            var result = await Get<IList<ItemSummaryDto>>(path);
+            var result = await Get<List<ItemSummaryDto>>(path);
             return result;
         }
 

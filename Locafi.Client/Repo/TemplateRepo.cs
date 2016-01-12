@@ -30,7 +30,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<TemplateSummaryDto>> GetAllTemplates()
         {
             var path = TemplateUri.GetTemplates;
-            var result = await Get<IList<TemplateSummaryDto>>(path);
+            var result = await Get<List<TemplateSummaryDto>>(path);
             return result;
         }
 
@@ -44,7 +44,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<TemplateSummaryDto>> GetTemplatesForType(TemplateFor templateTarget)
         {
             var path = TemplateUri.GetTemplateFor(templateTarget);
-            var result = await Get<IList<TemplateSummaryDto>>(path);
+            var result = await Get<List<TemplateSummaryDto>>(path);
             return result;
         }
 

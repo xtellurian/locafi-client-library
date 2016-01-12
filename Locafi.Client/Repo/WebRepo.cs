@@ -44,7 +44,7 @@ namespace Locafi.Client.Repo
             _service = service;
         }
 
-        protected async Task<T> Get<T>(string extra = "")
+        protected async Task<T> Get<T>(string extra = "") where T : new()
         {
             var response = await GetResponse(HttpMethod.Get, extra);
             // try to reauthorise
@@ -139,7 +139,7 @@ namespace Locafi.Client.Repo
             try
             {
                 var errors =
-                    _serialiser.Deserialise<IList<CustomResponseMessage>>(await response.Content.ReadAsStringAsync());
+                    _serialiser.Deserialise<List<CustomResponseMessage>>(await response.Content.ReadAsStringAsync());
                 await this.Handle(errors, response.StatusCode);
             }
             catch(JsonException)

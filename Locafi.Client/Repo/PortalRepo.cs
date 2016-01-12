@@ -26,7 +26,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<PortalSummaryDto>> GetPortals()
         {
             var path = PortalUri.GetPortals;
-            var result = await Get<IList<PortalSummaryDto>>(path);
+            var result = await Get<List<PortalSummaryDto>>(path);
             return result;
         }
 
@@ -67,14 +67,14 @@ namespace Locafi.Client.Repo
         public async Task<IList<PortalRuleSummaryDto>> GetPortalRules()
         {
             var path = PortalUri.GetPortalRules();
-            var result = await Get<IList<PortalRuleSummaryDto>>(path);
+            var result = await Get<List<PortalRuleSummaryDto>>(path);
             return result;
         }
 
         public async Task<IList<PortalRuleDetailDto>> GetPortalRules(Guid id)
         {
             var path = PortalUri.GetPortalRules(id);
-            var result = await Get<IList<PortalRuleDetailDto>>(path);
+            var result = await Get<List<PortalRuleDetailDto>>(path);
             return result;
         }
 
