@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Dto.Skus;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -16,6 +17,8 @@ namespace Locafi.Client.Contract.Repo
         Task<OrderDetailDto> GetOrderById(Guid id);
         [Obsolete]
         Task<IList<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query);
+
+        Task<IList<SkuDetailDto>> GetSkuPrintInfoById(Guid id);
 
         Task<OrderDetailDto> Create(AddOrderDto orderDetail);
         Task<OrderActionResponseDto> Allocate(OrderSummaryDto orderDetail, Guid snapshotId);

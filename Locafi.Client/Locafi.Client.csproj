@@ -57,7 +57,10 @@
     <Compile Include="Contract\Http\IHttpTransferer.cs" />
     <Compile Include="Contract\Http\SimpleHttpTransferer.cs" />
     <Compile Include="Contract\Processors\IProcessTagResult.cs" />
+    <Compile Include="Contract\Repo\Cache\ICachedEntity.cs" />
     <Compile Include="Contract\Repo\IAuthenticationRepo.cs" />
+    <Compile Include="Contract\Repo\Cache\ICache.cs" />
+    <Compile Include="Contract\Repo\Cache\ICachedResponse.cs" />
     <Compile Include="Contract\Repo\IInventoryRepo.cs" />
     <Compile Include="Contract\Repo\IItemRepo.cs" />
     <Compile Include="Contract\Repo\IOrderRepo.cs" />
@@ -75,6 +78,7 @@
     <Compile Include="Crypto\Sha256HashService.cs" />
     <Compile Include="Exceptions\AuthenticationRepoException.cs" />
     <Compile Include="Exceptions\DeviceRepoException.cs" />
+    <Compile Include="Exceptions\ErrorRepoException.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
     <Compile Include="Exceptions\ItemRepoException.cs" />
     <Compile Include="Exceptions\OrderException.cs" />
@@ -98,7 +102,14 @@
     <Compile Include="Processors\Orders\ProcessTagResult.cs" />
     <Compile Include="Contract\Repo\IDeviceRepo.cs" />
     <Compile Include="LocafiApiLocator.cs" />
+    <Compile Include="Repo\CachedWebRepo.cs" />
+    <Compile Include="Repo\Cache\CachedEntity.cs" />
+    <Compile Include="Repo\Cache\WebRepoCacheResult.cs" />
+    <Compile Include="Repo\ClusterCachedRepo.cs" />
     <Compile Include="Repo\DeviceRepo.cs" />
+    <Compile Include="Repo\ErrorRepo.cs" />
+    <Compile Include="Contract\Repo\IErrorRepo.cs" />
+    <Compile Include="Contract\Repo\IClusterRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
     <Compile Include="Repo\ItemRepo.cs" />

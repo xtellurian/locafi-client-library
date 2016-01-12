@@ -30,7 +30,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<ReasonDetailDto>> GetAllReasons()
         {
             var path = ReasonUri.GetReasons;
-            var result = await Get<IList<ReasonDetailDto>>(path);
+            var result = await Get<List<ReasonDetailDto>>(path);
             return result;
         }
 
@@ -44,7 +44,7 @@ namespace Locafi.Client.Repo
         public async Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reasonFor)
         {
             var path = ReasonUri.GetReasonsFor(reasonFor);
-            var result = await Get<IList<ReasonDetailDto>>(path);
+            var result = await Get<List<ReasonDetailDto>>(path);
             return result;
         }
 

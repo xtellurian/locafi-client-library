@@ -21,6 +21,8 @@ namespace Locafi.Client.Model.Dto.Skus
             }
         }
         public string Name { get; set; }
+        
+        public string SkuNumber { get; set; }
 
         public string Gtin { get; set; }
 

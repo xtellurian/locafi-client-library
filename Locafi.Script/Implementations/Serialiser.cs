@@ -10,7 +10,7 @@ namespace Locafi.Script.Implementations
             return JsonConvert.SerializeObject(obj);
         }
 
-        public T Deserialise<T>(string json)
+        public T Deserialise<T>(string json) where T : new()
         {
 
             var result =  JsonConvert.DeserializeObject<T>(json);

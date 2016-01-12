@@ -4,24 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
-using Newtonsoft.Json;
 
-namespace Locafi.Client.UnitTests.Implementations
+namespace Locafi.Client.UnitTests.Mocks
 {
-    public class Serialiser : ISerialiserService
+    internal class MockSerialiser : ISerialiserService
     {
         public string Serialise(object obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            return "Mock " + obj.GetType().FullName;
         }
 
         public T Deserialise<T>(string json) where T : new()
         {
-
-            var result =  JsonConvert.DeserializeObject<T>(json);
-
-            return result;
-
+            return new T();
         }
     }
 }

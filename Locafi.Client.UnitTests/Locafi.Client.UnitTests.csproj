@@ -63,6 +63,9 @@
     <Compile Include="Implementations\TestTag.cs" />
     <Compile Include="Implementations\UnauthorisedHttpTransferConfigService.cs" />
     <Compile Include="Mocks\MockAuthorisedHttpConfigService.cs" />
+    <Compile Include="Mocks\MockClusterCache.cs" />
+    <Compile Include="Mocks\MockHttpTransferrer.cs" />
+    <Compile Include="Mocks\MockSerialiser.cs" />
     <Compile Include="Mocks\SnapshotRepoMock.cs" />
     <Compile Include="Mocks\UnauthorisedMockHttpTransferer.cs" />
     <Compile Include="ServiceContainer.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="Tests\Anthony\DeviceRepoTests.cs" />
     <Compile Include="Tests\Anthony\PortalRepoTests.cs" />
     <Compile Include="Tests\Rian\AuthenticationTests.cs" />
+    <Compile Include="Tests\Rian\Cache\CachedClusterRepoTest.cs" />
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderProcessorAllocateTests.cs" />
     <Compile Include="Tests\Rian\SkuRepoTests.cs" />
@@ -85,6 +89,8 @@
     <Compile Include="Tests\Rian\SkuGroupNameTests.cs" />
     <Compile Include="Tests\Rian\SkuGroupTests.cs" />
     <Compile Include="Tests\Rian\QueryBuilderTests.cs" />
+    <Compile Include="Tests\Rian\ErrorLogsIntegrationTests.cs" />
+    <Compile Include="Tests\Rian\ErrorLogsUnitTest.cs" />
     <Compile Include="Tests\Rian\WebRepoTests.cs" />
     <Compile Include="Tests\Rian\UserRepoTests.cs" />
     <Compile Include="WebRepoAsAuthorisedPortalContainer.cs" />

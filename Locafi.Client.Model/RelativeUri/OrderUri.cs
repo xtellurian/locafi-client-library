@@ -65,5 +65,10 @@ namespace Locafi.Client.Model.RelativeUri
             return $"DeleteOrder/{id}";
         }
 
+        public static string GetPrintInfo(Guid id)
+        {
+            return $"{GetOrder(id)}/GetSkuPrintInfo";
+        }
+
     }
 }
