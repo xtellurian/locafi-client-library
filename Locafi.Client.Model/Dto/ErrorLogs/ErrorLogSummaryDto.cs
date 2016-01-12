@@ -16,5 +16,6 @@ namespace Locafi.Client.Model.Dto.ErrorLogs
         public ErrorLevel ErrorLevel { get; set; }
         public string ErrorMessage { get; set; }
         public DateTime TimeStamp { get; set; }
+        public string LoggedByUserFullName { get; set; }
     }
 }

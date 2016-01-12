@@ -11,6 +11,19 @@ namespace Locafi.Client.Model.Dto.ErrorLogs
 {
     public class AddErrorLogDto
     {
+        public AddErrorLogDto()
+        {
+            
+        }
+
+        public AddErrorLogDto(string errorMessage, string errorDetails, DateTime timeStamp, ErrorLevel errorLevel)
+        {
+            ErrorMessage = errorMessage;
+            ErrorDetails = errorDetails;
+            TimeStamp = timeStamp;
+            ErrorLevel = errorLevel;
+        }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public ErrorLevel ErrorLevel { get; set; }
         public string ErrorMessage { get; set; }

@@ -11,6 +11,8 @@ using Locafi.Client.Contract.ErrorHandlers;
 using Locafi.Client.Contract.Http;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Authentication;
+using Locafi.Client.Model.Dto.ErrorLogs;
+using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Newtonsoft.Json;
 
@@ -180,5 +182,7 @@ namespace Locafi.Client.Repo
         public abstract Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode);
 
         public abstract Task Handle(HttpResponseMessage response);
+
+
     }
 }

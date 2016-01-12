@@ -8,5 +8,6 @@ namespace Locafi.Client.Contract.Repo
     public interface IErrorRepo
     {
         Task<ErrorLogDetailDto> LogException (Exception ex, ErrorLevel level = ErrorLevel.Minor);
+        Task<ErrorLogDetailDto> LogArbitrary(AddErrorLogDto error);
     }
 }

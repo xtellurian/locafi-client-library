@@ -9,5 +9,6 @@ namespace Locafi.Client.Model.Dto.ErrorLogs
     public class ErrorLogDetailDto : ErrorLogSummaryDto
     {
         public string ErrorDetails { get; set; }
+        public Guid? LoggedByUserId { get; set; }
     }
 }

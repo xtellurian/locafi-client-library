@@ -25,9 +25,15 @@ namespace Locafi.Client.Repo
 
         public async Task<ErrorLogDetailDto> LogException (Exception ex, ErrorLevel level = ErrorLevel.Minor)
         {
-            var path = ErrorLogUri.CreateErrorlog;
             var dto = CreateDtoFromException(ex, level);
-            return await base.Post<ErrorLogDetailDto>(dto, path);
+            return await this.LogArbitrary(dto);
+        }
+
+        public async Task<ErrorLogDetailDto> LogArbitrary(AddErrorLogDto error)
+        {
+            var path = ErrorLogUri.CreateErrorlog;
+            return await base.Post<ErrorLogDetailDto>(error, path);
+
         }
 
         private AddErrorLogDto CreateDtoFromException(Exception exception, ErrorLevel level)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Dto.ErrorLogs;
+using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Repo;
 using Locafi.Client.UnitTests.Implementations;
@@ -29,7 +31,27 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             Assert.IsNotNull(response.ErrorDetails);
             Assert.IsTrue(tran.HttpCalls.Keys.Any(k => k.Contains(ErrorLogUri.ServiceName))); // Assert we called the Error Log Service
-            
+
+
+            // reset 
+
+            config = new MockAuthorisedHttpConfigService();
+            tran = new MockHttpTransferrer();
+            serialiser = new Serialiser();
+
+
+            errorLogRepo = new ErrorRepo(tran, config, serialiser);
+
+            var message2 = "Test Message -- " + Guid.NewGuid();
+            var detail = Guid.NewGuid().ToString();
+            var arbitrary = new AddErrorLogDto(message2, detail, DateTime.Now, ErrorLevel.Trivial);
+
+            response = await errorLogRepo.LogArbitrary(arbitrary);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(tran.HttpCalls.Keys.Any(k => k.Contains(ErrorLogUri.ServiceName)));
+
         }
+
+
     }
 }
