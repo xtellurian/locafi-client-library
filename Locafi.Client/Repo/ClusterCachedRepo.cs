@@ -33,6 +33,11 @@ namespace Locafi.Client.Repo
             return result.Data;
         }
 
+        public async Task FlushCache()
+        {
+            await base.PostCache<ClusterResponseDto, ClusterDto>(_clusterCache);
+        }
+
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
         {
             throw new NotImplementedException();
