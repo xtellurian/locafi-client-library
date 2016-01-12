@@ -13,6 +13,7 @@ using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Query.Builder;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Locafi.Client.Model.Dto.SkuGroups;
 
 namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
 {
@@ -312,6 +313,102 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
 
         }
 
+        [TestMethod]
+        public async Task InventoryProcess_AddExistingGtinSnapshotWithSkuGroupSuccess()
+        {
+            SkuGroupDetailDto skuGroup = null;
+            try
+            {
+                var ran = new Random();
+                var name = Guid.NewGuid().ToString();
+                var places = await PlaceRepo.GetAllPlaces();
+                var place = places[ran.Next(places.Count - 1)];
+
+                place.Id = new Guid("00000000-0000-0000-0000-000000061008");
+
+                // get skus, select 2
+                var skus = (await SkuRepo.GetAllSkus()).Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).ToList();
+                var sku1 = skus[0];
+                var sku2 = skus[1];
+                // create skugroup with sku1
+
+                var addSkuGroupDto = new AddSkuGroupDto()
+                {
+                    SkuGroupNameId = (await SkuGroupRepo.QuerySkuGroupNames(UriQuery<SkuGroupNameDetailDto>.NoFilter(0, 1))).Entities[0].Id,
+                    SkuIds = new List<Guid>() { sku1.Id },
+                    //SkuIds = new List<Guid>() { sku1.Id, sku2.Id },
+                    PlaceIds = new List<Guid>() { place.Id }
+                };
+                skuGroup = await SkuGroupRepo.CreateSkuGroup(addSkuGroupDto);
+
+                // create the inventory, with the skugroup
+                var inventory = await InventoryRepo.CreateInventory(place.Id, name, skuGroup.Id);
+                //var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
+
+                // create snapshots for both skus
+                var sku1AddSS = await SnapshotGenerator.CreateNewGtinSnapshotForUpload(inventory.PlaceId, 5, -1, sku1.Id);
+                var sku2AddSS = await SnapshotGenerator.CreateNewGtinSnapshotForUpload(inventory.PlaceId, 5, -1, sku2.Id);
+                var t1 = DateTime.UtcNow;
+                var sku1SS = await SnapshotRepo.CreateSnapshot(sku1AddSS);
+                var sku2SS = await SnapshotRepo.CreateSnapshot(sku2AddSS);
+                Assert.IsNotNull(sku1SS);
+                Assert.IsInstanceOfType(sku1SS, typeof(SnapshotDetailDto));
+
+                // add the snapshots
+                Assert.IsNotNull(inventory);
+                Assert.IsInstanceOfType(inventory, typeof(InventoryDetailDto));
+                var resultInventory = await InventoryRepo.AddSnapshot(inventory, sku1SS.Id);
+                resultInventory = await InventoryRepo.AddSnapshot(inventory, sku2SS.Id);
+
+                Assert.IsNotNull(resultInventory);
+                Assert.IsInstanceOfType(resultInventory, typeof(InventoryDetailDto));
+                Assert.IsTrue(resultInventory.SnapshotIds.Contains(sku1SS.Id));
+                //check that no items from sku2 are part of the inventory
+                Assert.IsTrue(resultInventory.FoundItemsExpected.Intersect(sku2SS.Items).Count() <= 0);
+                //                Assert.IsTrue(resultInventory.FoundItemsUnexpected.Intersect(sku2SS.Items).Count() <= 0);
+                Assert.IsTrue(resultInventory.MissingItems.Intersect(sku2SS.Items).Count() <= 0);
+
+                // resolve the inventory
+                var reasons = await ReasonRepo.GetAllReasons();
+                var unknownReason = reasons.Where(r => r.Name == "Unknown").FirstOrDefault();
+                var resolveInventoryDto = new ResolveInventoryDto();
+                foreach (var item in resultInventory.MissingItems)
+                {
+                    resolveInventoryDto.Reasons.Add(item, unknownReason.Id);
+                }
+                foreach (var item in resultInventory.FoundItemsUnexpected)
+                {
+                    resolveInventoryDto.Reasons.Add(item, unknownReason.Id);
+                }
+                var resolveResult = await InventoryRepo.Resolve(inventory.Id, resolveInventoryDto);
+                Assert.IsNotNull(resolveResult);
+                Assert.IsInstanceOfType(resolveResult, typeof(InventoryDetailDto));
+
+                // complete the inventory
+                var completeResult = await InventoryRepo.Complete(inventory.Id);
+                Assert.IsNotNull(completeResult);
+                Assert.IsInstanceOfType(completeResult, typeof(InventoryDetailDto));
+                Assert.IsTrue(completeResult.Complete);
+                var t2 = DateTime.UtcNow;
+                var span = t2 - t1;
+            }
+            catch (Exception e)
+            {
+                // tidy up
+
+                // delete the sku group
+                if (skuGroup != null)
+                    await SkuGroupRepo.DeleteSkuGroup(skuGroup.Id);
+
+                throw e;
+            }
+            finally
+            {
+                // delete the sku group
+                if (skuGroup != null)
+                    await SkuGroupRepo.DeleteSkuGroup(skuGroup.Id);
+            }
+        }
 
         private async Task<AddSnapshotDto> SimulateRealInventorySnapshot(Guid placeId, Guid otherPlaceId)
         {
