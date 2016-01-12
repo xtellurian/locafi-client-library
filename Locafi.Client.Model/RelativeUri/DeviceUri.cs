@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.RelativeUri
         public static string CreateDevice => "CreateDevice";
         public static string GetReaders => "GetReaders";
         public static string CreateReader => "CreateReader";
-        public static string ProcessCluster => "ProcessCluster";
+
 
         public static string GetDevice(Guid id)
         {

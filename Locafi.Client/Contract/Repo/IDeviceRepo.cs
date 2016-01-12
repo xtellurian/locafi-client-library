@@ -15,6 +15,7 @@ namespace Locafi.Client.Contract.Repo
         Task<RfidReaderDetailDto> GetReader(Guid id);
         Task<RfidReaderDetailDto> GetReader(string serial);
         Task<RfidReaderDetailDto> CreateReader(AddRfidReaderDto addReaderDto);
+        [Obsolete]
         Task<ClusterResponseDto> ProcessCluster(ClusterDto cluster);
         Task DeleteReader(Guid id);
     }

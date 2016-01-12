@@ -78,9 +78,10 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        [Obsolete]
         public async Task<ClusterResponseDto> ProcessCluster(ClusterDto cluster)
         {
-            var path = DeviceUri.ProcessCluster;
+            var path = ClusterUri.ProcessCluster;
             var result = await Post<ClusterResponseDto>(cluster, path);
             return result;
         }
