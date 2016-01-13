@@ -20,8 +20,8 @@ namespace Locafi.Client.Repo
     {
         private readonly ICache<ClusterDto> _clusterCache;
 
-        public ClusterCachedRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, ICache<ClusterDto> clusterCache) 
-            : base(transferer, authorisedUnauthorizedConfigService, serialiser, ClusterUri.ServiceName)
+        public ClusterCachedRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, ICache<ClusterDto> clusterCache) 
+            : base(transferer, authorisedConfigService, serialiser, ClusterUri.ServiceName)
         {
             _clusterCache = clusterCache;
         }

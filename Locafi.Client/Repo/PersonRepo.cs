@@ -17,13 +17,13 @@ namespace Locafi.Client.Repo
 {
     public class PersonRepo : WebRepo, IPersonRepo, IWebRepoErrorHandler
     {
-        public PersonRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, PersonUri.ServiceName)
+        public PersonRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(), configService, serialiser, PersonUri.ServiceName)
         {
         }
 
-        public PersonRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, PersonUri.ServiceName)
+        public PersonRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, PersonUri.ServiceName)
         {
         }
 

@@ -20,23 +20,23 @@ namespace Locafi.Client.Repo
 {
     public abstract class WebRepo: IWebRepoErrorHandler
     {
-        private readonly IHttpTransferConfigService _unauthorizedConfigService;
+        private readonly IHttpTransferConfigService _configService;
         private readonly string _service;
-        private IAuthorisedHttpTransferConfigService _authorisedUnauthorizedConfigService;
+        private IAuthorisedHttpTransferConfigService _authorisedConfigService;
         private readonly IHttpTransferer _transferer;
         private readonly ISerialiserService _serialiser;
 
-        protected WebRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service) 
+        protected WebRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service) 
             : this(transferer, serialiser, service) // this as error handler, authorised base
         {
-            _authorisedUnauthorizedConfigService = authorisedUnauthorizedConfigService;
-            _unauthorizedConfigService = authorisedUnauthorizedConfigService;
+            _authorisedConfigService = authorisedConfigService;
+            _configService = authorisedConfigService;
         }
 
-        protected WebRepo(IHttpTransferer transferer, IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service) 
+        protected WebRepo(IHttpTransferer transferer, IHttpTransferConfigService configService, ISerialiserService serialiser, string service) 
             : this(transferer, serialiser, service) // internal error handler, unauth
         {
-            _unauthorizedConfigService = unauthorizedConfigService;
+            _configService = configService;
         }
 
         private WebRepo(IHttpTransferer transferer, ISerialiserService serialiser, string service) // base ctor
@@ -113,14 +113,14 @@ namespace Locafi.Client.Repo
 
         private async Task<HttpResponseMessage> TryReauth(Func<object, Task<HttpResponseMessage>> resourceGetter)
         {
-            var authRepo = _authorisedUnauthorizedConfigService.AuthenticationRepo;
-            var token = await _authorisedUnauthorizedConfigService.GetTokenGroupAsync();
+            var authRepo = _authorisedConfigService.AuthenticationRepo;
+            var token = await _authorisedConfigService.GetTokenGroupAsync();
             if (authRepo!=null && token!=null)
             {
                 var result = await authRepo.RefreshLogin(token.Refresh);
                 if (result.Success)
                 {
-                    await _authorisedUnauthorizedConfigService.SetTokenGroupAsync(result.TokenGroup);
+                    await _authorisedConfigService.SetTokenGroupAsync(result.TokenGroup);
                     var response = await resourceGetter(null);
                     if (response.StatusCode == HttpStatusCode.Unauthorized) throw new WebRepoUnauthorisedException();
                     return response;
@@ -154,13 +154,13 @@ namespace Locafi.Client.Repo
 
         private async Task<HttpResponseMessage> GetResponse(HttpMethod method, string extra = "", string content = null)
         {
-            var baseUrl = await _unauthorizedConfigService.GetBaseUrlAsync();
+            var baseUrl = await _configService.GetBaseUrlAsync();
             
             var path = GetFullPath(baseUrl, _service, extra);
             TokenGroup token = null;
-            if (_authorisedUnauthorizedConfigService != null)
+            if (_authorisedConfigService != null)
             {
-                token = await _authorisedUnauthorizedConfigService.GetTokenGroupAsync();
+                token = await _authorisedConfigService.GetTokenGroupAsync();
             }
             var response = await _transferer.GetResponse(method, path, content, token?.Token);
             return response;

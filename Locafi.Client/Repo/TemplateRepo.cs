@@ -17,13 +17,13 @@ namespace Locafi.Client.Repo
 {
     public class TemplateRepo : WebRepo, ITemplateRepo, IWebRepoErrorHandler
     {
-        public TemplateRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, TemplateUri.ServiceName)
+        public TemplateRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, TemplateUri.ServiceName)
         {
         }
 
-        public TemplateRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, TemplateUri.ServiceName)
+        public TemplateRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, TemplateUri.ServiceName)
         {
         }
 

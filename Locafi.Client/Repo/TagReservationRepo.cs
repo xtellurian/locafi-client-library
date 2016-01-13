@@ -17,13 +17,13 @@ namespace Locafi.Client.Repo
 {
     public class TagReservationRepo : WebRepo, ITagReservationRepo
     {
-        public TagReservationRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, TagReservationUri.ServiceName)
+        public TagReservationRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+            : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, TagReservationUri.ServiceName)
         {
         }
 
-        public TagReservationRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, TagReservationUri.ServiceName)
+        public TagReservationRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, TagReservationUri.ServiceName)
         {
         }
 

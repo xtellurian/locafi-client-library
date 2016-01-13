@@ -18,6 +18,11 @@ namespace Locafi.Client.Repo
 {
     public class ErrorRepo : WebRepo, IErrorRepo
     {
+        public ErrorRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+            : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, ErrorLogUri.ServiceName)
+        {
+        }
+
         public ErrorRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
             : base(transferer, authorisedUnauthorizedConfigService, serialiser, ErrorLogUri.ServiceName)
         {

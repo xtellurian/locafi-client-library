@@ -18,8 +18,8 @@ namespace Locafi.Client.Repo
 {
     public class PortalRepo : WebRepo, IWebRepoErrorHandler, IPortalRepo
     {
-        public PortalRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(),authorisedUnauthorizedConfigService, serialiser, PortalUri.ServiceName)
+        public PortalRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(),authorisedConfigService, serialiser, PortalUri.ServiceName)
         {
         }
 

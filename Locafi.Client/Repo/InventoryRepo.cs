@@ -19,13 +19,13 @@ namespace Locafi.Client.Repo
 {
     public class InventoryRepo : WebRepo, IInventoryRepo
     {
-        public InventoryRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, InventoryUri.ServiceName)
+        public InventoryRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, InventoryUri.ServiceName)
         {
         }
 
-        public InventoryRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, InventoryUri.ServiceName)
+        public InventoryRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, InventoryUri.ServiceName)
         {
         }
 

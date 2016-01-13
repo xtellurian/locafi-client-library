@@ -23,8 +23,8 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public SkuRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, SkuUri.ServiceName)
+        public SkuRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, SkuUri.ServiceName)
         {
         }
 

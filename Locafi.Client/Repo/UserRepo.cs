@@ -16,13 +16,13 @@ namespace Locafi.Client.Repo
 {
     public class UserRepo : WebRepo, IUserRepo
     {
-        public UserRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, UserUri.ServiceName)
+        public UserRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(), configService, serialiser, UserUri.ServiceName)
         {
         }
 
-        public UserRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, UserUri.ServiceName)
+        public UserRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, UserUri.ServiceName)
         {
         }
 

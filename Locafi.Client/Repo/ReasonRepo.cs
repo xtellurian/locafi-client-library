@@ -17,13 +17,13 @@ namespace Locafi.Client.Repo
 {
     public class ReasonRepo : WebRepo, IReasonRepo, IWebRepoErrorHandler
     {
-        public ReasonRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(), authorisedUnauthorizedConfigService, serialiser, ReasonUri.ServiceName)
+        public ReasonRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, ReasonUri.ServiceName)
         {
         }
 
-        public ReasonRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, ReasonUri.ServiceName)
+        public ReasonRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, ReasonUri.ServiceName)
         {
         }
 

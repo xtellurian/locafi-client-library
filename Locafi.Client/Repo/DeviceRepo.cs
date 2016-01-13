@@ -18,8 +18,8 @@ namespace Locafi.Client.Repo
 {
     public class DeviceRepo : WebRepo, IWebRepoErrorHandler, IDeviceRepo
     {
-        public DeviceRepo(IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(),authorisedUnauthorizedConfigService, serialiser, DeviceUri.ServiceName)
+        public DeviceRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(),authorisedConfigService, serialiser, DeviceUri.ServiceName)
         {
         }
 

@@ -19,13 +19,13 @@ namespace Locafi.Client.Repo
 {
     public class OrderRepo : WebRepo, IOrderRepo
     {
-        public OrderRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser)
-            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, OrderUri.ServiceName)
+        public OrderRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser)
+            : base(new SimpleHttpTransferer(), configService, serialiser, OrderUri.ServiceName)
         {
         }
 
-        public OrderRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, OrderUri.ServiceName)
+        public OrderRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, OrderUri.ServiceName)
         {
         }
 

@@ -18,13 +18,13 @@ namespace Locafi.Client.Repo
 {
     public class SnapshotRepo : WebRepo, ISnapshotRepo, IWebRepoErrorHandler
     {
-        public SnapshotRepo(IAuthorisedHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(), unauthorizedConfigService, serialiser, SnapshotUri.ServiceName)
+        public SnapshotRepo(IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(), configService, serialiser, SnapshotUri.ServiceName)
         {
         }
 
-        public SnapshotRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, SnapshotUri.ServiceName)
+        public SnapshotRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, SnapshotUri.ServiceName)
         {
         }
 

@@ -15,13 +15,13 @@ namespace Locafi.Client.Repo
 {
     public abstract class CachedWebRepo : WebRepo
     {
-        protected CachedWebRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser, string service)
-            : base(transferer, authorisedUnauthorizedConfigService, serialiser, service)
+        protected CachedWebRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service)
+            : base(transferer, authorisedConfigService, serialiser, service)
         {
         }
 
-        protected CachedWebRepo(IHttpTransferer transferer, IHttpTransferConfigService unauthorizedConfigService, ISerialiserService serialiser, string service)
-            : base(transferer, unauthorizedConfigService, serialiser, service)
+        protected CachedWebRepo(IHttpTransferer transferer, IHttpTransferConfigService configService, ISerialiserService serialiser, string service)
+            : base(transferer, configService, serialiser, service)
         {
         }
 

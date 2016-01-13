@@ -19,14 +19,14 @@ namespace Locafi.Client.Repo
     {
         private readonly ISerialiserService _serialiser;
 
-        public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedUnauthorizedConfig, ISerialiserService serialiser) 
-            : base(new SimpleHttpTransferer(), transferAuthorisedUnauthorizedConfig, serialiser, ItemUri.ServiceName)
+        public ItemRepo(IAuthorisedHttpTransferConfigService transferAuthorisedConfig, ISerialiserService serialiser) 
+            : base(new SimpleHttpTransferer(), transferAuthorisedConfig, serialiser, ItemUri.ServiceName)
         {
             _serialiser = serialiser;
         }
 
-        public ItemRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedUnauthorizedConfigService, ISerialiserService serialiser)
-           : base(transferer, authorisedUnauthorizedConfigService, serialiser, ItemUri.ServiceName)
+        public ItemRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser)
+           : base(transferer, authorisedConfigService, serialiser, ItemUri.ServiceName)
         {
         }
         public async Task<int> GetItemCount(IRestQuery<ItemSummaryDto> query)
