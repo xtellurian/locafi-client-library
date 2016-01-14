@@ -41,7 +41,7 @@ namespace Locafi.Client.Repo
                 }
                 else
                 {
-                    var cacheEntity = new CachedEntity<TData>(data.Id.ToString(), data, extra);
+                    var cacheEntity = new CachedEntity<TData>(data.Id, data, extra);
                     cache.Push(cacheEntity);
                     return new WebRepoCacheResult<T>(null, false, true);
                 }
