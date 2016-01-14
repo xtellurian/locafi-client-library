@@ -26,6 +26,12 @@ namespace Locafi.Client.Repo
             _clusterCache = clusterCache;
         }
 
+        public ClusterCachedRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, ICache<ClusterDto> clusterCache)
+            : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, ClusterUri.ServiceName)
+        {
+            _clusterCache = clusterCache;
+        }
+
         public async Task<ClusterResponseDto> ProcessCluster(ClusterDto cluster)
         {
             var path = ClusterUri.ProcessCluster;
