@@ -21,7 +21,7 @@ namespace Locafi.Client.UnitTests.Mocks
             Cache.Add(entity);
         }
 
-        public IEnumerable<ICachedEntity<ClusterDto>> CopyCache()
+        public IList<ICachedEntity<ClusterDto>> CopyCache(int? maxCopy = null)
         {
             return new List<ICachedEntity<ClusterDto>>(Cache);
         }

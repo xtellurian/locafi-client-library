@@ -41,24 +41,22 @@ namespace Locafi.Client.Repo
                 }
                 else
                 {
-                    var cacheEntity = new CachedEntity<TData>(data.Id.ToString(), data, extra);
+                    var cacheEntity = new CachedEntity<TData>(data.Id, data, extra);
                     cache.Push(cacheEntity);
                     return new WebRepoCacheResult<T>(null, false, true);
                 }
             }
         }
 
-        public async Task<IList<ICachedResponse<T>>> PostCache<T, TData>(ICache<TData> cache) where T : class, new() where TData : ICacheable, new()
+        public async Task<IList<ICachedResponse<T>>> PostCache<T, TData>(ICache<TData> cache, int? amount = null) where T : class, new() where TData : ICacheable, new()
         {
-            var list = new List<ICachedResponse<T>>();
-            foreach (var cachedEntity in cache.CopyCache())
+            var list = new List<ICachedResponse<T>>();            
+            foreach (var cachedEntity in cache.CopyCache(amount))
             {
-                var result = await this.Post<T, TData>(cachedEntity.Entity, cachedEntity.Extra);
-                list.Add(result);
-                if (result.Uploaded)
-                {
-                    cache.Remove(cachedEntity.Id);
-                }
+                var result = await base.Post<T>(cachedEntity.Entity, cachedEntity.Extra);
+                if (result == null) break;
+                list.Add(new WebRepoCacheResult<T>(result, true, false));
+                cache.Remove(cachedEntity.Id);
             }
             return list;
         }

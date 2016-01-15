@@ -6,6 +6,6 @@ namespace Locafi.Client.Contract.Repo
     public interface IClusterRepo
     {
         Task<ClusterResponseDto> ProcessCluster(ClusterDto cluster);
-        Task FlushCache();
+        Task FlushCache(int? amount = null);
     }
 }
