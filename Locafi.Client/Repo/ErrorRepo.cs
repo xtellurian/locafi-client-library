@@ -13,6 +13,7 @@ using Locafi.Client.Model.Dto.ErrorLogs;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using Microsoft.OData.Core.UriParser.Semantic;
 
 namespace Locafi.Client.Repo
 {
@@ -43,12 +44,26 @@ namespace Locafi.Client.Repo
 
         private AddErrorLogDto CreateDtoFromException(Exception exception, ErrorLevel level)
         {
+            var details = new StringBuilder();
+            var webRepoEx = exception as WebRepoException;
+            if (webRepoEx != null)
+            {
+                details.Append("Web Repo Messages: ");
+                var count = 1;
+                foreach (var m in webRepoEx.ServerMessages)
+                {
+                    details.Append(count++).Append("- ").Append(m).Append("    ");
+                }
+            }
+            details.Append("StackTrace:  ").Append(exception.StackTrace).Append("  **END STACKTRACE**  ");
+            if (exception.InnerException != null)
+                details.Append("InnerException:").Append(exception.InnerException.Message);
             var dto = new AddErrorLogDto()
             {
                 ErrorLevel = level,
                 TimeStamp = DateTime.Now,
                 ErrorMessage = exception.Message,
-                ErrorDetails = $"StackTrace : \n  {exception.StackTrace} \n  **END STACKTRACE**  \n  InnerException: \n {exception.InnerException?.Message ?? "null"} \n **END INNER EXCEPTION"
+                ErrorDetails = details.ToString()
             };
             return dto;
         }
