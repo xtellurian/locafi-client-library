@@ -53,13 +53,10 @@ namespace Locafi.Client.Repo
             var list = new List<ICachedResponse<T>>();            
             foreach (var cachedEntity in cache.CopyCache(amount))
             {
-                var result = await this.Post<T, TData>(cachedEntity.Entity, cachedEntity.Extra);
-                if (result.Error != null) break;
-                list.Add(result);
-                if (result.Uploaded)
-                {
-                    cache.Remove(cachedEntity.Id);
-                }
+                var result = await base.Post<T>(cachedEntity.Entity, cachedEntity.Extra);
+                if (result == null) break;
+                list.Add(new WebRepoCacheResult<T>(result, true, false));
+                cache.Remove(cachedEntity.Id);
             }
             return list;
         }
