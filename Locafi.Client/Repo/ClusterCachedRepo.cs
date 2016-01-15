@@ -39,9 +39,9 @@ namespace Locafi.Client.Repo
             return result.Data;
         }
 
-        public async Task FlushCache()
+        public async Task FlushCache(int? amount = null)
         {
-            await base.PostCache<ClusterResponseDto, ClusterDto>(_clusterCache);
+            await base.PostCache<ClusterResponseDto, ClusterDto>(_clusterCache, amount);
         }
 
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)

@@ -48,12 +48,13 @@ namespace Locafi.Client.Repo
             }
         }
 
-        public async Task<IList<ICachedResponse<T>>> PostCache<T, TData>(ICache<TData> cache) where T : class, new() where TData : ICacheable, new()
+        public async Task<IList<ICachedResponse<T>>> PostCache<T, TData>(ICache<TData> cache, int? amount = null) where T : class, new() where TData : ICacheable, new()
         {
-            var list = new List<ICachedResponse<T>>();
-            foreach (var cachedEntity in cache.CopyCache())
+            var list = new List<ICachedResponse<T>>();            
+            foreach (var cachedEntity in cache.CopyCache(amount))
             {
                 var result = await this.Post<T, TData>(cachedEntity.Entity, cachedEntity.Extra);
+                if (result.Error != null) break;
                 list.Add(result);
                 if (result.Uploaded)
                 {
