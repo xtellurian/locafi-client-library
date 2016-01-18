@@ -34,14 +34,14 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new TagReservationRepoException(serverMessages, statusCode);
+            throw new TagReservationRepoException(serverMessages, statusCode, url, payload);
         }
 
-        public override Task Handle(HttpResponseMessage response)
+        public override async Task Handle(HttpResponseMessage response, string url, string payload)
         {
-            throw new TagReservationRepoException(null,response.StatusCode);
+            throw new TagReservationRepoException($"{url} -- {payload} -- " + await response.Content.ReadAsStringAsync());
         }
     }
 }

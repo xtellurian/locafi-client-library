@@ -81,7 +81,7 @@
     <Compile Include="Exceptions\ErrorRepoException.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
     <Compile Include="Exceptions\ItemRepoException.cs" />
-    <Compile Include="Exceptions\OrderException.cs" />
+    <Compile Include="Exceptions\OrderRepoException.cs" />
     <Compile Include="Exceptions\PersonException.cs" />
     <Compile Include="Exceptions\PlaceRepoException.cs" />
     <Compile Include="Exceptions\PortalRepoException.cs" />

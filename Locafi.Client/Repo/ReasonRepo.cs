@@ -54,14 +54,14 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public override async Task Handle(HttpResponseMessage responseMessage)
+        public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
-            throw new ReasonRepoException(await responseMessage.Content.ReadAsStringAsync());
+            throw new ReasonRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new ReasonRepoException(serverMessages, statusCode);
+            throw new ReasonRepoException(serverMessages, statusCode, url, payload);
         }
     }
 }

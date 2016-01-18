@@ -137,14 +137,14 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public override async Task Handle(HttpResponseMessage responseMessage)
+        public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
-            throw new OrderException(await responseMessage.Content.ReadAsStringAsync());
+            throw new OrderRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new OrderException(serverMessages, statusCode);
+            throw new OrderRepoException(serverMessages, statusCode, url, payload);
         }
     }
 }

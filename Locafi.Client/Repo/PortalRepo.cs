@@ -105,14 +105,14 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new PortalRepoException(serverMessages, statusCode);
+            throw new PortalRepoException(serverMessages, statusCode, url, payload);
         }
 
-        public override async Task Handle(HttpResponseMessage response)
+        public override async Task Handle(HttpResponseMessage response, string url, string payload)
         {
-            throw new PortalRepoException(await response.Content.ReadAsStringAsync());
+            throw new PortalRepoException($"{url} -- {payload} -- " + await response.Content.ReadAsStringAsync());
         }
     }
 }

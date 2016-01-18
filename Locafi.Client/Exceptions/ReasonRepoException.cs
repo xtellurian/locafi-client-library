@@ -10,8 +10,8 @@ namespace Locafi.Client.Exceptions
 {
     public class ReasonRepoException : WebRepoException
     {
-        public ReasonRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) 
-            : base(serverMessages, statusCode)
+        public ReasonRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload) 
+            : base(serverMessages, statusCode, url, payload)
         {
         }
 

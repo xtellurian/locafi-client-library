@@ -113,14 +113,14 @@ namespace Locafi.Client.Repo
             var result = await Get<List<SkuGroupSummaryDto>>(path);
             return result;
         }
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new SkuGroupRepoException(serverMessages, statusCode);
+            throw new SkuGroupRepoException(serverMessages, statusCode, url, payload);
         }
 
-        public override async Task Handle(HttpResponseMessage response)
+        public override async Task Handle(HttpResponseMessage response, string url, string payload)
         {
-            throw new SkuGroupRepoException(await response.Content.ReadAsStringAsync());
+            throw new SkuGroupRepoException($"{url} -- {payload} -- " + await response.Content.ReadAsStringAsync());
         }
     }
 }

@@ -44,12 +44,12 @@ namespace Locafi.Client.Repo
             await base.PostCache<ClusterResponseDto, ClusterDto>(_clusterCache, amount);
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
             throw new NotImplementedException();
         }
 
-        public override Task Handle(HttpResponseMessage response)
+        public override Task Handle(HttpResponseMessage response, string url, string payload)
         {
             throw new NotImplementedException();
         }

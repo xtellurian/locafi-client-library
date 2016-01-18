@@ -54,6 +54,10 @@ namespace Locafi.Client.Repo
                 {
                     details.Append(count++).Append("- ").Append(m).Append("    ");
                 }
+                details.Append("Resource: ")
+                    .Append(webRepoEx.Url)
+                    .Append(" ** Payload: ")
+                    .AppendLine(webRepoEx.Payload);
             }
             details.Append("StackTrace:  ").Append(exception.StackTrace).Append("  **END STACKTRACE**  ");
             if (exception.InnerException != null)
@@ -69,14 +73,14 @@ namespace Locafi.Client.Repo
         }
 
 
-        public override async Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override async Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new ErrorRepoException(serverMessages, statusCode);
+            throw new ErrorRepoException(serverMessages, statusCode, url, payload);
         }
 
-        public override async Task Handle(HttpResponseMessage response)
+        public override async Task Handle(HttpResponseMessage response, string url, string payload)
         {
-            throw new ErrorRepoException(await response.Content.ReadAsStringAsync());
+            throw new ErrorRepoException($"{url} -- {payload} -- " + await response.Content.ReadAsStringAsync());
         }
     }
 }

@@ -84,14 +84,14 @@ namespace Locafi.Client.Authentication
             return result;
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new AuthenticationRepoException(serverMessages, statusCode);
+            throw new AuthenticationRepoException(serverMessages, statusCode, url, payload);
         }
 
-        public override async Task Handle(HttpResponseMessage response)
+        public override async Task Handle(HttpResponseMessage response, string url, string payload)
         {
-            throw new AuthenticationRepoException(await response.Content.ReadAsStringAsync());
+            throw new AuthenticationRepoException($"{url} -- {payload}  -- " + await response.Content.ReadAsStringAsync());
         }
     }
 }

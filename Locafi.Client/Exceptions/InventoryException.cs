@@ -17,8 +17,8 @@ namespace Locafi.Client.Exceptions
             
         }
 
-        public InventoryException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) 
-            :base(serverMessages, statusCode)
+        public InventoryException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload) 
+            :base(serverMessages, statusCode, url, payload)
         {
         }
     }

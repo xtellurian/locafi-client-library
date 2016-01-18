@@ -11,8 +11,8 @@ namespace Locafi.Client.Exceptions
     public class SkuRepoException : WebRepoException
 
     {
-        public SkuRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) 
-            : base(serverMessages, statusCode)
+        public SkuRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload) 
+            : base(serverMessages, statusCode, url, payload)
         {
 
         }

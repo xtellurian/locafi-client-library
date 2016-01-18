@@ -57,7 +57,7 @@ namespace Locafi.Client.Repo
             // if it didn't work
             if (!response.IsSuccessStatusCode)
             {
-                await HandlePrivate(response);
+                await HandlePrivate(response, "GET", extra, "");
             }
             // get payload data
             var data = await response.Content.ReadAsStringAsync();
@@ -65,14 +65,14 @@ namespace Locafi.Client.Repo
             if (typeof (T).GetTypeInfo().IsValueType)
             {
                 T result = (T)Convert.ChangeType(data, typeof (T));
-                if (result == null) await HandlePrivate(response);
+                if (result == null) await HandlePrivate(response, "GET", extra, "");
                 return result;
             }
             // we are getting a reference type
             else
             {
                 var result = _serialiser.Deserialise<T>(data);
-                if (result == null) await HandlePrivate(response);
+                if (result == null) await HandlePrivate(response, "GET", extra, "");
                 return result;
             }
         }
@@ -88,7 +88,7 @@ namespace Locafi.Client.Repo
             }
 
             var result = response.IsSuccessStatusCode ? _serialiser.Deserialise<T>(await response.Content.ReadAsStringAsync()) : null;
-            if(result==null) await HandlePrivate(response);
+            if(result==null) await HandlePrivate(response, "POST",  extra, serialisedData);
             return result;
         }
 
@@ -107,7 +107,7 @@ namespace Locafi.Client.Repo
                 var result = _serialiser.Deserialise<bool>(await response.Content.ReadAsStringAsync());
                 return result;
             }
-            else await HandlePrivate(response);
+            else await HandlePrivate(response, "DELETE", extra, ""  );
             return false; // probably is never called, but is required for compilation
         }
 
@@ -136,17 +136,17 @@ namespace Locafi.Client.Repo
             }
         }
 
-        private async Task HandlePrivate(HttpResponseMessage response)
+        private async Task HandlePrivate(HttpResponseMessage response, string verb, string extra, string payload)
         {
             try
             {
                 var errors =
                     _serialiser.Deserialise<List<CustomResponseMessage>>(await response.Content.ReadAsStringAsync());
-                await this.Handle(errors, response.StatusCode);
+                await this.Handle(errors, response.StatusCode, extra,payload);
             }
             catch(JsonException)
             {
-                await Handle(response);
+                await Handle(response, $"{verb} + {extra}", payload);
             }
         }
 
@@ -179,9 +179,9 @@ namespace Locafi.Client.Repo
             return result.ToString();
         }
 
-        public abstract Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode);
+        public abstract Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload);
 
-        public abstract Task Handle(HttpResponseMessage response);
+        public abstract Task Handle(HttpResponseMessage response, string url, string payload);
 
 
     }

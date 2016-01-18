@@ -96,14 +96,14 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async override Task Handle(HttpResponseMessage responseMessage)
+        public async override Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
-            throw new ItemRepoException(await responseMessage.Content.ReadAsStringAsync());
+            throw new ItemRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode)
+        public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
-            throw new ItemRepoException(serverMessages, statusCode);
+            throw new ItemRepoException(serverMessages, statusCode, url, payload);
         }
     }
 }

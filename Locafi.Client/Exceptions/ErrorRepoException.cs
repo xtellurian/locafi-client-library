@@ -14,7 +14,8 @@ namespace Locafi.Client.Exceptions
         {
         }
 
-        public ErrorRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) : base(serverMessages, statusCode)
+        public ErrorRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload) 
+            : base(serverMessages, statusCode, url, payload)
         {
         }
     }

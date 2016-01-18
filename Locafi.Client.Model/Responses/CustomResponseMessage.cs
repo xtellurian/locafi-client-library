@@ -14,5 +14,9 @@ namespace Locafi.Client.Model.Responses
 
         public string Field { get; set; }
 
+        public override string ToString()
+        {
+            return $"Field: {Field} ++++ {Message}\n";
+        }
     }
 }

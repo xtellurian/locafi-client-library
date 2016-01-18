@@ -8,15 +8,21 @@ using Locafi.Client.Model.Responses;
 
 namespace Locafi.Client.Exceptions
 {
-    public class TagReservationRepoException : WebRepoException
+    public class OrderRepoException : WebRepoException
     {
-        public TagReservationRepoException(string message) : base(message)
+        public OrderRepoException()
         {
         }
 
-        public TagReservationRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
+        public OrderRepoException(string message) : base(message)
+        {
+        }
+
+        public OrderRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload) 
             : base(serverMessages, statusCode, url, payload)
         {
         }
+
+
     }
 }

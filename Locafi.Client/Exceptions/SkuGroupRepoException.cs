@@ -10,7 +10,8 @@ namespace Locafi.Client.Exceptions
 {
     public class SkuGroupRepoException : WebRepoException
     {
-        public SkuGroupRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode):base(serverMessages,statusCode)
+        public SkuGroupRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
+            :base(serverMessages,statusCode, url, payload)
         {
         }
 

@@ -11,8 +11,8 @@ namespace Locafi.Client.Exceptions
     public class PlaceRepoException : WebRepoException
     {
 
-        public PlaceRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode) 
-            : base(serverMessages, statusCode)
+        public PlaceRepoException(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload) 
+            : base(serverMessages, statusCode, url, payload)
         {
         }
 

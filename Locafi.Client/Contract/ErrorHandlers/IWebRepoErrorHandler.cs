@@ -12,7 +12,7 @@ namespace Locafi.Client.Contract.ErrorHandlers
 {
     public interface IWebRepoErrorHandler
     {
-        Task Handle (HttpResponseMessage responseMessage);
-        Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode);
+        Task Handle (HttpResponseMessage responseMessage, string url, string payload);
+        Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload);
     }
 }
