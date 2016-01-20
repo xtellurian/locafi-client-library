@@ -12,9 +12,16 @@ namespace Locafi.Client.UnitTests.Mocks
 {
     internal class MockHttpTransferrer : IHttpTransferer
     {
+        private readonly bool _justReturnOk;
+
+        public MockHttpTransferrer(bool justReturnOk = false)
+        {
+            _justReturnOk = justReturnOk;
+        }
+
         private readonly IDictionary<string, IList<string>> _calls = new Dictionary<string, IList<string>>();
         public IDictionary<string, IList<string>> HttpCalls =>  _calls; 
-        public async Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null)
+        public async Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null, IDictionary<string, string> headers = null)
         {
             AddToCalls(url, content);
             if (url.Contains(ErrorLogUri.ServiceName))
@@ -24,6 +31,10 @@ namespace Locafi.Client.UnitTests.Mocks
                 {
                     Content = new StringContent(content)
                 };
+            }
+            else if(_justReturnOk)
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK);
             }
             throw new NotImplementedException("This is a mock class");
         }

@@ -73,6 +73,7 @@
     <Compile Include="Tests\Anthony\DeviceRepoTests.cs" />
     <Compile Include="Tests\Anthony\PortalRepoTests.cs" />
     <Compile Include="Tests\Rian\AuthenticationTests.cs" />
+    <Compile Include="Tests\Rian\Ble\BleRepoTests.cs" />
     <Compile Include="Tests\Rian\Cache\CachedClusterRepoTest.cs" />
     <Compile Include="Tests\Rian\Orders\OrderDispatchTests.cs" />
     <Compile Include="Tests\Rian\Orders\OrderProcessorAllocateTests.cs" />

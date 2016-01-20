@@ -7,5 +7,6 @@ namespace Locafi.Client.Contract.Crypto
     public interface ISha256HashService
     {
         string GenerateHash(string secret, string data);
+        string GenerateBluSignature(string appId, string requestHttpMethod, string requestUri, string sharedKey);
     }
 }

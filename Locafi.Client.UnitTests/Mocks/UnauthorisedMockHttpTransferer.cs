@@ -11,7 +11,9 @@ namespace Locafi.Client.UnitTests.Mocks
 {
     class UnauthorisedMockHttpTransferer : IHttpTransferer
     {
-        public async Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null)
+
+        public async Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null,
+            IDictionary<string, string> headers = null)
         {
             return new HttpResponseMessage(HttpStatusCode.Unauthorized);
         }

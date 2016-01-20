@@ -102,6 +102,7 @@
     <Compile Include="Processors\Orders\ProcessTagResult.cs" />
     <Compile Include="Contract\Repo\IDeviceRepo.cs" />
     <Compile Include="LocafiApiLocator.cs" />
+    <Compile Include="Repo\BleDetectionRepo.cs" />
     <Compile Include="Repo\CachedWebRepo.cs" />
     <Compile Include="Repo\Cache\CachedEntity.cs" />
     <Compile Include="Repo\Cache\WebRepoCacheResult.cs" />

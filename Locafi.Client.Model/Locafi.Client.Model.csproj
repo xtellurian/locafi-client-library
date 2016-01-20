@@ -42,6 +42,10 @@
   <ItemGroup>
     <Compile Include="Conversion\ExtendedPropertyConversions.cs" />
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
+    <Compile Include="Dto\Ble\BleDetectionBase.cs" />
+    <Compile Include="Dto\Ble\BleDetectionCollection.cs" />
+    <Compile Include="Dto\Ble\IBleDetection.cs" />
+    <Compile Include="Dto\Ble\SensorBleDetection.cs" />
     <Compile Include="Dto\Devices\AddIpConfigDto.cs" />
     <Compile Include="Dto\Devices\AddPeripheralDeviceActuatorDto.cs" />
     <Compile Include="Dto\Devices\AddPeripheralDeviceDto.cs" />

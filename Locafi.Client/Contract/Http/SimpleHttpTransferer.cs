@@ -10,7 +10,7 @@ namespace Locafi.Client.Contract.Http
 {
     public class SimpleHttpTransferer : IHttpTransferer
     {
-        public async Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null)
+        public async Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null, IDictionary<string, string> headers = null)
         {
             var message = new HttpRequestMessage(method, url);
             if (content != null) message.Content = new StringContent(content, Encoding.UTF8, "application/json");
@@ -20,7 +20,14 @@ namespace Locafi.Client.Contract.Http
             {
                 message.Headers.Add("Authorization", "Token " + authToken);
             }
-
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    message.Headers.Add(header.Key, header.Value);
+                }
+            }
+            
             var client = new HttpClient();
             Debug.WriteLine($"{method} request at {url}");
             if (content != null) Debug.WriteLine($"Payload:\n {content}");

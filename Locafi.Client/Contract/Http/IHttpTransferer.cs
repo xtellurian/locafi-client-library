@@ -9,6 +9,6 @@ namespace Locafi.Client.Contract.Http
 {
     public interface IHttpTransferer
     {
-        Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null);
+        Task<HttpResponseMessage> GetResponse(HttpMethod method, string url, string content = null, string authToken = null, IDictionary<string, string> headers = null);
     }
 }
