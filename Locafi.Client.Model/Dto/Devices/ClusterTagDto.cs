@@ -19,5 +19,7 @@ namespace Locafi.Client.Model.Dto.Devices
         public int ReadCount { get; set; }  // number of times the tag was read during this inventory/allocation/receive etc
 
         public double AverageRssi { get; set; } // average RSSI of the tag during this inventory/allocation/receive etc
+
+        public DateTime ReadTime { get; set; } //time of first read
     }
 }
