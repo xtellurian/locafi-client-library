@@ -111,6 +111,7 @@
     <Compile Include="Repo\ErrorRepo.cs" />
     <Compile Include="Contract\Repo\IErrorRepo.cs" />
     <Compile Include="Contract\Repo\IClusterRepo.cs" />
+    <Compile Include="Contract\Repo\IBleDetectionRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
     <Compile Include="Repo\ItemRepo.cs" />

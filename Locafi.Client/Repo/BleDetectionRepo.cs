@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Crypto;
 using Locafi.Client.Contract.Http;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Crypto;
 using Locafi.Client.Model.Dto.Ble;
 using Newtonsoft.Json;
 
 namespace Locafi.Client.Repo
 {
-    public class BleDetectionRepo
+    public class BleDetectionRepo : IBleDetectionRepo
     {
         private const string RelativeUrl = @"/api/Input";
         public BleDetectionRepo(IHttpTransferer transferer, ISha256HashService hashService, string baseUrl, string bluAppId, string privateKey)

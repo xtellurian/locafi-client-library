@@ -34,7 +34,7 @@ namespace Locafi.Client.Crypto
         public string GenerateBluSignature(string appId, string requestHttpMethod, string requestUri, string sharedKey)
         {
             string calculated;
-            string data = $"{appId}{requestHttpMethod}{requestUri}";
+            string data = $"{appId}{requestHttpMethod}{requestUri.ToLower()}";
 
             var secretKeyBytes = Convert.FromBase64String(sharedKey);
 
