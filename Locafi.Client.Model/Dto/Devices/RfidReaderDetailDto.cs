@@ -12,9 +12,7 @@ namespace Locafi.Client.Model.Dto.Devices
 {
     public class RfidReaderDetailDto : RfidReaderSummaryDto
     {
-        public PeripheralDeviceDetailDto PeripherialDevice { get; set; }
-
-        public IpConfigDetailDto IpConfig { get; set; }
+        public PeripheralDeviceDetailDto PeripherialDevice { get; set; }        
 
         [JsonConverter(typeof(StringEnumConverter))]
         public ReaderMode ReaderMode { get; set; }  // ReaderMode Enum
