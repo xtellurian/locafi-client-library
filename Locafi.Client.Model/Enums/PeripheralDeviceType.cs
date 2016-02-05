@@ -10,6 +10,7 @@ namespace Locafi.Client.Model.Enums
     {
         SpeedwayR220 = 1,
         SpeedwayR420 = 2,
-        Barionet50 = 3
+        Barionet50 = 3,
+        ZebraMorotola = 4
     }
 }
