@@ -68,6 +68,8 @@
     <Compile Include="Dto\ErrorLogs\AddErrorLogDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
+    <Compile Include="Dto\Items\SearchItemParameter.cs" />
+    <Compile Include="Dto\Items\SearchItemQueryDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Enums\ReaderMode.cs" />
     <Compile Include="Enums\ReaderType.cs" />
     <Compile Include="Enums\ReasonFor.cs" />
+    <Compile Include="Enums\SearchItemQueryType.cs" />
     <Compile Include="Enums\SearchMode.cs" />
     <Compile Include="Enums\SnapshotType.cs" />
     <Compile Include="Enums\TagFor.cs" />

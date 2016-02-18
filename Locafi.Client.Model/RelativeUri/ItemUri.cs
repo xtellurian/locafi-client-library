@@ -45,6 +45,11 @@ namespace Locafi.Client.Model.RelativeUri
             return $"{GetItem(updateItemDto.ItemId)}/UpdateItem";
         }
 
+        public static string SearchItemUri()
+        {
+            return $"SearchItems";
+        }
+
         public static string DeleteItem(Guid id)
         {
             return $"DeleteItem/{id}";

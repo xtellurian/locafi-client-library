@@ -96,6 +96,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<IList<ItemSummaryDto>> SearchItems(SearchItemQueryDto searchItemQueryDto)
+        {
+            var path = ItemUri.SearchItemUri();
+            var result = await Post<List<ItemSummaryDto>>(searchItemQueryDto, path);
+            return result;
+        }
+
         public async override Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
             throw new ItemRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());

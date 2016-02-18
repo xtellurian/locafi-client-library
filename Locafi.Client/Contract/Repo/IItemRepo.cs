@@ -25,5 +25,6 @@ namespace Locafi.Client.Contract.Repo
         [Obsolete]
         Task<IList<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query);
         Task<IQueryResult<ItemSummaryDto>> QueryItemsAsync(IRestQuery<ItemSummaryDto> query);
+        Task<IList<ItemSummaryDto>> SearchItems(SearchItemQueryDto searchItemQueryDto);
     }
 }

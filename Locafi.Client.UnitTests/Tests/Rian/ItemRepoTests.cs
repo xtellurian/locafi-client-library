@@ -11,6 +11,7 @@ using Locafi.Client.Model.Dto.Users;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Locafi.Client.Model.Enums;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -170,6 +171,32 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             await _itemRepo.DeleteItem(id);
             var sameItem = await _itemRepo.GetItemDetail(id);
             Assert.IsNull(sameItem);
+        }
+
+        [TestMethod]
+        public async Task Item_Search()
+        {
+            // need to update test to actually add a known item first
+
+            // build search query
+            var searchQuery = new SearchItemQueryDto() { QueryType = SearchItemQueryType.And };
+            searchQuery.QueryParameters.Add(new SearchItemParameter() {
+                PropertyName = "*",
+                DataType = TemplateDataTypes.String,
+                Value = "test"
+            });
+            searchQuery.QueryParameters.Add(new SearchItemParameter()
+            {
+                PropertyName = "TagNumber",
+                DataType = TemplateDataTypes.String,
+                Value = "21"
+            });
+
+            // search for item
+            var result = await _itemRepo.SearchItems(searchQuery);
+            Assert.IsNotNull(result, "result != null");
+            //var count = await _itemRepo.GetItemCount(query);
+            //Assert.IsTrue(count > 0);
         }
 
         #region PrivateMethods
