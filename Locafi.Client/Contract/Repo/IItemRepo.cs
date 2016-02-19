@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Search;
+using Locafi.Client.Model.Dto;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -25,6 +27,7 @@ namespace Locafi.Client.Contract.Repo
         [Obsolete]
         Task<IList<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query);
         Task<IQueryResult<ItemSummaryDto>> QueryItemsAsync(IRestQuery<ItemSummaryDto> query);
-        Task<IList<ItemSummaryDto>> SearchItems(SearchItemQueryDto searchItemQueryDto);
+        Task<IList<ItemSummaryDto>> SearchItems(SearchCollectionDto searchItemQueryDto);
+        Task<ISearchResult<ItemSummaryDto>> SearchItems(IRestSearch<ItemSummaryDto> search);
     }
 }

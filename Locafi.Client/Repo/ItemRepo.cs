@@ -12,6 +12,8 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using Locafi.Client.Model.Dto;
+using Locafi.Client.Model.Search;
 
 namespace Locafi.Client.Repo
 {
@@ -96,7 +98,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<IList<ItemSummaryDto>> SearchItems(SearchItemQueryDto searchItemQueryDto)
+        public async Task<ISearchResult<ItemSummaryDto>> SearchItems(IRestSearch<ItemSummaryDto> search)
+        {
+            var result = await SearchItems(search.AsRestSearch());
+            return result.AsSearchResult(search);
+        }
+
+        public async Task<IList<ItemSummaryDto>> SearchItems(SearchCollectionDto searchItemQueryDto)
         {
             var path = ItemUri.SearchItemUri();
             var result = await Post<List<ItemSummaryDto>>(searchItemQueryDto, path);

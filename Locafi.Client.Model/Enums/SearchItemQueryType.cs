@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Enums
 {
-    public enum SearchItemQueryType
+    public enum SearchCollectionType
     {
         And = 0,
         Or

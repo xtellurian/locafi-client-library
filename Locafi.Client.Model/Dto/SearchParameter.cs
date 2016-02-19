@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.Items
+namespace Locafi.Client.Model.Dto
 {
-    public class SearchItemParameter
+    public class SearchParameter
     {
         public string PropertyName { get; set; }
 

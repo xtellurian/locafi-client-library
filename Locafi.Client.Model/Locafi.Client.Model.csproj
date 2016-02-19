@@ -68,8 +68,8 @@
     <Compile Include="Dto\ErrorLogs\AddErrorLogDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
-    <Compile Include="Dto\Items\SearchItemParameter.cs" />
-    <Compile Include="Dto\Items\SearchItemQueryDto.cs" />
+    <Compile Include="Dto\SearchParameter.cs" />
+    <Compile Include="Dto\SearchCollectionDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
     <Compile Include="Dto\Orders\AddOrderSkuLineItemDto.cs" />
@@ -203,6 +203,12 @@
     <Compile Include="Responses\CustomResponseMessage.cs" />
     <Compile Include="Responses\ResponseCodes.cs" />
     <Compile Include="RFID\IRfidTag.cs" />
+    <Compile Include="Search\IRestSearch.cs" />
+    <Compile Include="Search\ISearchResult.cs" />
+    <Compile Include="Search\ItemSearch.cs" />
+    <Compile Include="Search\PropertySearchBase.cs" />
+    <Compile Include="Search\SearchExtensions.cs" />
+    <Compile Include="Search\SearchResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
