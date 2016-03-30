@@ -18,7 +18,7 @@ namespace Locafi.Client.Exceptions
 
         protected WebRepoException()
         {
-            
+
         }
         protected WebRepoException(string message) : base(message)
         {
@@ -29,7 +29,10 @@ namespace Locafi.Client.Exceptions
             StatusCode = statusCode;
             Url = url;
             Payload = payload;
-            ServerMessages = serverMessages.ToList();
+            if (serverMessages != null)
+                ServerMessages = serverMessages.ToList();
+            else
+                serverMessages = new List<CustomResponseMessage>();
         }
     }
 }
