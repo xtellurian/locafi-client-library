@@ -61,6 +61,8 @@
     <Compile Include="Dto\Devices\PeripheralDeviceDetailDto.cs" />
     <Compile Include="Dto\Devices\PeripheralDeviceSensorDetailDto.cs" />
     <Compile Include="Dto\Devices\PeripheralDeviceSummaryDto.cs" />
+    <Compile Include="Dto\Devices\RfidReaderAntennaStatusDto.cs" />
+    <Compile Include="Dto\Devices\RfidReaderStatusDto.cs" />
     <Compile Include="Dto\Devices\RfidReaderAntennaDto.cs" />
     <Compile Include="Dto\Devices\RfidReaderDetailDto.cs" />
     <Compile Include="Dto\Devices\RfidReaderSummaryDto.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Dto\ErrorLogs\AddErrorLogDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
+    <Compile Include="Dto\Portal\PortalStatusDto.cs" />
     <Compile Include="Dto\SearchParameter.cs" />
     <Compile Include="Dto\SearchCollectionDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
@@ -145,6 +148,7 @@
     <Compile Include="Dto\Templates\TemplateExtendedPropertyDto.cs" />
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
+    <Compile Include="Enums\RfidReaderAntennaStatus.cs" />
     <Compile Include="Enums\ErrorLevel.cs" />
     <Compile Include="Enums\OrderState.cs" />
     <Compile Include="Enums\PeripheralDeviceType.cs" />
@@ -152,6 +156,8 @@
     <Compile Include="Enums\ReaderMode.cs" />
     <Compile Include="Enums\ReaderType.cs" />
     <Compile Include="Enums\ReasonFor.cs" />
+    <Compile Include="Enums\RfidPortalStatus.cs" />
+    <Compile Include="Enums\RfidReaderStatus.cs" />
     <Compile Include="Enums\SearchItemQueryType.cs" />
     <Compile Include="Enums\SearchMode.cs" />
     <Compile Include="Enums\SnapshotType.cs" />
