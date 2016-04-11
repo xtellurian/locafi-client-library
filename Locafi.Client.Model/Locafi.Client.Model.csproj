@@ -66,11 +66,14 @@
     <Compile Include="Dto\Devices\RfidReaderAntennaDto.cs" />
     <Compile Include="Dto\Devices\RfidReaderDetailDto.cs" />
     <Compile Include="Dto\Devices\RfidReaderSummaryDto.cs" />
+    <Compile Include="Dto\Devices\RfidReaderTemperatureDto.cs" />
     <Compile Include="Dto\Devices\SerialConfigDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\AddErrorLogDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
+    <Compile Include="Dto\Portal\PortalHeartBeatDto.cs" />
     <Compile Include="Dto\Portal\PortalStatusDto.cs" />
+    <Compile Include="Dto\Portal\UpdatePortalStatusDto.cs" />
     <Compile Include="Dto\SearchParameter.cs" />
     <Compile Include="Dto\SearchCollectionDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />

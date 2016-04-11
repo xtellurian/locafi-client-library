@@ -92,6 +92,24 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        protected async Task<bool> Post(object data, string extra = "")
+        {
+            var serialisedData = _serialiser.Serialise(data); // serialise
+            var response = await GetResponse(HttpMethod.Post, extra, serialisedData); // get response
+            // try to reauthorise
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                response = await TryReauth(o => GetResponse(HttpMethod.Post, extra, serialisedData));
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else await HandlePrivate(response, "POST", extra, serialisedData);
+            return false;
+        }
+
         protected async Task<bool> Delete(string extra)
         {
             var response = await GetResponse(HttpMethod.Delete, extra);

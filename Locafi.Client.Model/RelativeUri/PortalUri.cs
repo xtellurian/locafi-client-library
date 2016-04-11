@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Dto.Portal;
 
 namespace Locafi.Client.Model.RelativeUri
 {
@@ -56,6 +57,21 @@ namespace Locafi.Client.Model.RelativeUri
         public static string DeletePortalRule(Guid id)
         {
             return $"DeletePortalRule/{id}";
+        }
+
+        public static string GetPortalStatus(Guid id)
+        {
+            return $"{GetPortal(id)}/GetPortalStatus";
+        }
+
+        public static string UpdatePortalStatus(Guid id)
+        {
+            return $"{GetPortal(id)}/UpdatePortalStatus";
+        }
+
+        public static string UpdatePortalHeartbeat(Guid id)
+        {
+            return $"{GetPortal(id)}/Heartbeat";
         }
     }
 }

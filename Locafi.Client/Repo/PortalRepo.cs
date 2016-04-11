@@ -13,6 +13,7 @@ using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Portal;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using Microsoft.OData.Core.UriParser.Semantic;
 
 namespace Locafi.Client.Repo
 {
@@ -103,6 +104,26 @@ namespace Locafi.Client.Repo
         {
             var path = PortalUri.DeletePortalRule(id);
             await Delete(path);
+        }
+
+        public async Task<PortalStatusDto> GetPortalStatus(Guid id)
+        {
+            var path = PortalUri.GetPortalStatus(id);
+            var result = await Get<PortalStatusDto>(path);
+            return result;
+        }
+
+        public async Task<PortalStatusDto> UpdatePortalStatus(UpdatePortalStatusDto updatePortalStatusDto)
+        {
+            var path = PortalUri.UpdatePortalStatus(updatePortalStatusDto.Id);
+            var result = await Post<PortalStatusDto>(updatePortalStatusDto, path);
+            return result;
+        }
+
+        public async Task UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto)
+        {
+            var path = PortalUri.UpdatePortalHeartbeat(portalHeartbeatDto.RfidPortalId);
+            await Post(portalHeartbeatDto, path);            
         }
 
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)

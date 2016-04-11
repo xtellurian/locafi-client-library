@@ -8,12 +8,17 @@ using Locafi.Client.Model.Enums;
 
 namespace Locafi.Client.Model.Dto.Portal
 {
-    public class PortalStatusDto
+
+    public class UpdatePortalStatusDto
     {
         public Guid Id { get; set; }
         public DateTime TimeStamp { get; set; }        
         public RfidPortalStatus Status { get; set; }
-        public DateTime LastHeartbeat { get; set; }
         public IList<RfidReaderStatusDto> RfidReaderStatuses { get; set; }
+
+        public UpdatePortalStatusDto()
+        {
+            RfidReaderStatuses = new List<RfidReaderStatusDto>();
+        }
     }
 }

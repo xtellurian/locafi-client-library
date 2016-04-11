@@ -8,7 +8,7 @@ namespace Locafi.Client.Model.RelativeUri
 {
     public static class ClusterUri
     {
-        public static string ServiceName => "Devices";
+        public static string ServiceName => "Portals";
         public static string ProcessCluster => "ProcessCluster";
     }
 }
