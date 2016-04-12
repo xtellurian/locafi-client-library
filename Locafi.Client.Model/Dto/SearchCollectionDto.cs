@@ -21,6 +21,8 @@ namespace Locafi.Client.Model.Dto
         public SearchCollectionDto()
         {
             SearchParameters = new List<SearchParameter>();
+            Skip = 0;
+            Take = 10;
         }
     }
 }

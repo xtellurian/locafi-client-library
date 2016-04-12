@@ -16,5 +16,10 @@ namespace Locafi.Client.Model.Dto.Devices
         //TODO: Implement Sensors and Actuators
         //public List<PeripheralDeviceStatusDto> SensorStatuses { get; set; }
         //public List<PeripheralDeviceStatusDto> ActuatorStatuses { get; set; }
+
+        public RfidReaderStatusDto()
+        {
+            AntennaStatuses = new List<RfidReaderAntennaStatusDto>();
+        }
     }
 }

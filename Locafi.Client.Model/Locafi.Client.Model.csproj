@@ -161,7 +161,7 @@
     <Compile Include="Enums\ReasonFor.cs" />
     <Compile Include="Enums\RfidPortalStatus.cs" />
     <Compile Include="Enums\RfidReaderStatus.cs" />
-    <Compile Include="Enums\SearchItemQueryType.cs" />
+    <Compile Include="Enums\SearchCollectionType.cs" />
     <Compile Include="Enums\SearchMode.cs" />
     <Compile Include="Enums\SnapshotType.cs" />
     <Compile Include="Enums\TagFor.cs" />

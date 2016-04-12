@@ -12,6 +12,8 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model.Search;
+using Locafi.Client.Model.Dto;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -179,13 +181,14 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         //    // need to update test to actually add a known item first
 
         //    // build search query
-        //    var searchQuery = new SearchItemQueryDto() { QueryType = SearchItemQueryType.And };
-        //    searchQuery.QueryParameters.Add(new SearchItemParameter() {
+        //    var searchQuery = new SearchCollectionDto() { SearchType = SearchCollectionType.Or };
+        //    searchQuery.SearchParameters.Add(new SearchParameter()
+        //    {
         //        PropertyName = "*",
         //        DataType = TemplateDataTypes.String,
         //        Value = "test"
         //    });
-        //    searchQuery.QueryParameters.Add(new SearchItemParameter()
+        //    searchQuery.SearchParameters.Add(new SearchParameter()
         //    {
         //        PropertyName = "TagNumber",
         //        DataType = TemplateDataTypes.String,
