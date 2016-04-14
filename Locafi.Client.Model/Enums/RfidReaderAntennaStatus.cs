@@ -8,6 +8,7 @@ namespace Locafi.Client.Model.Enums
 {
     public enum RfidReaderAntennaStatus
     {
+        Unknown = -1,
         Disconnected = 0,
         Idle,
         Operating
