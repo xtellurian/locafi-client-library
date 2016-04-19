@@ -21,6 +21,6 @@ namespace Locafi.Client.Contract.Repo
         Task<PortalDetailDto> GetPortal(string serial);
         Task<PortalStatusDto> GetPortalStatus(Guid id);
         Task<PortalStatusDto> UpdatePortalStatus(UpdatePortalStatusDto updatePortalStatusDto);
-        Task UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto);
+        Task <bool> UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto);
     }
 }

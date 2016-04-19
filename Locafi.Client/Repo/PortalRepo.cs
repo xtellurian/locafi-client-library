@@ -120,10 +120,10 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto)
+        public async Task<bool> UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto)
         {
             var path = PortalUri.UpdatePortalHeartbeat(portalHeartbeatDto.RfidPortalId);
-            await Post(portalHeartbeatDto, path);            
+            return await Post(portalHeartbeatDto, path);            
         }
 
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
