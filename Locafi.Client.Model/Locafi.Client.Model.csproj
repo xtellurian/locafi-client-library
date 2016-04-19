@@ -71,6 +71,7 @@
     <Compile Include="Dto\ErrorLogs\AddErrorLogDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
+    <Compile Include="Dto\FileUpload\FileUploadDto.cs" />
     <Compile Include="Dto\Portal\PortalHeartBeatDto.cs" />
     <Compile Include="Dto\Portal\PortalStatusDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalStatusDto.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Dto\Templates\TemplateExtendedPropertyDto.cs" />
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
+    <Compile Include="Enums\FileUploadOperation.cs" />
     <Compile Include="Enums\RfidReaderAntennaStatus.cs" />
     <Compile Include="Enums\ErrorLevel.cs" />
     <Compile Include="Enums\OrderState.cs" />
