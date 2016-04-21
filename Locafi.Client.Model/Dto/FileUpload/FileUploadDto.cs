@@ -14,5 +14,7 @@ namespace Locafi.Client.Model.Dto.FileUpload
         public FileUploadOperation Operation { get; set; }
 
         public string UniqueProperty { get; set; }
+
+        public string FileName { get; set; }
     }
 }
