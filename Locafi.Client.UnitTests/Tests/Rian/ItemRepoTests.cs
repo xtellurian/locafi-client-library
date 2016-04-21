@@ -195,19 +195,19 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
         }
 
-        //private FileUploadDto ConvertItemToUploadDto(ItemDetailDto item)
-        //{
-        //    var uploadDtoEntities = new List<Dictionary<string, string>>();
-        //    var dic = new Dictionary<string, string>();
-        //    foreach (var propertyinfo in item.GetType().GetProperties())
-        //    {
-        //        var val = propertyinfo.GetValue(item);
-        //        if (val != null)
-        //            dic[propertyinfo.Name] = val.ToString();
-        //    }
-        //    uploadDtoEntities.Add(dic);
-        //    return new FileUploadDto {Entities = uploadDtoEntities, Operation = FileUploadOperation.CreateOrUpdate, UniqueProperty = "Name"};
-        //}
+        private FileUploadDto ConvertItemToUploadDto(ItemDetailDto item)
+        {
+            var uploadDtoEntities = new List<Dictionary<string, string>>();
+            var dic = new Dictionary<string, string>();
+            foreach (var propertyinfo in item.GetType().GetProperties())
+            {
+                var val = propertyinfo.GetValue(item);
+                if (val != null)
+                    dic[propertyinfo.Name] = val.ToString();
+            }
+            uploadDtoEntities.Add(dic);
+            return new FileUploadDto { Entities = uploadDtoEntities, Operation = FileUploadOperation.CreateOrUpdate, UniqueProperty = "Name" };
+        }
 
         //TODO: Somethings wrong with this test, figure out what's wrong/talk to Mark
         //[TestMethod]
