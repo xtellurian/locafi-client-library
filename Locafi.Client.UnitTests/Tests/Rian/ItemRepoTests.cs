@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
@@ -14,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Search;
 using Locafi.Client.Model.Dto;
+using Locafi.Client.Model.Dto.FileUpload;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -174,6 +176,39 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var sameItem = await _itemRepo.GetItemDetail(id);
             Assert.IsNull(sameItem);
         }
+
+        [TestMethod]
+        public async Task Item_Upload()
+        {
+            var itemToCreate = await CreateRandomAddItemDto();
+            var item = await _itemRepo.CreateItem(itemToCreate);
+            Assert.IsNotNull(item);
+
+            var itemToUpload = ConvertItemToUploadDto(item);
+            var updatedItem = await _itemRepo.UploadItems(itemToUpload);
+            Assert.IsNotNull(updatedItem);
+
+            var id = item.Id;
+            await _itemRepo.DeleteItem(id);
+            var sameItem = await _itemRepo.GetItemDetail(id);
+            Assert.IsNull(sameItem);
+
+        }
+
+        private FileUploadDto ConvertItemToUploadDto(ItemDetailDto item)
+        {
+            var uploadDtoEntities = new List<Dictionary<string, string>>();
+            var dic = new Dictionary<string, string>();
+            foreach (var propertyinfo in item.GetType().GetProperties())
+            {
+                var val = propertyinfo.GetValue(item);
+                if (val != null)
+                    dic[propertyinfo.Name] = val.ToString();
+            }
+            uploadDtoEntities.Add(dic);
+            return new FileUploadDto {Entities = uploadDtoEntities, Operation = FileUploadOperation.CreateOrUpdate, UniqueProperty = "Name"};
+        }
+
         //TODO: Somethings wrong with this test, figure out what's wrong/talk to Mark
         //[TestMethod]
         //public async Task Item_Search()

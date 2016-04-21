@@ -9,6 +9,7 @@ namespace Locafi.Client.Model.RelativeUri
         public static string GetItemCount => @"GetItems/GetCount";
         public static string GetItems => "GetItems";
         public static string CreateItem => @"CreateItem";
+        public static string UploadItems => @"UploadItems";
 
         public static string GetItem(Guid id)
         {
