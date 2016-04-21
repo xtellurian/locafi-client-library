@@ -112,12 +112,12 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        //public async Task<IList<ItemSummaryDto>> UploadItems(FileUploadDto file)
-        //{
-        //    var path = ItemUri.UploadItems;
-        //    var result = await Post<List<ItemSummaryDto>>(file, path);
-        //    return result;
-        //}
+        public async Task<IList<ItemSummaryDto>> UploadItems(FileUploadDto file)
+        {
+            var path = ItemUri.UploadItems;
+            var result = await Post<List<ItemSummaryDto>>(file, path);
+            return result;
+        }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
