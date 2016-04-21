@@ -9,7 +9,7 @@ namespace Locafi.Client.Model.Enums
     public enum RfidReaderStatus
     {
         Offline = 0,
-        Online,
+        Idle,
         Operating
     }
 }
