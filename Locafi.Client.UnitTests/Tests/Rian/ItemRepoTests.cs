@@ -173,8 +173,15 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             var id = item.Id;
             await _itemRepo.DeleteItem(id);
-            var sameItem = await _itemRepo.GetItemDetail(id);
-            Assert.IsNull(sameItem);
+            try
+            {
+                var sameItem = await _itemRepo.GetItemDetail(id);
+                Assert.Fail();
+            }
+            catch (Exception)
+            {                               
+                Assert.IsTrue(true); //successfully deleted
+            }            
         }
 
         [TestMethod]
@@ -184,29 +191,71 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var item = await _itemRepo.CreateItem(itemToCreate);
             Assert.IsNotNull(item);
 
-            var itemToUpload = ConvertItemToUploadDto(item);
-            var updatedItem = await _itemRepo.UploadItems(itemToUpload);
-            Assert.IsNotNull(updatedItem);
-
             var id = item.Id;
             await _itemRepo.DeleteItem(id);
-            var sameItem = await _itemRepo.GetItemDetail(id);
-            Assert.IsNull(sameItem);
+            try
+            {
+                var sameItem = await _itemRepo.GetItemDetail(id);
+                Assert.Fail();
+            }
+            catch (Exception)
+            {
+                Assert.IsTrue(true); //successfully deleted
+            }
 
+            var itemToUpload = ConvertItemToUploadDto(item);
+            itemToUpload.Operation = FileUploadOperation.Update;
+            var updatedItem = await _itemRepo.UploadItems(itemToUpload);
+            Assert.IsTrue(updatedItem.Count == 0);
+
+            itemToUpload.Operation = FileUploadOperation.Create;
+            updatedItem = await _itemRepo.UploadItems(itemToUpload);
+            Assert.IsTrue(updatedItem.Count == 1);
+
+            itemToUpload.Operation = FileUploadOperation.Update;
+            updatedItem = await _itemRepo.UploadItems(itemToUpload);
+            Assert.IsTrue(updatedItem.Count == 1);
+
+            itemToUpload.Operation = FileUploadOperation.CreateIgnoreDuplicates;
+            updatedItem = await _itemRepo.UploadItems(itemToUpload);
+            Assert.IsTrue(updatedItem.Count == 0);
+
+            itemToUpload.Operation = FileUploadOperation.CreateOrUpdate;
+            itemToUpload.Entities.First()["tagnumber"] = "0101010101";
+            updatedItem = await _itemRepo.UploadItems(itemToUpload);
+            Assert.IsTrue(updatedItem.Count == 1);
+            Assert.IsTrue(updatedItem.First().TagNumber == "0101010101");
+
+            await _itemRepo.DeleteItem(id);
+            try
+            {
+                var sameItem = await _itemRepo.GetItemDetail(id);
+                Assert.Fail();
+            }
+            catch (Exception)
+            {
+                Assert.IsTrue(true); //successfully deleted
+            }
         }
 
         private FileUploadDto ConvertItemToUploadDto(ItemDetailDto item)
         {
             var uploadDtoEntities = new List<Dictionary<string, string>>();
-            var dic = new Dictionary<string, string>();
-            foreach (var propertyinfo in item.GetType().GetProperties())
+            var dic = new Dictionary<string, string>
             {
-                var val = propertyinfo.GetValue(item);
-                if (val != null)
-                    dic[propertyinfo.Name] = val.ToString();
+                ["name"] = item.Name,
+                ["description"] = item.Description,
+                ["person"] = item.CreatedByUserFullName,
+                ["place"] = item.PlaceName,
+                ["type"] = item.SkuName,
+                ["tagnumber"] = item.TagNumber
+            };
+            foreach (var exProperty in item.ItemExtendedPropertyList)
+            {
+                dic[exProperty.Name] = exProperty.Value;
             }
             uploadDtoEntities.Add(dic);
-            return new FileUploadDto { Entities = uploadDtoEntities, Operation = FileUploadOperation.CreateOrUpdate, UniqueProperty = "Name" };
+            return new FileUploadDto { Entities = uploadDtoEntities, Operation = FileUploadOperation.CreateOrUpdate, UniqueProperty = "name" };
         }
 
         //TODO: Somethings wrong with this test, figure out what's wrong/talk to Mark
