@@ -4,6 +4,7 @@ using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Locafi.Client.Model.Dto.Tags;
 
 namespace Locafi.Client.Model.Dto.Items
 {
@@ -20,6 +21,7 @@ namespace Locafi.Client.Model.Dto.Items
             ParentItemId = parentItemId;
             PersonId = personId;
             ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>();
+            ItemTagList = new List<WriteTagDto>();
            
         }
 
@@ -35,10 +37,12 @@ namespace Locafi.Client.Model.Dto.Items
 
         public string Description { get; set; }
 
-        public string TagNumber { get; set; }
+        //public string TagNumber { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public TagType TagType { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        //public TagType TagType { get; set; }
+
+        public IList<WriteTagDto> ItemTagList { get; set; }
 
         public IList<WriteItemExtendedPropertyDto> ItemExtendedPropertyList { get; set; }
     }

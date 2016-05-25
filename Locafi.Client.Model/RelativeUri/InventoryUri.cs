@@ -6,7 +6,7 @@ namespace Locafi.Client.Model.RelativeUri
     public static class InventoryUri
     {
         public static string ServiceName => "Inventory";
-        public static string GetInventories => "GetInventories";
+        public static string GetInventories => "GetFilteredInventories";
         public static string CreateInventory => "Create";
 
 

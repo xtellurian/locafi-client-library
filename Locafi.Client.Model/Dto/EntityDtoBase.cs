@@ -32,7 +32,7 @@ namespace Locafi.Client.Model.Dto
 
         public string CreatedByUserFullName { get; set; }
 
-        public DateTimeOffset DateCreated { get; set; }
+        public DateTimeOffset? DateCreated { get; set; }
 
         public Guid? LastModifiedByUserId { get; set; }
 

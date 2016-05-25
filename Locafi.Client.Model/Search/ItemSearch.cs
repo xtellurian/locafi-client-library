@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Search
         {
             Skip = 0;
             Take = 100;
-            SearchParameters = new List<SearchParameter>();
+            SearchParameters = new List<SearchParameterDto>();
         }
     }
 }

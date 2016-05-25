@@ -6,8 +6,6 @@ namespace Locafi.Client.Model.Dto
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WriteEntityExtendedPropertyDto
     {
-        public Guid TemplateExtendedPropertyId { get; set; }
-
         public Guid ExtendedPropertyId { get; set; } // actual ID of the extended property
 
         public string Value { get; set; }
@@ -18,7 +16,7 @@ namespace Locafi.Client.Model.Dto
     {
         public Guid Id { get; set; }
 
-   //     public Guid ExtendedPropertyId { get; set; }
+ //       public Guid ExtendedPropertyId { get; set; }
 
  //       public Guid TemplateId { get; set; }
 
@@ -28,7 +26,7 @@ namespace Locafi.Client.Model.Dto
 
         public string ExtendedPropertyDescription { get; set; }
 
-        public string TemplateIsRequired { get; set; }
+        public string TemplateExtendedPropertyIsRequired { get; set; }
 
         public string ExtendedPropertyDataType { get; set; }
 

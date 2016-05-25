@@ -13,6 +13,7 @@ using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Devices;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using System.;
 
 namespace Locafi.Client.Repo
 {
@@ -23,7 +24,7 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<PeripheralDeviceSummaryDto>> GetDevices()
+        public async Task<PageResult<PeripheralDeviceSummaryDto>> GetDevices()
         {
             var path = DeviceUri.GetDevices;
             var result = await Get<List<PeripheralDeviceSummaryDto>>(path);

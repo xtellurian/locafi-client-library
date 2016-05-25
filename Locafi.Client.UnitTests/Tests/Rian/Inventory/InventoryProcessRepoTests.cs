@@ -14,6 +14,7 @@ using Locafi.Client.Model.Query.Builder;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.Model.Dto.SkuGroups;
+using Locafi.Client.Model.Dto.Tags;
 
 namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
 {
@@ -420,7 +421,11 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             var addItem = new AddItemDto(sku.Id, placeId, tagNumber: tag1.TagNumber);
             await ItemRepo.CreateItem(addItem);
             addItem.PlaceId = otherPlaceId;
-            addItem.TagNumber = tag2.TagNumber;
+            addItem.ItemTagList.Add(new WriteTagDto() {
+                TagNumber = tag2.TagNumber,
+                TagType = TagType.PassiveRfid
+            });
+//            addItem.TagNumber = tag2.TagNumber;
             await ItemRepo.CreateItem(addItem);
 
             var snapshot = new AddSnapshotDto(placeId)

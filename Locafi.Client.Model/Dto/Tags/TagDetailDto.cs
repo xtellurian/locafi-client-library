@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto
+namespace Locafi.Client.Model.Dto.Tags
 {
-    public class SearchParameter
+    public class TagDetailDto
     {
-        public string PropertyName { get; set; }
+        public Guid Id { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateDataTypes DataType { get; set; }
+        public TagType TagType { get; set; }
 
-        public string Value { get; set; }
+        public string TagNumber { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model.Dto.Tags;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -121,7 +122,9 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 while (availableItems < numItems)
                 {
                     // create a new item 
-                    var item = await _itemRepo.CreateItem(new Model.Dto.Items.AddItemDto(sku.Id, place.Id, "Test Generated Item - " + Guid.NewGuid().ToString().Substring(0, 8)) { TagNumber = Guid.NewGuid().ToString() });
+                    var item = await _itemRepo.CreateItem(new Model.Dto.Items.AddItemDto(sku.Id, place.Id, "Test Generated Item - " + Guid.NewGuid().ToString().Substring(0, 8)) {
+                        ItemTagList = new List<WriteTagDto>() { new WriteTagDto() { TagNumber = Guid.NewGuid().ToString(), TagType = Model.Enums.TagType.PassiveRfid } }
+                    });
                     // we need this one in our list so add it straight in
                     items.Add(new AddOrderItemLineItemDto() { ItemId = item.Id });
 

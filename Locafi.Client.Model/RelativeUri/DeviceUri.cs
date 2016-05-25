@@ -9,9 +9,9 @@ namespace Locafi.Client.Model.RelativeUri
     public static class DeviceUri
     {
         public static string ServiceName => "Devices";
-        public static string GetDevices => "GetDevices";
+        public static string GetDevices => "GetFilteredDevices";
         public static string CreateDevice => "CreateDevice";
-        public static string GetReaders => "GetReaders";
+        public static string GetReaders => "GetFilteredReaders";
         public static string CreateReader => "CreateReader";
 
 

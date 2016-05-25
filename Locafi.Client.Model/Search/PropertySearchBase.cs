@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Search
         public int Take { get; set; }
         public int Skip { get; set; }
         public SearchCollectionType SearchType { get; set; }
-        public IList<SearchParameter> SearchParameters { get; set; }
+        public IList<SearchParameterDto> SearchParameters { get; set; }
 
         public SearchCollectionDto AsRestSearch()
         {
@@ -22,7 +22,7 @@ namespace Locafi.Client.Model.Search
                 Skip = this.Skip,
                 Take = this.Take,
                 SearchType = this.SearchType,
-                SearchParameters = this.SearchParameters
+                SearchParameterDtos = this.SearchParameters
             };
         }
     }

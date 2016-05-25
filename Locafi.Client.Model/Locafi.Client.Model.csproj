@@ -75,7 +75,7 @@
     <Compile Include="Dto\Portal\PortalHeartBeatDto.cs" />
     <Compile Include="Dto\Portal\PortalStatusDto.cs" />
     <Compile Include="Dto\Portal\UpdatePortalStatusDto.cs" />
-    <Compile Include="Dto\SearchParameter.cs" />
+    <Compile Include="Dto\SearchParameterDto.cs" />
     <Compile Include="Dto\SearchCollectionDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\AddOrderItemLineItemDto.cs" />
@@ -98,6 +98,8 @@
     <Compile Include="Dto\SkuGroups\SkuGroupSummaryDto.cs" />
     <Compile Include="Dto\SkuGroups\UpdateSkuGroupDto.cs" />
     <Compile Include="Dto\SkuGroups\UpdateSkuGroupNameDto.cs" />
+    <Compile Include="Dto\Tags\TagDetailDto.cs" />
+    <Compile Include="Dto\Tags\WriteTagDto.cs" />
     <Compile Include="Dto\Users\AddUserDto.cs" />
     <Compile Include="Dto\Users\UpdateUserDto.cs" />
     <Compile Include="Dto\Users\UserDetailDto.cs" />

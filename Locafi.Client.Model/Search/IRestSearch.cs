@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Search
         int Take { get; set; }
         int Skip { get; set; }
         SearchCollectionType SearchType{ get; set; }
-        IList<SearchParameter> SearchParameters { get; set; }
+        IList<SearchParameterDto> SearchParameters { get; set; }
 
         SearchCollectionDto AsRestSearch();
     }

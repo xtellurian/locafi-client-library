@@ -16,11 +16,11 @@ namespace Locafi.Client.Model.Dto
         [JsonConverter(typeof(StringEnumConverter))]
         public SearchCollectionType SearchType { get; set; }
 
-        public IList<SearchParameter> SearchParameters { get; set; }
+        public IList<SearchParameterDto> SearchParameterDtos { get; set; }
 
         public SearchCollectionDto()
         {
-            SearchParameters = new List<SearchParameter>();
+            SearchParameterDtos = new List<SearchParameterDto>();
             Skip = 0;
             Take = 10;
         }

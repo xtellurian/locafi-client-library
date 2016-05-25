@@ -1,22 +1,22 @@
 ﻿using System;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model.Enums;
 
 namespace Locafi.Client.Model.Dto.Items
 {
     public class ReadItemExtendedPropertyDto : WriteItemExtendedPropertyDto
     {
-
-  //      public Guid? SkuExtendedPropertyId { get; set; }
-
 //        public Guid ExtendedPropertyId { get; set; }
 
         public string Name { get; set; }
 
         public bool IsRequired { get; set; }
 
-        public string DataType { get; set; }
+        public TemplateDataTypes DataType { get; set; }
 
- //       public string Value { get; set; }
+        public bool IsSkuLevelProperty { get; set; }
+
+//        public string Value { get; set; }
 
         public override bool Equals(object obj)
         {
