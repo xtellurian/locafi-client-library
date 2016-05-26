@@ -14,7 +14,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             var query =
                 QueryBuilder<ItemSummaryDto>.NewQuery(i => i.Name, "hello", ComparisonOperator.Equals)
-                    .And(i => i.TagNumber, "123", ComparisonOperator.Contains)
+                    .Or(i => i.TagNumber, "123", ComparisonOperator.Contains)
                     .Build();
             var value = query.AsRestQuery();
             Assert.IsInstanceOfType(query, typeof(IRestQuery<ItemSummaryDto>));

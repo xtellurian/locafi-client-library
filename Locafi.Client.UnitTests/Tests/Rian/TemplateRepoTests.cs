@@ -27,7 +27,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Template_GetAll()
         {
-            var templates = await _templateRepo.GetAllTemplates();
+            var templates = await _templateRepo.QueryTemplates();
             Assert.IsNotNull(templates);
             Assert.IsInstanceOfType(templates,typeof(IEnumerable<TemplateSummaryDto>));
         }
@@ -35,7 +35,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Template_GetById()
         {
-            var templates = await _templateRepo.GetAllTemplates();
+            var templates = await _templateRepo.QueryTemplates();
             foreach (var template in templates)
             {
                 var detail = await _templateRepo.GetById(template.Id);

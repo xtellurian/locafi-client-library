@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.UnitTests.Mocks
 {
@@ -31,12 +32,17 @@ namespace Locafi.Client.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public Task<IList<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query)
+        public Task<PageResult<SnapshotSummaryDto>> QuerySnapshots(string oDataQueryOptions = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsAsync(IRestQuery<SnapshotSummaryDto> query)
+        public Task<PageResult<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsContinuation(IRestQuery<SnapshotSummaryDto> query)
         {
             throw new NotImplementedException();
         }

@@ -10,11 +10,11 @@ namespace Locafi.Client.Model.Uri
     {
         public static string ServiceName => "Skus";
         public static string CreateSku => "CreateSku";
-        public static string GetSkus => "GetSkus";
+        public static string GetSkus => "GetFilteredSkus";
 
         public static string GetSkuDetail(Guid id)
         {
-            return $"GetSkuDetail/{id}";
+            return $"GetSku/{id}";
         }
 
         public static string DeleteSku(Guid id)

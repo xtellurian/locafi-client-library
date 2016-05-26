@@ -8,7 +8,7 @@ namespace Locafi.Client.Model.RelativeUri
     {
         public static string ServiceName => "Orders";
         public static string Create => "CreateOrder";
-        public static string GetOrders => "GetOrders";
+        public static string GetOrders => "GetFilteredOrders";
 
         public static string GetOrder(Guid id)
         {

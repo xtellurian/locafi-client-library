@@ -6,6 +6,7 @@ using Locafi.Client.Model.Dto.Users;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -22,7 +23,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task User_GetAllUsers()
         {
-            var users = await _userRepo.GetAllUsers();
+            var users = await _userRepo.QueryUsers();
             Assert.IsNotNull(users);
             Assert.IsInstanceOfType(users,typeof(IEnumerable<UserSummaryDto>));
             Assert.IsTrue(users.Count > 0);
@@ -32,8 +33,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         public async Task User_QueryUsers()
         {
             var ran = new Random();
-            var users = await _userRepo.GetAllUsers();
-            var user = users[ran.Next(users.Count - 1)];
+            var users = await _userRepo.QueryUsers();
+            var user = users.Items.ElementAt(ran.Next(users.Items.Count() - 1));
             Assert.IsNotNull(user);
             Assert.IsInstanceOfType(user,typeof(UserSummaryDto));
             // query surname
@@ -41,7 +42,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             q.CreateQuery(u=>u.UserName,user.UserName,ComparisonOperator.Equals);
             var result = await _userRepo.QueryUsers(q);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Contains(user));
+            Assert.IsTrue(result.Items.Contains(user));
         }
     }
 }

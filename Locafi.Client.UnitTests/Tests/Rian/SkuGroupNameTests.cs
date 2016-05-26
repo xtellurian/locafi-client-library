@@ -30,7 +30,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             //update existing
             var name2 = Guid.NewGuid().ToString();
             var updateDto = new UpdateSkuGroupNameDto(id, name2);
-            var groupNameObject2 = await SkuGroupRepo.UpdateSkuGroupName(id, updateDto);
+            var groupNameObject2 = await SkuGroupRepo.UpdateSkuGroupName(updateDto);
             Assert.AreEqual(groupNameObject, groupNameObject2);
             Assert.AreEqual(groupNameObject2.Name, name2);
 

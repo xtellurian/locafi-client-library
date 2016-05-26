@@ -7,14 +7,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Reasons;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface IReasonRepo
     {
-        Task<IList<ReasonDetailDto>> GetAllReasons();
+        Task<PageResult<ReasonDetailDto>> QueryReasons(string oDataQueryOptions = null);
+        Task<PageResult<ReasonDetailDto>> QueryReasons(IRestQuery<ReasonDetailDto> query);
+        Task<IQueryResult<ReasonDetailDto>> QueryReasonsContinuation(IRestQuery<ReasonDetailDto> query);
+        Task<ReasonDetailDto> GetReason(Guid id);
         Task<ReasonDetailDto> CreateReason(AddReasonDto reasonDto);
         Task Delete(Guid id);
-        Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reasonFor);
     }
 }

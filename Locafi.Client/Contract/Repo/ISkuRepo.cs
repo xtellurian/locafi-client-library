@@ -7,17 +7,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface ISkuRepo
     {
-        Task<IList<SkuSummaryDto>> GetAllSkus();
+        Task<PageResult<SkuSummaryDto>> QuerySkus(string oDataQueryOptions = null);
+        Task<PageResult<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query);
+        Task<IQueryResult<SkuSummaryDto>> QuerySkusContinuation(IRestQuery<SkuSummaryDto> query);
         Task<SkuDetailDto> GetSkuDetail(Guid skuId);
         Task<SkuDetailDto> CreateSku(AddSkuDto addSkuDto);
         Task Delete(Guid id);
-        [Obsolete]
-        Task<IList<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query);
-        Task<IQueryResult<SkuSummaryDto>> QuerySkusAsync(IRestQuery<SkuSummaryDto> query);
     }
 }

@@ -10,7 +10,7 @@ namespace Locafi.Client.Model.RelativeUri
     {
         public static string ServiceName => "SkuGroup";
 
-        public static string GetSkuGroups => "GetSkuGroups";
+        public static string GetSkuGroups => "GetFilteredSkuGroups";
 
         public static string GetSkyGroupsForPlace(Guid placeId)
         {
@@ -22,10 +22,7 @@ namespace Locafi.Client.Model.RelativeUri
         }
         public static string CreateSkuGroup => "CreateSkuGroup";
 
-        public static string UpdateSkuGroup(Guid id)
-        {
-            return $"GetSkuGroup/{id}/UpdateSkuGroup";
-        }
+        public static string UpdateSkuGroup => @"UpdateSkuGroup";
 
         public static string DeleteSkuGroup(Guid id)
         {
@@ -34,7 +31,7 @@ namespace Locafi.Client.Model.RelativeUri
 
         public static class Names
         {
-            public static string GetNames => "GetSkuGroupNames";
+            public static string GetNames => "GetFilteredSkuGroupNames";
 
             public static string GetSkuGroupNameDetail(Guid id)
             {
@@ -43,10 +40,7 @@ namespace Locafi.Client.Model.RelativeUri
 
             public static string CreateSkuGroupName => "CreateSkuGroupName";
 
-            public static string UpdateSkuGroupName(Guid id)
-            {
-                return $"GetSkuGroupName/{id}/UpdateSkuGroupName";
-            }
+            public static string UpdateSkuGroupName => @"UpdateSkuGroupName";
 
             public static string DeleteSkuGroupName(Guid id)
             {

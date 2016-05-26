@@ -68,7 +68,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             foreach(var skuDetailExtendedProperty in skuDetail.SkuExtendedPropertyList)
             {
                 var itemExtendedProperty = result.ItemExtendedPropertyList
-                    .FirstOrDefault(e => e.SkuExtendedPropertyId == skuDetailExtendedProperty.Id);
+                    .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.Id);
                 Assert.IsNotNull(itemExtendedProperty, "Extended property was null");
                 Assert.AreEqual(skuDetailExtendedProperty.DefaultValue,itemExtendedProperty.Value, "Was not default value");
             }
@@ -82,7 +82,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(item);
 
             var query = ItemQuery.NewQuery(i => i.Id, item.Id, ComparisonOperator.Equals);
-            var r1 = await _itemRepo.QueryItemsAsync(query);
+            var r1 = await _itemRepo.QueryItemsContinuation(query);
             Assert.IsNotNull(r1);
             Assert.IsTrue(r1.Entities.Contains(item));
 
@@ -92,7 +92,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         public async Task Item_QueryUsingTopTake()
         {
             var query = ItemQuery.NewQuery(i => i.Name, "", ComparisonOperator.Contains, 10, 0);
-            var items = await _itemRepo.QueryItemsAsync(query);
+            var items = await _itemRepo.QueryItemsContinuation(query);
             Assert.IsTrue(items.Entities.Count == 10);
         }
 
@@ -115,12 +115,22 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Item_Count()
         {
-            var query = ItemQuery.NewQuery(i => i.Name, "n", ComparisonOperator.Equals);
-            var itemToAdd = await CreateRandomAddItemDto();
-            var result = await _itemRepo.CreateItem(itemToAdd);
-            Assert.IsNotNull(result, "result != null");
-            var count = await _itemRepo.GetItemCount(query);
-            Assert.IsTrue(count > 0);
+            ItemDetailDto result = null;
+            try
+            {
+                var query = ItemQuery.NewQuery(i => i.Name, "Item_Count_Test", ComparisonOperator.Equals, 0);
+                var itemToAdd = await CreateRandomAddItemDto();
+                itemToAdd.Name = "Item_Count_Test";
+                result = await _itemRepo.CreateItem(itemToAdd);
+                Assert.IsNotNull(result, "result != null");
+                var count = (int)(await _itemRepo.QueryItems(query)).Count;
+                Assert.IsTrue(count > 0);
+            }
+            finally
+            {
+                // cleanup
+                await _itemRepo.DeleteItem(result.Id);
+            }
         }
 
         
@@ -136,11 +146,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             var moveItemDto = new UpdateItemPlaceDto
             {
-                ItemId = item.Id,
-                DateMoved = DateTime.UtcNow,
-                MovedByUserId = user.Id,
+                Id = item.Id,
                 NewPlaceId = place.Id,
-                OldPlaceId = item.PlaceId
             };
 
             var movedItem = await _itemRepo.UpdateItemPlace(moveItemDto);
@@ -159,7 +166,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             var dto = new UpdateItemTagDto
             {
-                ItemId = item.Id,
+                Id = item.Id,
 
             };
         }
@@ -290,12 +297,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private async Task<AddItemDto> CreateRandomAddItemDto()
         {
             var ran = new Random();
-            var places = await _placeRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)]; // picks a random place for the item
-            var persons = await _personRepo.GetAllPersons();
-            var person = persons[ran.Next(persons.Count - 1)];
-            var skus = await _skuRepo.GetAllSkus();
-            var sku = skus[ran.Next(skus.Count - 1)];
+            var places = await _placeRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // picks a random place for the item
+            var persons = await _personRepo.QueryPersons();
+            var person = persons.Items.ElementAt(ran.Next(persons.Items.Count() - 1));
+            var skus = await _skuRepo.QuerySkus();
+            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
 
             var name = Guid.NewGuid().ToString();
             var description = Guid.NewGuid().ToString();
@@ -310,12 +317,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
         private async Task<PlaceSummaryDto> GetRandomOtherPlace(Guid notThisPlaceId)
         {
-            var places = await _placeRepo.GetAllPlaces();
+            var places = await _placeRepo.QueryPlaces();
             var ran = new Random();
             PlaceSummaryDto place = null;
             while (place?.Id.Equals(notThisPlaceId) ?? true)
             {
-                place = places[ran.Next(places.Count - 1)];
+                place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             }
             return place;
         }
@@ -323,8 +330,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private async Task<UserSummaryDto> GetRandomUser()
         {
             var ran = new Random();
-            var users = await _userRepo.GetAllUsers();
-            var user = users[ran.Next(users.Count - 1)];
+            var users = await _userRepo.QueryUsers();
+            var user = users.Items.ElementAt(ran.Next(users.Items.Count() - 1));
             return user;
         }
 

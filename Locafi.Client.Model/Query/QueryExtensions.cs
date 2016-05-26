@@ -27,6 +27,21 @@ namespace Locafi.Client.Model.Query
                 // there are no more entities
                 return new QueryResult<T>(entities, null);
             }
-        } 
+        }
+
+        public static IQueryResult<T> AsQueryResult<T>(this PageResult<T> result, IRestQuery<T> query)
+        {
+            if (result.Items.Count() == query.Take)
+            // there might be more entities to get from the server - generate the next query
+            {
+                var nextQuery = query.Next();
+                return new QueryResult<T>(result.Items, nextQuery);
+            }
+            else
+            {
+                // there are no more entities
+                return new QueryResult<T>(result.Items, null);
+            }
+        }
     }
 }

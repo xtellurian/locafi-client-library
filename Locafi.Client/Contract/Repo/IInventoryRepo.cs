@@ -7,21 +7,21 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Inventory;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface IInventoryRepo
     {
-        Task<IList<InventorySummaryDto>> GetAllInventories();
+        Task<PageResult<InventorySummaryDto>> QueryInventories(string oDataQueryOptions = null);
+        Task<PageResult<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query);
+        Task<IQueryResult<InventorySummaryDto>> QueryInventoriesWithContinuation(IRestQuery<InventorySummaryDto> query);
         Task<InventoryDetailDto> GetInventory(Guid id);
         Task<InventoryDetailDto> CreateInventory(Guid placeId, string name = null, Guid? skuGroupId = null);
         Task<InventoryDetailDto> AddSnapshot(InventorySummaryDto inventory, Guid snapshotId);
         Task<InventoryDetailDto> Resolve(Guid inventoryId, ResolveInventoryDto reasons);
         Task<bool> Delete(Guid id);
-        [Obsolete]
-        Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query);
         Task<InventoryDetailDto> Complete(Guid inventoryId);
-        Task<IQueryResult<InventorySummaryDto>> QueryInventoriesAsync(IRestQuery<InventorySummaryDto> query);
         Task<InventoryDetailDto> AddItem(InventorySummaryDto inventory, Guid itemId);
     }
 }

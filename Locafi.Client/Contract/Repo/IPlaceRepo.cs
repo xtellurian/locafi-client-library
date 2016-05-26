@@ -7,17 +7,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface IPlaceRepo
     {
-        Task<IList<PlaceSummaryDto>> GetAllPlaces();
+        Task<PageResult<PlaceSummaryDto>> QueryPlaces(string oDataQueryOptions = null);
+        Task<PageResult<PlaceSummaryDto>> QueryPlaces(IRestQuery<PlaceSummaryDto> query);
+        Task<IQueryResult<PlaceSummaryDto>> QueryPlacesContinuation(IRestQuery<PlaceSummaryDto> query);
         Task<PlaceDetailDto> CreatePlace(AddPlaceDto addPlaceDto);
-        [Obsolete]
-        Task<IList<PlaceSummaryDto>> QueryPlaces(IRestQuery<PlaceSummaryDto> query);
         Task<bool> Delete(Guid placeId);
         Task<PlaceDetailDto> GetPlaceById(Guid id);
-        Task<IQueryResult<PlaceSummaryDto>> QueryPlacesAsync(IRestQuery<PlaceSummaryDto> query);
     }
 }

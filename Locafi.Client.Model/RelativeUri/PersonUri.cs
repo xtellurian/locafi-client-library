@@ -9,7 +9,7 @@ namespace Locafi.Client.Model.Uri
     public static class PersonUri
     {
         public static string ServiceName => "Persons";
-        public static string GetPersons => "GetPersons";
+        public static string GetPersons => "GetFilteredPersons";
         
         public static string CreatePerson => "CreatePerson";
 

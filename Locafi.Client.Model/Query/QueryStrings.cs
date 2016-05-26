@@ -35,7 +35,11 @@
             private static string SkipLabel => "$skip=";
             public static string TopAndSkip(int top, int skip)
             {
-                return $"{TopLabel}{top}&{SkipLabel}{skip}";
+                // If doing a top=0 just to get the count then you can't include a skip value or it generates an sql error
+                if(top > 0)
+                    return $"{TopLabel}{top}&{SkipLabel}{skip}";
+                else
+                    return $"{TopLabel}{top}";
             }
         }
     }

@@ -12,6 +12,7 @@ using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -28,13 +29,43 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<PlaceSummaryDto>> GetAllPlaces()
+        public async Task<PageResult<PlaceSummaryDto>> QueryPlaces(string oDataQueryOptions = null)
         {
             var path = PlaceUri.GetPlaces;
-            var result = await Get<List<PlaceSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<PlaceSummaryDto>>(path);
             return result;
         }
 
+        public async Task<PageResult<PlaceSummaryDto>> QueryPlaces(IRestQuery<PlaceSummaryDto> query)
+        {
+            return await QueryPlaces(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<PlaceSummaryDto>> QueryPlacesContinuation(IRestQuery<PlaceSummaryDto> query)
+        {
+            var results = await QueryPlaces(query.AsRestQuery());
+            return results.AsQueryResult(query);
+        }
 
         public async Task<PlaceDetailDto> CreatePlace(AddPlaceDto addPlaceDto)
         {
@@ -48,31 +79,12 @@ namespace Locafi.Client.Repo
             var path = PlaceUri.GetPlace(id);
             var result = await Get<PlaceDetailDto>(path);
             return result;
-        }
-
-        [Obsolete]
-        public async Task<IList<PlaceSummaryDto>> QueryPlaces(IRestQuery<PlaceSummaryDto> query)
-        {
-            return await QueryPlaces(query.AsRestQuery());
-        }
-
-        public async Task<IQueryResult<PlaceSummaryDto>> QueryPlacesAsync(IRestQuery<PlaceSummaryDto> query)
-        {
-            var results = await QueryPlaces(query.AsRestQuery());
-            return results.AsQueryResult(query);
-        }
+        }       
 
         public async Task<bool> Delete(Guid id)
         {
             var path = PlaceUri.DeletePlace(id);
             return await Delete(path);
-        }
-
-        protected async Task<IList<PlaceSummaryDto>> QueryPlaces(string queryString = null)
-        {
-            var path = $"{PlaceUri.GetPlaces}{queryString}";
-            var result = await Get<List<PlaceSummaryDto>>(path);
-            return result;
         }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)

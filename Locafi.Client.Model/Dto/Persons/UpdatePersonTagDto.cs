@@ -6,26 +6,24 @@ using System.Threading.Tasks;
 using Locafi.Client.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Locafi.Client.Model.Dto.Tags;
 
 namespace Locafi.Client.Model.Dto.Persons
 {
     public class UpdatePersonTagDto
     {
-        public Guid PersonId { get; set; }
+        public Guid Id { get; set; }
 
-        public string NewTagNumber { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        public TagType NewTagType { get; set; } // TagType Enum
+        public IList<WriteTagDto> PersonTagList { get; set; }
 
         public static UpdatePersonTagDto FromPerson(PersonSummaryDto detail, string newTagNumber, TagType newTagType = TagType.PassiveRfid)
         {
-            return new UpdatePersonTagDto
+            var dto = new UpdatePersonTagDto
             {
-                PersonId = detail.Id,
-                NewTagNumber = newTagNumber,
-                NewTagType = newTagType
+                Id = detail.Id
             };
+            dto.PersonTagList.Add(new WriteTagDto() { TagNumber = newTagNumber, TagType = newTagType });
+            return dto;
         }
     }
 }

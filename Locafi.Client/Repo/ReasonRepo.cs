@@ -12,6 +12,8 @@ using Locafi.Client.Model.Dto.Reasons;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using Locafi.Client.Model;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Repo
 {
@@ -27,24 +29,54 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<ReasonDetailDto>> GetAllReasons()
+        public async Task<PageResult<ReasonDetailDto>> QueryReasons(string oDataQueryOptions = null)
         {
             var path = ReasonUri.GetReasons;
-            var result = await Get<List<ReasonDetailDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<ReasonDetailDto>>(path);
             return result;
+        }
+
+        public async Task<PageResult<ReasonDetailDto>> QueryReasons(IRestQuery<ReasonDetailDto> query)
+        {
+            return await QueryReasons(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<ReasonDetailDto>> QueryReasonsContinuation(IRestQuery<ReasonDetailDto> query)
+        {
+            var result = await QueryReasons(query.AsRestQuery());
+            return result.AsQueryResult(query);
+        }
+
+        public async Task<ReasonDetailDto> GetReason(Guid id)
+        {
+            var path = ReasonUri.GetReason(id);
+            return await Get<ReasonDetailDto>(path);
         }
 
         public async Task<ReasonDetailDto> CreateReason(AddReasonDto reasonDto)
         {
             var path = ReasonUri.CreateReason;
             var result = await Post<ReasonDetailDto>(reasonDto, path);
-            return result;
-        }
-
-        public async Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reasonFor)
-        {
-            var path = ReasonUri.GetReasonsFor(reasonFor);
-            var result = await Get<List<ReasonDetailDto>>(path);
             return result;
         }
 

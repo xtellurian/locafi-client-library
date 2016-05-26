@@ -47,7 +47,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Place_GetAll()
         {
-            var places = await _placeRepo.GetAllPlaces();
+            var places = await _placeRepo.QueryPlaces();
             Assert.IsNotNull(places);
             Assert.IsInstanceOfType(places, typeof(IEnumerable<PlaceSummaryDto>));
         }
@@ -60,7 +60,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(result, "result != null");
             _toCleanup.Add(result.Id); // cleanup that place later
 
-            var places = await _placeRepo.GetAllPlaces();
+            var places = await _placeRepo.QueryPlaces();
             Assert.IsTrue(places.Count > 0, "places.Count > 0");
             foreach (var summary in places)
             {
@@ -79,17 +79,17 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(place);
 
             var q = PlaceQuery.NewQuery((p) => p.Name, place.Name, ComparisonOperator.Contains);
-            var r = await _placeRepo.QueryPlacesAsync(q);
+            var r = await _placeRepo.QueryPlacesContinuation(q);
             Assert.IsNotNull(r);
             Assert.IsInstanceOfType(r, typeof(IQueryResult<PlaceSummaryDto>));
             Assert.IsTrue(r.Entities.Contains(place));
 
             q = PlaceQuery.NewQuery((p) => p.Name, "", ComparisonOperator.Contains, 2); // get first 2 places
-            r = await _placeRepo.QueryPlacesAsync(q);
+            r = await _placeRepo.QueryPlacesContinuation(q);
             Assert.IsNotNull(r);
             Assert.IsInstanceOfType(r, typeof(IQueryResult<PlaceSummaryDto>));
             Assert.IsNotNull(r.ContinuationQuery);
-            var r2 = await _placeRepo.QueryPlacesAsync(r.ContinuationQuery);
+            var r2 = await _placeRepo.QueryPlacesContinuation(r.ContinuationQuery);
             Assert.IsNotNull(r2);
             Assert.IsNotNull(r2.Entities);
             Assert.AreEqual(r2.Entities.Count, 2);
@@ -120,7 +120,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             //Assert.IsNotNull(r);
             //Assert.IsTrue(r.Contains(place));
 
-            q.CreateQuery((p) => p.DateCreated, place.DateCreated?.Subtract(new TimeSpan(2, 0, 0, 0)), ComparisonOperator.GreaterThan);
+            q.CreateQuery((p) => p.DateCreated, place.DateCreated.Subtract(new TimeSpan(2, 0, 0, 0)), ComparisonOperator.GreaterThan);
             r = await _placeRepo.QueryPlaces(q);
             Assert.IsNotNull(r);
             Assert.IsTrue(r.Contains(place));
@@ -129,10 +129,10 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         public async Task Place_Update()
         {
             var ran = new Random();
-            var places = await _placeRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await _placeRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
 
-            
+
 
         }
 
@@ -147,11 +147,11 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(place); // check we got something back
             Assert.IsInstanceOfType(place,typeof(PlaceDetailDto)); // check its the right type
 
-            var allPlaces = await _placeRepo.GetAllPlaces(); // get all the current places
+            var allPlaces = await _placeRepo.QueryPlaces(); // get all the current places
             Assert.IsTrue(allPlaces.Contains(place)); // check our place is in there
             await _placeRepo.Delete(place.Id); // try to delete our place
 
-            allPlaces = await _placeRepo.GetAllPlaces(); // get all places again
+            allPlaces = await _placeRepo.QueryPlaces(); // get all places again
             Assert.IsFalse(allPlaces.Any(p=> p.Id == place.Id)); // check our place is actually gone
         }
 
@@ -165,7 +165,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = Guid.NewGuid().ToString();
             var tagNumber = Guid.NewGuid().ToString();
             var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Place);
-            var template = templates[ran.Next(templates.Count - 1)];
+            var template = templates.Items.ElementAt(ran.Next(templates.Items.Count() - 1));
 
             var addPlace = new AddPlaceDto
             {

@@ -14,6 +14,8 @@ using Locafi.Client.Model.Dto.Portal;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Microsoft.OData.Core.UriParser.Semantic;
+using Locafi.Client.Model;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Repo
 {
@@ -24,11 +26,41 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<PortalSummaryDto>> GetPortals()
+        public async Task<PageResult<PortalSummaryDto>> QueryPortals(string oDataQueryOptions = null)
         {
             var path = PortalUri.GetPortals;
-            var result = await Get<List<PortalSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<PortalSummaryDto>>(path);
             return result;
+        }
+
+        public async Task<PageResult<PortalSummaryDto>> QueryPortals(IRestQuery<PortalSummaryDto> query)
+        {
+            return await QueryPortals(query.AsRestQuery());
+        }
+        public async Task<IQueryResult<PortalSummaryDto>> QueryPortalsContinuation(IRestQuery<PortalSummaryDto> query)
+        {
+            var result = await QueryPortals(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<PortalDetailDto> GetPortal(Guid id)
@@ -54,7 +86,7 @@ namespace Locafi.Client.Repo
 
         public async Task<PortalDetailDto> UpdatePortal(UpdatePortalDto updatePortalDto)
         {
-            var path = PortalUri.UpdatePortal(updatePortalDto.Id);
+            var path = PortalUri.UpdatePortal;
             var result = await Post<PortalDetailDto>(updatePortalDto, path);
             return result;
         }
@@ -65,16 +97,47 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public async Task<IList<PortalRuleSummaryDto>> GetPortalRules()
+        public async Task<PageResult<PortalRuleSummaryDto>> QueryPortalRules(string oDataQueryOptions = null)
         {
-            var path = PortalUri.GetPortalRules();
-            var result = await Get<List<PortalRuleSummaryDto>>(path);
+            var path = PortalUri.GetPortalRules;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<PortalRuleSummaryDto>>(path);
             return result;
         }
 
-        public async Task<IList<PortalRuleDetailDto>> GetPortalRules(Guid id)
+        public async Task<PageResult<PortalRuleSummaryDto>> QueryPortalRules(IRestQuery<PortalRuleSummaryDto> query)
         {
-            var path = PortalUri.GetPortalRules(id);
+            return await QueryPortalRules(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<PortalRuleSummaryDto>> QueryPortalRulesContinuation(IRestQuery<PortalRuleSummaryDto> query)
+        {
+            var result = await QueryPortalRules(query.AsRestQuery());
+            return result.AsQueryResult(query);
+        }
+
+        public async Task<IList<PortalRuleDetailDto>> GetRulesForPortal(Guid id)
+        {
+            var path = PortalUri.GetRulesForPortal(id);
             var result = await Get<List<PortalRuleDetailDto>>(path);
             return result;
         }
@@ -95,7 +158,7 @@ namespace Locafi.Client.Repo
 
         public async Task<PortalRuleDetailDto> UpdatePortalRule(UpdatePortalRuleDto updatePortalRuleDto)
         {
-            var path = PortalUri.UpdatePortalRule(updatePortalRuleDto.Id);
+            var path = PortalUri.UpdatePortalRule;
             var result = await Post<PortalRuleDetailDto>(updatePortalRuleDto, path);
             return result;
         }
@@ -115,14 +178,14 @@ namespace Locafi.Client.Repo
 
         public async Task<PortalStatusDto> UpdatePortalStatus(UpdatePortalStatusDto updatePortalStatusDto)
         {
-            var path = PortalUri.UpdatePortalStatus(updatePortalStatusDto.Id);
+            var path = PortalUri.UpdatePortalStatus;
             var result = await Post<PortalStatusDto>(updatePortalStatusDto, path);
             return result;
         }
 
         public async Task<bool> UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto)
         {
-            var path = PortalUri.UpdatePortalHeartbeat(portalHeartbeatDto.RfidPortalId);
+            var path = PortalUri.UpdatePortalHeartbeat;
             return await Post(portalHeartbeatDto, path);            
         }
 

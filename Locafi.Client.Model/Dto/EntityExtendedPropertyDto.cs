@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 
 namespace Locafi.Client.Model.Dto
 {
@@ -16,11 +19,12 @@ namespace Locafi.Client.Model.Dto
     {
         public Guid Id { get; set; }
 
- //       public Guid ExtendedPropertyId { get; set; }
+        //       public Guid ExtendedPropertyId { get; set; }
 
- //       public Guid TemplateId { get; set; }
+        //       public Guid TemplateId { get; set; }
 
-        public string TemplateType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TemplateFor TemplateType { get; set; }
 
         public string ExtendedPropertyName { get; set; }
 
@@ -28,7 +32,8 @@ namespace Locafi.Client.Model.Dto
 
         public string TemplateExtendedPropertyIsRequired { get; set; }
 
-        public string ExtendedPropertyDataType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TemplateDataTypes ExtendedPropertyDataType { get; set; }
 
   //      public string Value { get; set; }
 

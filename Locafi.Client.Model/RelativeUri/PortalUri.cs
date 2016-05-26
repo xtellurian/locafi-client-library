@@ -10,9 +10,14 @@ namespace Locafi.Client.Model.RelativeUri
     public static class PortalUri
     {
         public static string ServiceName => "Portals";
-        public static string GetPortals => "GetPortals";
+        public static string GetPortals => "GetFilteredPortals";
         public static string CreatePortal => "CreatePortal";
+        public static string GetPortalRules => @"GetFilteredPortalRules";
         public static string CreatePortalRule => "CreatePortalRule";
+        public static string UpdatePortalStatus => @"UpdatePortalStatus";
+        public static string UpdatePortalHeartbeat => @"SendHeartbeat";
+        public static string UpdatePortalRule => @"UpdatePortalRule";
+        public static string UpdatePortal => @"UpdatePortal";
 
         public static string GetPortal(Guid id)
         {
@@ -22,11 +27,6 @@ namespace Locafi.Client.Model.RelativeUri
         public static string GetPortal(string serial)
         {
             return $"GetPortalBySerial/{serial}";
-        }
-
-        public static string UpdatePortal(Guid id)
-        {
-            return $"GetPortal/{id}/UpdatePortal";
         }
 
         public static string DeletePortal(Guid id)
@@ -39,19 +39,9 @@ namespace Locafi.Client.Model.RelativeUri
             return $"GetPortalRule/{id}";
         }
 
-        public static string GetPortalRules()
+        public static string GetRulesForPortal(Guid id)
         {
-            return "GetPortalRules";
-        }
-
-        public static string GetPortalRules(Guid id)
-        {
-            return $"GetPortal/{id}/GetPortalRules";
-        }
-
-        public static string UpdatePortalRule(Guid id)
-        {
-            return $"GetPortalRule/{id}/UpdatePortalRule";        
+            return $"GetRulesForPortal/{id}";
         }
 
         public static string DeletePortalRule(Guid id)
@@ -61,17 +51,7 @@ namespace Locafi.Client.Model.RelativeUri
 
         public static string GetPortalStatus(Guid id)
         {
-            return $"{GetPortal(id)}/GetPortalStatus";
-        }
-
-        public static string UpdatePortalStatus(Guid id)
-        {
-            return $"{GetPortal(id)}/UpdatePortalStatus";
-        }
-
-        public static string UpdatePortalHeartbeat(Guid id)
-        {
-            return $"{GetPortal(id)}/Heartbeat";
+            return $"GetPortalStatus/{id}";
         }
     }
 }

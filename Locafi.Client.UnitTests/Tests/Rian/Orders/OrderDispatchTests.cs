@@ -39,12 +39,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             // create new order
             var refNumber = Guid.NewGuid().ToString();
             string description = Guid.NewGuid().ToString();
-            var allPlaces = await _placeRepo.GetAllPlaces();
-            var place1 = allPlaces[ran.Next(allPlaces.Count - 1)];
-            allPlaces.Remove(place1);
-            var place2 = allPlaces[ran.Next(allPlaces.Count - 1)];
-            var allSkus = await _skuRepo.GetAllSkus(); // sometimes doesn't work when i pick a sku that cannot be allocated
-            var sku = allSkus[ran.Next(allSkus.Count - 1)];
+            var allPlaces = await _placeRepo.QueryPlaces();
+            var place1 = allPlaces.Items.ElementAt(ran.Next(allPlaces.Items.Count() - 1));
+            var remainingPlaces = allPlaces.Items.Where(p => p!= place1);
+            var place2 = remainingPlaces.ElementAt(ran.Next(remainingPlaces.Count() - 1));
+            var skus = await _skuRepo.QuerySkus(); // sometimes doesn't work when i pick a sku that cannot be allocated
+            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
             var addSkus = new List<AddOrderSkuLineItemDto> { new AddOrderSkuLineItemDto(sku.Id, quantity, 2) };
             // some random amoun with 2 packing size`
             var addOrder = new AddOrderDto(refNumber, description, place1.Id, place2.Id, addSkus);

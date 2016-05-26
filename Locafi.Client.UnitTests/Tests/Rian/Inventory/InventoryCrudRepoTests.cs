@@ -23,7 +23,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
     [TestMethod]
     public async Task InventoryCrud_GetAllInventories()
     {
-        var inventories = await InventoryRepo.GetAllInventories();
+        var inventories = await InventoryRepo.QueryInventories();
         Assert.IsNotNull(inventories);
         Assert.IsInstanceOfType(inventories, typeof (IEnumerable<InventorySummaryDto>));
     }
@@ -34,8 +34,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         // Create Inventory for us to Query
         var ran = new Random();
         var name = Guid.NewGuid().ToString();
-        var places = await PlaceRepo.GetAllPlaces();
-        var place = places[ran.Next(places.Count - 1)];
+        var places = await PlaceRepo.QueryPlaces();
+        var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
         var inventory = await InventoryRepo.CreateInventory(place.Id, name);
         Assert.IsNotNull(inventory, "Couldn't create that inventory");
 
@@ -55,7 +55,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
     [TestMethod]
     public async Task InventoryCrud_GetDetail()
     {
-        var inventories = await InventoryRepo.GetAllInventories();
+        var inventories = await InventoryRepo.QueryInventories();
         Assert.IsNotNull(inventories, "inventories != null");
         foreach (var inventory in inventories)
         {
@@ -71,8 +71,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             
             // create a new inventory
             var result = await InventoryRepo.CreateInventory(place.Id, name);
@@ -84,7 +84,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             await InventoryRepo.Delete(result.Id);
             
 
-            var groups = await SkuGroupRepo.QuerySkuGroups(UriQuery<SkuGroupSummaryDto>.NoFilter(0, 10));
+            var groups = await SkuGroupRepo.QuerySkuGroupsContinuation(UriQuery<SkuGroupSummaryDto>.NoFilter(0, 10));
             var group = groups.Entities.FirstOrDefault();
             Assert.IsNotNull(group);
 
@@ -107,16 +107,16 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
     {
         var ran = new Random();
         var name = Guid.NewGuid().ToString();
-        var places = await PlaceRepo.GetAllPlaces();
-        var place = places[ran.Next(places.Count - 1)];
-        var inventory = await InventoryRepo.CreateInventory( place.Id, name);
+        var places = await PlaceRepo.QueryPlaces();
+        var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var inventory = await InventoryRepo.CreateInventory( place.Id, name);
 
-        var inventories = await InventoryRepo.GetAllInventories(); // get all
+        var inventories = await InventoryRepo.QueryInventories(); // get all
         Assert.IsTrue(inventories.Contains(inventory), "inventories.Contains(inventory)");
             // assert all contains the one we just made
 
         await InventoryRepo.Delete(inventory.Id); // delete the one we just made
-        inventories = await InventoryRepo.GetAllInventories(); // get all again
+        inventories = await InventoryRepo.QueryInventories(); // get all again
         Assert.IsFalse(inventories.Contains(inventory), "inventories.Contains(inventory)");
             // assert the one we made no longer exists
     }

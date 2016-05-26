@@ -173,14 +173,17 @@
     <Compile Include="Enums\TemplateDataTypes.cs" />
     <Compile Include="Enums\TemplateFor.cs" />
     <Compile Include="ICacheable.cs" />
+    <Compile Include="PageResult.cs" />
     <Compile Include="Query\Builder\QueryBuilder.cs" />
     <Compile Include="Query\Builder\UriQuery.cs" />
     <Compile Include="Query\IQueryResult.cs" />
     <Compile Include="Query\PropertyComparison\EntityQuery.cs" />
     <Compile Include="Query\PropertyComparison\OrderQuery.cs" />
+    <Compile Include="Query\PropertyComparison\ReasonQuery.cs" />
     <Compile Include="Query\PropertyComparison\SkuGroupNameQuery.cs" />
     <Compile Include="Query\PropertyComparison\SkuQuery.cs" />
     <Compile Include="Query\PropertyComparison\SnapshotQuery.cs" />
+    <Compile Include="Query\PropertyComparison\TemplateQuery.cs" />
     <Compile Include="Query\QueryExtensions.cs" />
     <Compile Include="Query\QueryResult.cs" />
     <Compile Include="Query\QueryStringBuilderBase.cs" />

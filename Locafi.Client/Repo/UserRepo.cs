@@ -11,6 +11,7 @@ using Locafi.Client.Model.Dto.Users;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -26,20 +27,40 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<UserSummaryDto>> GetAllUsers()
+        public async Task<PageResult<UserSummaryDto>> QueryUsers(string oDataQueryOptions = null)
         {
             var path = UserUri.GetUsers;
-            var result = await Get<List<UserSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<UserSummaryDto>>(path);
             return result;
         }
-        [Obsolete]
-        public async Task<IList<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery)
+
+        public async Task<PageResult<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery)
         {
             var result = await QueryUsers(userQuery.AsRestQuery());
             return result;
         }
 
-        public async Task<IQueryResult<UserSummaryDto>> QueryUsersAsync(IRestQuery<UserSummaryDto> query)
+        public async Task<IQueryResult<UserSummaryDto>> QueryUsersContinuation(IRestQuery<UserSummaryDto> query)
         {
             var result = await QueryUsers(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -61,7 +82,7 @@ namespace Locafi.Client.Repo
 
         public async Task<UserDetailDto> UpdateUser(UpdateUserDto updateUserDto)
         {
-            var path = UserUri.UpdateUser(updateUserDto.UserId);
+            var path = UserUri.UpdateUser;
             var result = await Post<UserDetailDto>(updateUserDto, path);
             return result;
         }
@@ -70,13 +91,6 @@ namespace Locafi.Client.Repo
         {
             var path = UserUri.DeleteUser(id);
             var result = await Delete(path);
-            return result;
-        }
-
-        protected async Task<IList<UserSummaryDto>> QueryUsers(string queryString)
-        {
-            var path = $"{UserUri.GetUsers}{queryString}";
-            var result = await Get<List<UserSummaryDto>>(path);
             return result;
         }
 

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -14,10 +15,9 @@ namespace Locafi.Client.Contract.Repo
     {
         Task<SnapshotDetailDto> CreateSnapshot(AddSnapshotDto snapshot);
         Task<SnapshotDetailDto> GetSnapshot(Guid snapshotId);
-        Task<IList<SnapshotSummaryDto>> GetAllSnapshots();
+        Task<PageResult<SnapshotSummaryDto>> QuerySnapshots(string oDataQueryOptions = null);
+        Task<PageResult<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query);
+        Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsContinuation(IRestQuery<SnapshotSummaryDto> query);
         Task<bool> Delete(Guid id);
-        [Obsolete]
-        Task<IList<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query);
-        Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsAsync(IRestQuery<SnapshotSummaryDto> query);
     }
 }

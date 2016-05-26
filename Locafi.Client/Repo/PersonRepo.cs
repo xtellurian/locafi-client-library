@@ -12,6 +12,7 @@ using Locafi.Client.Model.Dto.Persons;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -27,14 +28,39 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<PersonSummaryDto>> GetAllPersons()
+        public async Task<PageResult<PersonSummaryDto>> QueryPersons(string oDataQueryOptions = null)
         {
             var path = PersonUri.GetPersons;
-            var items = await Get<List<PersonSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var items = await Get<PageResult<PersonSummaryDto>>(path);
             return items;
         }
 
-        public async Task<IQueryResult<PersonSummaryDto>> QueryPersonsAsync(IRestQuery<PersonSummaryDto> query)
+        public async Task<PageResult<PersonSummaryDto>> QueryPersons(IRestQuery<PersonSummaryDto> query)
+        {
+            return await QueryPersons(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<PersonSummaryDto>> QueryPersonsContinuation(IRestQuery<PersonSummaryDto> query)
         {
             var result = await QueryPersons(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -58,12 +84,6 @@ namespace Locafi.Client.Repo
         {
             var path = PersonUri.DeletePerson(id);
             await Delete(path);
-        }
-
-        protected async Task<IList<PersonSummaryDto>> QueryPersons(string queryString)
-        {
-            var result = await Get<List<PersonSummaryDto>>(queryString);
-            return result;
         }
 
         public async override Task Handle(HttpResponseMessage responseMessage, string url, string payload)

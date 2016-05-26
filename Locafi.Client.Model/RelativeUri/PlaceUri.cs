@@ -9,7 +9,7 @@ namespace Locafi.Client.Model.Uri
     public static class PlaceUri
     {
         public static string ServiceName => "Places";
-        public static string GetPlaces => "GetPlaces";
+        public static string GetPlaces => "GetFilteredPlaces";
         public static string CreatePlace => "CreatePlace";
 
         public static string GetPlace(Guid id)

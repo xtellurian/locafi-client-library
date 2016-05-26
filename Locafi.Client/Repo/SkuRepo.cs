@@ -13,6 +13,7 @@ using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -35,20 +36,40 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<IList<SkuSummaryDto>> GetAllSkus()
+        public async Task<PageResult<SkuSummaryDto>> QuerySkus(string oDataQueryOptions = null)
         {
             var path = SkuUri.GetSkus;
-            var result = await Get<List<SkuSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<SkuSummaryDto>>(path);
             return result;
         }
 
         [Obsolete]
-        public async Task<IList<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query)
+        public async Task<PageResult<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query)
         {
             return await QuerySkus(query.AsRestQuery());
         }
 
-        public async Task<IQueryResult<SkuSummaryDto>> QuerySkusAsync(IRestQuery<SkuSummaryDto> query)
+        public async Task<IQueryResult<SkuSummaryDto>> QuerySkusContinuation(IRestQuery<SkuSummaryDto> query)
         {
             var result = await QuerySkus(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -65,13 +86,6 @@ namespace Locafi.Client.Repo
         {
             var path = SkuUri.DeleteSku(id);
             await Delete(path);
-        }
-
-        protected async Task<IList<SkuSummaryDto>> QuerySkus(string filterString)
-        {
-            var path = $"{SkuUri.GetSkus}{filterString}";
-            var result = await Get<List<SkuSummaryDto>>(path);
-            return result;
         }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)

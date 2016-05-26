@@ -5,6 +5,9 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Reasons;
 using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Locafi.Client.Model.Query.PropertyComparison;
+using Locafi.Client.Model.Query;
+using System.Linq;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -23,7 +26,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
       //  [TestMethod]
         public async Task Reason_GetAll()
         {
-            var reasons = await _reasonRepo.GetAllReasons();
+            var reasons = await _reasonRepo.QueryReasons();
             Assert.IsNotNull(reasons);
             Assert.IsInstanceOfType(reasons,typeof(IEnumerable<ReasonDetailDto>));
         }
@@ -45,7 +48,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             foreach (ReasonFor reasonEnum in Enum.GetValues(typeof(ReasonFor)))
             {
-                var donwloaded = await _reasonRepo.GetReasonsFor(reasonEnum);
+                var donwloaded = await _reasonRepo.QueryReasons(ReasonQuery.NewQuery(r => r.ReasonFor,reasonEnum,ComparisonOperator.Equals));
                 Assert.IsNotNull(donwloaded);
                 Assert.IsInstanceOfType(donwloaded, typeof(IEnumerable<ReasonDetailDto>));
             }
@@ -58,8 +61,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var result = await _reasonRepo.CreateReason(reason);
             Assert.IsNotNull(result);
             await _reasonRepo.Delete(result.Id);
-            var allReasons = await _reasonRepo.GetAllReasons();
-            Assert.IsFalse(allReasons.Contains(result));
+            var allReasons = await _reasonRepo.QueryReasons();
+            Assert.IsFalse(allReasons.Items.Contains(result));
         }
 
       

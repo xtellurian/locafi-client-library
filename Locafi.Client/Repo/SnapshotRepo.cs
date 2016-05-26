@@ -13,6 +13,7 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -43,20 +44,39 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<IList<SnapshotSummaryDto>> GetAllSnapshots()
+        public async Task<PageResult<SnapshotSummaryDto>> QuerySnapshots(string oDataQueryOptions = null)
         {
             var path = SnapshotUri.GetSnapshots;
-            var result = await Get<List<SnapshotSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<SnapshotSummaryDto>>(path);
             return result;
         }
 
-        [Obsolete]
-        public async Task<IList<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query)
+        public async Task<PageResult<SnapshotSummaryDto>> QuerySnapshots(IRestQuery<SnapshotSummaryDto> query)
         {
             return await QuerySnapshots(query.AsRestQuery());
         }
 
-        public async Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsAsync(IRestQuery<SnapshotSummaryDto> query)
+        public async Task<IQueryResult<SnapshotSummaryDto>> QuerySnapshotsContinuation(IRestQuery<SnapshotSummaryDto> query)
         {
             var result = await QuerySnapshots(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -66,13 +86,6 @@ namespace Locafi.Client.Repo
         {
             var path = SnapshotUri.DeleteSnapshot(id);
             return await Delete(path);
-        }
-
-        protected async Task<IList<SnapshotSummaryDto>> QuerySnapshots(string queryString)
-        {
-            var path = $"{SnapshotUri.GetSnapshots}/{queryString}";
-            var result = await Get<List<SnapshotSummaryDto>>(path);
-            return result;
         }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)

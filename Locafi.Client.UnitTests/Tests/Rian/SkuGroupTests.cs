@@ -21,7 +21,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             // first we need 2 group names
             var groupNames =
                 await
-                    SkuGroupRepo.QuerySkuGroupNames(SkuGroupNameQuery.NewQuery(g => g.Name, TestGroupName,
+                    SkuGroupRepo.QuerySkuGroupNamesContinuation(SkuGroupNameQuery.NewQuery(g => g.Name, TestGroupName,
                         ComparisonOperator.Equals));
             Assert.IsTrue(groupNames.Entities.Count <= 1, "There should not be multiple of these"); // there should be at most 1 group name like this
             
@@ -29,12 +29,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var groupName2 = groupNames.Entities.FirstOrDefault(n=>string.Equals(n.Name, SecondTestGroupName)) ?? await SkuGroupRepo.CreateSkuGroupName(new AddSkuGroupNameDto(SecondTestGroupName)); // create if not exists
 
             // get a sku to add
-            var skus = await SkuRepo.GetAllSkus();
-            var sku = skus[ran.Next(skus.Count - 1)];
+            var skus = await SkuRepo.QuerySkus();
+            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
 
             // get a place to add the group to
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
 
             // now create a new group with 1 place and 1 sku
             var addGroupDto = new AddSkuGroupDto(groupName1.Id);
@@ -61,14 +61,14 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             //update group name
             var updateDto = new UpdateSkuGroupDto(id, groupName2.Id); // change group name to group name 2
-            groupDetail = await SkuGroupRepo.UpdateSkuGroup(id, updateDto);
+            groupDetail = await SkuGroupRepo.UpdateSkuGroup(updateDto);
             Assert.AreEqual(groupName2.Name, groupDetail.SkuGroupName, "Updated names are equal");
 
             // remove place and sku, and then re-add them
             updateDto = new UpdateSkuGroupDto(id);
             updateDto.RemoveSku(sku.Id);
             updateDto.RemovePlace(place.Id);
-            groupDetail = await SkuGroupRepo.UpdateSkuGroup(id, updateDto);
+            groupDetail = await SkuGroupRepo.UpdateSkuGroup(updateDto);
             Assert.IsFalse(groupDetail.Skus.Contains(sku), "Successfully removed sku");
             Assert.IsFalse(groupDetail.Places.Contains(place), "Succesfully removed place");
 
@@ -76,7 +76,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             updateDto = new UpdateSkuGroupDto(id);
             updateDto.AddPlace(place.Id);
             updateDto.AddSku(sku.Id);
-            groupDetail = await SkuGroupRepo.UpdateSkuGroup(id, updateDto);
+            groupDetail = await SkuGroupRepo.UpdateSkuGroup(updateDto);
             Assert.IsTrue(groupDetail.Skus.Contains(sku), "Re-added sku");
             Assert.IsTrue(groupDetail.Places.Contains(place), "Re-added place");
 

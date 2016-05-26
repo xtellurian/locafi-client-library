@@ -5,6 +5,8 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Persons;
 using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using Locafi.Client.Model.Dto.Tags;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -26,7 +28,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Person_GetAll()
         {
-            var persons = await _personRepo.GetAllPersons();
+            var persons = await _personRepo.QueryPersons();
             Assert.IsNotNull(persons, "persons != null");
             Assert.IsInstanceOfType(persons, typeof(IEnumerable<PersonSummaryDto>));
         }
@@ -40,10 +42,10 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(detail, "detail != null");
             _toCleanup.Add(detail.Id);
             Assert.IsInstanceOfType(detail,typeof(PersonDetailDto));
-            Assert.IsTrue(string.Equals(addPerson.EmailAddress,detail.EmailAddress));
+            Assert.IsTrue(string.Equals(addPerson.Email,detail.Email));
             Assert.IsTrue(string.Equals(addPerson.GivenName, detail.GivenName));
             Assert.IsTrue(string.Equals(addPerson.Surname, detail.Surname));
-            Assert.IsTrue(string.Equals(addPerson.TagNumber, detail.TagNumber));
+            Assert.IsTrue(string.Equals(addPerson.PersonTagList[0].TagNumber, detail.TagNumber));
         }
 
         [TestMethod]
@@ -67,17 +69,16 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             var ran = new Random();
             var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Person);
-            var template = templates[ran.Next(templates.Count - 1)];
+            var template = templates.Items.ElementAt(ran.Next(templates.Items.Count() - 1));
             var email = $"{Guid.NewGuid()}@FakeDomain.com";
 
             return new AddPersonDto
             {
                 TemplateId = template.Id,
-                EmailAddress = email,
+                Email = email,
                 GivenName = Guid.NewGuid().ToString(),
                 Surname = Guid.NewGuid().ToString(),
-                TagNumber = Guid.NewGuid().ToString(),
-                TagType = "", // not used?
+                PersonTagList = new List<WriteTagDto>() { new WriteTagDto() {TagNumber = Guid.NewGuid().ToString(), TagType = TagType.PassiveRfid } }
             };
         }
 

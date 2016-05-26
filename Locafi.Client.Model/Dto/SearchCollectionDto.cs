@@ -22,7 +22,7 @@ namespace Locafi.Client.Model.Dto
         {
             SearchParameterDtos = new List<SearchParameterDto>();
             Skip = 0;
-            Take = 10;
+            Take = 100;
         }
     }
 }

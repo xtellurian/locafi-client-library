@@ -10,6 +10,7 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Search;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.FileUpload;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -18,16 +19,16 @@ namespace Locafi.Client.Contract.Repo
         //Task<ItemSummaryDto> AddItem(AddItemDto item);
         //Task<ItemSummaryDto> GetItemFromTag(string tagNumber);
         //Task<ItemSummaryDto> GetItemById(string id);
-        Task<int> GetItemCount(IRestQuery<ItemSummaryDto> query);
+
         Task<ItemDetailDto> GetItemDetail(Guid id);
         Task<ItemDetailDto> CreateItem(AddItemDto item);
         Task<ItemDetailDto> UpdateTag(UpdateItemTagDto updateItemTagDto);
         Task<ItemDetailDto> UpdateItemPlace(UpdateItemPlaceDto updateItemPlaceDto);
         Task<ItemDetailDto> UpdateItem(UpdateItemDto updateItemDto);
         Task<bool> DeleteItem(Guid itemId);
-        [Obsolete]
-        Task<IList<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query);
-        Task<IQueryResult<ItemSummaryDto>> QueryItemsAsync(IRestQuery<ItemSummaryDto> query);
+        Task<PageResult<ItemSummaryDto>> QueryItems(string oDataQueryOptions = null);
+        Task<PageResult<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query);
+        Task<IQueryResult<ItemSummaryDto>> QueryItemsContinuation(IRestQuery<ItemSummaryDto> query);
         Task<IList<ItemSummaryDto>> SearchItems(SearchCollectionDto searchItemQueryDto);
         Task<ISearchResult<ItemSummaryDto>> SearchItems(IRestSearch<ItemSummaryDto> search);
         Task<IList<ItemSummaryDto>> UploadItems(FileUploadDto file);

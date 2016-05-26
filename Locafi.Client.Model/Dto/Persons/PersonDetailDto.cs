@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Locafi.Client.Model.Dto.Tags;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,10 +24,8 @@ namespace Locafi.Client.Model.Dto.Persons
                 property.SetValue(this, value);
             }
         }
-        public Guid? TagId { get; set; }
+        public IList<TagDetailDto> PersonTagList { get; set; }
 
-        public string EmailAddress { get; set; }
-
-        public IList<ReadEntityExtendedPropertyDto> PersonExtendedPropeertyList { get; set; }
+        public IList<ReadEntityExtendedPropertyDto> PersonExtendedPropertyList { get; set; }
     }
 }

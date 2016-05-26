@@ -27,8 +27,6 @@ namespace Locafi.Client.Model.Dto.Items
         public Guid? ParentItemId { get; set; }
         public string ParentItemName { get; set; }
 
-        public Guid? PersonId { get; set; }
-        public string PersonName { get; set; }
         public string Description { get; set; }
 
         public IList<TagDetailDto> ItemTagList { get; set; }

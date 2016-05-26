@@ -6,6 +6,7 @@ using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -91,17 +92,17 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var result = await _snapshotRepo.CreateSnapshot(newSnap);
             _toCleanup.Add(result.Id);
 
-            var snaps = await _snapshotRepo.GetAllSnapshots();
+            var snaps = await _snapshotRepo.QuerySnapshots();
             Assert.IsNotNull(snaps);
             Assert.IsInstanceOfType(snaps,typeof(IEnumerable<SnapshotSummaryDto>));
-            Assert.IsTrue(snaps.Contains(result));
+            Assert.IsTrue(snaps.Items.Contains(result));
         }
 
    //     [TestMethod]
         public async Task Snapshot_GetById() // assumes some exist already
         {
-            var snaps = await _snapshotRepo.GetAllSnapshots();
-            foreach (var snap in snaps)
+            var snaps = await _snapshotRepo.QuerySnapshots();
+            foreach (var snap in snaps.Items)
             {
                 var result = await _snapshotRepo.GetSnapshot(snap.Id);
                 Assert.IsNotNull(result.Tags, "result.Tags != null");
@@ -117,12 +118,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var newSnap = SnapshotGenerator.CreateRandomSnapshotForUpload(place.Id);
             var result = await _snapshotRepo.CreateSnapshot(newSnap);
             Assert.IsNotNull(result);
-            var allSnaps = await _snapshotRepo.GetAllSnapshots();
-            Assert.IsTrue(allSnaps.Contains(result)); // make sure it was created
+            var allSnaps = await _snapshotRepo.QuerySnapshots();
+            Assert.IsTrue(allSnaps.Items.Contains(result)); // make sure it was created
 
             await _snapshotRepo.Delete(result.Id);
-            allSnaps = await _snapshotRepo.GetAllSnapshots();
-            Assert.IsFalse(allSnaps.Contains(result)); // make sure it was deleted
+            allSnaps = await _snapshotRepo.QuerySnapshots();
+            Assert.IsFalse(allSnaps.Items.Contains(result)); // make sure it was deleted
 
         }
 
@@ -130,8 +131,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private async Task<PlaceSummaryDto> GetRandomPlace()
         {
             var ran = new Random();
-            var allPlaces = await _placeRepo.GetAllPlaces();
-            var place = allPlaces[ran.Next(allPlaces.Count - 1)];
+            var places = await _placeRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             return place;
         }
 

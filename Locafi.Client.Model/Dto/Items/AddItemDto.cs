@@ -37,11 +37,6 @@ namespace Locafi.Client.Model.Dto.Items
 
         public string Description { get; set; }
 
-        //public string TagNumber { get; set; }
-
-        //[JsonConverter(typeof(StringEnumConverter))]
-        //public TagType TagType { get; set; }
-
         public IList<WriteTagDto> ItemTagList { get; set; }
 
         public IList<WriteItemExtendedPropertyDto> ItemExtendedPropertyList { get; set; }

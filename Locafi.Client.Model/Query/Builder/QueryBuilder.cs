@@ -7,9 +7,21 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Query.Builder
 {
+    public enum LogicalOperator
+    {
+        And,
+        Or
+    }
+
+    public class FilterExpression
+    {
+        public string Expression { get; set; }
+        public LogicalOperator Operator { get; set; }
+    }
+
     public class QueryBuilder <T> : QueryStringBuilderBase<T> where T : class 
     {
-        private readonly IList<string> _filterExpressions = new List<string>();
+        private readonly IList<FilterExpression> _filterExpressions = new List<FilterExpression>();
         private int _skip;
         private int _take = 100; // default
         private QueryBuilder()
@@ -25,7 +37,15 @@ namespace Locafi.Client.Model.Query.Builder
         {
             var propertyInfo = Validate(propertyLambda);
             var filterString = BuildSingleExpression(value, op, propertyInfo);
-            _filterExpressions.Add(filterString);
+            _filterExpressions.Add(new FilterExpression() { Expression = filterString, Operator = LogicalOperator.And });
+            return this;
+        }
+
+        public QueryBuilder<T> Or<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op)
+        {
+            var propertyInfo = Validate(propertyLambda);
+            var filterString = BuildSingleExpression(value, op, propertyInfo);
+            _filterExpressions.Add(new FilterExpression() { Expression = filterString, Operator = LogicalOperator.Or });
             return this;
         }
 
@@ -48,8 +68,8 @@ namespace Locafi.Client.Model.Query.Builder
             var numberOfExpressions = _filterExpressions.Count;
             for (int c = 0; c < numberOfExpressions; c++)
             {
-                filter.Append(_filterExpressions[c]);
-                if (c < numberOfExpressions - 1) filter.Append(" and ");
+                if (c > 0 && c < numberOfExpressions) filter.Append(" " + _filterExpressions[c].Operator.ToString().ToLower() + " ");
+                filter.Append(_filterExpressions[c].Expression);
             }
 
             return filter.ToString();

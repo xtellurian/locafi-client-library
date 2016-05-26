@@ -14,6 +14,7 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -29,10 +30,30 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<InventorySummaryDto>> GetAllInventories()
+        public async Task<PageResult<InventorySummaryDto>> QueryInventories(string oDataQueryOptions = null)
         {
             var path = InventoryUri.GetInventories;
-            var result = await Get<List<InventorySummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<InventorySummaryDto>>(path);
             return result;
         }
 
@@ -91,23 +112,16 @@ namespace Locafi.Client.Repo
         }
 
         [Obsolete]
-        public async Task<IList<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query)
+        public async Task<PageResult<InventorySummaryDto>> QueryInventories(IRestQuery<InventorySummaryDto> query)
         {
             var result = await QueryInventories(query.AsRestQuery());
             return result;
         }
 
-        public async Task<IQueryResult<InventorySummaryDto>> QueryInventoriesAsync(IRestQuery<InventorySummaryDto> query)
+        public async Task<IQueryResult<InventorySummaryDto>> QueryInventoriesWithContinuation(IRestQuery<InventorySummaryDto> query)
         {
             var result = await QueryInventories(query.AsRestQuery());
             return result.AsQueryResult(query);
-        }
-
-        protected async Task<IList<InventorySummaryDto>> QueryInventories(string queryString)
-        {
-            var path = $"{InventoryUri.GetInventories}{queryString}";
-            var result = await Get<List<InventorySummaryDto>>(path);
-            return result;
         }
 
         public async override Task Handle(HttpResponseMessage responseMessage, string url, string payload)

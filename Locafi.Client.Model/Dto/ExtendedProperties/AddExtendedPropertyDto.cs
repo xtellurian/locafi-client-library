@@ -7,17 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto
+namespace Locafi.Client.Model.Dto.ExtendedProperties
 {
-    public class SearchParameterDto
+    public class AddExtendedPropertyDto
     {
-        public string PropertyName { get; set; }
-
+        public string Name { get; set; }
+        public string Description { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public TemplateDataTypes DataType { get; set; }
-
-        public string Value { get; set; }
-
-        public bool IsExtendedProperty { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TemplateFor TemplateType { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Locafi.Client.Model.RelativeUri
     {
         public static string ServiceName => "Snapshots";
         public static string CreateUri => "CreateSnapshot";
-        public static string GetSnapshots => "GetSnapshots";
+        public static string GetSnapshots => "GetFilteredSnapshots";
 
         public static string GetSnapshot(Guid id)
         {

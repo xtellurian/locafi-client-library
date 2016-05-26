@@ -5,12 +5,14 @@ namespace Locafi.Client.Model.Dto.Items
 {
     public class UpdateItemDto
     {
-        public Guid ItemId { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public Guid PlaceId { get; set; }
+        public Guid? PersonId { get; set; }
+
+        public Guid? ParentId { get; set; }
 
         public Guid SkuId { get; set; }
 
@@ -27,9 +29,8 @@ namespace Locafi.Client.Model.Dto.Items
             {
                 Description = detail.Description,
                 ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(detail.ItemExtendedPropertyList),
-                ItemId = detail.Id,
+                Id = detail.Id,
                 Name = detail.Name,
-                PlaceId = detail.PlaceId,
                 SkuId = detail.SkuId
             };
         }

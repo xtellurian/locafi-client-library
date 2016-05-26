@@ -22,7 +22,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         public async Task TagReservations_Reserve1ForEverySku()
         {
             var num = 1;
-            var skus = await _skuRepo.GetAllSkus();
+            var skus = await _skuRepo.QuerySkus();
             Assert.IsNotNull(skus);
             Assert.IsTrue(skus.Count > 0);
             foreach (var sku in skus)

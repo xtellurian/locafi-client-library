@@ -10,6 +10,7 @@ using Locafi.Client.Model.Query.PropertyComparison;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Dto.Orders;
+using Locafi.Client.Model.Query.Builder;
 
 namespace Locafi.Client.UnitTests.EntityGenerators
 {
@@ -37,7 +38,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             SkuSummaryDto sku;
             if (skuId == null)
             {
-                var skus = await _skuRepo.GetAllSkus();
+                var skus = await _skuRepo.QuerySkus();
                 // find a sku with a gtin
                 sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
                 if (sku == null)
@@ -70,7 +71,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             SkuSummaryDto sku;
             if (skuId == null)
             {
-                var skus = await _skuRepo.GetAllSkus();
+                var skus = await _skuRepo.QuerySkus();
                 // find a sku with a gtin
                 sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
                 if (sku == null)
@@ -87,13 +88,12 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             var randomCount = randomTagNumber <= 0 ? 0 : randomTagNumber;
             var name = Guid.NewGuid().ToString();
 
-            var q2 = new ItemQuery();
-            q2.CreateQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals);
-            int availableItems = await _itemRepo.GetItemCount(q2);
+            var q2 = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals).Take(0).Build();
+            int availableItems = (int)(await _itemRepo.QueryItems(q2)).Count;
 
             var q1 = new ItemQuery();
             q1.CreateQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals, availableItems > totalCount ? totalCount - randomCount : availableItems, availableItems > totalCount ? ran.Next(availableItems - totalCount - randomCount) : 0);
-            var items = await _itemRepo.QueryItemsAsync(q1);
+            var items = await _itemRepo.QueryItemsContinuation(q1);
 
             IList<SnapshotTagDto> tags = new List<SnapshotTagDto>();
             foreach(var item in items.Entities)

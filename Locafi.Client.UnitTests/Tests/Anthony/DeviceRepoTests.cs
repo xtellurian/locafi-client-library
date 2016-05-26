@@ -8,6 +8,7 @@ using Locafi.Client.Model.Dto.Devices;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Locafi.Client.Model.Query.Builder;
 
 namespace Locafi.Client.UnitTests.Tests.Anthony
 {
@@ -32,16 +33,23 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task PeripheralDevice_GetAll()
         {
-            var devices = await _deviceRepoAsUser.GetDevices();
+            var devices = await _deviceRepoAsUser.QueryDevices();
             Assert.IsNotNull(devices);
-            Assert.IsInstanceOfType(devices, typeof(IEnumerable<PeripheralDeviceSummaryDto>));
-            Assert.IsTrue(devices.Count > 0);
+            Assert.IsInstanceOfType(devices.Items, typeof(IEnumerable<PeripheralDeviceSummaryDto>));
+            Assert.IsTrue(devices.Items.Count() > 0);
+
+            var query = QueryBuilder<PeripheralDeviceSummaryDto>.NewQuery(d => d.DeviceType, PeripheralDeviceType.SpeedwayR420, Model.Query.ComparisonOperator.Equals)
+                .Build();
+            devices = await _deviceRepoAsUser.QueryDevices(query);
+            Assert.IsNotNull(devices);
+            Assert.IsInstanceOfType(devices.Items, typeof(IEnumerable<PeripheralDeviceSummaryDto>));
+            Assert.IsTrue(devices.Items.Count() > 0);
         }
 
         [TestMethod]
         public async Task PeripheralDevice_GetByIdAsUser()
         {
-            var devices = await _deviceRepoAsUser.GetDevices();
+            var devices = await _deviceRepoAsUser.QueryDevices();
             var device = await _deviceRepoAsUser.GetDevice(devices.First().Id);
             Assert.IsNotNull(device);
             Assert.IsInstanceOfType(device, typeof(PeripheralDeviceDetailDto));
@@ -50,7 +58,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task PeripheralDevice_GetByIdAsPortal()
         {
-            var devices = await _deviceRepoAsUser.GetDevices();
+            var devices = await _deviceRepoAsUser.QueryDevices();
             var device = await _deviceRepoAsPortal.GetDevice(devices.First().Id);
             Assert.IsNotNull(device);
             Assert.IsInstanceOfType(device, typeof(PeripheralDeviceDetailDto));
@@ -60,7 +68,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetAll()
         {
-            var readers = await _deviceRepoAsUser.GetReaders();
+            var readers = await _deviceRepoAsUser.QueryReaders();
             Assert.IsNotNull(readers);
             Assert.IsInstanceOfType(readers, typeof(IEnumerable<RfidReaderSummaryDto>));
             Assert.IsTrue(readers.Count > 0); //because we cant add readers at the moment
@@ -69,7 +77,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetBySerialAsUser()
         {
-            var readerSerial = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().SerialNumber;
+            var readerSerial = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault().SerialNumber;
             var reader = await _deviceRepoAsUser.GetReader(readerSerial);
             Assert.IsNotNull(reader);
             Assert.IsTrue(reader.SerialNumber == readerSerial);
@@ -78,7 +86,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetByIdAsUser()
         {
-            var readerId = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().Id;
+            var readerId = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault().Id;
             var readerTest = await _deviceRepoAsUser.GetReader(readerId);
             Assert.IsNotNull(readerTest);
             Assert.IsTrue(readerId == readerTest.Id);
@@ -87,7 +95,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetBySerialAsPortal()
         {
-            var readerSerial = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().SerialNumber;
+            var readerSerial = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault().SerialNumber;
             var reader = await _deviceRepoAsPortal.GetReader(readerSerial);
             Assert.IsNotNull(reader);
             Assert.IsTrue(reader.SerialNumber == readerSerial);
@@ -96,7 +104,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetByIdAsPortal()
         {
-            var readerId = (await _deviceRepoAsUser.GetReaders()).FirstOrDefault().Id;
+            var readerId = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault().Id;
             var readerTest = await _deviceRepoAsPortal.GetReader(readerId);
             Assert.IsNotNull(readerTest);
             Assert.IsTrue(readerId == readerTest.Id);
@@ -169,8 +177,8 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         private async Task<ClusterDto> GenerateRandomCluster()
         {
             var ran = new Random();
-            var places = await _placeRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await _placeRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
 
             var cluster = new ClusterDto
             {
@@ -198,7 +206,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 
         private async Task AddNewPersonTag(ClusterDto cluster)
         {
-            var persons = await _personRepo.GetAllPersons();
+            var persons = await _personRepo.QueryPersons();
             foreach (var person in persons)
             {
                 if (!string.IsNullOrEmpty(person.TagNumber) && !cluster.Tags.Any(t => string.Equals(t.TagNumber, person.TagNumber)))

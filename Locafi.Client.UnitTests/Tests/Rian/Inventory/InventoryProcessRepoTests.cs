@@ -15,6 +15,8 @@ using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.Model.Dto.SkuGroups;
 using Locafi.Client.Model.Dto.Tags;
+using Locafi.Client.Model.Query.PropertyComparison;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
 {
@@ -26,9 +28,9 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
-//            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            //            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
             var inventory = await InventoryRepo.CreateInventory(new Guid("00000000-0000-0000-0000-000000060556"), name);
 
             var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId, 100);
@@ -50,8 +52,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             var inventory = await InventoryRepo.CreateInventory(place.Id, name);
 //            var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
 
@@ -72,7 +74,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
 
             // resolve the inventory
-            var reasons = await ReasonRepo.GetAllReasons();
+            var reasons = await ReasonRepo.QueryReasons();
             var unknownReason = reasons.Where(r => r.Name == "Unknown").FirstOrDefault();
             var resolveInventoryDto = new ResolveInventoryDto();
             foreach (var item in resultInventory.MissingItems)
@@ -102,8 +104,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             // create the inventory
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             var inventory = await InventoryRepo.CreateInventory(place.Id, name);
             //var inventory = await _inventoryRepo.CreateInventory(name, new Guid("00000000-0000-0000-0000-000000060556"));
 
@@ -124,7 +126,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             Assert.IsTrue(resultInventory.SnapshotIds.Contains(resultSnapshot.Id));
 
             // resolve the inventory
-            var reasons = await ReasonRepo.GetAllReasons();
+            var reasons = await ReasonRepo.QueryReasons();
             var unknownReason = reasons.FirstOrDefault(r => r.Name == "Unknown");
             var resolveInventoryDto = new ResolveInventoryDto();
             foreach(var item in resultInventory.MissingItems)
@@ -153,8 +155,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         {
             var ran = new Random();
             var name = "Load test " + Guid.NewGuid();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             var inventory = await InventoryRepo.CreateInventory(place.Id, name);
 
             
@@ -207,13 +209,13 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         private async Task<SkuDetailDto> GetSkuWithValidCompanyAndItem()
         {
             var ran = new Random();
-            var skus = await SkuRepo.GetAllSkus();
+            var skus = await SkuRepo.QuerySkus();
             var count = 0;
             SkuDetailDto result = null;
             while (true)
             {
                 count++;
-                var skuSummary = skus[ran.Next(skus.Count - 1)];
+                var skuSummary = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
                 var detail = await SkuRepo.GetSkuDetail(skuSummary.Id);
                 if (!string.IsNullOrEmpty(detail.CompanyPrefix) && !string.IsNullOrEmpty(detail.ItemReference))
                 {
@@ -231,8 +233,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             var inventory = await InventoryRepo.CreateInventory(place.Id, name);
 
             place = await GetRandomPlace(inventory.PlaceId); // get a place not this palce
@@ -249,12 +251,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             var inventory = await InventoryRepo.CreateInventory(place.Id, name);
 
             Assert.IsNotNull(inventory, "inventory != null");
-            var items = await ItemRepo.QueryItemsAsync(UriQuery<ItemSummaryDto>.NoFilter(ran.Next(3), 3));
+            var items = await ItemRepo.QueryItemsContinuation(UriQuery<ItemSummaryDto>.NoFilter(ran.Next(3), 3));
             var item = items.Entities.FirstOrDefault();
             Assert.IsNotNull(item, "item != null");
             var result = await InventoryRepo.AddItem(inventory, item.Id);
@@ -275,9 +277,9 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.GetAllPlaces();
-            var place = places[ran.Next(places.Count - 1)];
-            var otherPlace = places.Where(p => p.Id != place.Id).ToList()[ran.Next(places.Count - 2)];
+            var places = await PlaceRepo.QueryPlaces();
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var otherPlace = places.Where(p => p.Id != place.Id).ToList()[ran.Next(places.Items.Count() - 2)];
             var inventory = await InventoryRepo.CreateInventory(place.Id, name);
 
             var localSnapshot = await SimulateRealInventorySnapshot(place.Id, otherPlace.Id); //TODO: fix this method
@@ -288,22 +290,22 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             var resolution = new ResolveInventoryDto();
             foreach (var id in resultInventory.FoundItemsExpected) //TODO: Add Real Items to Inventory
             {
-                var reasons = await ReasonRepo.GetReasonsFor(ReasonFor.Inventory_ExpectedItem);
-                var reason = reasons[ran.Next(reasons.Count - 1)];
+                var reasons = await ReasonRepo.QueryReasons(ReasonQuery.NewQuery(r => r.ReasonFor,ReasonFor.Inventory_ExpectedItem,ComparisonOperator.Equals));
+                var reason = reasons.Items.ElementAt(ran.Next(reasons.Items.Count() - 1));
                 resolution.Reasons.Add(id, reason.Id);
             }
 
             foreach (var id in resultInventory.FoundItemsUnexpected)
             {
-                var reasons = await ReasonRepo.GetReasonsFor(ReasonFor.Inventory_UnexpectedItem);
-                var reason = reasons[ran.Next(reasons.Count - 1)];
+                var reasons = await ReasonRepo.QueryReasons(ReasonQuery.NewQuery(r => r.ReasonFor, ReasonFor.Inventory_UnexpectedItem, ComparisonOperator.Equals));
+                var reason = reasons.Items.ElementAt(ran.Next(reasons.Items.Count() - 1));
                 resolution.Reasons.Add(id, reason.Id);
             }
 
             foreach (var id in resultInventory.MissingItems)
             {
-                var reasons = await ReasonRepo.GetReasonsFor(ReasonFor.Inventory_ExpectedItem);
-                var reason = reasons[ran.Next(reasons.Count - 1)];
+                var reasons = await ReasonRepo.QueryReasons(ReasonQuery.NewQuery(r => r.ReasonFor, ReasonFor.Inventory_ExpectedItem, ComparisonOperator.Equals));
+                var reason = reasons.Items.ElementAt(ran.Next(reasons.Items.Count() - 1));
                 resolution.Reasons.Add(id, reason.Id);
             }
 
@@ -322,20 +324,20 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             {
                 var ran = new Random();
                 var name = Guid.NewGuid().ToString();
-                var places = await PlaceRepo.GetAllPlaces();
-                var place = places[ran.Next(places.Count - 1)];
+                var places = await PlaceRepo.QueryPlaces();
+                var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
 
                 place.Id = new Guid("00000000-0000-0000-0000-000000061008");
 
                 // get skus, select 2
-                var skus = (await SkuRepo.GetAllSkus()).Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).ToList();
+                var skus = (await SkuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).ToList();
                 var sku1 = skus[0];
                 var sku2 = skus[1];
                 // create skugroup with sku1
 
                 var addSkuGroupDto = new AddSkuGroupDto()
                 {
-                    SkuGroupNameId = (await SkuGroupRepo.QuerySkuGroupNames(UriQuery<SkuGroupNameDetailDto>.NoFilter(0, 1))).Entities[0].Id,
+                    SkuGroupNameId = (await SkuGroupRepo.QuerySkuGroupNamesContinuation(UriQuery<SkuGroupNameDetailDto>.NoFilter(0, 1))).Entities[0].Id,
                     SkuIds = new List<Guid>() { sku1.Id },
                     //SkuIds = new List<Guid>() { sku1.Id, sku2.Id },
                     PlaceIds = new List<Guid>() { place.Id }
@@ -370,7 +372,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
                 Assert.IsTrue(resultInventory.MissingItems.Intersect(sku2SS.Items).Count() <= 0);
 
                 // resolve the inventory
-                var reasons = await ReasonRepo.GetAllReasons();
+                var reasons = await ReasonRepo.QueryReasons();
                 var unknownReason = reasons.Where(r => r.Name == "Unknown").FirstOrDefault();
                 var resolveInventoryDto = new ResolveInventoryDto();
                 foreach (var item in resultInventory.MissingItems)
@@ -414,8 +416,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         private async Task<AddSnapshotDto> SimulateRealInventorySnapshot(Guid placeId, Guid otherPlaceId)
         {
             var ran = new Random();
-            var skus = await SkuRepo.GetAllSkus();
-            var sku = skus[ran.Next(skus.Count - 1)];
+            var skus = await SkuRepo.QuerySkus();
+            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
             var tag1 = new SnapshotTagDto {TagNumber = Guid.NewGuid().ToString(), TagType = TagType.PassiveRfid};
             var tag2 = new SnapshotTagDto { TagNumber = Guid.NewGuid().ToString(), TagType = TagType.PassiveRfid };
             var addItem = new AddItemDto(sku.Id, placeId, tagNumber: tag1.TagNumber);
@@ -452,11 +454,11 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
         private async Task<PlaceSummaryDto> GetRandomPlace(Guid notThisId)
         {
             var ran = new Random();
-            var allPlaces = await PlaceRepo.GetAllPlaces();
+            var allPlaces = await PlaceRepo.QueryPlaces();
             PlaceSummaryDto place = null;
             while (place?.Id.Equals(notThisId) ?? true)
             {
-                place = allPlaces[ran.Next(allPlaces.Count - 1)];
+                place = allPlaces.Items.ElementAt(ran.Next(allPlaces.Items.Count() - 1));
             }
 
             return place;

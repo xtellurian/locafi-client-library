@@ -36,7 +36,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var name = Guid.NewGuid().ToString();
 
             var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Item);
-            var template = templates[ran.Next(templates.Count - 1)];
+            var template = templates.Items.ElementAt(ran.Next(templates.Items.Count() - 1));
             var templateDetail = await _templateRepo.GetById(template.Id);
             var extendedProperties = new List<WriteSkuExtendedPropertyDto>();
             foreach (var extendedPropRequired in templateDetail.TemplateExtendedPropertyList)
@@ -71,7 +71,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Sku_GetAll()
         {
-            var skus = await _skuRepo.GetAllSkus();
+            var skus = await _skuRepo.QuerySkus();
 
             Assert.IsNotNull(skus);
             Assert.IsInstanceOfType(skus, typeof(IEnumerable<SkuSummaryDto>));
@@ -81,12 +81,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task Sku_Query()
         {
-            var skus = await _skuRepo.GetAllSkus();
+            var skus = await _skuRepo.QuerySkus();
             Assert.IsNotNull(skus);
             Assert.IsTrue(skus.Count > 0); // we have at least 1 sku
 
             var ran = new Random();
-            var sku = skus[ran.Next(skus.Count - 1)];
+            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
 
             var query = new SkuQuery();
             query.CreateQuery(s => s.Name, sku.Name, ComparisonOperator.Equals);
@@ -112,7 +112,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         public async Task Sku_GetDetails()
         {
             var ran = new Random();
-            var skus = await _skuRepo.GetAllSkus();
+            var skus = await _skuRepo.QuerySkus();
             Assert.IsNotNull(skus);
             Assert.IsInstanceOfType(skus,typeof(IEnumerable<SkuSummaryDto>));
             foreach (var sku in skus)

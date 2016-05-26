@@ -42,7 +42,7 @@ namespace Locafi.Client.Model.Query
         private string ConvertToOdataValue<TProperty>(TProperty p)
         {
             var type = typeof(TProperty);
-            if (type == typeof(string)) // strings must be surrounded like so: '<string_value>'
+            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum)) // strings must be surrounded like so: '<string_value>'
                 return $"'{p}'";
             if (type == typeof(DateTimeOffset)) //datetimes are difficult
             {
@@ -86,7 +86,7 @@ namespace Locafi.Client.Model.Query
 
             //validate is queriable type - string, Guid, DateTime
 
-            if (propertyType == typeof(string) || propertyType == typeof(Guid) || propertyType == typeof(Guid?) || propertyType == typeof(DateTimeOffset))
+            if (propertyType == typeof(string) || propertyType == typeof(Guid) || propertyType == typeof(Guid?) || propertyType == typeof(DateTimeOffset) || propertyType.GetTypeInfo().BaseType == typeof(Enum))
             {
                 return propInfo;
             }

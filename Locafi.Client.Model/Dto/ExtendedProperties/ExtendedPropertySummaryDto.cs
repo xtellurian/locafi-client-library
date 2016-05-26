@@ -35,6 +35,7 @@ namespace Locafi.Client.Model.Dto.ExtendedProperties
         [JsonConverter(typeof(StringEnumConverter))]
         public TemplateDataTypes DataType { get; set; }
 
-        public string TemplateType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TemplateFor TemplateType { get; set; }
     }
 }

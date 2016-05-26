@@ -13,6 +13,7 @@ using Locafi.Client.Model.Dto.SkuGroups;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -22,8 +23,40 @@ namespace Locafi.Client.Repo
             : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, SkuGroupUri.ServiceName)
         {
         }
-#region Sku Group Names
-        public async Task<IQueryResult<SkuGroupNameDetailDto>> QuerySkuGroupNames(IRestQuery<SkuGroupNameDetailDto> query)
+        #region Sku Group Names
+        public async Task<PageResult<SkuGroupNameDetailDto>> QuerySkuGroupNames(string oDataQueryOptions = null)
+        {
+            var path = SkuGroupUri.Names.GetNames;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<SkuGroupNameDetailDto>>(path);
+            return result;
+        }
+
+        public async Task<PageResult<SkuGroupNameDetailDto>> QuerySkuGroupNames(IRestQuery<SkuGroupNameDetailDto> query)
+        {
+            return await QuerySkuGroupNames(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<SkuGroupNameDetailDto>> QuerySkuGroupNamesContinuation(IRestQuery<SkuGroupNameDetailDto> query)
         {
             var result = await QuerySkuGroupNames(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -43,9 +76,9 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<SkuGroupNameDetailDto> UpdateSkuGroupName(Guid id, UpdateSkuGroupNameDto updateSkuGroupNameDto)
+        public async Task<SkuGroupNameDetailDto> UpdateSkuGroupName(UpdateSkuGroupNameDto updateSkuGroupNameDto)
         {
-            var path = SkuGroupUri.Names.UpdateSkuGroupName(id);
+            var path = SkuGroupUri.Names.UpdateSkuGroupName;
             var result = await Post<SkuGroupNameDetailDto>(updateSkuGroupNameDto, path);
             return result;
         }
@@ -56,17 +89,41 @@ namespace Locafi.Client.Repo
             var result = await Delete(path);
             return result;
         }
-
-        protected async Task<IList<SkuGroupNameDetailDto>> QuerySkuGroupNames(string queryString)
-        {
-            var path = $"{SkuGroupUri.Names.GetNames}{queryString}";
-            var result = await Get<List<SkuGroupNameDetailDto>>(path);
-            return result;
-        }
         #endregion
 
-        
-        public async Task<IQueryResult<SkuGroupSummaryDto>> QuerySkuGroups(IRestQuery<SkuGroupSummaryDto> query )
+        public async Task<PageResult<SkuGroupSummaryDto>> QuerySkuGroups(string oDataQueryOptions = null)
+        {
+            var path = SkuGroupUri.GetSkuGroups;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<SkuGroupSummaryDto>>(path);
+            return result;
+        }
+
+        public async Task<PageResult<SkuGroupSummaryDto>> QuerySkuGroups(IRestQuery<SkuGroupSummaryDto> query)
+        {
+            return await QuerySkuGroups(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<SkuGroupSummaryDto>> QuerySkuGroupsContinuation(IRestQuery<SkuGroupSummaryDto> query )
         {
             var result = await QuerySkuGroups(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -93,9 +150,9 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<SkuGroupDetailDto> UpdateSkuGroup(Guid id, UpdateSkuGroupDto updateSkuGroupDto)
+        public async Task<SkuGroupDetailDto> UpdateSkuGroup(UpdateSkuGroupDto updateSkuGroupDto)
         {
-            var path = SkuGroupUri.UpdateSkuGroup(id);
+            var path = SkuGroupUri.UpdateSkuGroup;
             var result = await Post<SkuGroupDetailDto>(updateSkuGroupDto, path);
             return result;
         }
@@ -107,12 +164,6 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        protected async Task<IList<SkuGroupSummaryDto>> QuerySkuGroups(string queryString)
-        {
-            var path = $"{SkuGroupUri.GetSkuGroups}{queryString}";
-            var result = await Get<List<SkuGroupSummaryDto>>(path);
-            return result;
-        }
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
             throw new SkuGroupRepoException(serverMessages, statusCode, url, payload);

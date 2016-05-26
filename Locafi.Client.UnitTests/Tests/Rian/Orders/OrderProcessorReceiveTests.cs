@@ -30,7 +30,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Orders
             var ran = new Random();
 
             var quantity = ran.Next(1, 10);
-            var skus = await _skuRepo.GetAllSkus();
+            var skus = await _skuRepo.QuerySkus();
             var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
             var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
 

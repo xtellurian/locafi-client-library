@@ -12,6 +12,9 @@ using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
+using Locafi.Client.Model;
+using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Query.PropertyComparison;
 
 namespace Locafi.Client.Repo
 {
@@ -27,11 +30,42 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<TemplateSummaryDto>> GetAllTemplates()
+        public async Task<PageResult<TemplateSummaryDto>> QueryTemplates(string oDataQueryOptions = null)
         {
             var path = TemplateUri.GetTemplates;
-            var result = await Get<List<TemplateSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<TemplateSummaryDto>>(path);
             return result;
+        }
+
+        public async Task<PageResult<TemplateSummaryDto>> QueryTemplates(IRestQuery<TemplateSummaryDto> query)
+        {
+            return await QueryTemplates(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<TemplateSummaryDto>> QueryTemplatesContinuation(IRestQuery<TemplateSummaryDto> query)
+        {
+            var result = await QueryTemplates(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<TemplateDetailDto> GetById(Guid id)
@@ -41,10 +75,9 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<IList<TemplateSummaryDto>> GetTemplatesForType(TemplateFor templateTarget)
+        public async Task<PageResult<TemplateSummaryDto>> GetTemplatesForType(TemplateFor templateTarget)
         {
-            var path = TemplateUri.GetTemplateFor(templateTarget);
-            var result = await Get<List<TemplateSummaryDto>>(path);
+            var result = await QueryTemplates(TemplateQuery.NewQuery(t => t.TemplateType, templateTarget, ComparisonOperator.Equals));
             return result;
         }
 

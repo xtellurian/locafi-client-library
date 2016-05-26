@@ -15,6 +15,7 @@ using Locafi.Client.Model.Uri;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.FileUpload;
 using Locafi.Client.Model.Search;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -32,20 +33,41 @@ namespace Locafi.Client.Repo
            : base(transferer, authorisedConfigService, serialiser, ItemUri.ServiceName)
         {
         }
-        public async Task<int> GetItemCount(IRestQuery<ItemSummaryDto> query)
+
+        public async Task<PageResult<ItemSummaryDto>> QueryItems(string oDataQueryOptions = null)
         {
-            var path = $"{ItemUri.GetItemCount}{query.AsRestQuery()}";
-            var result = await Get<int>(path);
+            var path = ItemUri.GetItems;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<ItemSummaryDto>>(path);
             return result;
         }
-        [Obsolete]
-        public async Task<IList<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query)
+
+        public async Task<PageResult<ItemSummaryDto>> QueryItems(IRestQuery<ItemSummaryDto> query)
         {
             var result = await QueryItems(query.AsRestQuery());
             return result;
         }
 
-        public async Task<IQueryResult<ItemSummaryDto>> QueryItemsAsync(IRestQuery<ItemSummaryDto> query)
+        public async Task<IQueryResult<ItemSummaryDto>> QueryItemsContinuation(IRestQuery<ItemSummaryDto> query)
         {
             var result = await QueryItems(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -67,21 +89,21 @@ namespace Locafi.Client.Repo
 
         public async Task<ItemDetailDto> UpdateTag(UpdateItemTagDto updateItemTagDto)
         {
-            var path = ItemUri.UpdateTag(updateItemTagDto);
+            var path = ItemUri.UpdateTag;
             var result = await Post<ItemDetailDto>(updateItemTagDto, path);
             return result;
         }
 
         public async Task<ItemDetailDto> UpdateItemPlace(UpdateItemPlaceDto updateItemPlaceDto)
         {
-            var path = ItemUri.UpdatePlace(updateItemPlaceDto);
+            var path = ItemUri.UpdatePlace;
             var result = await Post<ItemDetailDto>(updateItemPlaceDto, path);
             return result;
         }
 
         public async Task<ItemDetailDto> UpdateItem(UpdateItemDto updateItemDto)
         {
-            var path = ItemUri.UpdateUri(updateItemDto);
+            var path = ItemUri.UpdateItem;
             var result = await Post<ItemDetailDto>(updateItemDto, path);
             return result;
         }
@@ -92,13 +114,6 @@ namespace Locafi.Client.Repo
             return await Delete(path);
         }
 
-        protected async Task<IList<ItemSummaryDto>> QueryItems (string filterString)
-        {
-            var path = $"{ItemUri.GetItems}{filterString}";
-            var result = await Get<List<ItemSummaryDto>>(path);
-            return result;
-        }
-
         public async Task<ISearchResult<ItemSummaryDto>> SearchItems(IRestSearch<ItemSummaryDto> search)
         {
             var result = await SearchItems(search.AsRestSearch());
@@ -107,7 +122,7 @@ namespace Locafi.Client.Repo
 
         public async Task<IList<ItemSummaryDto>> SearchItems(SearchCollectionDto searchItemQueryDto)
         {
-            var path = ItemUri.SearchItemUri();
+            var path = ItemUri.SearchItems;
             var result = await Post<List<ItemSummaryDto>>(searchItemQueryDto, path);
             return result;
         }

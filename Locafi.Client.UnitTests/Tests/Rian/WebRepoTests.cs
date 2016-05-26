@@ -25,7 +25,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             var skuRepo = new SkuRepo(transferer, config, new Serialiser());
 
-            var c = await skuRepo.GetAllSkus();
+            var c = await skuRepo.QuerySkus();
 
         }
         [TestMethod]
@@ -34,13 +34,13 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var authConfigService = await HttpConfigFactory.Generate(StringConstants.BaseUrl, StringConstants.TestingEmailAddress,
                 StringConstants.Password);
             var skuRepo = new SkuRepo(authConfigService, new Serialiser()); // use sku repo as test
-            var skus = await skuRepo.GetAllSkus();
+            var skus = await skuRepo.QuerySkus();
             Assert.IsNotNull(skus);
             var tokenGroup = await authConfigService.GetTokenGroupAsync();
             tokenGroup.Token = "";
             await authConfigService.SetTokenGroupAsync(tokenGroup);
 
-            skus = await skuRepo.GetAllSkus();
+            skus = await skuRepo.QuerySkus();
             Assert.IsNotNull(skus);
 
             var secondTokenGroup= await authConfigService.GetTokenGroupAsync();

@@ -8,13 +8,15 @@ namespace Locafi.Client.Model.Dto.Persons
 {
     public class UpdatePersonDto
     {
-        public Guid PersonId { get; set; }
+        public Guid Id { get; set; }
 
         public string GivenName { get; set; }
 
         public string Surname { get; set; }
 
-        public string EmailAddress { get; set; }
+        public Guid TemplateId { get; set; }
+
+        public string Email { get; set; }
 
         public IList<WriteEntityExtendedPropertyDto> PersonExtendedPropertyList { get; set; }
 
@@ -27,11 +29,11 @@ namespace Locafi.Client.Model.Dto.Persons
         {
             return new UpdatePersonDto
             {
-                EmailAddress = detail.EmailAddress,
+                Email = detail.Email,
                 GivenName = detail.GivenName,
                 PersonExtendedPropertyList =
-                    new List<WriteEntityExtendedPropertyDto>(detail.PersonExtendedPropeertyList),
-                PersonId = detail.Id,
+                    new List<WriteEntityExtendedPropertyDto>(detail.PersonExtendedPropertyList),
+                Id = detail.Id,
                 Surname = detail.Surname
 
             };

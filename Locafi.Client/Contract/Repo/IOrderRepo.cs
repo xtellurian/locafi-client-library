@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Orders;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface IOrderRepo
     {
-        Task<IList<OrderSummaryDto>> GetAllOrders();
+        Task<PageResult<OrderSummaryDto>> QueryOrders(string oDataQueryOptions = null);
+        Task<PageResult<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query);
+        Task<IQueryResult<OrderSummaryDto>> QueryOrdersContinuation(IRestQuery<OrderSummaryDto> query);
         Task<OrderDetailDto> GetOrderById(Guid id);
-        [Obsolete]
-        Task<IList<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query);
-
         Task<IList<SkuDetailDto>> GetSkuPrintInfoById(Guid id);
 
         Task<OrderDetailDto> Create(AddOrderDto orderDetail);
@@ -34,6 +34,5 @@ namespace Locafi.Client.Contract.Repo
 
         Task<OrderActionResponseDto> Cancel(OrderSummaryDto order);
         Task<bool> DeleteOrder(Guid orderId);
-        Task<IQueryResult<OrderSummaryDto>> QueryOrdersAsync(IRestQuery<OrderSummaryDto> query);
     }
 }

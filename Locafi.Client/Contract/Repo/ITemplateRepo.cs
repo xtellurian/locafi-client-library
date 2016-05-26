@@ -7,13 +7,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
+using Locafi.Client.Model;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface ITemplateRepo
     {
-        Task<IList<TemplateSummaryDto>> GetAllTemplates();
+        Task<PageResult<TemplateSummaryDto>> QueryTemplates(string oDataQueryOptions = null);
+        Task<PageResult<TemplateSummaryDto>> QueryTemplates(IRestQuery<TemplateSummaryDto> query);
+        Task<IQueryResult<TemplateSummaryDto>> QueryTemplatesContinuation(IRestQuery<TemplateSummaryDto> query);
         Task<TemplateDetailDto> GetById(Guid id);
-        Task<IList<TemplateSummaryDto>> GetTemplatesForType(TemplateFor templateTarget);
+        Task<PageResult<TemplateSummaryDto>> GetTemplatesForType(TemplateFor templateTarget);
     }
 }

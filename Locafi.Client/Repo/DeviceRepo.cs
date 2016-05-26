@@ -13,7 +13,8 @@ using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.Devices;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
-using System.;
+using Locafi.Client.Model;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Repo
 {
@@ -24,10 +25,35 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<PageResult<PeripheralDeviceSummaryDto>> GetDevices()
+        public async Task<PageResult<PeripheralDeviceSummaryDto>> QueryDevices(IRestQuery<PeripheralDeviceSummaryDto> query)
+        {
+            return await QueryDevices(query.AsRestQuery());
+        }
+
+        public async Task<PageResult<PeripheralDeviceSummaryDto>> QueryDevices(string oDataQueryOptions = null)
         {
             var path = DeviceUri.GetDevices;
-            var result = await Get<List<PeripheralDeviceSummaryDto>>(path);
+
+            // add the query options if required
+            if(!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if(!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<PeripheralDeviceSummaryDto>>(path);
             return result;
         }
 
@@ -51,10 +77,34 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public async Task<IList<RfidReaderSummaryDto>> GetReaders()
+        public async Task<PageResult<RfidReaderSummaryDto>> QueryReaders(IRestQuery<RfidReaderSummaryDto> query)
+        {
+            return await QueryReaders(query.AsRestQuery());
+        }
+
+        public async Task<PageResult<RfidReaderSummaryDto>> QueryReaders(string oDataQueryOptions = null)
         {
             var path = DeviceUri.GetReaders;
-            var result = await Get<List<RfidReaderSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            var result = await Get<PageResult<RfidReaderSummaryDto>>(path);
             return result;
         }
 

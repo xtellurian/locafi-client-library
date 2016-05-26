@@ -14,6 +14,7 @@ using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 using System.Collections;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Repo
 {
@@ -29,11 +30,42 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<IList<OrderSummaryDto>> GetAllOrders()
+        public async Task<PageResult<OrderSummaryDto>> QueryOrders(string oDataQueryOptions = null)
         {
             var path = OrderUri.GetOrders;
-            var result = await Get<List<OrderSummaryDto>>(path);
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<OrderSummaryDto>>(path);
             return result;
+        }
+
+        public async Task<PageResult<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query)
+        {
+            return await QueryOrders(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<OrderSummaryDto>> QueryOrdersContinuation(IRestQuery<OrderSummaryDto> query)
+        {
+            var result = await QueryOrders(query.AsRestQuery());
+            return result.AsQueryResult(query);
         }
 
         public async Task<OrderDetailDto> GetOrderById(Guid id)
@@ -43,21 +75,9 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        [Obsolete]
-        public async Task<IList<OrderSummaryDto>> QueryOrders(IRestQuery<OrderSummaryDto> query)
-        {
-            return await QueryOrders(query.AsRestQuery());
-        }
-
         public async Task<IList<SkuDetailDto>> GetSkuPrintInfoById(Guid id)
         {
             return await Get<List<SkuDetailDto>>(OrderUri.GetPrintInfo(id));
-        }
-
-        public async Task<IQueryResult<OrderSummaryDto>> QueryOrdersAsync(IRestQuery<OrderSummaryDto> query)
-        {
-            var result = await QueryOrders(query.AsRestQuery());
-            return result.AsQueryResult(query);
         }
 
         public async Task<OrderDetailDto> Create(AddOrderDto addOrder)
@@ -128,13 +148,6 @@ namespace Locafi.Client.Repo
         {
             var path = OrderUri.Delete(orderId);
             return await Delete(path);
-        }
-
-        protected async Task<IList<OrderSummaryDto>> QueryOrders(string queryString)
-        {
-            var path = $"{OrderUri.GetOrders}/{queryString}";
-            var result = await Get<List<OrderSummaryDto>>(path);
-            return result;
         }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)

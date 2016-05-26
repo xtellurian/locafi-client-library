@@ -7,19 +7,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Users;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
 {
     public interface IUserRepo
     {
-        Task<IList<UserSummaryDto>> GetAllUsers();
-        [Obsolete]
-        Task<IList<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery);
+        Task<PageResult<UserSummaryDto>> QueryUsers(string oDataQueryOptions = null);
+        Task<PageResult<UserSummaryDto>> QueryUsers(IRestQuery<UserSummaryDto> userQuery);
+        Task<IQueryResult<UserSummaryDto>> QueryUsersContinuation(IRestQuery<UserSummaryDto> query);
         Task<UserDetailDto> GetUserById(Guid id);
         Task<UserDetailDto> CreateUser(AddUserDto addUserDto);
         Task<UserDetailDto> UpdateUser(UpdateUserDto updateUserDto);
         Task<bool> DeleteUser(Guid id);
-
-        Task<IQueryResult<UserSummaryDto>> QueryUsersAsync(IRestQuery<UserSummaryDto> query);
     }
 }
