@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Places
 {
@@ -26,6 +29,10 @@ namespace Locafi.Client.Model.Dto.Places
         public string TemplateName { get; set; }
 
         public string TagNumber { get; set; }
-        public string TagTypeName { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TagType TagType { get; set; }
+
+        public Guid? ParentPlaceId { get; set; }
+        public string ParentPlaceName { get; set; }
     }
 }

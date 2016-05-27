@@ -10,11 +10,12 @@ using Locafi.Client.Contract.ErrorHandlers;
 using Locafi.Client.Contract.Http;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
-using Locafi.Client.Model.Dto.Portal;
 using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Locafi.Client.Model;
+using Locafi.Client.Model.Dto.PortalRules;
+using Locafi.Client.Model.Dto.Portals;
 using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Repo

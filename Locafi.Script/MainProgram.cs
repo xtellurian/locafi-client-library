@@ -58,7 +58,7 @@ namespace Locafi.Script
 
             var userRepo = WebRepoContainer.UserRepo;
             var userQuery = new UserQuery();
-            userQuery.CreateQuery(U => U.UserName, userToclean, ComparisonOperator.Equals);
+            userQuery.CreateQuery(U => U.Email, userToclean, ComparisonOperator.Equals);
             var users = await userRepo.QueryUsers(userQuery);
             var user = users.FirstOrDefault();
             if (user == null)

@@ -24,14 +24,15 @@ namespace Locafi.Client.Model.Dto.Users
                 property.SetValue(this, value);
             }
         }
-        public Guid TemplateId { get; set; }
-
-        public string TemplateName { get; set; }
-
         public string GivenName { get; set; }
+
+        public string MiddleName { get; set; }
 
         public string Surname { get; set; }
 
-        public string UserName { get; set; }
+        public string Email { get; set; }
+
+        public Guid RoleId { get; set; }
+        public string RoleName { get; set; }
     }
 }

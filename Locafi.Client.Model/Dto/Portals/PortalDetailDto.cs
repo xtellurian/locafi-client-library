@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Locafi.Client.Model.Dto.Devices;
 
-namespace Locafi.Client.Model.Dto.Portal
+namespace Locafi.Client.Model.Dto.Portals
 {
     public class PortalDetailDto : PortalSummaryDto
     {

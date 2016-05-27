@@ -70,7 +70,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 var itemExtendedProperty = result.ItemExtendedPropertyList
                     .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.Id);
                 Assert.IsNotNull(itemExtendedProperty, "Extended property was null");
-                Assert.AreEqual(skuDetailExtendedProperty.DefaultValue,itemExtendedProperty.Value, "Was not default value");
+                Assert.AreEqual(skuDetailExtendedProperty.Value,itemExtendedProperty.Value, "Was not default value");
             }
         }
 

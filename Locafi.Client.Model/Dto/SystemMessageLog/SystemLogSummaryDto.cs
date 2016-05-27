@@ -7,12 +7,15 @@ using Locafi.Client.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Locafi.Client.Model.Dto.Devices
+namespace Locafi.Client.Model.Dto.SystemMessageLog
 {
-    public class RfidReaderAntennaStatusDto
+    public class SystemLogSummaryDto
     {
         public Guid Id { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public RfidReaderAntennaStatus Status { get; set; }
+        public SystemMessageType MessageType { get; set; }
+        public string Message { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public string LoggedByUserFullName { get; set; }
     }
 }

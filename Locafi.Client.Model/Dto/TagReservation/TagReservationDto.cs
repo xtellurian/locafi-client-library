@@ -6,5 +6,9 @@ namespace Locafi.Client.Model.Dto.TagReservation
     {
         public IList<string> TagNumbers { get; set; }
 
+        public TagReservationDto()
+        {
+            TagNumbers = new List<string>();
+        } 
     }
 }

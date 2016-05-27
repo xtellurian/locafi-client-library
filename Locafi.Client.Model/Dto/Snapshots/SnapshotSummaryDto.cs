@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Snapshots
 {
@@ -29,5 +32,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public DateTime StartTimeUtc { get; set; }  // time snapshot was started
         public DateTime EndTimeUtc { get; set; }    // time snapshot was completed
         public Guid UserId { get; set; }  // user who scanned the items
+        [JsonConverter(typeof(StringEnumConverter))]
+        public SnapshotType SnapshotType { get; set; }
     }
 }

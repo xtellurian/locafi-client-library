@@ -8,7 +8,7 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public bool IsSkuLevelProperty { get; set; }
 
-        public string DefaultValue { get; set; }
+        public string Value { get; set; }
 
     }
 }

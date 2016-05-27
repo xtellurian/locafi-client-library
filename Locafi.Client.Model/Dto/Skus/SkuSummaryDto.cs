@@ -21,13 +21,20 @@ namespace Locafi.Client.Model.Dto.Skus
             }
         }
         public string Name { get; set; }
-        
-        public string SkuNumber { get; set; }
+
+        public Guid TemplateId { get; set; }
+
+        public string TemplateName { get; set; }
+
+        public string CompanyPrefix { get; set; }
+
+        public string ItemReference { get; set; }
+
+        public string CustomPrefix { get; set; }
 
         public string Gtin { get; set; }
 
-        public Guid TemplateId { get; set; }
-        
-        public string TemplateName { get; set; }
+        public string SkuNumber { get; set; }
+
     }
 }

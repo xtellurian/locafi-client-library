@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Locafi.Client.Model.Dto.Portal;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model;
+using Locafi.Client.Model.Dto.PortalRules;
+using Locafi.Client.Model.Dto.Portals;
 
 namespace Locafi.Client.Contract.Repo
 {

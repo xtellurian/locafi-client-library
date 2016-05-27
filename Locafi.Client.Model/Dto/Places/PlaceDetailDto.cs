@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Locafi.Client.Model.Dto.Tags;
 
 namespace Locafi.Client.Model.Dto.Places
 {
@@ -7,7 +8,7 @@ namespace Locafi.Client.Model.Dto.Places
     {
         public PlaceDetailDto()
         {
-            
+            PlaceExtendedPropertyList = new List<ReadEntityExtendedPropertyDto>();
         }
 
         public PlaceDetailDto(PlaceDetailDto dto): base(dto)
@@ -20,11 +21,9 @@ namespace Locafi.Client.Model.Dto.Places
                 property.SetValue(this, value);
             }
         }
+
         public string Description { get; set; }
-        public int TagType { get; set; }
-
-        public long UsageCount { get; set; }
-
+        public IList<TagDetailDto> PlaceTagList { get; set; }
         public IList<ReadEntityExtendedPropertyDto> PlaceExtendedPropertyList { get; set; }
 
     }

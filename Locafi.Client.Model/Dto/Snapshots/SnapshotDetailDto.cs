@@ -11,6 +11,9 @@ namespace Locafi.Client.Model.Dto.Snapshots
     {
         public SnapshotDetailDto()
         {
+            Id = Guid.Empty;
+            Tags = new List<SnapshotTagDto>();
+            Items = new List<Guid>();
         }
 
         public SnapshotDetailDto(SnapshotDetailDto dto):base(dto)

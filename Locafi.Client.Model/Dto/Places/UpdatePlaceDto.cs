@@ -11,6 +11,10 @@ namespace Locafi.Client.Model.Dto.Places
 
         public string Description { get; set; }
 
+        public Guid? ParentPlaceId { get; set; }
+
+        public Guid TemplateId { get; set; }
+
         public IList<WriteEntityExtendedPropertyDto> PlaceExtendedPropertyList { get; set; }
 
         public UpdatePlaceDto()
@@ -25,7 +29,9 @@ namespace Locafi.Client.Model.Dto.Places
                 Description = detail.Description,
                 Id = detail.Id,
                 Name = detail.Name,
-                PlaceExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(detail.PlaceExtendedPropertyList)
+                PlaceExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(detail.PlaceExtendedPropertyList),
+                ParentPlaceId = detail.ParentPlaceId,
+                TemplateId = detail.TemplateId
             };
         }
     }

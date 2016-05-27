@@ -7,7 +7,7 @@ namespace Locafi.Client.Model.Dto.Skus
     {
         public SkuDetailDto()
         {
-            
+            SkuExtendedPropertyList = new List<ReadSkuExtendedPropertyDto>();
         }
 
         public SkuDetailDto(SkuDetailDto dto):base(dto)
@@ -22,11 +22,6 @@ namespace Locafi.Client.Model.Dto.Skus
         }
 
         public string Description { get; set; }
-
-        public string CompanyPrefix { get; set; }
-
-        public string ItemReference { get; set; }
-
 
         public IList<ReadSkuExtendedPropertyDto> SkuExtendedPropertyList { get; set; }
 

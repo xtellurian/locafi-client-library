@@ -8,30 +8,35 @@ namespace Locafi.Client.Model.Dto.Users
 {
     public class UpdateUserDto
     {
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
 
         public string GivenName { get; set; }
 
+        public string MiddleName { get; set; }
+
         public string Surname { get; set; }
 
-        public string EmailAddress { get; set; }
+        public string Email { get; set; }
 
-        public IList<WriteEntityExtendedPropertyDto> UserExtendedPropertyList { get; set; }
+        public string ImageUrl { get; set; }
+
+        public Guid RoleId { get; set; }
 
         public UpdateUserDto()
         {
-            UserExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>();
         }
 
         public static UpdateUserDto FromUserDetail(UserDetailDto detail)
         {
             return new UpdateUserDto
             {
-                UserId = detail.Id,
-                EmailAddress = detail.EmailAddress,
+                Email = detail.Email,
                 GivenName = detail.GivenName,
-                Surname = detail.Surname,
-                UserExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(detail.UserExtendedPropeertyList)
+                Id = detail.Id,
+                ImageUrl = detail.ImageUrl,
+                MiddleName = detail.MiddleName,
+                RoleId = detail.RoleId,
+                Surname = detail.Surname
             };
         }
     }

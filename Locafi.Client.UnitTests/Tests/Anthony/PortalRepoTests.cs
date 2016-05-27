@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Devices;
-using Locafi.Client.Model.Dto.Portal;
+using Locafi.Client.Model.Dto.PortalRules;
+using Locafi.Client.Model.Dto.Portals;
 using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

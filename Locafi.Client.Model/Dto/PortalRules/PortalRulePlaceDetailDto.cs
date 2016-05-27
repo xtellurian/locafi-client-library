@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Locafi.Client.Model.Dto.Portal
+namespace Locafi.Client.Model.Dto.PortalRules
 {
     public class PortalRulePlaceDetailDto
     {

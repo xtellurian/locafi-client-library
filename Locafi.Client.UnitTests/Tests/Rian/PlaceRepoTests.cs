@@ -38,7 +38,6 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsInstanceOfType(result,typeof(PlaceDetailDto));
             Assert.IsTrue(string.Equals(addPlace.Description, result.Description));
             Assert.IsTrue(string.Equals(addPlace.Name, result.Name));
-            Assert.IsTrue(string.Equals(addPlace.TagNumber, result.TagNumber));
 
             _toCleanup.Add(result.Id);
         }
@@ -171,10 +170,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             {
                 Description = description,
                 Name = name,
-                TagNumber = tagNumber,
                 TemplateId = template.Id,
                 PlaceExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(),
-                TagType = 0
             };
             return addPlace;
         }

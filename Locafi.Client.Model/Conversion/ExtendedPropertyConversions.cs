@@ -15,7 +15,7 @@ namespace Locafi.Client.Model.Conversion
             return new WriteItemExtendedPropertyDto
             {
                 ExtendedPropertyId = readSkuDto.ExtendedPropertyId,
-                Value = readSkuDto.DefaultValue
+                Value = readSkuDto.Value
             };
         }
     }

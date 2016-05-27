@@ -14,6 +14,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public AddSnapshotDto()
         {
             SnapshotType = SnapshotType.Add;
+            Tags = new List<SnapshotTagDto>();
         }
         public AddSnapshotDto(Guid placeId, string name = "")
         {

@@ -4,20 +4,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Locafi.Client.Model.Dto;
-using Locafi.Client.Model.Dto.Users;
 
-namespace Locafi.Client.Model.Dto.Users
+namespace Locafi.Client.Model.Dto.Roles
 {
-    public class UserDetailDto : UserSummaryDto
+    public class RoleSummaryDto : EntityDtoBase
     {
-        public UserDetailDto()
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public RoleSummaryDto(RoleSummaryDto dto):base(dto)
         {
-            
-        }
-        public UserDetailDto(UserDetailDto dto)
-        {
-            var type = typeof(UserDetailDto);
+            var type = typeof(RoleSummaryDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {
@@ -25,6 +23,10 @@ namespace Locafi.Client.Model.Dto.Users
                 property.SetValue(this, value);
             }
         }
-        public string ImageUrl { get; set; }
+
+        public RoleSummaryDto()
+        {
+            
+        }
     }
 }

@@ -8,21 +8,23 @@ namespace Locafi.Client.Model.Dto.Users
 {
     public class AddUserDto
     {
-        public AddUserDto()
-        {
-            
-        }
-        public Guid TemplateId { get; set; }    // Required
-
         public string GivenName { get; set; }    // Required
+
+        public string MiddleName { get; set; }
 
         public string Surname { get; set; }
 
-        public string EmailAddress { get; set; }    // Required (this is also the username)
+        public string Email { get; set; }    // Required (this is also the username)
 
         public string Password { get; set; }    // Required
 
-        public IList<WriteEntityExtendedPropertyDto> UserExtendedPropertyList { get; set; }
+        public string ImageUrl { get; set; }
+
+        public Guid RoleId { get; set; }
+
+        public AddUserDto()
+        {
+        }
 
     }
 }
