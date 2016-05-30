@@ -10,7 +10,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
     public class ApiLocatorTests
     {
         private const string KnownEmailAddress = "admin@ramp.com.au";
-        private const string KnownDeviceSerialNumber = "123";
+        private const string KnownDeviceSerialNumber = "1322468";
 
         [TestMethod]
         public async Task ApiLocator_GetBaseUri()
