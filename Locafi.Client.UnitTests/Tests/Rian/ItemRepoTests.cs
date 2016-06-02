@@ -310,13 +310,13 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var description = Guid.NewGuid().ToString();
             var tagNumber = Guid.NewGuid().ToString();
 
-            var addItemDto = new AddItemDto(sku.Id, place.Id, name, description, tagNumber: tagNumber,
+            var addItemDto = new AddItemDto(skuDetail, place.Id, name, description, tagNumber: tagNumber,
                 personId: person.Id);
 
-            foreach(var extProp in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
-            {
-                addItemDto.ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.Id, Value = Guid.NewGuid().ToString() });
-            }
+            //foreach(var extProp in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
+            //{
+            //    addItemDto.ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.Id, Value = Guid.NewGuid().ToString() });
+            //}
 
             return addItemDto;
         }

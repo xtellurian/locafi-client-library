@@ -17,6 +17,7 @@ using Locafi.Client.Model.Dto.SkuGroups;
 using Locafi.Client.Model.Dto.Tags;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
 {
@@ -272,12 +273,22 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             }
         }
 
+        private async Task<PageResult<PlaceSummaryDto>> GetAvailablePlaces()
+        {
+            var placeQuery = QueryBuilder<PlaceSummaryDto>.NewQuery(p => p.Name, "N/A", ComparisonOperator.NotEquals)
+                .And(p => p.Name, "New Tags", ComparisonOperator.NotEquals)
+                .And(p => p.Name, "In-Transit", ComparisonOperator.NotEquals)
+                .Build();
+            var places = await PlaceRepo.QueryPlaces(placeQuery);
+            return places;
+        }
+
         [TestMethod]
         public async Task InventoryProcess_ResolveSuccess()
         {
             var ran = new Random();
             var name = Guid.NewGuid().ToString();
-            var places = await PlaceRepo.QueryPlaces();
+            var places = await GetAvailablePlaces();
             var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             var otherPlace = places.Where(p => p.Id != place.Id).ToList()[ran.Next(places.Items.Count() - 2)];
             var inventory = await InventoryRepo.CreateInventory(place.Id, name);
@@ -420,15 +431,24 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
             var tag1 = new SnapshotTagDto {TagNumber = Guid.NewGuid().ToString(), TagType = TagType.PassiveRfid};
             var tag2 = new SnapshotTagDto { TagNumber = Guid.NewGuid().ToString(), TagType = TagType.PassiveRfid };
-            var addItem = new AddItemDto(sku.Id, placeId, tagNumber: tag1.TagNumber);
-            await ItemRepo.CreateItem(addItem);
-            addItem.PlaceId = otherPlaceId;
-            addItem.ItemTagList.Add(new WriteTagDto() {
+
+            var skuDetail = await SkuRepo.GetSkuDetail(sku.Id);
+            var addItemDto = new AddItemDto(skuDetail, placeId, tagNumber: tag1.TagNumber);
+
+            //foreach (var extProp in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
+            //{
+            //    addItemDto.ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.Id, Value = Guid.NewGuid().ToString() });
+            //}
+
+            await ItemRepo.CreateItem(addItemDto);
+            addItemDto.PlaceId = otherPlaceId;
+            addItemDto.ItemTagList.Clear();
+            addItemDto.ItemTagList.Add(new WriteTagDto() {
                 TagNumber = tag2.TagNumber,
                 TagType = TagType.PassiveRfid
             });
 //            addItem.TagNumber = tag2.TagNumber;
-            await ItemRepo.CreateItem(addItem);
+            await ItemRepo.CreateItem(addItemDto);
 
             var snapshot = new AddSnapshotDto(placeId)
             {

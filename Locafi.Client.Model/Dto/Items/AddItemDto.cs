@@ -5,16 +5,17 @@ using Locafi.Client.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Locafi.Client.Model.Dto.Tags;
+using System.Linq;
 
 namespace Locafi.Client.Model.Dto.Items
 {
     public class AddItemDto
     {
 
-        public AddItemDto(Guid skuId, Guid placeId, string name = "", string description = "", 
-            Guid? parentItemId = null, Guid? personId = null, string tagNumber = null, TagType tagType = TagType.PassiveRfid )
+        public AddItemDto(SkuDetailDto skuDetail, Guid placeId, string name = "", string description = "", 
+            Guid? parentItemId = null, Guid? personId = null, string tagNumber = null, TagType tagType = TagType.PassiveRfid, List<WriteItemExtendedPropertyDto> extProps = null)
         {
-            SkuId = skuId;
+            SkuId = skuDetail.Id;
             PlaceId = placeId;
             Name = name;
             Description = description;
@@ -25,7 +26,16 @@ namespace Locafi.Client.Model.Dto.Items
 
             if (!string.IsNullOrEmpty(tagNumber))
                 ItemTagList.Add(new WriteTagDto() { TagNumber = tagNumber, TagType = tagType });
-           
+
+            // popultate the extended properties
+            foreach (var extProp in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
+            {
+                if((bool)extProps?.Select(p => p.ExtendedPropertyId).Contains(extProp.ExtendedPropertyId))
+                    ItemExtendedPropertyList.Add(extProps.First(p => p.ExtendedPropertyId == extProp.ExtendedPropertyId));
+                else
+                    ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.Id, Value = Guid.NewGuid().ToString() });
+            }
+
         }
 
         public Guid? ParentItemId { get; set; }

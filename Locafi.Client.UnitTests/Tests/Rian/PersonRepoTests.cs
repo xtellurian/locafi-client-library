@@ -7,6 +7,7 @@ using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Locafi.Client.Model.Dto.Tags;
+using Locafi.Client.Exceptions;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -57,8 +58,12 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             detail = await _personRepo.GetPersonById(detail.Id);
             Assert.IsNotNull(detail, "detail != null second"); // check we can lookup by Id
             await _personRepo.DeletePerson(detail.Id);
-            detail = await _personRepo.GetPersonById(detail.Id);
-            Assert.IsNull(detail, "detail != null third");
+            try {
+                detail = await _personRepo.GetPersonById(detail.Id);
+            }catch(PersonException ex)
+            {
+                Assert.AreEqual(ex.ServerMessages.Count, 0);
+            }
         }
 
       
@@ -70,7 +75,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var ran = new Random();
             var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Person);
             var template = templates.Items.ElementAt(ran.Next(templates.Items.Count() - 1));
-            var email = $"{Guid.NewGuid()}@FakeDomain.com";
+            var email = $"{Guid.NewGuid().ToString().Substring(0,16)}@FakeDomain.com";
 
             return new AddPersonDto
             {

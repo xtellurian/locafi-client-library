@@ -8,6 +8,8 @@ using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Locafi.Client.Model;
+using Locafi.Client.Model.Query.Builder;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -132,7 +134,11 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private async Task<PlaceSummaryDto> GetRandomPlace()
         {
             var ran = new Random();
-            var places = await _placeRepo.QueryPlaces();
+            var placeQuery = QueryBuilder<PlaceSummaryDto>.NewQuery(p => p.Name, "N/A", ComparisonOperator.NotEquals)
+                .And(p => p.Name, "New Tags", ComparisonOperator.NotEquals)
+                .And(p => p.Name, "In-Transit", ComparisonOperator.NotEquals)
+                .Build();
+            var places = await _placeRepo.QueryPlaces(placeQuery);
             var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             return place;
         }
