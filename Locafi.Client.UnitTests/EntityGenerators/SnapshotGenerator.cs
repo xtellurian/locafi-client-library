@@ -93,7 +93,14 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 
             var q1 = new ItemQuery();
             q1.CreateQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals, availableItems > totalCount ? totalCount - randomCount : availableItems, availableItems > totalCount ? ran.Next(availableItems - totalCount - randomCount) : 0);
-            var items = await _itemRepo.QueryItemsContinuation(q1);
+            var q3 = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals)
+                .And(i => i.TagNumber, null, ComparisonOperator.NotEquals)
+                .And(i => i.TagNumber, "", ComparisonOperator.NotEquals)
+                .Take(availableItems > totalCount ? totalCount - randomCount : availableItems)
+                .Skip(availableItems > totalCount ? ran.Next(availableItems - totalCount - randomCount) : 0)
+                .Build()
+                ;
+            var items = await _itemRepo.QueryItemsContinuation(q3);
 
             IList<SnapshotTagDto> tags = new List<SnapshotTagDto>();
             foreach(var item in items.Entities)

@@ -19,6 +19,10 @@ namespace Locafi.Client.Model.Query
                     filter =
                         $"{QueryStrings.Filter.Equals(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
+                case ComparisonOperator.NotEquals:
+                    filter =
+                        $"{QueryStrings.Filter.NotEquals(propInfo.Name, ConvertToOdataValue(value))}";
+                    break;
                 case ComparisonOperator.Contains:
                     filter =
                         $"{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
@@ -31,6 +35,14 @@ namespace Locafi.Client.Model.Query
                     filter =
                         $"{QueryStrings.Filter.LessThan(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
+                case ComparisonOperator.GreaterThanOrEqual:
+                    filter =
+                        $"{QueryStrings.Filter.GreaterThanOrEqual(propInfo.Name, ConvertToOdataValue(value))}";
+                    break;
+                case ComparisonOperator.LessThanOrEqual:
+                    filter =
+                        $"{QueryStrings.Filter.LessThanOrEqual(propInfo.Name, ConvertToOdataValue(value))}";
+                    break;
                 default:
                     filter =
                         $"{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
@@ -41,6 +53,9 @@ namespace Locafi.Client.Model.Query
 
         private string ConvertToOdataValue<TProperty>(TProperty p)
         {
+            if (p == null)
+                return $"null";
+
             var type = typeof(TProperty);
             if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum)) // strings must be surrounded like so: '<string_value>'
                 return $"'{p}'";

@@ -22,6 +22,9 @@ namespace Locafi.Client.Model.Dto.Items
             PersonId = personId;
             ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>();
             ItemTagList = new List<WriteTagDto>();
+
+            if (!string.IsNullOrEmpty(tagNumber))
+                ItemTagList.Add(new WriteTagDto() { TagNumber = tagNumber, TagType = tagType });
            
         }
 

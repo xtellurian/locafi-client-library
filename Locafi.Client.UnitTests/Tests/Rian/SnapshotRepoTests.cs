@@ -7,6 +7,7 @@ using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -94,7 +95,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
 
             var snaps = await _snapshotRepo.QuerySnapshots();
             Assert.IsNotNull(snaps);
-            Assert.IsInstanceOfType(snaps,typeof(IEnumerable<SnapshotSummaryDto>));
+            Assert.IsInstanceOfType(snaps,typeof(PageResult<SnapshotSummaryDto>));
             Assert.IsTrue(snaps.Items.Contains(result));
         }
 

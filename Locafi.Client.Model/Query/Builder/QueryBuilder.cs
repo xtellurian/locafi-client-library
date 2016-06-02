@@ -10,7 +10,8 @@ namespace Locafi.Client.Model.Query.Builder
     public enum LogicalOperator
     {
         And,
-        Or
+        Or,
+        Not
     }
 
     public class FilterExpression
@@ -46,6 +47,14 @@ namespace Locafi.Client.Model.Query.Builder
             var propertyInfo = Validate(propertyLambda);
             var filterString = BuildSingleExpression(value, op, propertyInfo);
             _filterExpressions.Add(new FilterExpression() { Expression = filterString, Operator = LogicalOperator.Or });
+            return this;
+        }
+
+        public QueryBuilder<T> Not<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op)
+        {
+            var propertyInfo = Validate(propertyLambda);
+            var filterString = BuildSingleExpression(value, op, propertyInfo);
+            _filterExpressions.Add(new FilterExpression() { Expression = filterString, Operator = LogicalOperator.Not });
             return this;
         }
 

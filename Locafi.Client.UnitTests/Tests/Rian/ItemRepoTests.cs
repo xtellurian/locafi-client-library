@@ -65,10 +65,10 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsNotNull(result, "failed to create item");
 
             var skuDetail = await _skuRepo.GetSkuDetail(result.SkuId);
-            foreach(var skuDetailExtendedProperty in skuDetail.SkuExtendedPropertyList)
+            foreach(var skuDetailExtendedProperty in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
             {
                 var itemExtendedProperty = result.ItemExtendedPropertyList
-                    .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.Id);
+                    .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.ExtendedPropertyId);
                 Assert.IsNotNull(itemExtendedProperty, "Extended property was null");
                 Assert.AreEqual(skuDetailExtendedProperty.Value,itemExtendedProperty.Value, "Was not default value");
             }
@@ -304,12 +304,20 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             var skus = await _skuRepo.QuerySkus();
             var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
 
+            var skuDetail = await _skuRepo.GetSkuDetail(sku.Id);
+
             var name = Guid.NewGuid().ToString();
             var description = Guid.NewGuid().ToString();
             var tagNumber = Guid.NewGuid().ToString();
 
             var addItemDto = new AddItemDto(sku.Id, place.Id, name, description, tagNumber: tagNumber,
                 personId: person.Id);
+
+            foreach(var extProp in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
+            {
+                addItemDto.ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.Id, Value = Guid.NewGuid().ToString() });
+            }
+
             return addItemDto;
         }
 

@@ -77,7 +77,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetBySerialAsUser()
         {
-            var readerSerial = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault().SerialNumber;
+            var readerSerial = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault(r => !String.IsNullOrEmpty(r.SerialNumber)).SerialNumber;
             var reader = await _deviceRepoAsUser.GetReader(readerSerial);
             Assert.IsNotNull(reader);
             Assert.IsTrue(reader.SerialNumber == readerSerial);
@@ -95,7 +95,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         [TestMethod]
         public async Task RfidReader_GetBySerialAsPortal()
         {
-            var readerSerial = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault().SerialNumber;
+            var readerSerial = (await _deviceRepoAsUser.QueryReaders()).FirstOrDefault(r => !String.IsNullOrEmpty(r.SerialNumber)).SerialNumber;
             var reader = await _deviceRepoAsPortal.GetReader(readerSerial);
             Assert.IsNotNull(reader);
             Assert.IsTrue(reader.SerialNumber == readerSerial);

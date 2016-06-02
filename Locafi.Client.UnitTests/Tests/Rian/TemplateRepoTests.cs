@@ -5,6 +5,7 @@ using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -53,7 +54,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
                 Enum.TryParse(e, out target);
                 var templates = await _templateRepo.GetTemplatesForType(target);
                 Assert.IsNotNull(templates);
-                Assert.IsInstanceOfType(templates, typeof(IList<TemplateSummaryDto>));
+                Assert.IsInstanceOfType(templates, typeof(PageResult<TemplateSummaryDto>));
                 foreach (var t in templates)
                 {
                     Assert.AreEqual(t.TemplateType, target);

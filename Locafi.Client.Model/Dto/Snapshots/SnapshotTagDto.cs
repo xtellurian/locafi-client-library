@@ -43,7 +43,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public override bool Equals(object obj)
         {
             var tag = obj as SnapshotTagDto;
-            return tag != null && string.Equals(tag.TagNumber, TagNumber);
+            return tag != null && string.Equals(tag.TagNumber, TagNumber, StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode()

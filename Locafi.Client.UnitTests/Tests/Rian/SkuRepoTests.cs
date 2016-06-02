@@ -92,19 +92,19 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             query.CreateQuery(s => s.Name, sku.Name, ComparisonOperator.Equals);
             var result = await _skuRepo.QuerySkus(query);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Contains(sku));
+            Assert.IsTrue(result.Items.Contains(sku));
 
             query.CreateQuery(s => s.TemplateId, sku.TemplateId, ComparisonOperator.Equals);
             result = await _skuRepo.QuerySkus(query);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Contains(sku));
+            Assert.IsTrue(result.Items.Contains(sku));
 
             var withGtin = skus.Where(s => !string.IsNullOrEmpty(s.Gtin));
             var skuWithGin = withGtin.FirstOrDefault();
             Assert.IsNotNull(skuWithGin, "No Gtins :(");
             query.CreateQuery(s=>s.Gtin, skuWithGin.Gtin,ComparisonOperator.Equals);
             result = await _skuRepo.QuerySkus(query);
-            Assert.IsTrue(result.Contains(skuWithGin));
+            Assert.IsTrue(result.Items.Contains(skuWithGin));
 
         }
 

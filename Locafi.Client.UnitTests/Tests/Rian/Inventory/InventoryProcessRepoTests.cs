@@ -31,7 +31,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
             var places = await PlaceRepo.QueryPlaces();
             var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
             //            var inventory = await _inventoryRepo.CreateInventory(name, place.Id);
-            var inventory = await InventoryRepo.CreateInventory(new Guid("00000000-0000-0000-0000-000000060556"), name);
+            var inventory = await InventoryRepo.CreateInventory(place.Id, name);
 
             var localSnapshot = SnapshotGenerator.CreateRandomSnapshotForUpload(inventory.PlaceId, 100);
             var resultSnapshot = await SnapshotRepo.CreateSnapshot(localSnapshot);

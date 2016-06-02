@@ -9,8 +9,11 @@ namespace Locafi.Client.Model.Query
     public enum ComparisonOperator
     {
         Equals,
+        NotEquals,
         Contains,
         GreaterThan,
-        LessThan
+        LessThan,
+        GreaterThanOrEqual,
+        LessThanOrEqual
     }
 }

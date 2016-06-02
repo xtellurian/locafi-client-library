@@ -18,6 +18,11 @@
                 return $"{propertyName} eq {value}";
             }
 
+            public static string NotEquals(string propertyName, string value)
+            {
+                return $"{propertyName} ne {value}";
+            }
+
             public static string GreaterThan(string propertyName, string value)
             {
                 return $"{propertyName} gt {value}";
@@ -26,6 +31,16 @@
             public static string LessThan(string propertyName, string value)
             {
                 return $"{propertyName} lt {value}";
+            }
+
+            public static string GreaterThanOrEqual(string propertyName, string value)
+            {
+                return $"{propertyName} ge {value}";
+            }
+
+            public static string LessThanOrEqual(string propertyName, string value)
+            {
+                return $"{propertyName} le {value}";
             }
         }
 

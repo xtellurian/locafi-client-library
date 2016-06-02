@@ -21,6 +21,14 @@ namespace Locafi.Client.Model.Dto.SkuGroups
             SkuGroupNameId = skuGroupNameId;
         }
 
+        public UpdateSkuGroupDto(SkuGroupDetailDto detailDto)
+        {
+            SkuGroupId = detailDto.Id;
+            SkuGroupNameId = detailDto.SkuGroupNameId;
+            SkuIds = detailDto.Skus.Select(s => s.Id).ToList();
+            PlaceIds = detailDto.Places.Select(p => p.Id).ToList();
+        }
+
         #region Properties
         public Guid SkuGroupId { get; set; }    // Id of the sku group to modify
         public Guid? SkuGroupNameId { get; set; }    // set if you want to change the name of the group

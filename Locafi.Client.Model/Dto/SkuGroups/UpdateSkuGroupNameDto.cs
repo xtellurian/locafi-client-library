@@ -14,10 +14,10 @@ namespace Locafi.Client.Model.Dto.SkuGroups
         }
         public UpdateSkuGroupNameDto(Guid id, string name)
         {
-            SkuGroupNameId = id;
+            Id = id;
             Name = name;
         }
-        public Guid SkuGroupNameId { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
     }
