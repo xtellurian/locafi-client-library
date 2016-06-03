@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Dto.Devices
     {
         public Guid Id { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public RfidReaderStatus Status { get; set; }
+        public RfidReaderStatus? Status { get; set; }
         public List<RfidReaderAntennaStatusDto> AntennaStatuses { get; set; }
 
         //TODO: Implement Sensors and Actuators

@@ -15,7 +15,7 @@ namespace Locafi.Client.Model.Dto.Items
         public bool IsRequired { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateDataTypes DataType { get; set; }
+        public TemplateDataTypes? DataType { get; set; }
 
         public bool IsSkuLevelProperty { get; set; }
 

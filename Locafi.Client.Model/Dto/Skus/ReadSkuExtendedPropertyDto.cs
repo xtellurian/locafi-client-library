@@ -7,8 +7,6 @@ namespace Locafi.Client.Model.Dto.Skus
 {
     public class ReadSkuExtendedPropertyDto
     {
-        public Guid Id { get; set; }
-
         public Guid ExtendedPropertyId { get; set; }
 
         public string ExtendedPropertyName { get; set; }
@@ -16,7 +14,7 @@ namespace Locafi.Client.Model.Dto.Skus
         public bool ExtendedPropertyIsRequired { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateDataTypes ExtendedPropertyDataType { get; set; }
+        public TemplateDataTypes? ExtendedPropertyDataType { get; set; }
 
         public bool IsSkuLevelProperty { get; set; }
 

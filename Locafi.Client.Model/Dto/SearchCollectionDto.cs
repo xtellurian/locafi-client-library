@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Dto
         public int Skip { get; set; }
         public int Take { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public SearchCollectionType SearchType { get; set; }
+        public SearchCollectionType? SearchType { get; set; }
 
         public IList<SearchParameterDto> SearchParameterDtos { get; set; }
 

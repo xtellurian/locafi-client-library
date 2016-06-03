@@ -30,6 +30,6 @@ namespace Locafi.Client.Model.Dto.Templates
         public string Name { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateFor TemplateType { get; set; }
+        public TemplateFor? TemplateType { get; set; }
     }
 }

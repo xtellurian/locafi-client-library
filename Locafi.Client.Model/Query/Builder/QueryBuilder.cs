@@ -29,6 +29,11 @@ namespace Locafi.Client.Model.Query.Builder
         {
             
         }
+        public static QueryBuilder<T> NewQuery()
+        {
+            var builder = new QueryBuilder<T>();
+            return builder;
+        }
         public static QueryBuilder<T> NewQuery<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op)
         {
             var builder = new QueryBuilder<T>();
@@ -73,12 +78,15 @@ namespace Locafi.Client.Model.Query.Builder
         protected string BuildFilterExpression()
         {
             var filter = new StringBuilder();
-            filter.Append(QueryStrings.Filter.FilterStart);
-            var numberOfExpressions = _filterExpressions.Count;
-            for (int c = 0; c < numberOfExpressions; c++)
+            if (_filterExpressions.Count > 0)
             {
-                if (c > 0 && c < numberOfExpressions) filter.Append(" " + _filterExpressions[c].Operator.ToString().ToLower() + " ");
-                filter.Append(_filterExpressions[c].Expression);
+                filter.Append(QueryStrings.Filter.FilterStart);
+                var numberOfExpressions = _filterExpressions.Count;
+                for (int c = 0; c < numberOfExpressions; c++)
+                {
+                    if (c > 0 && c < numberOfExpressions) filter.Append(" " + _filterExpressions[c].Operator.ToString().ToLower() + " ");
+                    filter.Append(_filterExpressions[c].Expression);
+                }
             }
 
             return filter.ToString();
@@ -86,7 +94,10 @@ namespace Locafi.Client.Model.Query.Builder
 
         public IRestQuery<T> Build()
         {
-            var finalValue = $"?{QueryStrings.Page.TopAndSkip(_take, _skip)}&{BuildFilterExpression()}";
+            var finalValue = $"?{QueryStrings.Page.TopAndSkip(_take, _skip)}";
+            var filter = BuildFilterExpression();
+            if (!string.IsNullOrEmpty(filter))
+                finalValue += $"&{ filter }";
             return new UriQuery<T>(finalValue, _take, _skip);
         } 
     }

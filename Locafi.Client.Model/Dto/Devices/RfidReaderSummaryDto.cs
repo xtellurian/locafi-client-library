@@ -15,7 +15,7 @@ namespace Locafi.Client.Model.Dto.Devices
         public string Name { get; set; }
         public string IpAddress { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public ReaderType ReaderType { get; set; }  // ReaderType Enum
+        public ReaderType? ReaderType { get; set; }  // ReaderType Enum
         public string SerialNumber { get; set; }
 
         public RfidReaderSummaryDto()

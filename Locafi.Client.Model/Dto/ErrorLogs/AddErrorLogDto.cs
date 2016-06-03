@@ -25,7 +25,7 @@ namespace Locafi.Client.Model.Dto.ErrorLogs
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public ErrorLevel ErrorLevel { get; set; }
+        public ErrorLevel? ErrorLevel { get; set; }
         public string ErrorMessage { get; set; }
         public string ErrorDetails { get; set; }
         public DateTime TimeStamp { get; set; }

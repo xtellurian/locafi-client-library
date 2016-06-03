@@ -20,7 +20,7 @@ namespace Locafi.Client.Model.Dto
         public Guid Id { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateFor TemplateType { get; set; }
+        public TemplateFor? TemplateType { get; set; }
 
         public string ExtendedPropertyName { get; set; }
 
@@ -29,7 +29,7 @@ namespace Locafi.Client.Model.Dto
         public string TemplateExtendedPropertyIsRequired { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateDataTypes ExtendedPropertyDataType { get; set; }
+        public TemplateDataTypes? ExtendedPropertyDataType { get; set; }
 
     }
 }

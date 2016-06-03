@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Dto.Tags
         public Guid Id { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TagType TagType { get; set; }
+        public TagType? TagType { get; set; }
 
         public string TagNumber { get; set; }
     }

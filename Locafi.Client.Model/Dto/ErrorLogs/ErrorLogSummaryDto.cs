@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Dto.ErrorLogs
     {
         public Guid Id { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public ErrorLevel ErrorLevel { get; set; }
+        public ErrorLevel? ErrorLevel { get; set; }
         public string ErrorMessage { get; set; }
         public DateTime TimeStamp { get; set; }
         public string LoggedByUserFullName { get; set; }

@@ -30,10 +30,10 @@ namespace Locafi.Client.Model.Dto.Items
             // popultate the extended properties
             foreach (var extProp in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
             {
-                if((bool)extProps?.Select(p => p.ExtendedPropertyId).Contains(extProp.ExtendedPropertyId))
+                if(extProps != null && extProps.Select(p => p.ExtendedPropertyId).Contains(extProp.ExtendedPropertyId))
                     ItemExtendedPropertyList.Add(extProps.First(p => p.ExtendedPropertyId == extProp.ExtendedPropertyId));
                 else
-                    ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.Id, Value = Guid.NewGuid().ToString() });
+                    ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.ExtendedPropertyId, Value = Guid.NewGuid().ToString() });
             }
 
         }

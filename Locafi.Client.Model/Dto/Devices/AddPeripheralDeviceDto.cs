@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Dto.Devices
         public string Name { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public PeripheralDeviceType DeviceType { get; set; }
+        public PeripheralDeviceType? DeviceType { get; set; }
 
         public AddIpConfigDto IpConfig { get; set; }
 

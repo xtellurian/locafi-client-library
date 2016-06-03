@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Dto.Devices
         public string TagNumber { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TagType TagType { get; set; }
+        public TagType? TagType { get; set; }
 
         public int ReadCount { get; set; }  // number of times the tag was read during this inventory/allocation/receive etc
 

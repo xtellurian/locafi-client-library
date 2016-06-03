@@ -55,7 +55,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian.Inventory
     [TestMethod]
     public async Task InventoryCrud_GetDetail()
     {
-        var inventories = await InventoryRepo.QueryInventories();
+        var query = QueryBuilder<InventorySummaryDto>.NewQuery().Take(1).Build();
+        var inventories = await InventoryRepo.QueryInventories(query);
         Assert.IsNotNull(inventories, "inventories != null");
         foreach (var inventory in inventories)
         {

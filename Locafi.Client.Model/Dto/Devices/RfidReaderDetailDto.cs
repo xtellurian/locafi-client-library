@@ -15,10 +15,10 @@ namespace Locafi.Client.Model.Dto.Devices
         public PeripheralDeviceDetailDto PeripherialDevice { get; set; }        
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public ReaderMode ReaderMode { get; set; }  // ReaderMode Enum
+        public ReaderMode? ReaderMode { get; set; }  // ReaderMode Enum
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public SearchMode SearchMode { get; set; }  // SearchMode Enum
+        public SearchMode? SearchMode { get; set; }  // SearchMode Enum
 
         public int Session { get; set; }    // Session number (0 - 3) to use for the inventory operation for this configuration
 

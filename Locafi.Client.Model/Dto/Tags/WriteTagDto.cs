@@ -12,7 +12,7 @@ namespace Locafi.Client.Model.Dto.Tags
     public class WriteTagDto
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public TagType TagType { get; set; }
+        public TagType? TagType { get; set; }
 
         public string TagNumber { get; set; }
     }

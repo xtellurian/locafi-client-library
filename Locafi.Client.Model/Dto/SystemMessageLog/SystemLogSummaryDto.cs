@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Dto.SystemMessageLog
     {
         public Guid Id { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public SystemMessageType MessageType { get; set; }
+        public SystemMessageType? MessageType { get; set; }
         public string Message { get; set; }
         public DateTime TimeStamp { get; set; }
         public string LoggedByUserFullName { get; set; }

@@ -14,7 +14,7 @@ namespace Locafi.Client.Model.Dto
         public string PropertyName { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateDataTypes DataType { get; set; }
+        public TemplateDataTypes? DataType { get; set; }
 
         public string Value { get; set; }
 

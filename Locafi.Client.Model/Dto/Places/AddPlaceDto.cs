@@ -12,7 +12,7 @@ namespace Locafi.Client.Model.Dto.Places
 
         public string Description { get; set; }
 
-        public Guid ParentPlaceId { get; set; }
+        public Guid? ParentPlaceId { get; set; }
 
         public IList<WriteTagDto> PlaceTagList { get; set; }
 

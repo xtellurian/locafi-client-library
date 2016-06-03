@@ -12,7 +12,7 @@ namespace Locafi.Client.Model.Dto.SystemMessageLog
     public class AddSystemLogDto
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public SystemMessageType MessageType { get; set; }
+        public SystemMessageType? MessageType { get; set; }
         public string Message { get; set; }
         public DateTime TimeStamp { get; set; }
     }

@@ -30,7 +30,7 @@ namespace Locafi.Client.Model.Dto.Items
         public string PlaceName { get; set; }
         public string TagNumber { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public TagType TagType { get; set; }
+        public TagType? TagType { get; set; }
 
         public Guid? PersonId { get; set; }
         public string PersonName { get; set; }

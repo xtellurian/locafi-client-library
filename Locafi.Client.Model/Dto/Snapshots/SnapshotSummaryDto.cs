@@ -33,6 +33,6 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public DateTime EndTimeUtc { get; set; }    // time snapshot was completed
         public Guid UserId { get; set; }  // user who scanned the items
         [JsonConverter(typeof(StringEnumConverter))]
-        public SnapshotType SnapshotType { get; set; }
+        public SnapshotType? SnapshotType { get; set; }
     }
 }

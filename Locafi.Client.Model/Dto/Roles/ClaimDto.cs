@@ -12,9 +12,9 @@ namespace Locafi.Client.Model.Dto.Roles
     public class ClaimDto
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public NavigatorModule ModuleName { get; set; }
+        public NavigatorModule? ModuleName { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public DataAccessMode Permission { get; set; }
+        public DataAccessMode? Permission { get; set; }
     }
 }

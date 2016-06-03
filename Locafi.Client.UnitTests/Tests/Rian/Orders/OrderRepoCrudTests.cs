@@ -176,7 +176,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         [TestMethod]
         public async Task OrderCrud_GetOrderById()
         {
-            var orders = await _orderRepo.QueryOrders();
+            var query = QueryBuilder<OrderSummaryDto>.NewQuery().Take(1).Build();
+            var orders = await _orderRepo.QueryOrders(query);
             Assert.IsNotNull(orders, "OrderRepo.GetAllOrders returned Null");
 
             foreach (var order in orders)

@@ -9,7 +9,7 @@ namespace Locafi.Client.Model.Dto.PortalRules
         public string Name { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public PortalRuleType RuleType { get; set; }
+        public PortalRuleType? RuleType { get; set; }
 
         public int Timeout { get; set; }
     }

@@ -12,7 +12,7 @@ namespace Locafi.Client.Model.Dto.PortalRules
         public Guid RfidPortalId { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public PortalRuleType RuleType { get; set; }
+        public PortalRuleType? RuleType { get; set; }
 
         public int Timeout { get; set; }
 

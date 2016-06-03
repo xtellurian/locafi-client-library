@@ -46,7 +46,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             Assert.IsTrue(string.Equals(addPerson.Email,detail.Email));
             Assert.IsTrue(string.Equals(addPerson.GivenName, detail.GivenName));
             Assert.IsTrue(string.Equals(addPerson.Surname, detail.Surname));
-            Assert.IsTrue(string.Equals(addPerson.PersonTagList[0].TagNumber, detail.TagNumber));
+            Assert.IsTrue(string.Equals(addPerson.PersonTagList[0].TagNumber.ToUpper(), detail.TagNumber));
         }
 
         [TestMethod]

@@ -13,7 +13,7 @@ namespace Locafi.Client.Model.Dto.Portals
         public Guid Id { get; set; }
         public DateTime TimeStamp { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public RfidPortalStatus Status { get; set; }
+        public RfidPortalStatus? Status { get; set; }
         public IList<RfidReaderStatusDto> RfidReaderStatuses { get; set; }
 
         public UpdatePortalStatusDto()

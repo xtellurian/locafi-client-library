@@ -34,7 +34,7 @@ namespace Locafi.Client.Model.Dto.Persons
         public string TagNumber { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TagType TagType { get; set; } // TagType Enum
+        public TagType? TagType { get; set; } // TagType Enum
 
         public string GivenName { get; set; }
 

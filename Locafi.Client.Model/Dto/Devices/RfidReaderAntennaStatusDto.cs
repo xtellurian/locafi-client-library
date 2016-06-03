@@ -13,6 +13,6 @@ namespace Locafi.Client.Model.Dto.Devices
     {
         public Guid Id { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public RfidReaderAntennaStatus Status { get; set; }
+        public RfidReaderAntennaStatus? Status { get; set; }
     }
 }

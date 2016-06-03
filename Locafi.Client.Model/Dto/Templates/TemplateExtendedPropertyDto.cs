@@ -24,7 +24,7 @@ namespace Locafi.Client.Model.Dto.Templates
         public bool TemplateExtendedPropertyIsRequired { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public TemplateDataTypes ExtendedPropertyDataType { get; set; }
+        public TemplateDataTypes? ExtendedPropertyDataType { get; set; }
 
     }
 }
