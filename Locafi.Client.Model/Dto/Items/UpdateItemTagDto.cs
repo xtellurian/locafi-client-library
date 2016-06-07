@@ -10,6 +10,11 @@ namespace Locafi.Client.Model.Dto.Items
 
         public IList<WriteTagDto> ItemTagList { get; set; }
 
+        public UpdateItemTagDto()
+        {
+            ItemTagList = new List<WriteTagDto>();
+        }
+
         public static UpdateItemTagDto FromItemDetail(ItemDetailDto detail)
         {
             return new UpdateItemTagDto
