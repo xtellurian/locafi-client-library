@@ -14,6 +14,8 @@ using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 using Locafi.Client.Model;
 using Locafi.Client.Model.Query;
+using Locafi.Client.Model.Query.Builder;
+using System.Linq;
 
 namespace Locafi.Client.Repo
 {
@@ -78,6 +80,13 @@ namespace Locafi.Client.Repo
             var path = ReasonUri.CreateReason;
             var result = await Post<ReasonDetailDto>(reasonDto, path);
             return result;
+        }
+
+        public async Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reason)
+        {
+            var query = QueryBuilder<ReasonDetailDto>.NewQuery(r => r.ReasonFor, reason, ComparisonOperator.Equals).Build();
+            var result = await QueryReasons(query);
+            return result.Items.ToList();
         }
 
         public async Task Delete(Guid id)

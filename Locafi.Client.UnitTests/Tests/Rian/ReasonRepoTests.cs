@@ -48,9 +48,10 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         {
             foreach (ReasonFor reasonEnum in Enum.GetValues(typeof(ReasonFor)))
             {
-                var donwloaded = await _reasonRepo.QueryReasons(ReasonQuery.NewQuery(r => r.ReasonFor,reasonEnum,ComparisonOperator.Equals));
-                Assert.IsNotNull(donwloaded);
-                Assert.IsInstanceOfType(donwloaded, typeof(IEnumerable<ReasonDetailDto>));
+//                var downloaded = await _reasonRepo.QueryReasons(ReasonQuery.NewQuery(r => r.ReasonFor,reasonEnum,ComparisonOperator.Equals));
+                var downloaded = await _reasonRepo.GetReasonsFor(reasonEnum);
+                Assert.IsNotNull(downloaded);
+                Assert.IsInstanceOfType(downloaded, typeof(IEnumerable<ReasonDetailDto>));
             }
         }
 

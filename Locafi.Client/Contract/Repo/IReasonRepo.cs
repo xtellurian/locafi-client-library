@@ -19,6 +19,7 @@ namespace Locafi.Client.Contract.Repo
         Task<IQueryResult<ReasonDetailDto>> QueryReasonsContinuation(IRestQuery<ReasonDetailDto> query);
         Task<ReasonDetailDto> GetReason(Guid id);
         Task<ReasonDetailDto> CreateReason(AddReasonDto reasonDto);
+        Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reason);
         Task Delete(Guid id);
     }
 }
