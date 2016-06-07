@@ -14,6 +14,7 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 using Locafi.Client.Model;
+using Locafi.Client.Model.Dto;
 
 namespace Locafi.Client.Repo
 {
@@ -86,6 +87,13 @@ namespace Locafi.Client.Repo
         {
             var path = SkuUri.DeleteSku(id);
             await Delete(path);
+        }
+
+        public async Task<IList<SkuSummaryDto>> SearchSkus(SearchCollectionDto searchSkuQueryDto)
+        {
+            var path = SkuUri.SearchSkus;
+            var result = await Post<List<SkuSummaryDto>>(searchSkuQueryDto, path);
+            return result;
         }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)

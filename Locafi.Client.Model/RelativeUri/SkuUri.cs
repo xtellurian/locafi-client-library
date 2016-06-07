@@ -11,6 +11,7 @@ namespace Locafi.Client.Model.Uri
         public static string ServiceName => "Skus";
         public static string CreateSku => "CreateSku";
         public static string GetSkus => "GetFilteredSkus";
+        public static string SearchSkus => "CustomSkuSearch";
 
         public static string GetSkuDetail(Guid id)
         {

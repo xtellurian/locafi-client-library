@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model;
+using Locafi.Client.Model.Dto;
 
 namespace Locafi.Client.Contract.Repo
 {
@@ -19,5 +20,6 @@ namespace Locafi.Client.Contract.Repo
         Task<SkuDetailDto> GetSkuDetail(Guid skuId);
         Task<SkuDetailDto> CreateSku(AddSkuDto addSkuDto);
         Task Delete(Guid id);
+        Task<IList<SkuSummaryDto>> SearchSkus(SearchCollectionDto searchSkuQueryDto);
     }
 }
