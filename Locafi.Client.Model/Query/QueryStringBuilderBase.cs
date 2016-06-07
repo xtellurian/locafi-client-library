@@ -57,7 +57,7 @@ namespace Locafi.Client.Model.Query
                 return $"null";
 
             var type = typeof(TProperty);
-            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || (type.GetTypeInfo().BaseType == typeof(ValueType) && type != typeof(Guid?))) // strings must be surrounded like so: '<string_value>'
+            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || (type.GetTypeInfo().BaseType == typeof(ValueType) && type != typeof(Guid?) && type != typeof(Guid))) // strings must be surrounded like so: '<string_value>'
                 return $"'{p}'";
             if (type == typeof(DateTimeOffset)) //datetimes are difficult
             {
