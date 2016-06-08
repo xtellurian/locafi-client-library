@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Locafi.Client.Model.Dto.Items
 {
@@ -28,7 +29,7 @@ namespace Locafi.Client.Model.Dto.Items
             return new UpdateItemDto
             {
                 Description = detail.Description,
-                ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(detail.ItemExtendedPropertyList),
+                ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>(detail.ItemExtendedPropertyList.Where(ep => !ep.IsSkuLevelProperty)),
                 Id = detail.Id,
                 Name = detail.Name,
                 SkuId = detail.SkuId
