@@ -8,6 +8,8 @@ using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Locafi.Client.UnitTests.Implementations;
+using Locafi.Client.Processors.Encoding;
 
 namespace Locafi.Client.UnitTests.Tests.Rian
 {
@@ -123,6 +125,17 @@ namespace Locafi.Client.UnitTests.Tests.Rian
             }
 
         }
-     
+
+        [TestMethod]
+        public async Task SgtinDecodeTest()
+        {
+            var tag = new TestTag("52414D5000A0001000000027");
+
+            Assert.IsFalse(tag.HasSgtin());
+
+            tag.TagNumber = "30340003EB5BAF8000000243";
+
+            Assert.IsTrue(tag.HasSgtin());
+        }
     }
 }

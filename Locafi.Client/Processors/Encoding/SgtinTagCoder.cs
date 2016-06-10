@@ -158,7 +158,7 @@ namespace Locafi.Client.Processors.Encoding
                 try
                 {
                     EPCEncoding encoding = (EPCEncoding)header;
-                    if (encoding != EPCEncoding.Invalid)
+                    if (Enum.IsDefined(typeof(EPCEncoding), encoding) && encoding != EPCEncoding.Invalid)
                         return true;
                     else
                         return false;
