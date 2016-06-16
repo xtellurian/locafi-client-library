@@ -36,5 +36,6 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public string SkuNumber { get; set; }
 
+        public string Thumbnail { get; set; }
     }
 }

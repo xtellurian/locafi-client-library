@@ -23,6 +23,8 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public string Description { get; set; }
 
+        public IList<string> Images { get; set; }
+
         public IList<ReadSkuExtendedPropertyDto> SkuExtendedPropertyList { get; set; }
 
     }

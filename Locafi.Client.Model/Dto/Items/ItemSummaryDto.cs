@@ -35,5 +35,7 @@ namespace Locafi.Client.Model.Dto.Items
 
         public Guid? PersonId { get; set; }
         public string PersonName { get; set; }
+
+        public string Thumbnail { get; set; }
     }
 }
