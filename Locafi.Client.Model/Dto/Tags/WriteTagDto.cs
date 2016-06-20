@@ -14,6 +14,11 @@ namespace Locafi.Client.Model.Dto.Tags
         [JsonConverter(typeof(StringEnumConverter))]
         public TagType? TagType { get; set; }
 
-        public string TagNumber { get; set; }
+        private string _tagNumber;
+        public string TagNumber
+        {
+            get { return _tagNumber; }
+            set { _tagNumber = value.ToUpper(); }
+        }
     }
 }

@@ -29,7 +29,11 @@ namespace Locafi.Client.Model.Dto.Items
         public Guid PlaceId { get; set; }
         public string PlaceName { get; set; }
         public Guid? TagId { get; set; }
-        public string TagNumber { get; set; }
+        private string _tagNumber;
+        public string TagNumber {
+            get { return _tagNumber; }
+            set { _tagNumber = value.ToUpper(); }
+            }
         [JsonConverter(typeof(StringEnumConverter))]
         public TagType? TagType { get; set; }
 
