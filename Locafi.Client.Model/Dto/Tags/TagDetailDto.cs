@@ -20,7 +20,7 @@ namespace Locafi.Client.Model.Dto.Tags
         public string TagNumber
         {
             get { return _tagNumber; }
-            set { _tagNumber = value.ToUpper(); }
+            set { _tagNumber = value?.ToUpper(); }
         }
     }
 }
