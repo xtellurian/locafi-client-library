@@ -10,6 +10,7 @@ namespace Locafi.Client.Model.Enums
     {
         Continuous = 1,
         AntennaEvents = 2,
-        SensorEvents = 3
+        SensorEvents = 3,
+        AccessControl = 4
     }
 }
