@@ -190,6 +190,12 @@ namespace Locafi.Client.Repo
             return await Post(portalHeartbeatDto, path);            
         }
 
+        public async Task<TagAccessResultDto> CheckAccess(CheckTagAccessDto tagAccessDto)
+        {
+            var path = PortalUri.CheckAccess;
+            return await Post<TagAccessResultDto>(tagAccessDto, path);
+        }
+
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
             throw new PortalRepoException(serverMessages, statusCode, url, payload);

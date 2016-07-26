@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    class TagAccessResultDto
+    public class TagAccessResultDto
     {
         public bool AllowAccess { get; set; }
         public string PersonName { get; set; }
