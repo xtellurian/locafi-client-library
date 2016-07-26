@@ -73,8 +73,10 @@
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
     <Compile Include="Dto\FileUpload\FileUploadDto.cs" />
     <Compile Include="Dto\Places\UpdatePlaceTagDto.cs" />
+    <Compile Include="Dto\Portals\CheckTagAccessDto.cs" />
     <Compile Include="Dto\Portals\PortalHeartBeatDto.cs" />
     <Compile Include="Dto\Portals\PortalStatusDto.cs" />
+    <Compile Include="Dto\Portals\TagAccessResultDto.cs" />
     <Compile Include="Dto\Portals\UpdatePortalStatusDto.cs" />
     <Compile Include="Dto\Roles\ClaimDto.cs" />
     <Compile Include="Dto\Roles\RoleDetailDto.cs" />
