@@ -21,5 +21,13 @@ namespace Locafi.Client.Model.Dto.PortalRules
         public Guid? SensorOutId { get; set; }
 
         public string SensorOutName { get; set; }
+
+        public Guid? Actuator1Id { get; set; }
+
+        public string Actuator1Name { get; set; }
+
+        public Guid? Actuator2Id { get; set; }
+
+        public string Actuator2Name { get; set; }
     }
 }
