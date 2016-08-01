@@ -31,7 +31,7 @@ namespace Locafi.Client.Repo
 
         public async Task<SnapshotDetailDto> CreateSnapshot(AddSnapshotDto snapshot)
         {
-            if (snapshot.EndTimeUtc <= snapshot.StartTimeUtc) snapshot.EndTimeUtc = DateTime.UtcNow;
+            if (snapshot.EndTime <= snapshot.StartTime) snapshot.EndTime = DateTime.UtcNow;
             var path = SnapshotUri.CreateUri;
             var result = await Post<SnapshotDetailDto>(snapshot, path);
             return result;

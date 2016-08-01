@@ -15,6 +15,8 @@ using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 using Locafi.Client.Model;
+using Locafi.Client.Model.Dto.Snapshots;
+using System.Diagnostics;
 
 namespace Locafi.Client.Repo
 {
@@ -64,51 +66,55 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<InventoryDetailDto> CreateInventory(Guid placeId, string name = null, Guid? skuGroupId = null)
+        public async Task<InventoryDetailDto> CreateInventory(Guid placeId, string name = null, Guid? skuGroupId = null, List<Guid> skuIds = null)
         {
             var dto = new AddInventoryDto
             {
                 Name = name,
                 PlaceId = placeId,
-                SkuGroupId = skuGroupId
+                SkuGroupId = skuGroupId,
+                SkuIds = skuIds
             };
             var path = InventoryUri.CreateInventory;
             var result = await Post<InventoryDetailDto>(dto, path);
             return result;
         }
 
-        public async Task<InventoryDetailDto> AddSnapshot(InventorySummaryDto inventory, Guid snapshotId)
+        public async Task<InventoryDetailDto> AddSnapshot(Guid inventoryId, AddSnapshotDto snapshot)
         {
-            var path = InventoryUri.AddSnapshot(inventory, snapshotId);
-            var result = await Post<InventoryDetailDto>(inventory, path);
+            var dto = new AddInventorySnapshotDto(inventoryId, snapshot);
+            var path = InventoryUri.AddSnapshot;
+            var result = await Post<InventoryDetailDto>(dto, path);
             return result;
         }
 
-        public async Task<InventoryDetailDto> AddItem(InventorySummaryDto inventory, Guid itemId)
+        //public async Task<InventoryDetailDto> AddItem(InventorySummaryDto inventory, Guid itemId)
+        //{
+        //    var path = InventoryUri.AddItem(inventory, itemId);
+        //    var result = await Post<InventoryDetailDto>(inventory, path);
+        //    return result;
+        //}
+
+        public async Task<InventoryDetailDto> Resolve(InventoryDetailDto resolvedDto)
         {
-            var path = InventoryUri.AddItem(inventory, itemId);
-            var result = await Post<InventoryDetailDto>(inventory, path);
+            var path = InventoryUri.Resolve;
+            var result = await Post<InventoryDetailDto>(resolvedDto, path);
             return result;
         }
 
-        public async Task<InventoryDetailDto> Resolve(Guid inventoryId, ResolveInventoryDto reasons)
-        {
-            var path = InventoryUri.Resolve(inventoryId);
-            var result = await Post<InventoryDetailDto>(reasons, path);
-            return result;
-        }
-
-        public async Task<InventoryDetailDto> Complete(Guid inventoryId)
-        {
-            var path = InventoryUri.Complete(inventoryId);
-            var result = await Post<InventoryDetailDto>(null, path);
-            return result;
-        }
+        //public async Task<InventoryDetailDto> Complete(Guid inventoryId)
+        //{
+        //    var path = InventoryUri.Complete(inventoryId);
+        //    var result = await Post<InventoryDetailDto>(null, path);
+        //    return result;
+        //}
 
         public async Task<bool> Delete(Guid id)
         {
-            var path = InventoryUri.Delete(id);
-            return await Delete(path);
+            Debug.WriteLine("Delete Inventory not implemented");
+            return true;
+//            var path = InventoryUri.Delete(id);
+//            return await Delete(path);
         }
 
         [Obsolete]

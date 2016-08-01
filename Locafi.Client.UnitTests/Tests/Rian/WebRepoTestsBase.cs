@@ -19,6 +19,7 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         private ISnapshotRepo _snapshotRepo;
         private IReasonRepo _reasonRepo;
         private ITagReservationRepo _tagReservationRepo;
+        private ICycleCountRepo _cycleCountRepo;
 
         protected IInventoryRepo InventoryRepo => _inventoryRepo ?? (_inventoryRepo = WebRepoContainer.InventoryRepo);
         protected IPlaceRepo PlaceRepo => _placeRepo ?? (_placeRepo = WebRepoContainer.PlaceRepo);
@@ -30,6 +31,8 @@ namespace Locafi.Client.UnitTests.Tests.Rian
         protected ISnapshotRepo SnapshotRepo => _snapshotRepo ?? (_snapshotRepo = WebRepoContainer.SnapshotRepo);
         protected ITagReservationRepo TagReservationRepo => _tagReservationRepo ?? (_tagReservationRepo = WebRepoContainer.TagReservationRepo);
         protected IErrorRepo ErrorRepo => WebRepoContainer.ErrorRepo; // new one every time
+        protected ICycleCountRepo CycleCountRepo => _cycleCountRepo ?? (_cycleCountRepo = WebRepoContainer.CycleCountRepo);
+
         protected WebRepoTestsBase()
         {
             

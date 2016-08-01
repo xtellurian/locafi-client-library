@@ -29,8 +29,9 @@ namespace Locafi.Script
         public static ITemplateRepo TemplateRepo => new TemplateRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static IUserRepo UserRepo => new UserRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IAuthenticationRepo AuthRepo => new AuthenticationRepo(HttpConfigService, Serialiser);
-        
-        
+        public static ICycleCountRepo CycleCountRepo => new CycleCountRepo(AuthorisedHttpTransferConfigService, Serialiser);
+
+
 
         static WebRepoContainer()
         {

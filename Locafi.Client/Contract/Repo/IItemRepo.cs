@@ -32,5 +32,6 @@ namespace Locafi.Client.Contract.Repo
         Task<IList<ItemSummaryDto>> SearchItems(SearchCollectionDto searchItemQueryDto);
         Task<ISearchResult<ItemSummaryDto>> SearchItems(IRestSearch<ItemSummaryDto> search);
         Task<IList<ItemSummaryDto>> UploadItems(FileUploadDto file);
+        Task<bool> ClearItems(ClearItemStateDto clearItemsDto);
     }
 }

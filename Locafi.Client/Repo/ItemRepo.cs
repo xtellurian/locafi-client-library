@@ -134,6 +134,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<bool> ClearItems(ClearItemStateDto clearItemsDto)
+        {
+            var path = ItemUri.ClearItems;
+            var result = await Post(clearItemsDto, path);
+            return result;
+        }
+
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
             throw new ItemRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());

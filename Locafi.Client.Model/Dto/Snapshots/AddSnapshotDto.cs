@@ -11,33 +11,20 @@ namespace Locafi.Client.Model.Dto.Snapshots
 {
     public class AddSnapshotDto
     {
-        public AddSnapshotDto()
-        {
-            SnapshotType = Enums.SnapshotType.Add;
-            Tags = new List<SnapshotTagDto>();
-        }
-        public AddSnapshotDto(Guid placeId, string name = "")
-        {
-            PlaceId = placeId;
-            Name = name;
-            Tags = new List<SnapshotTagDto>();
-            StartTimeUtc = DateTime.UtcNow;
-            EndTimeUtc = DateTime.Now;
-            SnapshotType = Enums.SnapshotType.Add;
-        }
-
-        public string Name { get; set; }    // friendly name for the snapshot
-
-        public Guid PlaceId { get; set; }    // id of location this asset is in
-
-        public DateTime StartTimeUtc { get; set; }  // time snapshot was started
-        public DateTime EndTimeUtc { get; set; }    // time snapshot was completed
+        public DateTime StartTime { get; set; }  // time snapshot was started
+        public DateTime EndTime { get; set; }    // time snapshot was completed
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public SnapshotType? SnapshotType { get; set; }  // defines if this is a snapshot of tags to add or remove from an operation
+        public SnapshotType SnapshotType { get; set; }  // defines if this is a snapshot of tags to add or remove from an operation
 
         public IList<SnapshotTagDto> Tags { get; set; }    // list of tags scanned during the snapshot (tag number and tag type)
 
-
+        public AddSnapshotDto()
+        {
+            Tags = new List<SnapshotTagDto>();
+            StartTime = DateTime.UtcNow;
+            EndTime = DateTime.Now;
+            SnapshotType = Enums.SnapshotType.Add;
+        }
     }
 }

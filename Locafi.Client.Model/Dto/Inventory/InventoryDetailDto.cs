@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Locafi.Client.Model.Dto.Skus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,13 +10,20 @@ namespace Locafi.Client.Model.Dto.Inventory
 {
     public class InventoryDetailDto : InventorySummaryDto
     {
+        public List<SkuSummaryDto> SelectedSkus { get; set; }
+
+        public List<ItemSummaryReasonDto> FoundItemsExpected { get; set; }
+
+        public List<ItemSummaryReasonDto> FoundItemsUnexpected { get; set; }
+
+        public List<ItemSummaryReasonDto> MissingItems { get; set; }
+
         public InventoryDetailDto()
         {
             // initialise empty arrays
-            FoundItemsExpected = new List<Guid>();
-            FoundItemsUnexpected = new List<Guid>();
-            MissingItems = new List<Guid>();
-            Reasons = new Dictionary<Guid, Guid>();
+            FoundItemsExpected = new List<ItemSummaryReasonDto>();
+            FoundItemsUnexpected = new List<ItemSummaryReasonDto>();
+            MissingItems = new List<ItemSummaryReasonDto>();
         }
 
         public InventoryDetailDto(InventoryDetailDto dto) : base(dto)
@@ -27,13 +35,5 @@ namespace Locafi.Client.Model.Dto.Inventory
                 property.SetValue(this, value);
             }
         }
-        public string SkuGroupName { get; set; }
-        public List<Guid> SnapshotIds { get; set; }
-        public List<Guid> FoundItemsExpected { get; set; }
-        public List<Guid> FoundItemsUnexpected { get; set; }
-        public List<Guid> MissingItems { get; set; }
-        public Dictionary<Guid, Guid> Reasons { get; set; } // item id, reason id
-
-        
     }
 }

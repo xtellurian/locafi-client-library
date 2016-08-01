@@ -39,6 +39,7 @@ namespace Locafi.Client.UnitTests
         public static IAuthenticationRepo AuthRepo => new AuthenticationRepo(HttpConfigService, Serialiser);
         public static IPortalRepo PortalRepo => new PortalRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IErrorRepo ErrorRepo => new ErrorRepo(new SimpleHttpTransferer(), AuthorisedHttpTransferConfigService, new Serialiser());
+        public static ICycleCountRepo CycleCountRepo => new CycleCountRepo(AuthorisedHttpTransferConfigService, Serialiser);
 
         static WebRepoContainer()
         {

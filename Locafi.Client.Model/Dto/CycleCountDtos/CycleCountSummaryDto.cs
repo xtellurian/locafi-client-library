@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.Inventory
+namespace Locafi.Client.Model.Dto.CycleCountDtos
 {
-    public class AddInventoryDto
+    public class CycleCountSummaryDto : EntityDtoBase
     {
         public string Name { get; set; }
 
@@ -14,11 +14,8 @@ namespace Locafi.Client.Model.Dto.Inventory
 
         public Guid? SkuGroupId { get; set; }
 
-        public List<Guid> SkuIds { get; set; }
+        public string SkuGroupName { get; set; }
 
-        public AddInventoryDto()
-        {
-            SkuIds = new List<Guid>();
-        }
+        public bool Complete { get; set; }
     }
 }

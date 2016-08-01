@@ -46,6 +46,11 @@
     <Compile Include="Dto\Ble\BleDetectionCollection.cs" />
     <Compile Include="Dto\Ble\IBleDetection.cs" />
     <Compile Include="Dto\Ble\SensorBleDetection.cs" />
+    <Compile Include="Dto\CycleCountDtos\AddCycleCountDto.cs" />
+    <Compile Include="Dto\CycleCountDtos\CycleCountDetailDto.cs" />
+    <Compile Include="Dto\CycleCountDtos\CycleCountSummaryDto.cs" />
+    <Compile Include="Dto\CycleCountDtos\ItemSkuCountDto.cs" />
+    <Compile Include="Dto\CycleCountDtos\ResolveCycleCountDto.cs" />
     <Compile Include="Dto\Devices\AddIpConfigDto.cs" />
     <Compile Include="Dto\Devices\AddPeripheralDeviceActuatorDto.cs" />
     <Compile Include="Dto\Devices\AddPeripheralDeviceDto.cs" />
@@ -72,6 +77,9 @@
     <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
     <Compile Include="Dto\FileUpload\FileUploadDto.cs" />
+    <Compile Include="Dto\Inventory\AddInventorySnapshotDto.cs" />
+    <Compile Include="Dto\Inventory\ItemSummaryReasonDto.cs" />
+    <Compile Include="Dto\Items\ClearItemStateDto.cs" />
     <Compile Include="Dto\Places\UpdatePlaceTagDto.cs" />
     <Compile Include="Dto\Portals\CheckTagAccessDto.cs" />
     <Compile Include="Dto\Portals\PortalHeartBeatDto.cs" />
@@ -123,7 +131,6 @@
     <Compile Include="Dto\Inventory\AddInventoryDto.cs" />
     <Compile Include="Dto\Inventory\InventoryDetailDto.cs" />
     <Compile Include="Dto\Inventory\InventorySummaryDto.cs" />
-    <Compile Include="Dto\Inventory\ResolveInventoryDto.cs" />
     <Compile Include="Dto\Items\AddItemDto.cs" />
     <Compile Include="Dto\Items\ItemDetailDto.cs" />
     <Compile Include="Dto\Items\ItemSummaryDto.cs" />
@@ -202,6 +209,7 @@
     <Compile Include="Query\QueryStringBuilderBase.cs" />
     <Compile Include="RelativeUri\AuthenticationUri.cs" />
     <Compile Include="RelativeUri\ClusterUri.cs" />
+    <Compile Include="RelativeUri\CycleCountUri.cs" />
     <Compile Include="RelativeUri\DeviceUri.cs" />
     <Compile Include="RelativeUri\ErrorLogUri.cs" />
     <Compile Include="RelativeUri\ItemUri.cs" />

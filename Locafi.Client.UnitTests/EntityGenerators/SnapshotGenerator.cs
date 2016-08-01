@@ -22,11 +22,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             var count = number <= 0 ? ran.Next(50) : number;
             var name = Guid.NewGuid().ToString();
             var tags = GenerateRandomTags(count);
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -55,11 +54,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             var name = Guid.NewGuid().ToString();
             var tags = await GenerateGtinTags(sku.Id,totalCount - randomCount);
             tags = tags.Concat(GenerateRandomTags(randomCount)).ToList();
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -114,11 +112,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             // generate some new tags if there aren't enough already exisiting tags for this sku
             tags = tags.Concat(await GenerateGtinTags(sku.Id, totalCount - randomCount - items.Entities.Count)).ToList();
             tags = tags.Concat(GenerateRandomTags(randomCount)).ToList();
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -140,11 +137,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
                 });
             }
 
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -163,11 +159,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
                 });
             }
 
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -208,10 +203,8 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 
         private static SnapshotTagDto GenerateRandomTag()
         {
-            return new SnapshotTagDto
-            {
-                TagNumber = Guid.NewGuid().ToString()
-            };
+            var rand = new Random(DateTime.Now.Millisecond);
+            return new SnapshotTagDto(Guid.NewGuid().ToString(),rand.Next(1,100),rand.Next(-70,-30));
         }
     }
 }
