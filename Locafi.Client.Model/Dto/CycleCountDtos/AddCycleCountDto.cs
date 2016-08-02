@@ -12,7 +12,7 @@ namespace Locafi.Client.Model.Dto.CycleCountDtos
 
         public Guid? SkuGroupId { get; set; }
 
-        public List<Guid> SkuIds { get; set; }
+        public IList<Guid> SkuIds { get; set; }
 
         public AddCycleCountDto()
         {
