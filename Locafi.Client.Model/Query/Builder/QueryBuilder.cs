@@ -25,6 +25,7 @@ namespace Locafi.Client.Model.Query.Builder
         private readonly IList<FilterExpression> _filterExpressions = new List<FilterExpression>();
         private int _skip;
         private int _take = 100; // default
+
         private QueryBuilder()
         {
             
@@ -73,7 +74,13 @@ namespace Locafi.Client.Model.Query.Builder
         {
             _take = take;
             return this;
-        } 
+        }
+
+        public QueryBuilder<T> TakeAll()
+        {
+            _take = -1;
+            return this;
+        }
 
         protected string BuildFilterExpression()
         {

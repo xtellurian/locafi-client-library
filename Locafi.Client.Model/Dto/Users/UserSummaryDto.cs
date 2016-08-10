@@ -26,13 +26,20 @@ namespace Locafi.Client.Model.Dto.Users
         }
         public string GivenName { get; set; }
 
-        public string MiddleName { get; set; }
-
         public string Surname { get; set; }
 
         public string Email { get; set; }
 
         public Guid RoleId { get; set; }
         public string RoleName { get; set; }
+
+        public Guid TemplateId { get; set; }
+        public string TemplateName { get; set; }
+
+        public string TagNumber { get; set; }
+        public string TagType { get; set; }
+
+        public Guid? PlaceId { get; set; }
+        public string PlaceName { get; set; }
     }
 }

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace Locafi.Client.Model.Dto.CycleCountDtos
 {
     public class CycleCountSummaryDto : EntityDtoBase
-    {
-        public string Name { get; set; }
-
+    { 
         public Guid PlaceId { get; set; }
+
+        public string PlaceName { get; set; }
 
         public Guid? SkuGroupId { get; set; }
 

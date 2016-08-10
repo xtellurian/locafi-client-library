@@ -84,6 +84,13 @@ namespace Locafi.Client.Authentication
             return result;
         }
 
+        public async Task<bool> Register(RegistrationDto registrationDto)
+        {
+            var path = AuthenticationUri.Register;
+            var result = await Post(registrationDto, path);
+            return result;
+        }
+
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
             throw new AuthenticationRepoException(serverMessages, statusCode, url, payload);

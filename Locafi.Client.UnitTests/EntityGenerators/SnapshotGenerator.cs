@@ -45,7 +45,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             }
             else
             {
-                sku = await _skuRepo.GetSkuDetail((Guid)skuId);
+                sku = await _skuRepo.GetSku((Guid)skuId);
             }
 
             var ran = new Random();
@@ -76,7 +76,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
                     return null;
             }else
             {
-                sku = await _skuRepo.GetSkuDetail((Guid)skuId);
+                sku = await _skuRepo.GetSku((Guid)skuId);
             }
 
             IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
@@ -184,6 +184,8 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             ITagReservationRepo _tagReservationRepo = WebRepoContainer.TagReservationRepo;
             var tags = new List<SnapshotTagDto>();
 
+            var rand = new Random(DateTime.UtcNow.Millisecond);
+
             var chunkSize = 1000;
             for (var pos = 0; pos < number; pos += chunkSize)
             {
@@ -192,10 +194,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 
                 foreach (var tagNo in tagReservation.TagNumbers)
                 {
-                    tags.Add(new SnapshotTagDto
-                    {
-                        TagNumber = tagNo
-                    });
+                    tags.Add(new SnapshotTagDto(tagNo, rand.Next(1, 100), rand.Next(-700, -300) / 10.0));
                 }
             }
             return tags;
@@ -205,6 +204,44 @@ namespace Locafi.Client.UnitTests.EntityGenerators
         {
             var rand = new Random(DateTime.Now.Millisecond);
             return new SnapshotTagDto(Guid.NewGuid().ToString(),rand.Next(1,100),rand.Next(-70,-30));
+        }
+
+        public static SnapshotTagDto GenerateTag(string tagNumber)
+        {
+            var rand = new Random(DateTime.UtcNow.Millisecond);
+            return new SnapshotTagDto(tagNumber, rand.Next(1, 100), rand.Next(-700, -300) / 10.0);
+        }
+
+        public static async Task<AddSnapshotDto> GenerateSgtinSnapshot(IDictionary<Guid, int> newTagsToCreate, List<string> existingTagsToUse)
+        {
+            // create the dto
+            var addDto = new AddSnapshotDto()
+            {
+                StartTime = DateTime.UtcNow,
+                EndTime = DateTime.UtcNow
+            };
+
+            // create the new sgtin tags
+            if (newTagsToCreate != null)
+            {
+                foreach (var kv in newTagsToCreate)
+                {
+                    var newTags = await GenerateGtinTags(kv.Key, kv.Value);
+                    foreach (var tag in newTags)
+                        addDto.Tags.Add(tag);
+                }
+            }
+
+            // add the existing tags
+            if (existingTagsToUse != null)
+            {
+                foreach (var tagNum in existingTagsToUse)
+                {
+                    addDto.Tags.Add(GenerateTag(tagNum));
+                }
+            }
+
+            return addDto;
         }
     }
 }

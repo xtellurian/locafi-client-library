@@ -18,6 +18,9 @@ namespace Locafi.Client.Contract.Repo
         Task<PageResult<TemplateSummaryDto>> QueryTemplates(IRestQuery<TemplateSummaryDto> query);
         Task<IQueryResult<TemplateSummaryDto>> QueryTemplatesContinuation(IRestQuery<TemplateSummaryDto> query);
         Task<TemplateDetailDto> GetById(Guid id);
+        Task<TemplateDetailDto> CreateTemplate(AddTemplateDto addDto);
+        Task<TemplateDetailDto> UpdateTemplate(UpdateTemplateDto updateDto);
+        Task<bool> DeleteTemplate(Guid id);
         Task<PageResult<TemplateSummaryDto>> GetTemplatesForType(TemplateFor templateTarget);
     }
 }

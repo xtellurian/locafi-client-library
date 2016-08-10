@@ -17,8 +17,13 @@ namespace Locafi.Client.UnitTests.Implementations
 
         public T Deserialise<T>(string json) where T : new()
         {
+            var deserializerSettings = new JsonSerializerSettings()
+            {
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                DateParseHandling = Newtonsoft.Json.DateParseHandling.DateTimeOffset
+            };
 
-            var result =  JsonConvert.DeserializeObject<T>(json);
+            var result =  JsonConvert.DeserializeObject<T>(json, deserializerSettings);
 
             return result;
 

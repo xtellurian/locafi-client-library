@@ -11,6 +11,11 @@ namespace Locafi.Client.Model.Dto.Tags
 {
     public class WriteTagDto
     {
+        public WriteTagDto()
+        {
+            TagType = Enums.TagType.PassiveRfid;
+        }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public TagType? TagType { get; set; }
 

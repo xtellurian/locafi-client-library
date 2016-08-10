@@ -12,6 +12,8 @@ namespace Locafi.Client.Model.Dto.CycleCountDtos
     {
         public ItemSkuCountDto(SkuSummaryDto skuSummaryDto, int count)
         {
+            if (skuSummaryDto == null) return;
+
             var properties = typeof(SkuSummaryDto).GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {

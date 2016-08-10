@@ -10,8 +10,6 @@ namespace Locafi.Client.Model.Enums
     {
         Item,
         Place,
-        Person,
-        User,
-        Organisation
+        Person
     }
 }

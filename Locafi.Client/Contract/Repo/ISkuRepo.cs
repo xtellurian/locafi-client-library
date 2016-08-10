@@ -17,9 +17,10 @@ namespace Locafi.Client.Contract.Repo
         Task<PageResult<SkuSummaryDto>> QuerySkus(string oDataQueryOptions = null);
         Task<PageResult<SkuSummaryDto>> QuerySkus(IRestQuery<SkuSummaryDto> query);
         Task<IQueryResult<SkuSummaryDto>> QuerySkusContinuation(IRestQuery<SkuSummaryDto> query);
-        Task<SkuDetailDto> GetSkuDetail(Guid skuId);
+        Task<SkuDetailDto> GetSku(Guid skuId);
         Task<SkuDetailDto> CreateSku(AddSkuDto addSkuDto);
-        Task Delete(Guid id);
+        Task<SkuDetailDto> UpdateSku(UpdateSkuDto updateDto);
+        Task<bool> DeleteSku(Guid id);
         Task<IList<SkuSummaryDto>> SearchSkus(SearchCollectionDto searchSkuQueryDto);
     }
 }

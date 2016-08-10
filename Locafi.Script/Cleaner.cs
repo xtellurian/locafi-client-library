@@ -13,6 +13,11 @@ using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Query.PropertyComparison;
 using Locafi.Script.Terminal;
+using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model.Dto.Templates;
+using Locafi.Client.Model.Dto.ExtendedProperties;
+using Locafi.Client.Model.Dto.Users;
+using Locafi.Client.Model.Dto.Persons;
 
 namespace Locafi.Script
 {
@@ -100,6 +105,51 @@ namespace Locafi.Script
             var orders = await orderRepo.QueryOrders(query);
 
             await DeleteEntities(orders, o => orderRepo.DeleteOrder(o.Id), "order");
+        }
+
+        public static async Task CleanSkus(IRestQuery<SkuSummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Skus ---");
+            var skuRepo = WebRepoContainer.SkuRepo;
+            var skus = await skuRepo.QuerySkus(query);
+
+            await DeleteEntities(skus, o => skuRepo.DeleteSku(o.Id), "sku");
+        }
+
+        public static async Task CleanTemplates(IRestQuery<TemplateSummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Templates ---");
+            var templateRepo = WebRepoContainer.TemplateRepo;
+            var templates = await templateRepo.QueryTemplates(query);
+
+            await DeleteEntities(templates, o => templateRepo.DeleteTemplate(o.Id), "template");
+        }
+
+        public static async Task CleanExtendedProperties(IRestQuery<ExtendedPropertySummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Extended Properties ---");
+            var extPropRepo = WebRepoContainer.ExtendedPropertyRepo;
+            var extProps = await extPropRepo.QueryExtendedProperties(query);
+
+            await DeleteEntities(extProps, o => extPropRepo.DeleteExtendedProperty(o.Id), "extended property");
+        }
+
+        public static async Task CleanUsers(IRestQuery<UserSummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Users ---");
+            var userRepo = WebRepoContainer.UserRepo;
+            var users = await userRepo.QueryUsers(query);
+
+            await DeleteEntities(users, o => userRepo.DeleteUser(o.Id), "user");
+        }
+
+        public static async Task CleanPersons(IRestQuery<PersonSummaryDto> query)
+        {
+            Console.WriteLine("--- Cleaning Persons ---");
+            var personRepo = WebRepoContainer.PersonRepo;
+            var persons = await personRepo.QueryPersons(query);
+
+            await DeleteEntities(persons, o => personRepo.DeletePerson(o.Id), "person");
         }
     }
 }

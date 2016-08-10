@@ -80,10 +80,25 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task DeletePerson(Guid id)
+        public async Task<PersonDetailDto> UpdatePerson(UpdatePersonDto updateDto)
+        {
+            var path = PersonUri.UpdatePerson;
+            var result = await Post<PersonDetailDto>(updateDto, path);
+            return result;
+        }
+
+        public async Task<PersonDetailDto> UpdatePersonTag(UpdatePersonTagDto updateDto)
+        {
+            var path = PersonUri.UpdatePersonTag;
+            var result = await Post<PersonDetailDto>(updateDto, path);
+            return result;
+        }
+
+        public async Task<bool> DeletePerson(Guid id)
         {
             var path = PersonUri.DeletePerson(id);
-            await Delete(path);
+            var result = await Delete(path);
+            return result;
         }
 
         public async override Task Handle(HttpResponseMessage responseMessage, string url, string payload)
