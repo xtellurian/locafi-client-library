@@ -65,6 +65,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Locafi.Builder\Locafi.Builder.csproj">
+      <Project>{1928fbb4-3326-4db5-bd50-c7d4a78a9d52}</Project>
+      <Name>Locafi.Builder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Locafi.Client.Model\Locafi.Client.Model.csproj">
       <Project>{416e7aa9-3c0f-443c-9b8b-68b4b3385be4}</Project>
       <Name>Locafi.Client.Model</Name>

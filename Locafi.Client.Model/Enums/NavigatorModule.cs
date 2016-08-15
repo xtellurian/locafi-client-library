@@ -13,10 +13,14 @@ namespace Locafi.Client.Model.Enums
         Person,
         Template,
         Sku,
+        SkuGroup,
         ExtendedProperty,
         User,
         Organisation,
         Tag,
-        Role
+        Role,
+        Inventory,
+        Reason,
+        CycleCount
     }
 }

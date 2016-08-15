@@ -81,6 +81,27 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<TemplateDetailDto> CreateTemplate(AddTemplateDto addDto)
+        {
+            var path = TemplateUri.CreateTemplate;
+            var result = await Post<TemplateDetailDto>(addDto, path);
+            return result;
+        }
+
+        public async Task<TemplateDetailDto> UpdateTemplate(UpdateTemplateDto updateDto)
+        {
+            var path = TemplateUri.UpdateTemplate;
+            var result = await Post<TemplateDetailDto>(updateDto, path);
+            return result;
+        }
+
+        public async Task<bool> DeleteTemplate(Guid id)
+        {
+            var path = TemplateUri.DeleteTemplate(id);
+            var result = await Delete(path);
+            return result;
+        }
+
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
             throw new TemplateRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());

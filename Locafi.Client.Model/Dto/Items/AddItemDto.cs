@@ -11,6 +11,11 @@ namespace Locafi.Client.Model.Dto.Items
 {
     public class AddItemDto
     {
+        public AddItemDto()
+        {
+            ItemExtendedPropertyList = new List<WriteItemExtendedPropertyDto>();
+            ItemTagList = new List<WriteTagDto>();
+        }
 
         public AddItemDto(SkuDetailDto skuDetail, Guid placeId, string name = "", string description = "", 
             Guid? parentItemId = null, Guid? personId = null, string tagNumber = null, TagType tagType = TagType.PassiveRfid, List<WriteItemExtendedPropertyDto> extProps = null)
@@ -30,10 +35,27 @@ namespace Locafi.Client.Model.Dto.Items
             // popultate the extended properties
             foreach (var extProp in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
             {
-                if(extProps != null && extProps.Select(p => p.ExtendedPropertyId).Contains(extProp.ExtendedPropertyId))
+                if (extProps != null && extProps.Select(p => p.ExtendedPropertyId).Contains(extProp.ExtendedPropertyId))
                     ItemExtendedPropertyList.Add(extProps.First(p => p.ExtendedPropertyId == extProp.ExtendedPropertyId));
                 else
-                    ItemExtendedPropertyList.Add(new WriteItemExtendedPropertyDto() { ExtendedPropertyId = extProp.ExtendedPropertyId, Value = Guid.NewGuid().ToString() });
+                {
+                    var newProp = new WriteItemExtendedPropertyDto()
+                    {
+                        ExtendedPropertyId = extProp.ExtendedPropertyId
+                    };
+                    
+                    switch (extProp.ExtendedPropertyDataType)
+                    {
+                        case TemplateDataTypes.AutoId: newProp.Value = new Random().Next().ToString();  break;
+                        case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
+                        case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString(); break;
+                        case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random().Next())/10.0).ToString(); break;
+                        case TemplateDataTypes.Number: newProp.Value = new Random().Next().ToString(); break;
+                        case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
+                    }
+
+                    ItemExtendedPropertyList.Add(newProp);
+                }
             }
 
         }

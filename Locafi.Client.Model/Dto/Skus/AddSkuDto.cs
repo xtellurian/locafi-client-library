@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Locafi.Client.Model.Dto.Templates;
+using Locafi.Client.Model.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Locafi.Client.Model.Dto.Skus
 {
     public class AddSkuDto
     {
-        public AddSkuDto()
-        {
-            SkuExtendedPropertyList = new List<WriteSkuExtendedPropertyDto>();
-        }
         public string Name { get; set; }
         
         public string SkuNumber { get; set; }
@@ -25,7 +23,36 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public IList<WriteSkuExtendedPropertyDto> SkuExtendedPropertyList { get;set; }
 
- 
+        public AddSkuDto()
+        {
+            SkuExtendedPropertyList = new List<WriteSkuExtendedPropertyDto>();
+        }
 
+        public AddSkuDto(TemplateDetailDto template)
+        {
+            ItemTemplateId = template.Id;
+            SkuExtendedPropertyList = new List<WriteSkuExtendedPropertyDto>();
+
+            // popultate the extended properties
+            foreach (var extProp in template.TemplateExtendedPropertyList)
+            {
+                var newProp = new WriteSkuExtendedPropertyDto()
+                {
+                    ExtendedPropertyId = extProp.ExtendedPropertyId
+                };
+
+                switch (extProp.ExtendedPropertyDataType)
+                {
+                    case TemplateDataTypes.AutoId: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString(); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random().Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
+                }
+
+                SkuExtendedPropertyList.Add(newProp);
+            }
+        }
     }
 }

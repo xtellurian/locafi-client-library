@@ -9,6 +9,10 @@ namespace Locafi.Client.Model.Dto.Snapshots
 {
     public class SnapshotDetailDto : SnapshotSummaryDto
     {
+        public List<SnapshotTagDto> Tags { get; set; }    // list of tags scanned during the snapshot (tag number and tag type)
+
+        public List<Guid> Items { get; set; }   // list of guids for the items identified from the scanned tags
+
         public SnapshotDetailDto()
         {
             Id = Guid.Empty;
@@ -16,7 +20,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
             Items = new List<Guid>();
         }
 
-        public SnapshotDetailDto(SnapshotDetailDto dto):base(dto)
+        public SnapshotDetailDto(SnapshotDetailDto dto) : base(dto)
         {
             var type = typeof(SnapshotDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
@@ -26,9 +30,5 @@ namespace Locafi.Client.Model.Dto.Snapshots
                 property.SetValue(this, value);
             }
         }
-        public List<SnapshotTagDto> Tags { get; set; }    // list of tags scanned during the snapshot (tag number and tag type)
-
-        public List<Guid> Items { get; set; }   // list of guids for the items identified from the scanned tags
-
     }
 }

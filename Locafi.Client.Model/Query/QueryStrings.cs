@@ -51,10 +51,12 @@
             public static string TopAndSkip(int top, int skip)
             {
                 // If doing a top=0 just to get the count then you can't include a skip value or it generates an sql error
-                if(top > 0)
+                if (top > 0)
                     return $"{TopLabel}{top}&{SkipLabel}{skip}";
-                else
+                else if (top == 0)
                     return $"{TopLabel}{top}";
+                else
+                    return "";  // negative top (take) so we want to get absolutely everything, no filters
             }
         }
     }

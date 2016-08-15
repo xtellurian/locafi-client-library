@@ -17,11 +17,13 @@ namespace Locafi.Client.Model.Dto.Snapshots
         [JsonConverter(typeof(StringEnumConverter))]
         public TagType? TagType { get; set; }   // reference to the type of tag ie. passive UHF, barcode, RFCode, etc
         public int ReadCount { get; set; }  // number of times the tag was read during this inventory/allocation/receive etc
-        public double AverageRssi { get; set; } // average RSSI of the tag during this inventory/allocation/receive etc
+        public double Rssi { get; set; } // average RSSI of the tag during this inventory/allocation/receive etc
+        public DateTime LastReadTime { get; set; }  // the time when the Tag was last read
 
         public SnapshotTagDto()
         {
             TagType = Enums.TagType.PassiveRfid;
+            LastReadTime = DateTime.UtcNow;
         }
 
         public SnapshotTagDto(string tagNumber) : this()
@@ -37,7 +39,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public SnapshotTagDto(string tagNumber, int readCount, double averageRssi, TagType tagType = Enums.TagType.PassiveRfid): this (tagNumber, tagType)
         {
             ReadCount = readCount;
-            AverageRssi = averageRssi;
+            Rssi = averageRssi;
         }
 
         public override bool Equals(object obj)

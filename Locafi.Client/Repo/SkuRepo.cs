@@ -37,6 +37,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<SkuDetailDto> UpdateSku(UpdateSkuDto updateDto)
+        {
+            var path = SkuUri.UpdateSku;
+            var result = await Post<SkuDetailDto>(updateDto, path);
+            return result;
+        }
+
         public async Task<PageResult<SkuSummaryDto>> QuerySkus(string oDataQueryOptions = null)
         {
             var path = SkuUri.GetSkus;
@@ -76,17 +83,18 @@ namespace Locafi.Client.Repo
             return result.AsQueryResult(query);
         }
 
-        public async Task<SkuDetailDto> GetSkuDetail(Guid skuId)
+        public async Task<SkuDetailDto> GetSku(Guid skuId)
         {
             var path = SkuUri.GetSkuDetail(skuId);
             var result = await Get<SkuDetailDto>(path);
             return result;
         }
 
-        public async Task Delete(Guid id)
+        public async Task<bool> DeleteSku(Guid id)
         {
             var path = SkuUri.DeleteSku(id);
-            await Delete(path);
+            var result = await Delete(path);
+            return result;
         }
 
         public async Task<IList<SkuSummaryDto>> SearchSkus(SearchCollectionDto searchSkuQueryDto)

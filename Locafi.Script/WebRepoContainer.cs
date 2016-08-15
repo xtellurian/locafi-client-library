@@ -11,8 +11,8 @@ namespace Locafi.Script
     public static class WebRepoContainer
     {
         private static readonly ISerialiserService Serialiser;
-        private static IAuthorisedHttpTransferConfigService AuthorisedHttpTransferConfigService 
-            => HttpConfigFactory.Generate(StringConstants.BaseUrl, StringConstants.EmailAddress, StringConstants.Password).Result;
+        public static IAuthorisedHttpTransferConfigService AuthorisedHttpTransferConfigService 
+            = HttpConfigFactory.Generate(StringConstants.BaseUrl, StringConstants.EmailAddress, StringConstants.Password).Result;
         private static readonly IHttpTransferConfigService HttpConfigService;
 
 
@@ -29,8 +29,11 @@ namespace Locafi.Script
         public static ITemplateRepo TemplateRepo => new TemplateRepo(AuthorisedHttpTransferConfigService,Serialiser);
         public static IUserRepo UserRepo => new UserRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IAuthenticationRepo AuthRepo => new AuthenticationRepo(HttpConfigService, Serialiser);
-        
-        
+        public static ICycleCountRepo CycleCountRepo => new CycleCountRepo(AuthorisedHttpTransferConfigService, Serialiser);
+        public static IExtendedPropertyRepo ExtendedPropertyRepo => new ExtendedPropertyRepo(AuthorisedHttpTransferConfigService, Serialiser);
+        public static IRoleRepo RoleRepo => new RoleRepo(AuthorisedHttpTransferConfigService, Serialiser);
+
+
 
         static WebRepoContainer()
         {

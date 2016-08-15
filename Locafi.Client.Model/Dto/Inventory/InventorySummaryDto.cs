@@ -9,6 +9,18 @@ namespace Locafi.Client.Model.Dto.Inventory
 {
     public class InventorySummaryDto : EntityDtoBase
     {
+        public string Name { get; set; }
+
+        public Guid PlaceId { get; set; }
+
+        public string PlaceName { get; set; }
+
+        public Guid? SkuGroupId { get; set; }
+
+        public string SkuGroupName { get; set; }
+
+        public bool Complete { get; set; }
+
         public InventorySummaryDto()
         {
             
@@ -23,11 +35,5 @@ namespace Locafi.Client.Model.Dto.Inventory
                 property.SetValue(this, value);
             }
         }
-        public Guid? SkuGroupId { get; set; }
-        public string Name { get; set; }
-
-        public Guid PlaceId { get; set; }
-
-        public bool Complete { get; set; }
     }
 }

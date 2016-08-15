@@ -74,6 +74,20 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<PlaceDetailDto> UpdatePlace(UpdatePlaceDto updateDto)
+        {
+            var path = PlaceUri.UpdatePlace;
+            var result = await Post<PlaceDetailDto>(updateDto, path);
+            return result;
+        }
+
+        public async Task<PlaceDetailDto> UpdatePlaceTag(UpdatePlaceTagDto updateDto)
+        {
+            var path = PlaceUri.UpdatePlaceTag;
+            var result = await Post<PlaceDetailDto>(updateDto, path);
+            return result;
+        }
+
         public async Task<PlaceDetailDto> GetPlaceById(Guid id)
         {
             var path = PlaceUri.GetPlace(id);

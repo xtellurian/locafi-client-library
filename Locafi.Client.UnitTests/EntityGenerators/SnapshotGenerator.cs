@@ -22,11 +22,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             var count = number <= 0 ? ran.Next(50) : number;
             var name = Guid.NewGuid().ToString();
             var tags = GenerateRandomTags(count);
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -46,7 +45,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             }
             else
             {
-                sku = await _skuRepo.GetSkuDetail((Guid)skuId);
+                sku = await _skuRepo.GetSku((Guid)skuId);
             }
 
             var ran = new Random();
@@ -55,11 +54,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             var name = Guid.NewGuid().ToString();
             var tags = await GenerateGtinTags(sku.Id,totalCount - randomCount);
             tags = tags.Concat(GenerateRandomTags(randomCount)).ToList();
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -78,7 +76,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
                     return null;
             }else
             {
-                sku = await _skuRepo.GetSkuDetail((Guid)skuId);
+                sku = await _skuRepo.GetSku((Guid)skuId);
             }
 
             IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
@@ -114,11 +112,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             // generate some new tags if there aren't enough already exisiting tags for this sku
             tags = tags.Concat(await GenerateGtinTags(sku.Id, totalCount - randomCount - items.Entities.Count)).ToList();
             tags = tags.Concat(GenerateRandomTags(randomCount)).ToList();
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -140,11 +137,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
                 });
             }
 
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -163,11 +159,10 @@ namespace Locafi.Client.UnitTests.EntityGenerators
                 });
             }
 
-            var snap = new AddSnapshotDto(placeId)
+            var snap = new AddSnapshotDto()
             {
-                StartTimeUtc = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
-                EndTimeUtc = DateTime.UtcNow,
-                Name = name,
+                StartTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 1, 0)),
+                EndTime = DateTime.UtcNow,
                 Tags = tags
             };
             return snap;
@@ -189,6 +184,8 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             ITagReservationRepo _tagReservationRepo = WebRepoContainer.TagReservationRepo;
             var tags = new List<SnapshotTagDto>();
 
+            var rand = new Random(DateTime.UtcNow.Millisecond);
+
             var chunkSize = 1000;
             for (var pos = 0; pos < number; pos += chunkSize)
             {
@@ -197,10 +194,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 
                 foreach (var tagNo in tagReservation.TagNumbers)
                 {
-                    tags.Add(new SnapshotTagDto
-                    {
-                        TagNumber = tagNo
-                    });
+                    tags.Add(new SnapshotTagDto(tagNo, rand.Next(1, 100), rand.Next(-700, -300) / 10.0));
                 }
             }
             return tags;
@@ -208,10 +202,46 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 
         private static SnapshotTagDto GenerateRandomTag()
         {
-            return new SnapshotTagDto
+            var rand = new Random(DateTime.Now.Millisecond);
+            return new SnapshotTagDto(Guid.NewGuid().ToString(),rand.Next(1,100),rand.Next(-70,-30));
+        }
+
+        public static SnapshotTagDto GenerateTag(string tagNumber)
+        {
+            var rand = new Random(DateTime.UtcNow.Millisecond);
+            return new SnapshotTagDto(tagNumber, rand.Next(1, 100), rand.Next(-700, -300) / 10.0);
+        }
+
+        public static async Task<AddSnapshotDto> GenerateSgtinSnapshot(IDictionary<Guid, int> newTagsToCreate, List<string> existingTagsToUse)
+        {
+            // create the dto
+            var addDto = new AddSnapshotDto()
             {
-                TagNumber = Guid.NewGuid().ToString()
+                StartTime = DateTime.UtcNow,
+                EndTime = DateTime.UtcNow
             };
+
+            // create the new sgtin tags
+            if (newTagsToCreate != null)
+            {
+                foreach (var kv in newTagsToCreate)
+                {
+                    var newTags = await GenerateGtinTags(kv.Key, kv.Value);
+                    foreach (var tag in newTags)
+                        addDto.Tags.Add(tag);
+                }
+            }
+
+            // add the existing tags
+            if (existingTagsToUse != null)
+            {
+                foreach (var tagNum in existingTagsToUse)
+                {
+                    addDto.Tags.Add(GenerateTag(tagNum));
+                }
+            }
+
+            return addDto;
         }
     }
 }

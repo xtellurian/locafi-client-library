@@ -8,14 +8,17 @@ namespace Locafi.Client.Model.Dto.Inventory
 {
     public class AddInventoryDto
     {
-        public AddInventoryDto()
-        {
-            SnapshotIds = new List<Guid>();
-        }
         public string Name { get; set; }
-        public Guid? SkuGroupId { get; set; }
+
         public Guid PlaceId { get; set; }
 
-        public List<Guid> SnapshotIds { get; set; }
+        public Guid? SkuGroupId { get; set; }
+
+        public List<Guid> SkuIds { get; set; }
+
+        public AddInventoryDto()
+        {
+            SkuIds = new List<Guid>();
+        }
     }
 }

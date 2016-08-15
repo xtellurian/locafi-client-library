@@ -11,6 +11,8 @@ namespace Locafi.Client.Model.Uri
         public static string ServiceName => "Places";
         public static string GetPlaces => "GetFilteredPlaces";
         public static string CreatePlace => "CreatePlace";
+        public static string UpdatePlace => "UpdatePlace";
+        public static string UpdatePlaceTag => "UpdatePlaceTag";
 
         public static string GetPlace(Guid id)
         {

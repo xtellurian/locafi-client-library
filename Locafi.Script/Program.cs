@@ -16,26 +16,33 @@ namespace Locafi.Script
         private static bool _isRunning = true;
         static void Main(string[] args)
         {
-            if (args.Length < 3)
-            {
-                Console.WriteLine("Usage: <username> <password> <command>  <...Extra Params>");
-                return;
-            }
-            var command = args[2];
-            var userName = args[0];
-            var password = args[1];
+            var command = args[0];
             Command realCommand;
             switch (command)
             {
+                case "BuildDemo":
+                    realCommand = Command.BuildDemo;
+                    break;
+                case "BuildDev":
+                    realCommand = Command.BuildDev;
+                    break;
                 case "Clean":
                     realCommand = Command.CleanUser;
+                    if (args.Length < 3)
+                    {
+                        Console.WriteLine("Usage: <command> <username> <password> <...Extra Params>");
+                        return;
+                    }
                     break;
                 default:
                     Console.WriteLine("Unknown Command - " + command);
                     return;
             }
 
-            MainProgram.Entry(userName, password, realCommand, args[3]);
+            var userName = args.Count() > 1 ? args[1] : "";
+            var password = args.Count() > 2 ? args[2] : "";
+
+            MainProgram.Entry(realCommand, userName, password, args.Count() > 3 ? args[3] : "");
 
             while (_isRunning)
             {
@@ -52,6 +59,8 @@ namespace Locafi.Script
     }
     public enum Command
     {
-        CleanUser
+        CleanUser,
+        BuildDev,
+        BuildDemo
     }
 }

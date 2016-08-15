@@ -34,7 +34,7 @@ namespace Locafi.Client.Model.Conversion
             {
                 TagNumber = tag.TagNumber,
                 TagType = tagType,
-                AverageRssi = tag.AverageRssi,
+                AverageRssi = tag.Rssi,
                 ReadCount = tag.ReadCount,
                 ReadTime = readTime??DateTime.Now
             };

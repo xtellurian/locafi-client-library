@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Dto;
 using Locafi.Client.Model.Dto.Users;
+using Locafi.Client.Model.Dto.Tags;
 
 namespace Locafi.Client.Model.Dto.Users
 {
@@ -13,7 +14,8 @@ namespace Locafi.Client.Model.Dto.Users
     {
         public UserDetailDto()
         {
-            
+            PersonTagList = new List<TagDetailDto>();
+            PersonExtendedPropertyList = new List<ReadEntityExtendedPropertyDto>();
         }
         public UserDetailDto(UserDetailDto dto)
         {
@@ -25,6 +27,13 @@ namespace Locafi.Client.Model.Dto.Users
                 property.SetValue(this, value);
             }
         }
+
+        public Guid PersonId { get; set; }
+
         public string ImageUrl { get; set; }
+
+        public IList<ReadEntityExtendedPropertyDto> PersonExtendedPropertyList { get; set; }
+
+        public IList<TagDetailDto> PersonTagList { get; set; }
     }
 }

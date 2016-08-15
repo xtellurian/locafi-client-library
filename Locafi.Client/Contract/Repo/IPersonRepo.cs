@@ -18,6 +18,8 @@ namespace Locafi.Client.Contract.Repo
         Task<IQueryResult<PersonSummaryDto>> QueryPersonsContinuation(IRestQuery<PersonSummaryDto> query);
         Task<PersonDetailDto> GetPersonById(Guid id);
         Task<PersonDetailDto> CreatePerson(AddPersonDto addPerson);
-        Task DeletePerson(Guid id);
+        Task<PersonDetailDto> UpdatePerson(UpdatePersonDto updateDto);
+        Task<PersonDetailDto> UpdatePersonTag(UpdatePersonTagDto updateDto);
+        Task<bool> DeletePerson(Guid id);
     }
 }
