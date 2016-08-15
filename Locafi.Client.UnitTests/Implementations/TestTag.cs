@@ -17,6 +17,8 @@ namespace Locafi.Client.UnitTests.Implementations
         }
 
         public string TagNumber { get; set; }
+        public int ReadCount { get; set; }
+        public double AverageRssi { get; set; }
         public TagType TagType { get; set; }
     }
 }
