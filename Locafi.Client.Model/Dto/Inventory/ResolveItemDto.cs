@@ -16,5 +16,11 @@ namespace Locafi.Client.Model.Dto.Inventory
         {
             ReasonId = null;
         }
+
+        public ResolveItemDto(Guid itemId, Guid? reasonId = null)
+        {
+            Id = itemId;
+            ReasonId = reasonId;
+        }
     }
 }

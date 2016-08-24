@@ -24,5 +24,12 @@ namespace Locafi.Client.Model.Dto.Inventory
             MissingItems = new List<ResolveItemDto>();
         }
 
+        public ResolveInventoryDto(InventoryDetailDto detail, Guid? unexpectedReason = null, Guid? missingReason = null)
+        {
+            // initialise arrays with no reasons
+            FoundItemsExpected = detail.FoundItemsExpected.Select(i => new ResolveItemDto(i.Id)).ToList();
+            FoundItemsUnexpected = detail.FoundItemsUnexpected.Select(i => new ResolveItemDto(i.Id, unexpectedReason)).ToList();
+            MissingItems = detail.MissingItems.Select(i => new ResolveItemDto(i.Id, missingReason)).ToList();
+        }
     }
 }
