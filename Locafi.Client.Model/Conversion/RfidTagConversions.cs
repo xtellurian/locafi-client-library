@@ -16,7 +16,10 @@ namespace Locafi.Client.Model.Conversion
             return new SnapshotTagDto
             {
                 TagNumber = tag.TagNumber,
-                TagType = TagType.PassiveRfid
+                TagType = TagType.PassiveRfid,
+                ReadCount = tag.ReadCount,
+                Rssi = tag.Rssi,
+                LastReadTime = tag.LastReadTime
             };
         }
 

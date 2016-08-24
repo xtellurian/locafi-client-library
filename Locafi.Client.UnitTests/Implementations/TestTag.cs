@@ -20,5 +20,6 @@ namespace Locafi.Client.UnitTests.Implementations
         public TagType TagType { get; set; }
         public int ReadCount { get; set; }  // number of times the tag was read during this inventory/allocation/receive etc
         public double Rssi { get; set; } // average RSSI of the tag during this inventory/allocation/receive et
+        public DateTime LastReadTime { get; set; } // last time the tag was read for this process
     }
 }

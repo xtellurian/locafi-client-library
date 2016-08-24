@@ -12,7 +12,21 @@ namespace Locafi.Client.Model.Dto.CycleCountDtos
     {
         public Guid CycleCountId { get; set; }
 
+        public ResolveCycleCountDto() { }
+
         public ResolveCycleCountDto(AddSnapshotDto dto)
+        {
+            if (dto == null) return;
+
+            var properties = typeof(AddSnapshotDto).GetTypeInfo().DeclaredProperties;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(dto);
+                property.SetValue(this, value);
+            }
+        }
+
+        public void AddSnapshotDto(AddSnapshotDto dto)
         {
             if (dto == null) return;
 
