@@ -31,7 +31,7 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<PageResult<ReasonDetailDto>> QueryReasons(string oDataQueryOptions = null)
+        public async Task<PageResult<ReasonSummaryDto>> QueryReasons(string oDataQueryOptions = null)
         {
             var path = ReasonUri.GetReasons;
 
@@ -54,16 +54,16 @@ namespace Locafi.Client.Repo
             }
 
             // run query
-            var result = await Get<PageResult<ReasonDetailDto>>(path);
+            var result = await Get<PageResult<ReasonSummaryDto>>(path);
             return result;
         }
 
-        public async Task<PageResult<ReasonDetailDto>> QueryReasons(IRestQuery<ReasonDetailDto> query)
+        public async Task<PageResult<ReasonSummaryDto>> QueryReasons(IRestQuery<ReasonSummaryDto> query)
         {
             return await QueryReasons(query.AsRestQuery());
         }
 
-        public async Task<IQueryResult<ReasonDetailDto>> QueryReasonsContinuation(IRestQuery<ReasonDetailDto> query)
+        public async Task<IQueryResult<ReasonSummaryDto>> QueryReasonsContinuation(IRestQuery<ReasonSummaryDto> query)
         {
             var result = await QueryReasons(query.AsRestQuery());
             return result.AsQueryResult(query);
@@ -82,17 +82,24 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<ReasonDetailDto> UpdateReason(UpdateReasonDto dto)
+        {
+            var path = ReasonUri.UpdateReason;
+            var result = await Post<ReasonDetailDto>(dto, path);
+            return result;
+        }
+/*
         public async Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reason)
         {
             var query = QueryBuilder<ReasonDetailDto>.NewQuery(r => r.ReasonFor, reason, ComparisonOperator.Equals).Build();
             var result = await QueryReasons(query);
             return result.Items.ToList();
         }
-
-        public async Task Delete(Guid id)
+*/
+        public async Task<bool> Delete(Guid id)
         {
             var path = ReasonUri.DeleteReason(id);
-            await Delete(path);
+            return await Delete(path);
         }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)

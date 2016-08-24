@@ -113,5 +113,33 @@ namespace Locafi.Client.UnitTests
                 return _sku2Id;
             }
         }
+
+        private static Guid _assetCategory1Id;
+        public static Guid AssetCategory1Id
+        {
+            get
+            {
+                if (_assetCategory1Id == null || _assetCategory1Id == Guid.Empty)
+                {
+                    _assetCategory1Id = SkuRepo.QuerySkus(QueryBuilder<SkuSummaryDto>.NewQuery(e => e.Name, DevEnvironment.AssetCategory1Name, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _assetCategory1Id;
+            }
+        }
+
+        private static Guid _assetCategory2Id;
+        public static Guid AssetCategory2Id
+        {
+            get
+            {
+                if (_assetCategory2Id == null || _assetCategory2Id == Guid.Empty)
+                {
+                    _assetCategory2Id = SkuRepo.QuerySkus(QueryBuilder<SkuSummaryDto>.NewQuery(e => e.Name, DevEnvironment.AssetCategory2Name, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _assetCategory2Id;
+            }
+        }
     }
 }

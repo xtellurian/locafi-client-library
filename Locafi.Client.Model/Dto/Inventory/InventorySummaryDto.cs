@@ -28,6 +28,8 @@ namespace Locafi.Client.Model.Dto.Inventory
 
         public InventorySummaryDto(InventorySummaryDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var properties = typeof(InventorySummaryDto).GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {

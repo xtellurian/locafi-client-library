@@ -28,6 +28,8 @@ namespace Locafi.Client.Model.Dto.Devices
 
         public ClusterResponseDto(ClusterResponseDto dto)
         {
+            if (dto == null) return;
+
             var type = typeof(ClusterResponseDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

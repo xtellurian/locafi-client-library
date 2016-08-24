@@ -19,6 +19,8 @@ namespace Locafi.Client.Model.Dto.ExtendedProperties
 
         public ExtendedPropertySummaryDto(ExtendedPropertySummaryDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var properties = typeof(ExtendedPropertySummaryDto).GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {

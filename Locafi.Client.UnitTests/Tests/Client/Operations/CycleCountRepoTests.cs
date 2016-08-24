@@ -14,6 +14,8 @@ using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Locafi.Client.UnitTests.Validators;
 using Locafi.Client.Model.Dto.SkuGroups;
+using Locafi.Client.Model.Dto.Items;
+using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.UnitTests.Tests
 {
@@ -24,7 +26,12 @@ namespace Locafi.Client.UnitTests.Tests
         private IPlaceRepo _placeRepo;
         private IPersonRepo _personRepo;
         private ITemplateRepo _templateRepo;
+        private ISkuGroupRepo _skuGroupRepo;
         private IList<Guid> _toCleanup;
+        private SkuGroupDetailDto _skuGroup;
+        private List<Guid> _itemsToDelete;
+        private IItemRepo _itemRepo;
+        private List<string> _tagNumbersToDelete;
 
         [TestInitialize]
         public void Initialise()
@@ -33,22 +40,81 @@ namespace Locafi.Client.UnitTests.Tests
             _placeRepo = WebRepoContainer.PlaceRepo;
             _personRepo = WebRepoContainer.PersonRepo;
             _templateRepo = WebRepoContainer.TemplateRepo;
+            _skuGroupRepo = WebRepoContainer.SkuGroupRepo;
+            _itemRepo = WebRepoContainer.ItemRepo;
             _toCleanup = new List<Guid>();
+            _itemsToDelete = new List<Guid>();
+            _tagNumbersToDelete = new List<string>();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            // delete all items that were created
+            foreach (var itemId in _itemsToDelete)
+            {
+                _itemRepo.DeleteItem(itemId).Wait();
+            }
+
+            // delete items created from tags
+            var query = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.TagNumber, string.Join(",", _tagNumbersToDelete), ComparisonOperator.ContainedIn).Build();
+            var itemQuery = _itemRepo.QueryItems(query).Result;
+            foreach (var item in itemQuery.Items)
+            {
+                if (item != null)
+                {
+                    _itemRepo.DeleteItem(item.Id).Wait();
+                }
+            }
+
+            // delete skugroup
+            if (_skuGroup != null)
+            {
+                _skuGroupRepo.DeleteSkuGroup(_skuGroup.Id).Wait();
+                _skuGroupRepo.DeleteSkuGroupName(_skuGroup.SkuGroupNameId);
+            }
         }
 
         [TestMethod]
-        public async Task CycleCount_CreateResolve()
+        public async Task CycleCount_CreateResolve_SkuOnly()
         {
             var skus = new Dictionary<Guid, int>()
             {
                 { WebRepoContainer.Sku1Id, 10 },
                 { WebRepoContainer.Sku2Id, 5 }
             };
-            await TestCompleteCycleCountProcess(skus);
+            await TestCompleteCycleCountProcess(skus,null);
         }
 
         [TestMethod]
-        public async Task CycleCount_CreateResolve_WithSkuGroup()
+        public async Task CycleCount_CreateResolve_AssetOnly()
+        {
+            var categories = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.AssetCategory1Id, 5 },
+                { WebRepoContainer.AssetCategory2Id, 5 }
+            };
+            await TestCompleteCycleCountProcess(null, categories);
+        }
+
+        [TestMethod]
+        public async Task CycleCount_CreateResolve_SkuAndAsset()
+        {
+            var skus = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.Sku1Id, 10 },
+                { WebRepoContainer.Sku2Id, 5 }
+            };
+            var categories = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.AssetCategory1Id, 5 },
+                { WebRepoContainer.AssetCategory2Id, 5 }
+            };
+            await TestCompleteCycleCountProcess(skus, categories);
+        }
+
+        [TestMethod]
+        public async Task CycleCount_CreateResolve_WithSkuGroup_SkuOnly()
         {
             var skus = new Dictionary<Guid, int>()
             {
@@ -56,20 +122,131 @@ namespace Locafi.Client.UnitTests.Tests
                 { WebRepoContainer.Sku2Id, 5 }
             };
 
-//            await TestCompleteCycleCountProcess(skus, null);
+            var skuGroupName = await _skuGroupRepo.CreateSkuGroupName(new AddSkuGroupNameDto("CycleCount Test Sku Group"));
+            var skuGroup = await _skuGroupRepo.CreateSkuGroup(new AddSkuGroupDto()
+            {
+                SkuGroupNameId = skuGroupName.Id,
+                PlaceIds = new List<Guid>()
+                {
+                    WebRepoContainer.Place1Id,
+                    WebRepoContainer.Place2Id
+                },
+                SkuIds = new List<Guid>()
+                {
+                    WebRepoContainer.Sku1Id,
+                    WebRepoContainer.AssetCategory1Id
+                }
+            });
+            _skuGroup = skuGroup;   // store for later cleanup
+
+            await TestCompleteCycleCountProcess(skus, null, skuGroup);
         }
 
         [TestMethod]
-        public async Task CycleCount_CreateResolve_WithSelectedSkus()
+        public async Task CycleCount_CreateResolve_WithSkuGroup_AssetOnly()
+        {
+            var categories = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.AssetCategory1Id, 5 },
+                { WebRepoContainer.AssetCategory2Id, 5 }
+            };
+
+            var skuGroupName = await _skuGroupRepo.CreateSkuGroupName(new AddSkuGroupNameDto("CycleCount Test Sku Group"));
+            var skuGroup = await _skuGroupRepo.CreateSkuGroup(new AddSkuGroupDto()
+            {
+                SkuGroupNameId = skuGroupName.Id,
+                PlaceIds = new List<Guid>()
+                {
+                    WebRepoContainer.Place1Id,
+                    WebRepoContainer.Place2Id
+                },
+                SkuIds = new List<Guid>()
+                {
+                    WebRepoContainer.Sku1Id,
+                    WebRepoContainer.AssetCategory1Id
+                }
+            });
+            _skuGroup = skuGroup;   // store for later cleanup
+
+            await TestCompleteCycleCountProcess(null, categories, skuGroup);
+        }
+
+        [TestMethod]
+        public async Task CycleCount_CreateResolve_WithSkuGroup_SkuAndAsset()
         {
             var skus = new Dictionary<Guid, int>()
             {
                 { WebRepoContainer.Sku1Id, 10 },
                 { WebRepoContainer.Sku2Id, 5 }
             };
-            var selectedSkus = new List<Guid>() { WebRepoContainer.Sku1Id };
+            var categories = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.AssetCategory1Id, 5 },
+                { WebRepoContainer.AssetCategory2Id, 5 }
+            };
 
-            await TestCompleteCycleCountProcess(skus, null, selectedSkus);
+            var skuGroupName = await _skuGroupRepo.CreateSkuGroupName(new AddSkuGroupNameDto("CycleCount Test Sku Group"));
+            var skuGroup = await _skuGroupRepo.CreateSkuGroup(new AddSkuGroupDto()
+            {
+                SkuGroupNameId = skuGroupName.Id,
+                PlaceIds = new List<Guid>()
+                {
+                    WebRepoContainer.Place1Id,
+                    WebRepoContainer.Place2Id
+                },
+                SkuIds = new List<Guid>()
+                {
+                    WebRepoContainer.Sku1Id,
+                    WebRepoContainer.AssetCategory1Id
+                }
+            });
+            _skuGroup = skuGroup;   // store for later cleanup
+
+            await TestCompleteCycleCountProcess(skus, categories, skuGroup);
+        }
+
+        [TestMethod]
+        public async Task CycleCount_CreateResolve_WithSelectedSkus_SkuOnly()
+        {
+            var skus = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.Sku1Id, 10 },
+                { WebRepoContainer.Sku2Id, 5 }
+            };
+            var selectedSkus = new List<Guid>() { WebRepoContainer.Sku1Id, WebRepoContainer.AssetCategory1Id };
+
+            await TestCompleteCycleCountProcess(skus, null, null, selectedSkus);
+        }
+
+        [TestMethod]
+        public async Task CycleCount_CreateResolve_WithSelectedSkus_AssetOnly()
+        {
+            var categories = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.AssetCategory1Id, 5 },
+                { WebRepoContainer.AssetCategory2Id, 5 }
+            };
+            var selectedSkus = new List<Guid>() { WebRepoContainer.Sku1Id, WebRepoContainer.AssetCategory1Id };
+
+            await TestCompleteCycleCountProcess(null, categories, null, selectedSkus);
+        }
+
+        [TestMethod]
+        public async Task CycleCount_CreateResolve_WithSelectedSkus_SkuAndAsset()
+        {
+            var skus = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.Sku1Id, 10 },
+                { WebRepoContainer.Sku2Id, 5 }
+            };
+            var categories = new Dictionary<Guid, int>()
+            {
+                { WebRepoContainer.AssetCategory1Id, 5 },
+                { WebRepoContainer.AssetCategory2Id, 5 }
+            };
+            var selectedSkus = new List<Guid>() { WebRepoContainer.Sku1Id, WebRepoContainer.AssetCategory1Id };
+
+            await TestCompleteCycleCountProcess(skus, categories, null, selectedSkus);
         }
 
         [TestMethod]
@@ -121,9 +298,16 @@ namespace Locafi.Client.UnitTests.Tests
             SkuDtoValidator.SkuSummaryCheck(cycleDto.CreatedItems.First(i => i.Id == WebRepoContainer.Sku2Id), true);
         }
 
-        public async Task TestCompleteCycleCountProcess(Dictionary<Guid,int> skusToUse, SkuGroupDetailDto SkuGroup = null, List<Guid> selectedSkus = null)
+        public async Task TestCompleteCycleCountProcess(Dictionary<Guid,int> skusToUse, Dictionary<Guid, int> assetCategoriesToUse, SkuGroupDetailDto SkuGroup = null, List<Guid> selectedSkus = null)
         {
             Validator.IsFalse(SkuGroup != null && selectedSkus != null, "Cannot provide both sku group and list of sku's");
+
+            // have these empty rather than null
+            if (skusToUse == null)
+                skusToUse = new Dictionary<Guid, int>();
+
+            if (assetCategoriesToUse == null)
+                assetCategoriesToUse = new Dictionary<Guid, int>();
 
             var t1 = DateTime.UtcNow;
 
@@ -142,8 +326,16 @@ namespace Locafi.Client.UnitTests.Tests
             Validator.IsTrue(cycleDto.MovedItems.Count == 0);
             Validator.IsTrue(cycleDto.CreatedItems.Count == 0);
 
+            // add some existing items to the place
+            List<ItemDetailDto> createdFoundItems = new List<ItemDetailDto>();
+
+            // create items in the place to show as found items
+            createdFoundItems.AddRange(await ItemGenerator.GenerateItems(assetCategoriesToUse, WebRepoContainer.Place1Id));
+            _itemsToDelete.AddRange(createdFoundItems.Select(i => i.Id));
+
             // build snapshot to resolve
-            var addSnapshotDto = await SnapshotGenerator.GenerateSgtinSnapshot(skusToUse,null);
+            var addSnapshotDto = await SnapshotGenerator.GenerateSgtinSnapshot(skusToUse, createdFoundItems.Select(i => i.TagNumber).ToList());
+            _tagNumbersToDelete.AddRange(addSnapshotDto.Tags.Where(t => !_tagNumbersToDelete.Contains(t.TagNumber)).Select(t => t.TagNumber));
 
             var resolveDto = new ResolveCycleCountDto(addSnapshotDto)
             {
@@ -155,12 +347,13 @@ namespace Locafi.Client.UnitTests.Tests
 
             // check the response we have created the items
             CycleCountDtoValidator.CycleCountDetailcheck(cycleDto, true);
-            Validator.IsTrue(cycleDto.PresentItems.Count == 0);
             Validator.IsTrue(cycleDto.MovedItems.Count == 0);
             if (SkuGroup != null)
             {
                 Validator.IsTrue(cycleDto.SkuGroupId == SkuGroup.Id);
+
                 var includedSkus = SkuGroup.Skus.Select(s => s.Id).Intersect(skusToUse.Keys).ToList();
+
                 Validator.IsTrue(cycleDto.CreatedItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
@@ -170,11 +363,24 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
+
+                var expectedSkus = SkuGroup.Skus.Select(s => s.Id).Intersect(assetCategoriesToUse.Keys).ToList();
+                Validator.IsTrue(cycleDto.PresentItems.Count == expectedSkus.Count);  // check the correct number of sku types have been found
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var skuId in expectedSkus)
+                {
+                    var kv = assetCategoriesToUse.First(k => k.Key == skuId);
+                    var skuCountDto = cycleDto.PresentItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
             }
             else if (selectedSkus != null)
             {
                 Validator.IsTrue(cycleDto.SelectedSkus.Count == selectedSkus.Count);
+
                 var includedSkus = selectedSkus.Intersect(skusToUse.Keys).ToList();
+
                 Validator.IsTrue(cycleDto.CreatedItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
@@ -182,6 +388,18 @@ namespace Locafi.Client.UnitTests.Tests
                     var kv = skusToUse.First(k => k.Key == skuId);
                     var skuCountDto = cycleDto.CreatedItems.First(i => i.Id == kv.Key);
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
+
+
+                var expectedSkus = selectedSkus.Intersect(assetCategoriesToUse.Keys).ToList();
+                Validator.IsTrue(cycleDto.PresentItems.Count == expectedSkus.Count);  // check the correct number of sku types have been found
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var skuId in expectedSkus)
+                {
+                    var kv = assetCategoriesToUse.First(k => k.Key == skuId);
+                    var skuCountDto = cycleDto.PresentItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
             }
@@ -195,6 +413,15 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
+
+                Validator.IsTrue(cycleDto.PresentItems.Count == assetCategoriesToUse.Count);  // check the correct number of sku types have been found
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var kv in assetCategoriesToUse)
+                {
+                    var skuCountDto = cycleDto.PresentItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
             }
 
             ///////////////////////////////
@@ -204,9 +431,9 @@ namespace Locafi.Client.UnitTests.Tests
             // create the cycle count
             var addDto2 = new AddCycleCountDto() { PlaceId = WebRepoContainer.Place2Id };
             if (SkuGroup != null)    // add sku group if required
-                addDto.SkuGroupId = SkuGroup.Id;
+                addDto2.SkuGroupId = SkuGroup.Id;
             if (selectedSkus != null)   // add selected skus if required
-                addDto.SkuIds = selectedSkus;
+                addDto2.SkuIds = selectedSkus;
             var cycleDto2 = await _cycleCountRepo.CreateCycleCount(addDto2);
 
             // check the response
@@ -243,6 +470,18 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
+                /*
+                var expectedSkus = SkuGroup.Skus.Select(s => s.Id).Intersect(assetCategoriesToUse.Keys).ToList();
+                Validator.IsTrue(cycleDto.PresentItems.Count == expectedSkus.Count);  // check the correct number of sku types have been found
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var skuId in expectedSkus)
+                {
+                    var kv = assetCategoriesToUse.First(k => k.Key == skuId);
+                    var skuCountDto = cycleDto2.PresentItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
+                */
             }
             else if (selectedSkus != null)
             {
@@ -256,6 +495,18 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
+                /*
+                var expectedSkus = selectedSkus.Intersect(assetCategoriesToUse.Keys).ToList();
+                Validator.IsTrue(cycleDto.PresentItems.Count == expectedSkus.Count);  // check the correct number of sku types have been found
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var skuId in expectedSkus)
+                {
+                    var kv = assetCategoriesToUse.First(k => k.Key == skuId);
+                    var skuCountDto = cycleDto2.PresentItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
+                */
             }
             else
             {
@@ -267,6 +518,16 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
+                /*
+                Validator.IsTrue(cycleDto.PresentItems.Count == assetCategoriesToUse.Count);  // check the correct number of sku types have been found
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var kv in assetCategoriesToUse)
+                {
+                    var skuCountDto = cycleDto2.PresentItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
+                */
             }
 
             ////////////////////////////////////////////////////////////////////////////////
@@ -277,9 +538,9 @@ namespace Locafi.Client.UnitTests.Tests
             // create the cycle count
             var addDto3 = new AddCycleCountDto() { PlaceId = WebRepoContainer.Place2Id };
             if (SkuGroup != null)    // add sku group if required
-                addDto.SkuGroupId = SkuGroup.Id;
+                addDto3.SkuGroupId = SkuGroup.Id;
             if (selectedSkus != null)   // add selected skus if required
-                addDto.SkuIds = selectedSkus;
+                addDto3.SkuIds = selectedSkus;
             var cycleDto3 = await _cycleCountRepo.CreateCycleCount(addDto3);
 
             // check the response
@@ -317,6 +578,7 @@ namespace Locafi.Client.UnitTests.Tests
             if (SkuGroup != null)
             {
                 var includedSkus = SkuGroup.Skus.Select(s => s.Id).Intersect(skusToUse.Keys).ToList();
+
                 Validator.IsTrue(cycleDto3.PresentItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
@@ -326,15 +588,26 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
-                Validator.IsTrue(cycleDto3.MovedItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
+
+                var expectedSkus = SkuGroup.Skus.Select(s => s.Id).Intersect(assetCategoriesToUse.Keys).ToList();
+                Validator.IsTrue(cycleDto3.MovedItems.Count == includedSkus.Count + expectedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
                 {
                     var kv = skusToUse.First(k => k.Key == skuId);
                     var skuCountDto = cycleDto3.MovedItems.First(i => i.Id == kv.Key);
-                    SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var skuId in expectedSkus)
+                {
+                    var kv = assetCategoriesToUse.First(k => k.Key == skuId);
+                    var skuCountDto = cycleDto3.MovedItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
+
                 Validator.IsTrue(cycleDto3.CreatedItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
@@ -348,6 +621,7 @@ namespace Locafi.Client.UnitTests.Tests
             else if (selectedSkus != null)
             {
                 var includedSkus = selectedSkus.Intersect(skusToUse.Keys).ToList();
+
                 Validator.IsTrue(cycleDto3.PresentItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
@@ -357,15 +631,27 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
-                Validator.IsTrue(cycleDto3.MovedItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
+
+                var expectedSkus = selectedSkus.Intersect(assetCategoriesToUse.Keys).ToList();
+                Validator.IsTrue(cycleDto3.MovedItems.Count == includedSkus.Count + expectedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
                 {
                     var kv = skusToUse.First(k => k.Key == skuId);
                     var skuCountDto = cycleDto3.MovedItems.First(i => i.Id == kv.Key);
-                    SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto,true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var skuId in expectedSkus)
+                {
+                    var kv = assetCategoriesToUse.First(k => k.Key == skuId);
+                    var skuCountDto = cycleDto3.MovedItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
+
+
                 Validator.IsTrue(cycleDto3.CreatedItems.Count == includedSkus.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var skuId in includedSkus)
@@ -386,13 +672,20 @@ namespace Locafi.Client.UnitTests.Tests
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
-
-                Validator.IsTrue(cycleDto3.MovedItems.Count == skusToUse.Count);  // check the correct number of sku types have been created
+                
+                Validator.IsTrue(cycleDto3.MovedItems.Count == skusToUse.Count + assetCategoriesToUse.Count);  // check the correct number of sku types have been created
                 // check the sku count dto and that the right count of each sku were created
                 foreach (var kv in skusToUse)
                 {
                     var skuCountDto = cycleDto3.MovedItems.First(i => i.Id == kv.Key);
                     SkuDtoValidator.SkuSummaryCheck(skuCountDto, true);
+                    Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
+                }
+                // check the sku count dto and that the right count of each sku were created
+                foreach (var kv in assetCategoriesToUse)
+                {
+                    var skuCountDto = cycleDto3.MovedItems.First(i => i.Id == kv.Key);
+                    SkuDtoValidator.SkuSummaryCheck(skuCountDto);
                     Validator.IsTrue(skuCountDto.ItemCount == kv.Value);
                 }
 

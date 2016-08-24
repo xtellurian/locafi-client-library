@@ -22,5 +22,7 @@ namespace Locafi.Client.Contract.Repo
         Task<SkuDetailDto> UpdateSku(UpdateSkuDto updateDto);
         Task<bool> DeleteSku(Guid id);
         Task<IList<SkuSummaryDto>> SearchSkus(SearchCollectionDto searchSkuQueryDto);
+        Task<PageResult<SkuStockCountDto>> GetSkuStockCount(string oDataQueryOptions = null);
+        Task<PageResult<SkuStockCountDto>> GetSkuStockCount(IRestQuery<SkuStockCountDto> query);
     }
 }

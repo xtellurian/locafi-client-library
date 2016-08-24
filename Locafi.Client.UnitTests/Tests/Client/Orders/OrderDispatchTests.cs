@@ -34,17 +34,17 @@ namespace Locafi.Client.UnitTests.Tests.Orders
         [TestMethod]
         public async Task OrderDispatch_DispatchSuccess()
         { 
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var quantity = ran.Next(1, 10);
             // create new order
             var refNumber = Guid.NewGuid().ToString();
             string description = Guid.NewGuid().ToString();
             var allPlaces = await _placeRepo.QueryPlaces();
-            var place1 = allPlaces.Items.ElementAt(ran.Next(allPlaces.Items.Count() - 1));
+            var place1 = allPlaces.Items.ElementAt(ran.Next(allPlaces.Items.Count()));
             var remainingPlaces = allPlaces.Items.Where(p => p!= place1);
-            var place2 = remainingPlaces.ElementAt(ran.Next(remainingPlaces.Count() - 1));
+            var place2 = remainingPlaces.ElementAt(ran.Next(remainingPlaces.Count()));
             var skus = await _skuRepo.QuerySkus(); // sometimes doesn't work when i pick a sku that cannot be allocated
-            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
+            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count()));
             var addSkus = new List<AddOrderSkuLineItemDto> { new AddOrderSkuLineItemDto(sku.Id, quantity, 2) };
             // some random amoun with 2 packing size`
             var addOrder = new AddOrderDto(refNumber, description, place1.Id, place2.Id, addSkus);

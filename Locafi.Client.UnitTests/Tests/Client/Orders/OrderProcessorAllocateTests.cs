@@ -30,11 +30,11 @@ namespace Locafi.Client.UnitTests.Tests.Orders
         [TestMethod]
         public async Task OrderProcessor_AllocateExact()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
 
             var quantity = ran.Next(1, 10);
             var skus = await _skuRepo.QuerySkus();
-            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
+            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference));
             var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
 
             var order = new OrderDetailDto();
@@ -44,7 +44,7 @@ namespace Locafi.Client.UnitTests.Tests.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                Gtin = sku.Gtin,
+                Gtin = "",
             });
             var processor = new OrderAllocator(order);
 
@@ -65,7 +65,7 @@ namespace Locafi.Client.UnitTests.Tests.Orders
         {
             var quantity = 1;
             var skus = await _skuRepo.QuerySkus();
-            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
+            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference));
             var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
 
 
@@ -77,7 +77,7 @@ namespace Locafi.Client.UnitTests.Tests.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                Gtin = sku.Gtin
+                Gtin = ""
             });
             var processor = new OrderAllocator(order);
 
@@ -95,11 +95,11 @@ namespace Locafi.Client.UnitTests.Tests.Orders
         [TestMethod]
         public async Task OrderProcessor_RemoveAllocate()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
 
             var quantity = ran.Next(1, 10);
             var skus = await _skuRepo.QuerySkus();
-            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
+            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference));
             var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
 
             var order = new OrderDetailDto();
@@ -109,7 +109,7 @@ namespace Locafi.Client.UnitTests.Tests.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                Gtin = sku.Gtin,
+                Gtin = "",
             });
             var processor = new OrderAllocator(order);
 
@@ -139,7 +139,7 @@ namespace Locafi.Client.UnitTests.Tests.Orders
         {
             var quantity = 3;
             var skus = await _skuRepo.QuerySkus();
-            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
+            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference));
             var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity + 1);
 
             var order = new OrderDetailDto();
@@ -149,7 +149,7 @@ namespace Locafi.Client.UnitTests.Tests.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                Gtin = sku.Gtin,
+                Gtin = "",
             });
             var processor = new OrderAllocator( order);
 

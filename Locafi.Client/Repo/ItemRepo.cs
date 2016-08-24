@@ -141,6 +141,82 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        private async Task<PageResult<ItemStateHistoryDto>> GetItemStateHistory(string oDataQueryOptions = null)
+        {
+            var path = ItemUri.GetItemStateHistory;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<ItemStateHistoryDto>>(path);
+            return result;
+        }
+
+        public async Task<PageResult<ItemStateHistoryDto>> GetItemStateHistory(IRestQuery<ItemStateHistoryDto> query)
+        {
+            return await GetItemStateHistory(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<ItemStateHistoryDto>> GetItemStateHistoryContinuation(IRestQuery<ItemStateHistoryDto> query)
+        {
+            var result = await GetItemStateHistory(query.AsRestQuery());
+            return result.AsQueryResult(query);
+        }
+
+        private async Task<PageResult<ItemPlaceMovementHistoryDto>> GetItemPlaceHistory(string oDataQueryOptions = null)
+        {
+            var path = ItemUri.GetItemPlaceHistory;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<ItemPlaceMovementHistoryDto>>(path);
+            return result;
+        }
+
+        public async Task<PageResult<ItemPlaceMovementHistoryDto>> GetItemPlaceHistory(IRestQuery<ItemPlaceMovementHistoryDto> query)
+        {
+            return await GetItemPlaceHistory(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<ItemPlaceMovementHistoryDto>> GetItemPlaceHistoryContinuation(IRestQuery<ItemPlaceMovementHistoryDto> query)
+        {
+            var result = await GetItemPlaceHistory(query.AsRestQuery());
+            return result.AsQueryResult(query);
+        }
+
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
             throw new ItemRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());

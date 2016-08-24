@@ -13,6 +13,8 @@ namespace Locafi.Client.Model.Dto.Places
 
         public PlaceDetailDto(PlaceDetailDto dto): base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(PlaceDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

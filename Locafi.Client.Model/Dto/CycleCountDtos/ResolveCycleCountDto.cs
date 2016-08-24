@@ -14,6 +14,8 @@ namespace Locafi.Client.Model.Dto.CycleCountDtos
 
         public ResolveCycleCountDto(AddSnapshotDto dto)
         {
+            if (dto == null) return;
+
             var properties = typeof(AddSnapshotDto).GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {

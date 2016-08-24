@@ -14,6 +14,8 @@ namespace Locafi.Client.Model.RelativeUri
         public static string UpdateItem => @"UpdateItem";
         public static string SearchItems => @"SearchItems";
         public static string ClearItems => @"ClearSelectedItemState";
+        public static string GetItemPlaceHistory => @"GetItemPlaceHistory";
+        public static string GetItemStateHistory => @"GetItemStateHistory";
 
         public static string GetItem(Guid id)
         {

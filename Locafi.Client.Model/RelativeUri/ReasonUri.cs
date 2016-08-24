@@ -12,6 +12,7 @@ namespace Locafi.Client.Model.Uri
         public static string ServiceName => "Reasons";
         public static string GetReasons => "GetFilteredReasons";
         public static string CreateReason => "CreateReason";
+        public static string UpdateReason => "Update";
 
         public static string GetReason(Guid id)
         {

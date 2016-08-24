@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Tags
 {
-    public class TagDetailDto
+    public class TagDetailDto : WriteTagDto
     {
         public Guid Id { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public TagType? TagType { get; set; }
+//        [JsonConverter(typeof(StringEnumConverter))]
+//        public TagType? TagType { get; set; }
 
-        private string _tagNumber;
-        public string TagNumber
-        {
-            get { return _tagNumber; }
-            set { _tagNumber = value?.ToUpper(); }
-        }
+        //private string _tagNumber;
+        //public string TagNumber
+        //{
+        //    get { return _tagNumber; }
+        //    set { _tagNumber = value?.ToUpper(); }
+        //}
     }
 }

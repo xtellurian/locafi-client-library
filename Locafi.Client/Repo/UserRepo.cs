@@ -87,9 +87,44 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<UserDetailDto> UpdateProfile(UpdateUserProfileDto updateDto)
+        {
+            var path = UserUri.UpdateProfile;
+            var result = await Post<UserDetailDto>(updateDto, path);
+            return result;
+        }
+
+        public async Task<UserDetailDto> UpdatePassword(UpdateUserPasswordDto updateDto)
+        {
+            var path = UserUri.UpdatePassword;
+            var result = await Post<UserDetailDto>(updateDto, path);
+            return result;
+        }
+
+        public async Task<UserDetailDto> SpawnUser(SpawnUserDto spawnDto)
+        {
+            var path = UserUri.SpawnUser;
+            var result = await Post<UserDetailDto>(spawnDto, path);
+            return result;
+        }
+
+        public async Task<UserDetailDto> GetLoggedInUser()
+        {
+            var path = UserUri.GetLoggedInUser;
+            var result = await Get<UserDetailDto>(path);
+            return result;
+        }
+
         public async Task<bool> DeleteUser(Guid id)
         {
             var path = UserUri.DeleteUser(id);
+            var result = await Delete(path);
+            return result;
+        }
+
+        public async Task<bool> DeleteUserAndPerson(Guid id)
+        {
+            var path = UserUri.DeleteUserAndPerson(id);
             var result = await Delete(path);
             return result;
         }

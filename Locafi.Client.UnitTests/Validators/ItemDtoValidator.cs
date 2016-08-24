@@ -1,4 +1,5 @@
-﻿using Locafi.Client.Model.Dto.Items;
+﻿using Locafi.Client.Model.Dto.Inventory;
+using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Dto.Skus;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -25,6 +26,24 @@ namespace Locafi.Client.UnitTests.Validators
                 BaseDtoValidator.CheckGuid(dto.PlaceId, "ItemSummaryCheck: PlaceId == null/Empty");
                 BaseDtoValidator.CheckString(dto.PlaceName, "ItemSummaryCheck: PlaceName == null/Empty");
             }catch(Exception e)
+            {
+                var msg = "Error Message: " + e.Message + "\r\n\r\nStack Trace: " + e.StackTrace;
+                MessageBox.Show(msg, "Validation Error");
+                throw e;
+            }
+        }
+
+        public static void ItemSummaryReasonCheck(ItemSummaryReasonDto dto, Guid? reasonId = null)
+        {
+            ItemSummaryCheck(dto);
+
+            try
+            {
+                BaseDtoValidator.CheckNullableGuid(dto.ReasonId, "ItemSummaryReasonCheck: ReasonId == Empty");
+
+                Validator.AreEqual(reasonId, dto.ReasonId, "ItemSummaryReasonCheck: ReasonId doesn't match");
+            }
+            catch (Exception e)
             {
                 var msg = "Error Message: " + e.Message + "\r\n\r\nStack Trace: " + e.StackTrace;
                 MessageBox.Show(msg, "Validation Error");

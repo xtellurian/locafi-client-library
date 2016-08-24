@@ -8,13 +8,13 @@ namespace Locafi.Client.Model.RelativeUri
 {
     public static class SkuGroupUri
     {
-        public static string ServiceName => "SkuGroup";
+        public static string ServiceName => "SkuGroups";
 
         public static string GetSkuGroups => "GetFilteredSkuGroups";
 
         public static string GetSkyGroupsForPlace(Guid placeId)
         {
-            return $"GetSkuGroupsForPlace/{placeId}";
+            return $"GetSkuGroupForPlace/{placeId}";
         }
         public static string GetSkuGroupDetail(Guid id)
         {
@@ -44,7 +44,7 @@ namespace Locafi.Client.Model.RelativeUri
 
             public static string DeleteSkuGroupName(Guid id)
             {
-                return $"DeleteSkuGroupNames/{id}";
+                return $"DeleteSkuGroupName/{id}";
             }
         }
     }

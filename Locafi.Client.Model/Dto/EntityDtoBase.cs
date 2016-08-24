@@ -17,6 +17,8 @@ namespace Locafi.Client.Model.Dto
 
         protected EntityDtoBase(EntityDtoBase entityDtoBase)
         {
+            if (entityDtoBase == null) return;
+
             var type = typeof(EntityDtoBase);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

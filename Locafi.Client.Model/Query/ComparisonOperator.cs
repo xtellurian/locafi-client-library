@@ -14,6 +14,7 @@ namespace Locafi.Client.Model.Query
         GreaterThan,
         LessThan,
         GreaterThanOrEqual,
-        LessThanOrEqual
+        LessThanOrEqual,
+        ContainedIn
     }
 }

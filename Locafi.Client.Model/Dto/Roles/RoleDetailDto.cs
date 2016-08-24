@@ -16,6 +16,8 @@ namespace Locafi.Client.Model.Dto.Roles
 
         public RoleDetailDto(RoleDetailDto dto):base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(RoleDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

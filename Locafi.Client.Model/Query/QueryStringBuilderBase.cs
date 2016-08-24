@@ -43,6 +43,10 @@ namespace Locafi.Client.Model.Query
                     filter =
                         $"{QueryStrings.Filter.LessThanOrEqual(propInfo.Name, ConvertToOdataValue(value))}";
                     break;
+                case ComparisonOperator.ContainedIn:
+                    filter =
+                        $"{QueryStrings.Filter.ContainedIn(ConvertToOdataValue(value), propInfo.Name)}";
+                    break;
                 default:
                     filter =
                         $"{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
@@ -57,7 +61,7 @@ namespace Locafi.Client.Model.Query
                 return $"null";
 
             var type = typeof(TProperty);
-            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || (type.GetTypeInfo().BaseType == typeof(ValueType) && type != typeof(Guid?) && type != typeof(Guid))) // strings must be surrounded like so: '<string_value>'
+            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || (type.GetTypeInfo().BaseType == typeof(ValueType) && type != typeof(Guid?) && type != typeof(Guid) && type != typeof(DateTimeOffset) && type != typeof(DateTimeOffset?))) // strings must be surrounded like so: '<string_value>'
                 return $"'{p}'";
             if (type == typeof(DateTimeOffset)) //datetimes are difficult
             {

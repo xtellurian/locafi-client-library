@@ -21,6 +21,8 @@ namespace Locafi.Client.Model.Dto.Devices
 
         public RfidReaderAntennaDto(RfidReaderAntennaDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(RfidReaderAntennaDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

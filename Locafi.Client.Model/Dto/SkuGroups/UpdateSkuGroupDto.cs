@@ -17,31 +17,31 @@ namespace Locafi.Client.Model.Dto.SkuGroups
 
         public UpdateSkuGroupDto(Guid skuGroupId, Guid? skuGroupNameId = null)
         {
-            SkuGroupId = skuGroupId;
+            Id = skuGroupId;
             SkuGroupNameId = skuGroupNameId;
         }
 
         public UpdateSkuGroupDto(SkuGroupDetailDto detailDto)
         {
-            SkuGroupId = detailDto.Id;
+            Id = detailDto.Id;
             SkuGroupNameId = detailDto.SkuGroupNameId;
-            SkuIds = detailDto.Skus.Select(s => s.Id).ToList();
-            PlaceIds = detailDto.Places.Select(p => p.Id).ToList();
+            SkuGroupSkus = detailDto.Skus.Select(s => s.Id).ToList();
+            SkuGroupPlaces = detailDto.Places.Select(p => p.Id).ToList();
         }
 
         #region Properties
-        public Guid SkuGroupId { get; set; }    // Id of the sku group to modify
+        public Guid Id { get; set; }    // Id of the sku group to modify
         public Guid? SkuGroupNameId { get; set; }    // set if you want to change the name of the group
-        public IList<Guid> SkuIds { get; set; }
-        public IList<Guid> PlaceIds { get; set; }
+        public IList<Guid> SkuGroupSkus { get; set; }
+        public IList<Guid> SkuGroupPlaces { get; set; }
         #endregion
 
         #region Methods
         public void AddSku(Guid skuId)
         {
-            if(SkuIds==null) SkuIds = new List<Guid>();
-            if (SkuIds.Contains(skuId)) return;
-            SkuIds.Add(skuId);
+            if(SkuGroupSkus==null) SkuGroupSkus = new List<Guid>();
+            if (SkuGroupSkus.Contains(skuId)) return;
+            SkuGroupSkus.Add(skuId);
         }
 
         public void AddSkus(IEnumerable<SkuSummaryDto> skuSummaries)
@@ -54,9 +54,9 @@ namespace Locafi.Client.Model.Dto.SkuGroups
 
         public void RemoveSku(Guid skuId)
         {
-            if (SkuIds == null) return;
-            if (!SkuIds.Contains(skuId)) return;
-            SkuIds.Remove(skuId);
+            if (SkuGroupSkus == null) return;
+            if (!SkuGroupSkus.Contains(skuId)) return;
+            SkuGroupSkus.Remove(skuId);
         }
 
         public void RemoveSkus(IEnumerable<SkuSummaryDto> skuSummaries)
@@ -69,9 +69,9 @@ namespace Locafi.Client.Model.Dto.SkuGroups
 
         public void AddPlace(Guid placeId)
         {
-            if(PlaceIds==null) PlaceIds = new List<Guid>();
-            if (PlaceIds.Contains(placeId)) return;
-            PlaceIds.Add(placeId);
+            if(SkuGroupPlaces==null) SkuGroupPlaces = new List<Guid>();
+            if (SkuGroupPlaces.Contains(placeId)) return;
+            SkuGroupPlaces.Add(placeId);
         }
 
         public void AddPlaces(IEnumerable<PlaceSummaryDto> placeSummaries)
@@ -84,9 +84,9 @@ namespace Locafi.Client.Model.Dto.SkuGroups
 
         public void RemovePlace(Guid placeId)
         {
-            if (PlaceIds == null) return;
-            if(!PlaceIds.Contains(placeId)) return;
-            PlaceIds.Remove(placeId);
+            if (SkuGroupPlaces == null) return;
+            if(!SkuGroupPlaces.Contains(placeId)) return;
+            SkuGroupPlaces.Remove(placeId);
         }
 
         public void RemovePlaces(IEnumerable<PlaceSummaryDto> places)

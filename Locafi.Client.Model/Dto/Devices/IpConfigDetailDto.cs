@@ -28,6 +28,8 @@ namespace Locafi.Client.Model.Dto.Devices
 
         public IpConfigDetailDto(IpConfigDetailDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(IpConfigDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

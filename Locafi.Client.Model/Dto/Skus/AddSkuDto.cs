@@ -21,6 +21,8 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public Guid ItemTemplateId { get; set; }
 
+        public bool IsSgtin { get; set; }
+
         public IList<WriteSkuExtendedPropertyDto> SkuExtendedPropertyList { get;set; }
 
         public AddSkuDto()
@@ -43,11 +45,11 @@ namespace Locafi.Client.Model.Dto.Skus
 
                 switch (extProp.ExtendedPropertyDataType)
                 {
-                    case TemplateDataTypes.AutoId: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
-                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString(); break;
-                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random().Next()) / 10.0).ToString(); break;
-                    case TemplateDataTypes.Number: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
                 }
 

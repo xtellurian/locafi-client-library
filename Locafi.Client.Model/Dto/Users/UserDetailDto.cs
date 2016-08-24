@@ -19,6 +19,8 @@ namespace Locafi.Client.Model.Dto.Users
         }
         public UserDetailDto(UserDetailDto dto)
         {
+            if (dto == null) return;
+
             var type = typeof(UserDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

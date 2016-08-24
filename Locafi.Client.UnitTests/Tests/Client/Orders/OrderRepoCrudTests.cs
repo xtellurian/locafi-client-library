@@ -44,11 +44,11 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task OrderCrud_CreateSuccess()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
             var numPlaces = places.Count;
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
@@ -71,8 +71,8 @@ namespace Locafi.Client.UnitTests.Tests
 
         private async Task<IList<AddOrderSkuLineItemDto>> GenerateSomeSkuLineItems(int numLines = 2, int qtyPerLine = 2)
         {
-            var ran = new Random();
-            var skus = (await _skuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).ToList();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
+            var skus = (await _skuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference)).ToList();
 
             // check that we have enough skus for the line items that we want
             Assert.IsTrue(numLines < skus.Count);
@@ -97,11 +97,11 @@ namespace Locafi.Client.UnitTests.Tests
         private async Task<IList<AddOrderItemLineItemDto>> GenerateSomeItemLineItems(int numItems = 2)
         {
             IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var items = new List<AddOrderItemLineItemDto>();
 
             // get skus that aren't sgtin
-            var skus = (await _skuRepo.QuerySkus()).Where(s => string.IsNullOrEmpty(s.Gtin) || s.Gtin.Length != 13).ToList();
+            var skus = (await _skuRepo.QuerySkus()).Where(s => string.IsNullOrEmpty(s.CompanyPrefix) || string.IsNullOrEmpty(s.ItemReference)).ToList();
             // choose a random one to use
             SkuSummaryDto sku;
             int availableItems = 0;
@@ -126,7 +126,7 @@ namespace Locafi.Client.UnitTests.Tests
             {
                 // get a place to use to create the items
                 var places = await GetAvailablePlaces();
-                var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+                var place = places.Items.ElementAt(ran.Next(places.Items.Count()));
                 var skuDetail = await _skuRepo.GetSku(sku.Id);
                 while (availableItems < numItems)
                 {
@@ -191,10 +191,10 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task OrderCrud_DeleteOrder()
         {
             // from create success above
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
@@ -219,10 +219,10 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task OrderCrud_QueryOrders()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
             var refNumber = Guid.NewGuid().ToString();
@@ -246,10 +246,10 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Order_AllocateOverSkuQuantity()
         {
             // create the order
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
@@ -358,10 +358,10 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Order_AllocateAdditionalItems()
         {
             // create the order
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
@@ -468,10 +468,10 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Order_AllocateWithAdditionalSkuLineItems()
         {
             // create the order
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
@@ -537,7 +537,7 @@ namespace Locafi.Client.UnitTests.Tests
                 Assert.AreEqual(QtyPerSkuLine, additionalSku.AllocatedTagNumbers.Count);
 
             // create a AddSnapshotDto for an additional sku line
-            var skus = (await _skuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13 && !result.ExpectedSkus.Select(o => o.SkuId).ToList().Contains(s.Id)).ToList(); // get a different sku
+            var skus = (await _skuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference) && !result.ExpectedSkus.Select(o => o.SkuId).ToList().Contains(s.Id)).ToList(); // get a different sku
             var additionalSku_AddSsDto = await SnapshotGenerator.CreateExistingGtinSnapshotForUpload(result.SourcePlaceId, QtyPerSkuLine, -1, skus[ran.Next(skus.Count - 1)].Id);
             var addAdditionalSs = await _snapshotRepo.CreateSnapshot(additionalSku_AddSsDto);
             additionalSku_AddSsDto.SnapshotType = Model.Enums.SnapshotType.Remove;
@@ -592,10 +592,10 @@ namespace Locafi.Client.UnitTests.Tests
             IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
 
             // create the order
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
@@ -609,8 +609,8 @@ namespace Locafi.Client.UnitTests.Tests
             var itemLineItems = await GenerateSomeItemLineItems(NumberOfItemLines);
 
             // create some item line items with sku items
-            var skus = (await _skuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13 && !skuLineItems.Select(i => i.SkuId).ToList().Contains(s.Id)).ToList();
-            var sku = skus[ran.Next(skus.Count - 1)];
+            var skus = (await _skuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference) && !skuLineItems.Select(i => i.SkuId).ToList().Contains(s.Id)).ToList();
+            var sku = skus[ran.Next(skus.Count)];
 
             var q0 = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals).Take(0).Build();
             var itemCount = (await _itemRepo.QueryItems(q0)).Count;
@@ -636,7 +636,7 @@ namespace Locafi.Client.UnitTests.Tests
                 {
                     count--;
                     // change sku because this one has no items
-                    sku = skus[ran.Next(skus.Count - 1)];
+                    sku = skus[ran.Next(skus.Count)];
                     // get new count
                     q0 = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.SkuId, sku.Id, ComparisonOperator.Equals).Take(0).Build();
                     itemCount = (await _itemRepo.QueryItems(q0)).Count;
@@ -748,10 +748,10 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Order_ReceiveOverSkuQuantity()
         {
             // create the order
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();
@@ -863,10 +863,10 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Order_CompleteOrderCycleExactQuantities()
         {
             // create the order
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await GetAvailablePlaces();
-            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // get random places
-            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var sourcePlace = places.Items.ElementAt(ran.Next(places.Items.Count())); // get random places
+            var destinationPlace = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var persons = await _personRepo.QueryPersons();
             var person = persons.Items.FirstOrDefault();

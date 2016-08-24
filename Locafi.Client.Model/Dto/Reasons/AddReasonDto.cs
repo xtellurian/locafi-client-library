@@ -11,11 +11,8 @@ namespace Locafi.Client.Model.Dto.Reasons
 {
     public class AddReasonDto
     {
-        public string ReasonNo { get; set; }
+        public string ReasonNumber { get; set; }
 
-        public string Name { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ReasonFor? ReasonFor { get; set; }
+        public string Description { get; set; }
     }
 }

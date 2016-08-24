@@ -19,6 +19,11 @@ namespace Locafi.Client.Contract.Repo
         Task<UserDetailDto> GetUserById(Guid id);
         Task<UserDetailDto> CreateUser(AddUserDto addUserDto);
         Task<UserDetailDto> UpdateUser(UpdateUserDto updateUserDto);
+        Task<UserDetailDto> UpdateProfile(UpdateUserProfileDto updateDto);
+        Task<UserDetailDto> UpdatePassword(UpdateUserPasswordDto updateDto);
+        Task<UserDetailDto> SpawnUser(SpawnUserDto spawnDto);
+        Task<UserDetailDto> GetLoggedInUser();
         Task<bool> DeleteUser(Guid id);
+        Task<bool> DeleteUserAndPerson(Guid id);
     }
 }

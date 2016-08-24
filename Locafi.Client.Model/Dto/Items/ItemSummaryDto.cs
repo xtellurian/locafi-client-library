@@ -14,6 +14,8 @@ namespace Locafi.Client.Model.Dto.Items
         }
         public ItemSummaryDto(ItemSummaryDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(ItemSummaryDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

@@ -19,6 +19,8 @@ namespace Locafi.Client.Model.Dto.Persons
 
         public PersonSummaryDto(PersonSummaryDto dto): base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(PersonSummaryDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

@@ -15,6 +15,8 @@ namespace Locafi.Client.Model.Dto.Items
 
         public ItemDetailDto(ItemDetailDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(ItemDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

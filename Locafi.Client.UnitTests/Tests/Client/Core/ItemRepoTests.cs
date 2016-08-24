@@ -70,7 +70,7 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task Item_Basic_CRUD()
+        public async Task Item_Create()
         {
             // build add dto
             var addItemDto = await CreateRandomAssetAddItemDto();
@@ -93,47 +93,54 @@ namespace Locafi.Client.UnitTests.Tests
             // check the response
             ItemDtoValidator.ItemDetailCheck(check);
             Validator.AreEqual(result, check);
+        }
 
-            // build update tag dto
-            var updateTagDto = new UpdateItemTagDto()
-            {
-                Id = result.Id,
-                ItemTagList = new List<WriteTagDto>()
-                {
-                    new WriteTagDto()
-                    {
-                        TagNumber = Guid.NewGuid().ToString(),
-                        TagType = TagType.PassiveRfid
-                    }
-                }
-            };
-            // update the tag
-            var tagUpdateResult = await _itemRepo.UpdateTag(updateTagDto);
+        [TestMethod]
+        public async Task Item_Get()
+        {
+            // build add dto
+            var addItemDto = await CreateRandomAssetAddItemDto();
 
-            // check the result
-            ItemDtoValidator.ItemDetailCheck(tagUpdateResult);
-            Validator.IsTrue(string.Equals(addItemDto.Name, tagUpdateResult.Name));
-            Validator.IsTrue(string.Equals(addItemDto.Description, tagUpdateResult.Description));
-            Validator.AreEqual(addItemDto.PlaceId, tagUpdateResult.PlaceId);
-            Validator.AreEqual(addItemDto.SkuId, tagUpdateResult.SkuId);
-            Validator.AreNotEqual(tagUpdateResult.ItemTagList[0].TagNumber, result.ItemTagList[0].TagNumber);
-            Validator.AreEqual(updateTagDto.ItemTagList[0].TagNumber, tagUpdateResult.ItemTagList[0].TagNumber);
+            // create the item
+            var result = await _itemRepo.CreateItem(addItemDto);
+            _itemsToDelete.AddUnique(result.Id);
 
-            // build update item place dto
-            var updatePlaceDto = new UpdateItemPlaceDto()
-            {
-                Id = result.Id,
-                NewPlaceId = _placeRepo.QueryPlaces(QueryBuilder<PlaceSummaryDto>.NewQuery(p => p.Id,result.PlaceId, ComparisonOperator.NotEquals).Build()).Result.First().Id
-            };
-            var updatePlaceResult = await _itemRepo.UpdateItemPlace(updatePlaceDto);
+            // check response
+            ItemDtoValidator.ItemDetailCheck(result);
 
-            // check the result
-            ItemDtoValidator.ItemDetailCheck(updatePlaceResult);
-            Validator.IsTrue(string.Equals(addItemDto.Name, tagUpdateResult.Name));
-            Validator.IsTrue(string.Equals(addItemDto.Description, tagUpdateResult.Description));
-            Validator.AreNotEqual(addItemDto.PlaceId, updatePlaceResult.PlaceId);
-            Validator.AreEqual(updatePlaceDto.NewPlaceId, updatePlaceResult.PlaceId);
-            Validator.AreEqual(addItemDto.SkuId, tagUpdateResult.SkuId);
+            Validator.IsTrue(string.Equals(addItemDto.Name, result.Name));
+            Validator.IsTrue(string.Equals(addItemDto.Description, result.Description));
+            Validator.AreEqual(addItemDto.PlaceId, result.PlaceId);
+            Validator.AreEqual(addItemDto.SkuId, result.SkuId);
+
+            // get the item
+            var check = await _itemRepo.GetItemDetail(result.Id);
+
+            // check the response
+            ItemDtoValidator.ItemDetailCheck(check);
+            Validator.IsTrue(string.Equals(check.Name, result.Name));
+            Validator.IsTrue(string.Equals(check.Description, result.Description));
+            Validator.AreEqual(check.PlaceId, result.PlaceId);
+            Validator.AreEqual(check.SkuId, result.SkuId);
+        }
+
+        [TestMethod]
+        public async Task Item_Update()
+        {
+            // build add dto
+            var addItemDto = await CreateRandomAssetAddItemDto();
+
+            // create the item
+            var result = await _itemRepo.CreateItem(addItemDto);
+            _itemsToDelete.AddUnique(result.Id);
+
+            // check response
+            ItemDtoValidator.ItemDetailCheck(result);
+
+            Validator.IsTrue(string.Equals(addItemDto.Name, result.Name));
+            Validator.IsTrue(string.Equals(addItemDto.Description, result.Description));
+            Validator.AreEqual(addItemDto.PlaceId, result.PlaceId);
+            Validator.AreEqual(addItemDto.SkuId, result.SkuId);
 
             // build update item dto
             var updateItemDto = new UpdateItemDto()
@@ -155,34 +162,7 @@ namespace Locafi.Client.UnitTests.Tests
             Validator.IsTrue(string.Equals(updateItemDto.Description, updateItemResult.Description));
             Validator.AreEqual(updateItemDto.PersonId, updateItemResult.PersonId);
             Validator.AreEqual(updateItemDto.SkuId, updateItemResult.SkuId);
-
-            // cleanup
-            var delResult = await _itemRepo.DeleteItem(result.Id);
-            Validator.IsTrue(delResult);
         }
-
-        //[TestMethod]
-        //public async Task Item_GetDetail()
-        //{
-        //    var addItemDto = await CreateRandomAssetAddItemDto();
-
-        //    var result = await _itemRepo.CreateItem(addItemDto);
-
-        //    ItemDtoValidator.ItemDetailCheck(result);
-
-        //    Assert.IsTrue(string.Equals(addItemDto.Name, result.Name));
-        //    Assert.IsTrue(string.Equals(addItemDto.Description, result.Description));
-        //    Assert.AreEqual(addItemDto.PlaceId, result.PlaceId);
-        //    Assert.AreEqual(addItemDto.SkuId, result.SkuId);
-
-        //    var check = await _itemRepo.GetItemDetail(result.Id);
-
-        //    ItemDtoValidator.ItemDetailCheck(check);
-        //    Assert.AreEqual(result, check);
-
-        //    // cleanup
-        //    await _itemRepo.DeleteItem(result.Id);
-        //}
 
         [TestMethod]
         public async Task Item_UseExtendedProperties()
@@ -222,11 +202,11 @@ namespace Locafi.Client.UnitTests.Tests
 
                 switch (prop.DataType)
                 {
-                    case TemplateDataTypes.AutoId: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
-                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString(); break;
-                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random().Next()) / 10.0).ToString(); break;
-                    case TemplateDataTypes.Number: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
                 }
 
@@ -314,39 +294,6 @@ namespace Locafi.Client.UnitTests.Tests
         }
 
         [TestMethod]
-        public async Task Item_Count()
-        {
-            // create a new place for this test
-            var addPlaceDto = new AddPlaceDto() {
-                Name = "Item_Count_Test_Place",
-                TemplateId = (await _teplateRepo.QueryTemplates(QueryBuilder<TemplateSummaryDto>.NewQuery(t => t.TemplateType, TemplateFor.Place, ComparisonOperator.Equals).Build())).First().Id
-            };
-            var placeResult = await _placeRepo.CreatePlace(addPlaceDto);
-            _placesToDelete.AddUnique(placeResult.Id);
-
-            // Add a bunch of items to this place
-            var numItemsTocreate = 20;
-            for (int i = 0; i < numItemsTocreate; i++)
-            {
-                var itemToAdd = await CreateRandomAssetAddItemDto();
-                itemToAdd.Name = "Item_Count_Test";
-                itemToAdd.PlaceId = placeResult.Id;
-                var result = await _itemRepo.CreateItem(itemToAdd);
-
-                _itemsToDelete.AddUnique(result.Id);
-
-                // check response
-                ItemDtoValidator.ItemDetailCheck(result);
-            }
-
-            // build query to get count of all the items in this place
-            var query = ItemQuery.NewQuery(i => i.PlaceId, placeResult.Id, ComparisonOperator.Equals, 0);
-            var queryResult = await _itemRepo.QueryItems(query);
-            Validator.IsNotNull(queryResult);
-            Validator.IsTrue(queryResult.Count == numItemsTocreate);
-        }
-
-        [TestMethod]
         public async Task Item_MoveItem()
         {
             // create an item
@@ -370,7 +317,6 @@ namespace Locafi.Client.UnitTests.Tests
 
             // check response
             ItemDtoValidator.ItemDetailCheck(movedItem);
-            Validator.AreNotEqual(item, movedItem);
             Validator.AreEqual(movedItem.PlaceId, moveItemDto.NewPlaceId);
         }
 
@@ -464,6 +410,10 @@ namespace Locafi.Client.UnitTests.Tests
             // delete the item
             var deleteResult = await _itemRepo.DeleteItem(item.Id);
 
+            // verify
+            Validator.IsTrue(deleteResult);
+            _itemsToDelete.Remove(item.Id);
+
             // now try and re-use the original tag with a new item
             var itemAddDto2 = await CreateRandomAssetAddItemDto();
             itemAddDto2.ItemTagList[0].TagNumber = itemToAdd.ItemTagList[0].TagNumber;
@@ -481,6 +431,7 @@ namespace Locafi.Client.UnitTests.Tests
             // create an item
             var itemToCreate = await CreateRandomAssetAddItemDto();
             var item = await _itemRepo.CreateItem(itemToCreate);
+            _itemsToDelete.AddUnique(item.Id);
 
             // check response
             ItemDtoValidator.ItemDetailCheck(item);
@@ -489,17 +440,89 @@ namespace Locafi.Client.UnitTests.Tests
             var deleteResult = await _itemRepo.DeleteItem(id);
             // check the result
             Validator.IsTrue(deleteResult);
-            // verify by trying to get the item back (should error out if the items down't exist)
+            // remove from delete list
+            _itemsToDelete.Remove(item.Id);
+
+            // verify with query
+            var query = QueryBuilder<ItemSummaryDto>.NewQuery(n => n.Id, item.Id, ComparisonOperator.Equals).Build();
+            var idQuery = await _itemRepo.QueryItems(query);
+            Validator.IsFalse(idQuery.Contains(item));            
+
+            // verify with get
             try
             {
                 var sameItem = await _itemRepo.GetItemDetail(id);
-                Assert.IsTrue(false);    // fail, we could still get the item
+
+                Validator.IsTrue(false, "Deleted entity returned");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Validator.IsTrue(true); //successfully deleted
-            }            
+                // this is expected                
+            }
         }
+
+        [TestMethod]
+        public async Task Item_Count()
+        {
+            // create a new place for this test
+            var addPlaceDto = new AddPlaceDto() {
+                Name = "Item_Count_Test_Place",
+                TemplateId = (await _teplateRepo.QueryTemplates(QueryBuilder<TemplateSummaryDto>.NewQuery(t => t.TemplateType, TemplateFor.Place, ComparisonOperator.Equals).Build())).First().Id
+            };
+            var placeResult = await _placeRepo.CreatePlace(addPlaceDto);
+            _placesToDelete.AddUnique(placeResult.Id);
+
+            // Add a bunch of items to this place
+            var numItemsTocreate = 20;
+            for (int i = 0; i < numItemsTocreate; i++)
+            {
+                var itemToAdd = await CreateRandomAssetAddItemDto();
+                itemToAdd.Name = "Item_Count_Test";
+                itemToAdd.PlaceId = placeResult.Id;
+                var result = await _itemRepo.CreateItem(itemToAdd);
+
+                _itemsToDelete.AddUnique(result.Id);
+
+                // check response
+                ItemDtoValidator.ItemDetailCheck(result);
+            }
+
+            // build query to get count of all the items in this place
+            var query = ItemQuery.NewQuery(i => i.PlaceId, placeResult.Id, ComparisonOperator.Equals, 0);
+            var queryResult = await _itemRepo.QueryItems(query);
+            Validator.IsNotNull(queryResult);
+            Validator.IsTrue(queryResult.Count == numItemsTocreate);
+        }        
+
+        // TODO: Complete below when functionality added to V3
+
+        //TODO: Somethings wrong with this test, figure out what's wrong/talk to Mark
+        //[TestMethod]
+        //public async Task Item_Search()
+        //{
+        //    // need to update test to actually add a known item first
+
+        //    // build search query
+        //    var searchQuery = new SearchCollectionDto() { SearchType = SearchCollectionType.Or };
+        //    searchQuery.SearchParameters.Add(new SearchParameter()
+        //    {
+        //        PropertyName = "*",
+        //        DataType = TemplateDataTypes.String,
+        //        Value = "test"
+        //    });
+        //    searchQuery.SearchParameters.Add(new SearchParameter()
+        //    {
+        //        PropertyName = "TagNumber",
+        //        DataType = TemplateDataTypes.String,
+        //        Value = "21"
+        //    });
+
+        //    // search for item
+        //    var result = await _itemRepo.SearchItems(searchQuery);
+        //    Assert.IsNotNull(result, "result != null");
+        //    //var count = await _itemRepo.GetItemCount(query);
+        //    //Assert.IsTrue(count > 0);
+        //}
 
         [TestMethod]
         public async Task Item_Upload()
@@ -575,49 +598,21 @@ namespace Locafi.Client.UnitTests.Tests
             return new FileUploadDto { Entities = uploadDtoEntities, Operation = FileUploadOperation.CreateOrUpdate, UniqueProperty = "name" };
         }
 
-        //TODO: Somethings wrong with this test, figure out what's wrong/talk to Mark
-        //[TestMethod]
-        //public async Task Item_Search()
-        //{
-        //    // need to update test to actually add a known item first
-
-        //    // build search query
-        //    var searchQuery = new SearchCollectionDto() { SearchType = SearchCollectionType.Or };
-        //    searchQuery.SearchParameters.Add(new SearchParameter()
-        //    {
-        //        PropertyName = "*",
-        //        DataType = TemplateDataTypes.String,
-        //        Value = "test"
-        //    });
-        //    searchQuery.SearchParameters.Add(new SearchParameter()
-        //    {
-        //        PropertyName = "TagNumber",
-        //        DataType = TemplateDataTypes.String,
-        //        Value = "21"
-        //    });
-
-        //    // search for item
-        //    var result = await _itemRepo.SearchItems(searchQuery);
-        //    Assert.IsNotNull(result, "result != null");
-        //    //var count = await _itemRepo.GetItemCount(query);
-        //    //Assert.IsTrue(count > 0);
-        //}
-
         #region PrivateMethods
         private async Task<AddItemDto> CreateRandomAssetAddItemDto()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             // choose a place
             var places = await _placeRepo.QueryPlaces();
-            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1)); // picks a random place for the item
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count())); // picks a random place for the item
             // choose a person
             var persons = await _personRepo.QueryPersons();
-            var person = persons.Items.ElementAt(ran.Next(persons.Items.Count() - 1));
+            var person = persons.Items.ElementAt(ran.Next(persons.Items.Count()));
             // choose an asset sku
             var skus = await _skuRepo.QuerySkus(QueryBuilder<SkuSummaryDto>.NewQuery(s => s.CompanyPrefix,"",ComparisonOperator.Equals)
                 .And(s => s.ItemReference, "", ComparisonOperator.Equals)
                 .Build());
-            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count() - 1));
+            var sku = skus.Items.ElementAt(ran.Next(skus.Items.Count()));
 
             var skuDetail = await _skuRepo.GetSku(sku.Id);
 
@@ -636,20 +631,20 @@ namespace Locafi.Client.UnitTests.Tests
         private async Task<PlaceSummaryDto> GetRandomOtherPlace(Guid notThisPlaceId)
         {
             var places = await _placeRepo.QueryPlaces();
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             PlaceSummaryDto place = null;
             while (place?.Id.Equals(notThisPlaceId) ?? true)
             {
-                place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+                place = places.Items.ElementAt(ran.Next(places.Items.Count()));
             }
             return place;
         }
 
         private async Task<UserSummaryDto> GetRandomUser()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var users = await _userRepo.QueryUsers();
-            var user = users.Items.ElementAt(ran.Next(users.Items.Count() - 1));
+            var user = users.Items.ElementAt(ran.Next(users.Items.Count()));
             return user;
         }
 

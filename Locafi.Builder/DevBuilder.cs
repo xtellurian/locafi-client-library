@@ -698,7 +698,7 @@ namespace Locafi.Builder
             var template = templates.FirstOrDefault(t => t.Name == bAddDto.TemplateName && t.TemplateType == TemplateFor.Item);
             if (template == null)
                 throw new InvalidOperationException("Template not found for updating sku");
-            updateDto.ItemTemplateId = template.Id;
+            updateDto.TemplateId = template.Id;
 
             foreach (var bprop in bAddDto.BuilderSkuExtendedPropertyList)
             {

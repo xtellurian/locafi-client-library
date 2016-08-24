@@ -21,6 +21,8 @@ namespace Locafi.Client.Model.Dto.Persons
 
         public string Email { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public IList<WriteTagDto> PersonTagList { get; set; }
 
         public IList<WriteEntityExtendedPropertyDto> PersonExtendedPropertyList { get; set; }
@@ -47,11 +49,11 @@ namespace Locafi.Client.Model.Dto.Persons
 
                 switch (extProp.ExtendedPropertyDataType)
                 {
-                    case TemplateDataTypes.AutoId: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
-                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString(); break;
-                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random().Next()) / 10.0).ToString(); break;
-                    case TemplateDataTypes.Number: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
                 }
 

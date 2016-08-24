@@ -10,7 +10,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Reasons
 {
-    public class ReasonDetailDto : EntityDtoBase
+    public class ReasonDetailDto : ReasonSummaryDto
     {
         public ReasonDetailDto()
         {
@@ -19,6 +19,8 @@ namespace Locafi.Client.Model.Dto.Reasons
 
         public ReasonDetailDto(ReasonDetailDto dto):base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(ReasonDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
@@ -26,17 +28,6 @@ namespace Locafi.Client.Model.Dto.Reasons
                 var value = property.GetValue(dto);
                 property.SetValue(this, value);
             }
-        }
-        public string ReasonNo { get; set; }
-
-        public string Name { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ReasonFor? ReasonFor { get; set; }
-
-        public override string ToString()
-        {
-            return Name;
         }
     }
 }

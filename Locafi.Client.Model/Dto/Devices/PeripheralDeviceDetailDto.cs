@@ -21,6 +21,8 @@ namespace Locafi.Client.Model.Dto.Devices
 
         public PeripheralDeviceDetailDto(PeripheralDeviceDetailDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof (PeripheralDeviceDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

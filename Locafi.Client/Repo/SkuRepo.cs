@@ -104,6 +104,38 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<PageResult<SkuStockCountDto>> GetSkuStockCount(string oDataQueryOptions = null)
+        {
+            var path = SkuUri.GetStockCount;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<SkuStockCountDto>>(path);
+            return result;
+        }
+
+        public async Task<PageResult<SkuStockCountDto>> GetSkuStockCount(IRestQuery<SkuStockCountDto> query)
+        {
+            return await GetSkuStockCount(query.AsRestQuery());
+        }
+
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
             throw new SkuRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());

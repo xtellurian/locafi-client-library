@@ -75,8 +75,14 @@ namespace Locafi.Client.Repo
                 SkuGroupId = skuGroupId,
                 SkuIds = skuIds
             };
+
+            return await CreateInventory(dto);
+        }
+
+        public async Task<InventoryDetailDto> CreateInventory(AddInventoryDto addDto)
+        {
             var path = InventoryUri.CreateInventory;
-            var result = await Post<InventoryDetailDto>(dto, path);
+            var result = await Post<InventoryDetailDto>(addDto, path);
             return result;
         }
 
@@ -95,7 +101,7 @@ namespace Locafi.Client.Repo
         //    return result;
         //}
 
-        public async Task<InventoryDetailDto> Resolve(InventoryDetailDto resolvedDto)
+        public async Task<InventoryDetailDto> Resolve(ResolveInventoryDto resolvedDto)
         {
             var path = InventoryUri.Resolve;
             var result = await Post<InventoryDetailDto>(resolvedDto, path);

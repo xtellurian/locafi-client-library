@@ -10,15 +10,18 @@ namespace Locafi.Client.Model.Dto.Inventory
 {
     public class ItemSummaryReasonDto : ItemSummaryDto
     {
-        public Guid ReasonId { get; set; }
+        public Guid? ReasonId { get; set; }
 
         public ItemSummaryReasonDto(ItemSummaryDto summaryDto)
         {
-            var properties = typeof(ItemSummaryDto).GetTypeInfo().DeclaredProperties;
-            foreach (var property in properties)
+            if (summaryDto != null)
             {
-                var value = property.GetValue(summaryDto);
-                property.SetValue(this, value);
+                var properties = typeof(ItemSummaryDto).GetTypeInfo().DeclaredProperties;
+                foreach (var property in properties)
+                {
+                    var value = property.GetValue(summaryDto);
+                    property.SetValue(this, value);
+                }
             }
         }
     }

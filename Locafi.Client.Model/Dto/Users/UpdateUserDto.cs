@@ -17,6 +17,18 @@ namespace Locafi.Client.Model.Dto.Users
         {
         }
 
+        public UpdateUserDto(UserDetailDto dto)
+        {
+            Id = dto.Id;
+            GivenName = dto.GivenName;
+            Surname = dto.Surname;
+            Email = dto.Email;
+            TemplateId = dto.TemplateId;
+            PersonExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(dto.PersonExtendedPropertyList);
+            ImageUrl = dto.ImageUrl;
+            RoleId = dto.RoleId;
+        }
+
         public static UpdateUserDto FromUserDetail(UserDetailDto detail)
         {
             return new UpdateUserDto

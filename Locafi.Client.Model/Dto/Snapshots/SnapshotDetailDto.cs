@@ -22,6 +22,8 @@ namespace Locafi.Client.Model.Dto.Snapshots
 
         public SnapshotDetailDto(SnapshotDetailDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(SnapshotDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

@@ -22,6 +22,16 @@ namespace Locafi.Client.Model.Dto.Places
             PlaceExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>();
         }
 
+        public UpdatePlaceDto(PlaceDetailDto detail)
+        {
+            Id = detail.Id;
+            Description = detail.Description;
+            Name = detail.Name;
+            ParentPlaceId = detail.ParentPlaceId;
+            TemplateId = detail.TemplateId;
+            PlaceExtendedPropertyList = new List<WriteEntityExtendedPropertyDto>(detail.PlaceExtendedPropertyList);
+        }
+
         public static UpdatePlaceDto FromPlaceDetail(PlaceDetailDto detail)
         {
             return new UpdatePlaceDto

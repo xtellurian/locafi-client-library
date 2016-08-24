@@ -7,6 +7,7 @@ using Locafi.Client.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Locafi.Client.Model.Dto.Tags;
+using Locafi.Client.Model.Dto.Users;
 
 namespace Locafi.Client.Model.Dto.Persons
 {
@@ -24,6 +25,20 @@ namespace Locafi.Client.Model.Dto.Persons
             };
             dto.PersonTagList.Add(new WriteTagDto() { TagNumber = newTagNumber, TagType = newTagType });
             return dto;
+        }
+
+        public UpdatePersonTagDto() { }
+
+        public UpdatePersonTagDto(PersonDetailDto detail)
+        {
+            Id = detail.Id;
+            PersonTagList = new List<WriteTagDto>(detail.PersonTagList);
+        }
+
+        public UpdatePersonTagDto(UserDetailDto detail)
+        {
+            Id = detail.PersonId;
+            PersonTagList = detail.PersonTagList.Select(t => new WriteTagDto() { TagNumber = t.TagNumber, TagType = t.TagType }).ToList();//new List<WriteTagDto>(detail.PersonTagList);
         }
     }
 }

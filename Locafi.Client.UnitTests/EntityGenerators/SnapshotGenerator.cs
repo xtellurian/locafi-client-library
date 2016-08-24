@@ -18,7 +18,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
     {
         public static AddSnapshotDto CreateRandomSnapshotForUpload(Guid placeId, int number = -1)
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var count = number <= 0 ? ran.Next(50) : number;
             var name = Guid.NewGuid().ToString();
             var tags = GenerateRandomTags(count);
@@ -39,7 +39,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             {
                 var skus = await _skuRepo.QuerySkus();
                 // find a sku with a gtin
-                sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
+                sku = skus.Where(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference)).FirstOrDefault();
                 if (sku == null)
                     return null;
             }
@@ -48,7 +48,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
                 sku = await _skuRepo.GetSku((Guid)skuId);
             }
 
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var totalCount = totalTagNumber <= 0 ? ran.Next(50) : totalTagNumber;
             var randomCount = randomTagNumber <= 0 ? 0 : randomTagNumber;
             var name = Guid.NewGuid().ToString();
@@ -71,7 +71,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             {
                 var skus = await _skuRepo.QuerySkus();
                 // find a sku with a gtin
-                sku = skus.Where(s => !string.IsNullOrEmpty(s.Gtin) && s.Gtin.Length == 13).FirstOrDefault();
+                sku = skus.Where(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference)).FirstOrDefault();
                 if (sku == null)
                     return null;
             }else
@@ -81,7 +81,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 
             IItemRepo _itemRepo = WebRepoContainer.ItemRepo;
             
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var totalCount = totalTagNumber <= 0 ? ran.Next(50) : totalTagNumber;
             var randomCount = randomTagNumber <= 0 ? 0 : randomTagNumber;
             var name = Guid.NewGuid().ToString();
@@ -212,7 +212,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             return new SnapshotTagDto(tagNumber, rand.Next(1, 100), rand.Next(-700, -300) / 10.0);
         }
 
-        public static async Task<AddSnapshotDto> GenerateSgtinSnapshot(IDictionary<Guid, int> newTagsToCreate, List<string> existingTagsToUse)
+        public static async Task<AddSnapshotDto> GenerateSgtinSnapshot(IDictionary<Guid, int> skusToCreate, List<string> existingTagsToInclude)
         {
             // create the dto
             var addDto = new AddSnapshotDto()
@@ -222,9 +222,9 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             };
 
             // create the new sgtin tags
-            if (newTagsToCreate != null)
+            if (skusToCreate != null)
             {
-                foreach (var kv in newTagsToCreate)
+                foreach (var kv in skusToCreate)
                 {
                     var newTags = await GenerateGtinTags(kv.Key, kv.Value);
                     foreach (var tag in newTags)
@@ -233,9 +233,9 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             }
 
             // add the existing tags
-            if (existingTagsToUse != null)
+            if (existingTagsToInclude != null)
             {
-                foreach (var tagNum in existingTagsToUse)
+                foreach (var tagNum in existingTagsToInclude)
                 {
                     addDto.Tags.Add(GenerateTag(tagNum));
                 }

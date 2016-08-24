@@ -27,11 +27,11 @@ namespace Locafi.Client.UnitTests.Tests.Orders
         [TestMethod]
         public async Task OrderProcessor_ReceiveExact()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
 
             var quantity = ran.Next(1, 10);
             var skus = await _skuRepo.QuerySkus();
-            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.Gtin));
+            var sku = skus.FirstOrDefault(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference));
             var reservation = await _tagReservationRepo.ReserveTagsForSku(sku.Id, quantity);
 
             var order = new OrderDetailDto();
@@ -41,7 +41,7 @@ namespace Locafi.Client.UnitTests.Tests.Orders
                 Name = sku.Name,
                 PackingSize = 1,
                 Quantity = quantity,
-                Gtin = sku.Gtin,
+                Gtin = "",
             });
 
             var processor = new OrderReceiver(order);

@@ -93,7 +93,7 @@ namespace Locafi.Client.Processors.Encoding
             // set serial number
             TagInfo.SerialNumber = serialNumber;
             // set our version of the sku
-            TagInfo.Gtin = TagInfo.CompanyPrefix + TagInfo.ItemReference;
+            TagInfo.Gtin = ToGtin(TagInfo.Type, TagInfo.CompanyPrefix, TagInfo.ItemReference);
 
             // get partition value based on company prefix decimal number size (number of digits)
             TagInfo.Partition = (byte)GetPartition(companyPrefix.Length);
@@ -202,7 +202,7 @@ namespace Locafi.Client.Processors.Encoding
 
                     info.SerialNumber = BinaryToDecimal(binEpc.Substring(58, 38));
 
-                    info.Gtin = ToGtin(info.CompanyPrefix, info.ItemReference);
+                    info.Gtin = ToGtin(info.Type, info.CompanyPrefix, info.ItemReference);
 
                     return info;
                 }
@@ -214,9 +214,27 @@ namespace Locafi.Client.Processors.Encoding
             return info;
         }
 
-        public static string ToGtin(string companyPrefix, string itemReference)
+        public static string ToGtin(MerchandiseType tagType, string companyPrefix, string itemReference)
         {
-            return companyPrefix + itemReference;
+            string Gtin = "";
+            var itemRefLength = 12 - companyPrefix.Length;
+            switch (tagType)
+            {
+                case MerchandiseType.PosItem:
+                    var ean = companyPrefix + itemReference.Substring(itemReference.Length - itemRefLength, itemRefLength);
+                    Gtin = ean + CalculateCheckDigit("EAN13", ean);
+                    break;
+                case MerchandiseType.ItemGrouping:
+                case MerchandiseType.TransportCase:
+                    var ean14 = companyPrefix + itemReference.Substring(itemReference.Length - itemRefLength, itemRefLength);
+                    if (ean14.Length < 13)
+                        ean14 = ean14.PadLeft(13, '0');
+                    Gtin = ean14 + CalculateCheckDigit("EAN14", ean14);
+                    break;
+                default:
+                    break;
+            }
+            return Gtin;
         }
 
         public static string GetGtin(string epc)
@@ -231,6 +249,7 @@ namespace Locafi.Client.Processors.Encoding
                 if (Enum.IsDefined(typeof(EPCEncoding), (EPCEncoding)Header) && (EPCEncoding)Header != EPCEncoding.Invalid)
                 {
                     var Filter = (byte)BinaryToDecimal(binEpc.Substring(8, 3));
+                    var TagType = (MerchandiseType)Filter;
 
                     var Partition = (byte)BinaryToDecimal(binEpc.Substring(11, 3));
 
@@ -238,11 +257,11 @@ namespace Locafi.Client.Processors.Encoding
                     int prefixDigitLength = GetCompanyPrefixLength(Partition, CompanyPrefixLengthMode.Digits);
                     var CompanyPrefix = BinaryToDecimalString(binEpc.Substring(14, prefixLength), prefixDigitLength);
 
-                    int itemRefLength = GetItemReferenceLength(Partition, CompanyPrefixLengthMode.Bits);
+                    int itemRefBitLength = GetItemReferenceLength(Partition, CompanyPrefixLengthMode.Bits);
                     int itemRefDigitLength = GetItemReferenceLength(Partition, CompanyPrefixLengthMode.Digits);
-                    var ItemReference = BinaryToDecimalString(binEpc.Substring(14 + prefixLength, itemRefLength), itemRefDigitLength);
+                    var ItemReference = BinaryToDecimalString(binEpc.Substring(14 + prefixLength, itemRefBitLength), itemRefDigitLength);
 
-                    return ToGtin(CompanyPrefix, ItemReference);
+                    return ToGtin(TagType, CompanyPrefix, ItemReference);
                 }
             }
 
@@ -287,7 +306,7 @@ namespace Locafi.Client.Processors.Encoding
             //string ean13 = "";
             //ean13 = this.GetDecimal(epc);
             ean = ean.Substring(1, 12);
-            return ean + this.CalculateCheckDigit("EAN13", ean);
+            return ean + CalculateCheckDigit("EAN13", ean);
 
             //if (ean.StartsWith("0"))
             //{
@@ -447,7 +466,7 @@ namespace Locafi.Client.Processors.Encoding
                     //Si el codigo que le llega tiene solo 12 digitos le falta el digito de control
                     if (barcodeNumber.Length == 12)
                     {
-                        string digito = this.CalculateCheckDigit("EAN13", barcodeNumber);
+                        string digito = CalculateCheckDigit("EAN13", barcodeNumber);
                         barcodeNumber = barcodeNumber + digito.ToString();
                     }
 
@@ -574,7 +593,7 @@ namespace Locafi.Client.Processors.Encoding
                     //Si el codigo que le llega tiene solo 12 digitos le falta el digito de control
                     if (barcodeNumber.Length == 13)
                     {
-                        string digito = this.CalculateCheckDigit("EAN14", barcodeNumber);
+                        string digito = CalculateCheckDigit("EAN14", barcodeNumber);
                         barcodeNumber = barcodeNumber + digito.ToString();
                     }
 
@@ -1294,7 +1313,7 @@ namespace Locafi.Client.Processors.Encoding
         }
         #endregion
 
-        public string CalculateCheckDigit(string format, string code)
+        public static string CalculateCheckDigit(string format, string code)
         {
             int CheckDigit = 0;
             string retVal = "";

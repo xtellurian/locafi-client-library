@@ -13,5 +13,10 @@ namespace Locafi.Client.Model.Dto.Roles
         public string Description { get; set; }
 
         public IList<ClaimDto> Claims { get; set; }
+
+        public AddRoleDto()
+        {
+            Claims = new List<ClaimDto>();
+        }
     }
 }

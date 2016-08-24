@@ -39,6 +39,8 @@ namespace Locafi.Client.Model.Dto.Devices
 
         public RfidReaderDetailDto(RfidReaderDetailDto dto) : base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(RfidReaderDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

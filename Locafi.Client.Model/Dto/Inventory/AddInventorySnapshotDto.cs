@@ -16,6 +16,8 @@ namespace Locafi.Client.Model.Dto.Inventory
         {
             InventoryId = inventoryId;
 
+            if (snapshotDto == null) return;
+
             var properties = typeof(AddSnapshotDto).GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
             {

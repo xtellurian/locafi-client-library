@@ -19,6 +19,8 @@ namespace Locafi.Client.Model.Dto.Templates
 
         public TemplateSummaryDto(TemplateSummaryDto dto):base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(TemplateSummaryDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

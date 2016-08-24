@@ -14,6 +14,8 @@ using Locafi.Client.UnitTests.Validators;
 using Locafi.Client.Model;
 using Locafi.Client.Model.Query.Builder;
 using Locafi.Client.Model.Dto.Tags;
+using Locafi.Client.UnitTests.EntityGenerators;
+using Locafi.Client.UnitTests.Extensions;
 
 namespace Locafi.Client.UnitTests.Tests
 {
@@ -47,9 +49,9 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Place_Create()
         {
             // create place
-            var addPlace = await GenerateRandomAddPlaceDto();
+            var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto();
             var result = await _placeRepo.CreatePlace(addPlace);
-            _placesToCleanup.Add(result.Id);
+            _placesToCleanup.AddUnique(result.Id);
 
             // Check Result
             PlaceDtoValidator.PlaceDetailCheck(result);
@@ -62,9 +64,9 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Place_GetAll()
         {
             // ensure that there is at least one place to get
-            var addPlace = await GenerateRandomAddPlaceDto();
+            var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto();
             var result = await _placeRepo.CreatePlace(addPlace);
-            _placesToCleanup.Add(result.Id);
+            _placesToCleanup.AddUnique(result.Id);
 
             // Check Result
             PlaceDtoValidator.PlaceDetailCheck(result);
@@ -82,9 +84,9 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Place_GetDetail()
         {
             // add one place in case there are none
-            var addPlace = await GenerateRandomAddPlaceDto();
+            var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto();
             var result = await _placeRepo.CreatePlace(addPlace);
-            _placesToCleanup.Add(result.Id); // cleanup that place later
+            _placesToCleanup.AddUnique(result.Id); // cleanup that place later
 
             // Check Result
             PlaceDtoValidator.PlaceDetailCheck(result);
@@ -105,9 +107,9 @@ namespace Locafi.Client.UnitTests.Tests
             // create a bunch of places to query
             for (int i = 0; i < 10; i++)
             {
-                var addPlace = await GenerateRandomAddPlaceDto();
+                var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto();
                 place = await _placeRepo.CreatePlace(addPlace);
-                _placesToCleanup.Add(place.Id); // cleanup that place later
+                _placesToCleanup.AddUnique(place.Id); // cleanup that place later
 
                 // check result
                 PlaceDtoValidator.PlaceDetailCheck(place);
@@ -124,7 +126,7 @@ namespace Locafi.Client.UnitTests.Tests
 
             // now query just to get the frist 2 places
             var query = QueryBuilder<PlaceSummaryDto>.NewQuery().Take(2).Build(); // get first 2 places
-            r = await _placeRepo.QueryPlacesContinuation(q);
+            r = await _placeRepo.QueryPlacesContinuation(query);
 
             // check result
             Validator.IsNotNull(r);
@@ -144,9 +146,9 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Place_Query()
         {
             // create place
-            var addPlace = await GenerateRandomAddPlaceDto();
+            var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto();
             var place = await _placeRepo.CreatePlace(addPlace);
-            _placesToCleanup.Add(place.Id); // cleanup that place later
+            _placesToCleanup.AddUnique(place.Id); // cleanup that place later
 
             // check result
             PlaceDtoValidator.PlaceDetailCheck(place);
@@ -190,39 +192,33 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Place_Update()
         {
             // create place
-            var addPlace = await GenerateRandomAddPlaceDto();
+            var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto();
             var place = await _placeRepo.CreatePlace(addPlace);
-            _placesToCleanup.Add(place.Id); // cleanup that place later
+            _placesToCleanup.AddUnique(place.Id); // cleanup that place later
 
             // check result
             PlaceDtoValidator.PlaceDetailCheck(place);
 
             // update place
-            var updateDto = new UpdatePlaceDto()
+            var updateDto = new UpdatePlaceDto(place)
             {
-                Id = place.Id,
                 Name = place.Name + " - Update",
                 Description = place.Description + " - update"
             };
             // loop through each extended property and change
             foreach (var prop in place.PlaceExtendedPropertyList)
             {
-                var newProp = new WriteEntityExtendedPropertyDto()
-                {
-                    ExtendedPropertyId = prop.ExtendedPropertyId
-                };
+                var newProp = updateDto.PlaceExtendedPropertyList.Where(p => p.ExtendedPropertyId == prop.ExtendedPropertyId).FirstOrDefault();
 
                 switch (prop.ExtendedPropertyDataType)
                 {
-                    case TemplateDataTypes.AutoId: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
-                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString(); break;
-                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random().Next()) / 10.0).ToString(); break;
-                    case TemplateDataTypes.Number: newProp.Value = new Random().Next().ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
                 }
-
-                updateDto.PlaceExtendedPropertyList.Add(prop);
             }
 
             // update the place
@@ -245,9 +241,9 @@ namespace Locafi.Client.UnitTests.Tests
         public async Task Place_UpdateTag()
         {
             // create place
-            var addPlace = await GenerateRandomAddPlaceDto();
+            var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto();
             var place = await _placeRepo.CreatePlace(addPlace);
-            _placesToCleanup.Add(place.Id); // cleanup that place later
+            _placesToCleanup.AddUnique(place.Id); // cleanup that place later
 
             // check result
             PlaceDtoValidator.PlaceDetailCheck(place);
@@ -279,9 +275,9 @@ namespace Locafi.Client.UnitTests.Tests
         [TestMethod]
         public async Task Place_Delete()
         {
-            var addPlace = await GenerateRandomAddPlaceDto(); // create randomly generated new place
+            var addPlace = await PlaceGenerator.GenerateRandomAddPlaceDto(); // create randomly generated new place
             var place = await _placeRepo.CreatePlace(addPlace);
-            _placesToCleanup.Add(place.Id); // cleanup that place later
+            _placesToCleanup.AddUnique(place.Id); // cleanup that place later
 
             // check result
             PlaceDtoValidator.PlaceDetailCheck(place);
@@ -297,40 +293,24 @@ namespace Locafi.Client.UnitTests.Tests
             var deleteResult = await _placeRepo.Delete(place.Id);
             // check result
             Validator.IsTrue(deleteResult);
+            // remove from delete list
+            _placesToCleanup.Remove(place.Id);
 
             // verify
             queryResult = await _placeRepo.QueryPlaces(query); // get the place again
-            Validator.IsFalse(queryResult.Any(p=> p.Id == place.Id)); // check our place is actually gone
-        }
+            Validator.IsFalse(queryResult.Any(p=> p.Id == place.Id)); // check our place is actually gone         
 
-#region Private Methods
-
-
-        private async Task<AddPlaceDto> GenerateRandomAddPlaceDto()
-        {
-            var ran = new Random();
-            var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Place);
-            var template = await _templateRepo.GetById(templates.Items.ElementAt(ran.Next(templates.Items.Count() - 1)).Id);
-            var name = "Random - " + template.Name + " " + ran.Next().ToString();
-            var description = name + " - Description";
-
-            var addPlace = new AddPlaceDto(template)
+            // verify with get
+            try
             {
-                Description = description,
-                Name = name,
-                PlaceTagList = new List<WriteTagDto>()
-                {
-                    new WriteTagDto()
-                    {
-                        TagNumber = Guid.NewGuid().ToString(),
-                        TagType = TagType.PassiveRfid
-                    }
-                }
-            };
+                var sameItem = await _placeRepo.GetPlaceById(place.Id);
 
-            return addPlace;
+                Validator.IsTrue(false, "Deleted entity returned");
+            }
+            catch (Exception e)
+            {
+                // this is expected                
+            }
         }
-
-        #endregion
     }
 }

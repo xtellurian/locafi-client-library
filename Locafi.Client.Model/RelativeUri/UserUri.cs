@@ -18,9 +18,22 @@ namespace Locafi.Client.Model.RelativeUri
 
         public static string UpdateUser => @"UpdateUser";
 
+        public static string UpdatePassword => @"UpdatePassword";
+
+        public static string UpdateProfile => @"UpdateProfile";
+
+        public static string SpawnUser => @"SpawnUser";
+
+        public static string GetLoggedInUser => @"GetLoggedInUser";
+
         public static string DeleteUser(Guid id)
         {
             return $"DeleteUser/{id}";
+        }
+
+        public static string DeleteUserAndPerson(Guid id)
+        {
+            return $"DeleteUserAndPerson/{id}";
         }
     }
 }

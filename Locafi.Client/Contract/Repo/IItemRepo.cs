@@ -33,5 +33,9 @@ namespace Locafi.Client.Contract.Repo
         Task<ISearchResult<ItemSummaryDto>> SearchItems(IRestSearch<ItemSummaryDto> search);
         Task<IList<ItemSummaryDto>> UploadItems(FileUploadDto file);
         Task<bool> ClearItems(ClearItemStateDto clearItemsDto);
+        Task<PageResult<ItemStateHistoryDto>> GetItemStateHistory(IRestQuery<ItemStateHistoryDto> query);
+        Task<IQueryResult<ItemStateHistoryDto>> GetItemStateHistoryContinuation(IRestQuery<ItemStateHistoryDto> query);
+        Task<PageResult<ItemPlaceMovementHistoryDto>> GetItemPlaceHistory(IRestQuery<ItemPlaceMovementHistoryDto> query);
+        Task<IQueryResult<ItemPlaceMovementHistoryDto>> GetItemPlaceHistoryContinuation(IRestQuery<ItemPlaceMovementHistoryDto> query);
     }
 }

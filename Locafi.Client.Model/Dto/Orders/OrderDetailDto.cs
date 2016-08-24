@@ -24,6 +24,8 @@ namespace Locafi.Client.Model.Dto.Orders
 
         public OrderDetailDto(OrderDetailDto dto): base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(OrderDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)

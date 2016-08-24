@@ -176,9 +176,9 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
         
         private async Task<ClusterDto> GenerateRandomCluster()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var places = await _placeRepo.QueryPlaces();
-            var place = places.Items.ElementAt(ran.Next(places.Items.Count() - 1));
+            var place = places.Items.ElementAt(ran.Next(places.Items.Count()));
 
             var cluster = new ClusterDto
             {
@@ -191,7 +191,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 
         private IList<ClusterTagDto> GenerateRandomClusterTags()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             var tags = new List<ClusterTagDto>();
             var numTags = ran.Next(100);// max 100 tags
             for (var i = 0; i < numTags; i++)

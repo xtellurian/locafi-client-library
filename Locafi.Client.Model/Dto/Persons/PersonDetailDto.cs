@@ -16,6 +16,8 @@ namespace Locafi.Client.Model.Dto.Persons
 
         public PersonDetailDto(PersonDetailDto dto)
         {
+            if (dto == null) return;
+
             var type = typeof(PersonDetailDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
@@ -24,6 +26,9 @@ namespace Locafi.Client.Model.Dto.Persons
                 property.SetValue(this, value);
             }
         }
+
+        public string ImageUrl { get; set; }
+
         public IList<TagDetailDto> PersonTagList { get; set; }
 
         public IList<ReadEntityExtendedPropertyDto> PersonExtendedPropertyList { get; set; }

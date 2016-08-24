@@ -19,6 +19,11 @@ namespace Locafi.Client.Model.Dto.Templates
 
         public IList<AddTemplateExtendedPropertyDto> TemplateExtendedPropertyList { get; set; }
 
-
+        public UpdateTemplateDto(TemplateDetailDto dto)
+        {
+            Id = dto.Id;
+            Name = dto.Name;
+            TemplateExtendedPropertyList = dto.TemplateExtendedPropertyList.Select(p => new AddTemplateExtendedPropertyDto() { ExtendedPropertyId = p.ExtendedPropertyId }).ToList();
+        }
     }
 }

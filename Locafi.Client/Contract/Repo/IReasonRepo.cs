@@ -14,12 +14,13 @@ namespace Locafi.Client.Contract.Repo
 {
     public interface IReasonRepo
     {
-        Task<PageResult<ReasonDetailDto>> QueryReasons(string oDataQueryOptions = null);
-        Task<PageResult<ReasonDetailDto>> QueryReasons(IRestQuery<ReasonDetailDto> query);
-        Task<IQueryResult<ReasonDetailDto>> QueryReasonsContinuation(IRestQuery<ReasonDetailDto> query);
+        Task<PageResult<ReasonSummaryDto>> QueryReasons(string oDataQueryOptions = null);
+        Task<PageResult<ReasonSummaryDto>> QueryReasons(IRestQuery<ReasonSummaryDto> query);
+        Task<IQueryResult<ReasonSummaryDto>> QueryReasonsContinuation(IRestQuery<ReasonSummaryDto> query);
         Task<ReasonDetailDto> GetReason(Guid id);
         Task<ReasonDetailDto> CreateReason(AddReasonDto reasonDto);
-        Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reason);
-        Task Delete(Guid id);
+        Task<ReasonDetailDto> UpdateReason(UpdateReasonDto dto);
+        //        Task<IList<ReasonDetailDto>> GetReasonsFor(ReasonFor reason);
+        Task<bool> Delete(Guid id);
     }
 }

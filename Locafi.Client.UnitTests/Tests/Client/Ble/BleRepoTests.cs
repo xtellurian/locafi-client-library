@@ -105,7 +105,7 @@ namespace Locafi.Client.UnitTests.Tests.Ble
 
         private bool RandomBool()
         {
-            var ran = new Random();
+            var ran = new Random(DateTime.UtcNow.Millisecond);
             return ran.Next(100)%2 == 0;
         }
     }

@@ -17,6 +17,11 @@ namespace Locafi.Client.UnitTests.Validators
             Assert.IsFalse(guid == Guid.Empty, msg);
         }
 
+        public static void CheckNullableGuid(Guid? guid, string msg = "")
+        {
+            Assert.IsFalse(guid == Guid.Empty, msg);
+        }
+
         public static void CheckString(string str, string msg = "")
         {
             Assert.IsFalse(string.IsNullOrEmpty(str), msg);
@@ -27,12 +32,14 @@ namespace Locafi.Client.UnitTests.Validators
             try {
                 Assert.IsNotNull(dtoBase, "DtoBaseCheck: dto == null");
 
+                Assert.IsInstanceOfType(dtoBase, typeof(EntityDtoBase), "DtoBaseCheck: dto not of type(EntityDtoBase)");
+
                 Assert.IsNotNull(dtoBase.Id, "DtoBaseCheck: Id == null");
                 Assert.IsFalse(dtoBase.Id == Guid.Empty, "DtoBaseCheck: Id == Empty");
 
                 Assert.IsNotNull(dtoBase.CreatedByUserId, "DtoBaseCheck: CreatedByUserId == null");
                 Assert.IsFalse(dtoBase.CreatedByUserId == Guid.Empty, "DtoBaseCheck: CreatedByUserId == Empty");
-                BaseDtoValidator.CheckString(dtoBase.CreatedByUserFullName, "DtoBaseCheck: CreatedByUserFullName == null/Empty");
+//                BaseDtoValidator.CheckString(dtoBase.CreatedByUserFullName, "DtoBaseCheck: CreatedByUserFullName == null/Empty");
 
                 Assert.IsNotNull(dtoBase.DateCreated, "DtoBaseCheck: DateCreated == null");
                 Assert.IsFalse(dtoBase.DateCreated == DateTimeOffset.MinValue, "DtoBaseCheck: DateCreated == MinValue");

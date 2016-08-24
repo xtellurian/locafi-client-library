@@ -21,5 +21,17 @@ namespace Locafi.Client.Processors.Encoding
         {
             return SgtinTagCoder.GetGtin(tag.TagNumber);
         }
+
+        public static string GetCompanyPrefix(this IRfidTag tag)
+        {
+            var info = SgtinTagCoder.GetSgtinInfo(tag.TagNumber);
+            return info.CompanyPrefix;
+        }
+
+        public static string GetItemreference(this IRfidTag tag)
+        {
+            var info = SgtinTagCoder.GetSgtinInfo(tag.TagNumber);
+            return info.ItemReference;
+        }
     }
 }

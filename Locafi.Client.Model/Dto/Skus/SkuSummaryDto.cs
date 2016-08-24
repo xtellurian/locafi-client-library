@@ -12,6 +12,8 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public SkuSummaryDto(SkuSummaryDto dto):base(dto)
         {
+            if (dto == null) return;
+
             var type = typeof(SkuSummaryDto);
             var properties = type.GetTypeInfo().DeclaredProperties;
             foreach (var property in properties)
@@ -32,10 +34,12 @@ namespace Locafi.Client.Model.Dto.Skus
 
         public string CustomPrefix { get; set; }
 
-        public string Gtin { get; set; }
+//        public string Gtin { get; set; }
 
         public string SkuNumber { get; set; }
 
         public string Thumbnail { get; set; }
+
+        public bool IsSgtin { get; set; }
     }
 }

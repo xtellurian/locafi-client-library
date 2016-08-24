@@ -5,9 +5,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Skus
 {
-    public class ReadSkuExtendedPropertyDto
+    public class ReadSkuExtendedPropertyDto : WriteSkuExtendedPropertyDto
     {
-        public Guid ExtendedPropertyId { get; set; }
+//        public Guid ExtendedPropertyId { get; set; }
 
         public string ExtendedPropertyName { get; set; }
 
@@ -16,8 +16,8 @@ namespace Locafi.Client.Model.Dto.Skus
         [JsonConverter(typeof(StringEnumConverter))]
         public TemplateDataTypes? ExtendedPropertyDataType { get; set; }
 
-        public bool IsSkuLevelProperty { get; set; }
+//        public bool IsSkuLevelProperty { get; set; }
 
-        public string Value { get; set; }
+//        public string Value { get; set; }
     }
 }
