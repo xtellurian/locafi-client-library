@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Locafi.Client.Model.Dto.Devices;
 using Locafi.Client.Model.Dto.Snapshots;
@@ -27,12 +28,15 @@ namespace Locafi.Client.Model.Conversion
         #endregion
 
         #region ClusterTagDto
-        public static ClusterTagDto ConvertToClusterTagDto(this IRfidTag tag, TagType tagType = TagType.PassiveRfid)
+        public static ClusterTagDto ConvertToClusterTagDto(this IRfidTag tag, TagType tagType = TagType.PassiveRfid, DateTime? readTime = null)
         {
             return new ClusterTagDto
             {
                 TagNumber = tag.TagNumber,
-                TagType = tagType
+                TagType = tagType,
+                AverageRssi = tag.Rssi,
+                ReadCount = tag.ReadCount,
+                ReadTime = readTime??DateTime.Now
             };
         }
 
