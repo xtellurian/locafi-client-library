@@ -86,6 +86,8 @@ namespace Locafi.Client.Processors.Encoding
                     break;
             }
 
+            // set encoding type
+            TagInfo.Encoding = encoding;
             // set company prefix
             TagInfo.CompanyPrefix = companyPrefix;
             // set item reference
@@ -300,7 +302,7 @@ namespace Locafi.Client.Processors.Encoding
         {
             epc = epc.Replace("0x", "");
             string men;
-            string ean = this.Decode(epc, BarcodeType.GTIN, out men);
+            string ean = this.Decode(epc, Barcode_Type.GTIN, out men);
 
             //epc = epc.Replace("0x", "");
             //string ean13 = "";
@@ -646,7 +648,7 @@ namespace Locafi.Client.Processors.Encoding
         /// <param name="hexEPC">Hexadecimal EPC encoded number</param>
         /// <param name="targetType">Required barcode type</param>
         /// <returns>Barcode</returns>    
-        public string Decode(string hexEPC, BarcodeType targetType, out string errorMessage)
+        public string Decode(string hexEPC, Barcode_Type targetType, out string errorMessage)
         {
             errorMessage = null;
             if (hexEPC.Length == 0)
@@ -1267,7 +1269,7 @@ namespace Locafi.Client.Processors.Encoding
         /// <summary>
         /// Barcode types
         /// </summary>
-        public enum BarcodeType
+        public enum Barcode_Type
         {
             UCC12 = 1,
             EAN13 = 2,

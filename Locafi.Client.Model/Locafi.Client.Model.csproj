@@ -188,6 +188,7 @@
     <Compile Include="Dto\Templates\TemplateSummaryDto.cs" />
     <Compile Include="Dto\Templates\UpdateTemplateDto.cs" />
     <Compile Include="Enums\AgentType.cs" />
+    <Compile Include="Enums\BarcodeType.cs" />
     <Compile Include="Enums\DataAccessMode.cs" />
     <Compile Include="Enums\FileUploadOperation.cs" />
     <Compile Include="Enums\ItemStateType.cs" />

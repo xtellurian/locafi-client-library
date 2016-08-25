@@ -41,5 +41,7 @@ namespace Locafi.Client.Model.Dto.Skus
         public string Thumbnail { get; set; }
 
         public bool IsSgtin { get; set; }
+
+        public string Gtin { get; set; }
     }
 }
