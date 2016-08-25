@@ -43,5 +43,8 @@ namespace Locafi.Client.Model.Dto.Items
         public string PersonName { get; set; }
 
         public string Thumbnail { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ItemStateType? Status { get; set; }
     }
 }
