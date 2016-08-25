@@ -60,13 +60,16 @@ namespace Locafi.Client.UnitTests.Tests
             }
 
             // delete items created from tags
-            var query = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.TagNumber, string.Join(",", _tagNumbersToDelete), ComparisonOperator.ContainedIn).Build();
-            var itemQuery = _itemRepo.QueryItems(query).Result;
-            foreach (var item in itemQuery.Items)
+            if (_tagNumbersToDelete.Count > 0)
             {
-                if (item != null)
+                var query = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.TagNumber, string.Join(",", _tagNumbersToDelete), ComparisonOperator.ContainedIn).Build();
+                var itemQuery = _itemRepo.QueryItems(query).Result;
+                foreach (var item in itemQuery.Items)
                 {
-                    _itemRepo.DeleteItem(item.Id).Wait();
+                    if (item != null)
+                    {
+                        _itemRepo.DeleteItem(item.Id).Wait();
+                    }
                 }
             }
 
@@ -605,7 +608,27 @@ namespace Locafi.Client.UnitTests.Tests
 
             tag.TagNumber = "30340003EB5BAF8000000243";
 
-            Assert.IsTrue(tag.HasSgtin());
+            Validator.IsTrue(tag.HasSgtin());
+        }
+
+        [TestMethod]
+        public async Task GTIN13_Encode_Decode_Test()
+        {
+            string prefix = "9300601";
+            string itemRef = "002178";
+            string barcodeNo = "9300601021789";
+
+            Validator.IsTrue((prefix + itemRef).Length == 13);
+
+            var epc = SgtinGenerator.GenerateSgtin96PosTag(prefix, itemRef, 1);
+            
+            var tag = new TestTag(epc);
+
+            Validator.IsTrue(tag.HasSgtin());
+
+            Validator.IsTrue(tag.GetCompanyPrefix() == prefix);
+            Validator.IsTrue(tag.GetItemreference() == itemRef);
+            Validator.IsTrue(tag.GetGtin() == barcodeNo);
         }
     }
 }

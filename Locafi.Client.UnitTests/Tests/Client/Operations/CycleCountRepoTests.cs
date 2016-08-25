@@ -57,13 +57,16 @@ namespace Locafi.Client.UnitTests.Tests
             }
 
             // delete items created from tags
-            var query = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.TagNumber, string.Join(",", _tagNumbersToDelete), ComparisonOperator.ContainedIn).Build();
-            var itemQuery = _itemRepo.QueryItems(query).Result;
-            foreach (var item in itemQuery.Items)
+            if (_tagNumbersToDelete.Count > 0)
             {
-                if (item != null)
+                var query = QueryBuilder<ItemSummaryDto>.NewQuery(i => i.TagNumber, string.Join(",", _tagNumbersToDelete), ComparisonOperator.ContainedIn).Build();
+                var itemQuery = _itemRepo.QueryItems(query).Result;
+                foreach (var item in itemQuery.Items)
                 {
-                    _itemRepo.DeleteItem(item.Id).Wait();
+                    if (item != null)
+                    {
+                        _itemRepo.DeleteItem(item.Id).Wait();
+                    }
                 }
             }
 

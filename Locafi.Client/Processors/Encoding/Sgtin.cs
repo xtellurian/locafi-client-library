@@ -34,4 +34,12 @@ namespace Locafi.Client.Processors.Encoding
             return info.ItemReference;
         }
     }
+
+    public static class SgtinGenerator
+    {
+        public static string GenerateSgtin96PosTag(string companyPrefix, string itemReference, long serialNumber)
+        {
+            return new SgtinTagCoder(SgtinTagCoder.EPCEncoding.SGTIN96, SgtinTagCoder.MerchandiseType.PosItem, companyPrefix, itemReference, serialNumber).EPC;
+        }
+    }
 }
