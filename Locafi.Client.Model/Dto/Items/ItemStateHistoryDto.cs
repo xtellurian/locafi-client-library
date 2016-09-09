@@ -23,7 +23,7 @@ namespace Locafi.Client.Model.Dto.Items
 
         public string TagNumber { get; set; }
 
-        public Guid ReasonId { get; set; }
+        public Guid? ReasonId { get; set; }
 
         public string ReasonNumber { get; set; }
 

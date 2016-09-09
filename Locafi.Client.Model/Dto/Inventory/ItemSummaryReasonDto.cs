@@ -12,6 +12,8 @@ namespace Locafi.Client.Model.Dto.Inventory
     {
         public Guid? ReasonId { get; set; }
 
+        public String ReasonName { get; set; }
+
         public ItemSummaryReasonDto(ItemSummaryDto summaryDto)
         {
             if (summaryDto != null)

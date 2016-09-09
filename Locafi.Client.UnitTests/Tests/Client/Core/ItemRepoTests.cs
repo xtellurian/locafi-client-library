@@ -23,6 +23,7 @@ using Locafi.Client.Model.Dto.Persons;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.UnitTests.Extensions;
 using Locafi.Client.Model.Dto.Templates;
+using Locafi.Client.Model;
 
 namespace Locafi.Client.UnitTests.Tests
 {
@@ -318,6 +319,78 @@ namespace Locafi.Client.UnitTests.Tests
             // check response
             ItemDtoValidator.ItemDetailCheck(movedItem);
             Validator.AreEqual(movedItem.PlaceId, moveItemDto.NewPlaceId);
+        }
+
+        [TestMethod]
+        public async Task Item_QueryItemMovementHistory()
+        {
+            // create an item
+            var itemToAdd = await CreateRandomAssetAddItemDto();
+            var item = await _itemRepo.CreateItem(itemToAdd);
+            _itemsToDelete.AddUnique(item.Id);
+
+            // check response
+            ItemDtoValidator.ItemDetailCheck(item);
+
+            // get place to move to
+            var place = await GetRandomOtherPlace(item.PlaceId);
+
+            // move the item
+            var moveItemDto = new UpdateItemPlaceDto
+            {
+                Id = item.Id,
+                NewPlaceId = place.Id,
+            };
+            var movedItem = await _itemRepo.UpdateItemPlace(moveItemDto);
+
+            // check response
+            ItemDtoValidator.ItemDetailCheck(movedItem);
+            Validator.AreEqual(movedItem.PlaceId, moveItemDto.NewPlaceId);
+
+            // now query the item movement history for this items movement
+            var query = QueryBuilder<ItemPlaceMovementHistoryDto>.NewQuery(i => i.ItemId, movedItem.Id, ComparisonOperator.Equals).Build();
+            var history = await _itemRepo.GetItemPlaceHistory(query);
+
+            // check response
+            Validator.IsNotNull(history, "No item movement history returned");
+            Validator.IsInstanceOfType(history, typeof(PageResult<ItemPlaceMovementHistoryDto>));
+            Validator.IsTrue(history.Items.Count() >= 1);
+        }
+
+        [TestMethod]
+        public async Task Item_QueryItemStateHistory()
+        {
+            // create an item
+            var itemToAdd = await CreateRandomAssetAddItemDto();
+            var item = await _itemRepo.CreateItem(itemToAdd);
+            _itemsToDelete.AddUnique(item.Id);
+
+            // check response
+            ItemDtoValidator.ItemDetailCheck(item);
+
+            // get place to move to
+            var place = await GetRandomOtherPlace(item.PlaceId);
+
+            // move the item
+            var moveItemDto = new UpdateItemPlaceDto
+            {
+                Id = item.Id,
+                NewPlaceId = place.Id,
+            };
+            var movedItem = await _itemRepo.UpdateItemPlace(moveItemDto);
+
+            // check response
+            ItemDtoValidator.ItemDetailCheck(movedItem);
+            Validator.AreEqual(movedItem.PlaceId, moveItemDto.NewPlaceId);
+
+            // now query the item state history for this items state changes
+            var query = QueryBuilder<ItemStateHistoryDto>.NewQuery(i => i.ItemId, movedItem.Id, ComparisonOperator.Equals).Build();
+            var history = await _itemRepo.GetItemStateHistory(query);
+
+            // check response
+            Validator.IsNotNull(history, "No item state history returned");
+            Validator.IsInstanceOfType(history, typeof(PageResult<ItemStateHistoryDto>));
+            Validator.IsTrue(history.Items.Count() >= 1);
         }
 
         [TestMethod]

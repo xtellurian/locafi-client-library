@@ -64,7 +64,8 @@ namespace Locafi.Client.UnitTests.Tests.Ble
         [TestMethod]
         public async Task BleRepoLoadTest()
         {
-            var goodBaseUrl = "http://localhost:48078";
+            //            var goodBaseUrl = "http://localhost:48078";
+            var goodBaseUrl = "https://microsoft-apiapp9ea85e599f264549b3a0cf7c17ec18e5.azurewebsites.net";
             var appId = "4d53bce03ec34c0a911182d4c228ee6c";
             var secret = "A93reRTUJHsCuQSHR+L3GxqOJyDmQpCgps102ciuabc=";
 

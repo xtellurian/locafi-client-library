@@ -109,7 +109,7 @@ namespace Locafi.Client.UnitTests.Tests
         {
             var categories = new Dictionary<Guid, int>()
             {
-                { WebRepoContainer.AssetCategory1Id, 5 },
+                { WebRepoContainer.AssetCategory1Id, 10 },
                 { WebRepoContainer.AssetCategory2Id, 5 }
             };
             await TestCompleteInventoryProcess(null, categories);
@@ -255,45 +255,90 @@ namespace Locafi.Client.UnitTests.Tests
 
             await TestCompleteInventoryProcess(null, categories, null, selectedSkus);
         }
-/*
-        [TestMethod]
-        public async Task Inventory_CreateResolve_WithSelectedSkus_SkuOnly()
-        {
-            var skus = new Dictionary<Guid, int>()
-            {
-                { WebRepoContainer.Sku1Id, 10 },
-                { WebRepoContainer.Sku2Id, 5 }
-            };
-            var selectedSkus = new List<Guid>()
-            {
-                WebRepoContainer.AssetCategory1Id,
-                WebRepoContainer.Sku1Id
-            };
+        /*
+                [TestMethod]
+                public async Task Inventory_CreateResolve_WithSelectedSkus_SkuOnly()
+                {
+                    var skus = new Dictionary<Guid, int>()
+                    {
+                        { WebRepoContainer.Sku1Id, 10 },
+                        { WebRepoContainer.Sku2Id, 5 }
+                    };
+                    var selectedSkus = new List<Guid>()
+                    {
+                        WebRepoContainer.AssetCategory1Id,
+                        WebRepoContainer.Sku1Id
+                    };
 
-            await TestCompleteInventoryProcess(skus, null, null, selectedSkus);
+                    await TestCompleteInventoryProcess(skus, null, null, selectedSkus);
+                }
+
+                [TestMethod]
+                public async Task Inventory_CreateResolve_WithSelectedSkus_AssetAndSku()
+                {
+                    var skus = new Dictionary<Guid, int>()
+                    {
+                        { WebRepoContainer.Sku1Id, 10 },
+                        { WebRepoContainer.Sku2Id, 5 }
+                    };
+                    var categories = new Dictionary<Guid, int>()
+                    {
+                        { WebRepoContainer.AssetCategory1Id, 10 }
+                    };
+                    var selectedSkus = new List<Guid>()
+                    {
+                        WebRepoContainer.AssetCategory1Id,
+                        WebRepoContainer.Sku1Id
+                    };
+
+                    await TestCompleteInventoryProcess(skus, categories, null, selectedSkus);
+                }
+        */
+
+        [TestMethod]
+        public async Task Inventory_Query()
+        {
+            // create an inventory
+            var rand = new Random(DateTime.UtcNow.Millisecond);
+            var addInventoryDto = new AddInventoryDto()
+            {
+                Name = "Test Inventory - " + rand.Next().ToString(),
+                PlaceId = WebRepoContainer.Place1Id
+            };
+            var inventory = await _inventoryRepo.CreateInventory(addInventoryDto);
+
+            // check the response
+            InventoryDtoValidator.InventoryDetailcheck(inventory);
+
+            var inventories = await _inventoryRepo.QueryInventories();
+
+            Validator.IsNotNull(inventories);
+            Validator.IsTrue(inventories.Items.Count() > 0);
+            Validator.IsTrue(inventories.Items.Contains(inventory));
+            InventoryDtoValidator.InventorySummarycheck(inventories.Items.First(i => i.Id == inventory.Id));
         }
 
         [TestMethod]
-        public async Task Inventory_CreateResolve_WithSelectedSkus_AssetAndSku()
+        public async Task Inventory_Get()
         {
-            var skus = new Dictionary<Guid, int>()
+            // create an inventory
+            var rand = new Random(DateTime.UtcNow.Millisecond);
+            var addInventoryDto = new AddInventoryDto()
             {
-                { WebRepoContainer.Sku1Id, 10 },
-                { WebRepoContainer.Sku2Id, 5 }
+                Name = "Test Inventory - " + rand.Next().ToString(),
+                PlaceId = WebRepoContainer.Place1Id
             };
-            var categories = new Dictionary<Guid, int>()
-            {
-                { WebRepoContainer.AssetCategory1Id, 10 }
-            };
-            var selectedSkus = new List<Guid>()
-            {
-                WebRepoContainer.AssetCategory1Id,
-                WebRepoContainer.Sku1Id
-            };
+            var inventory = await _inventoryRepo.CreateInventory(addInventoryDto);
 
-            await TestCompleteInventoryProcess(skus, categories, null, selectedSkus);
+            // check the response
+            InventoryDtoValidator.InventoryDetailcheck(inventory);
+
+            var getInventory = await _inventoryRepo.GetInventory(inventory.Id);
+
+            Validator.IsNotNull(getInventory);
+            InventoryDtoValidator.InventoryDetailcheck(getInventory);
         }
-*/
+
         private async Task TestCompleteInventoryProcess(Dictionary<Guid,int> skusToUse, Dictionary<Guid,int> assetCategoriesToUse, SkuGroupDetailDto SkuGroup = null, List<Guid> selectedSkus = null)
         {
             Validator.IsFalse(SkuGroup != null && selectedSkus != null, "Cannot provide both sku group and list of sku's");

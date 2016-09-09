@@ -6,6 +6,8 @@ using Locafi.Client.Model.Dto.Inventory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Builder;
 using Locafi.Client.UnitTests.Validators;
+using Locafi.Client.Model;
+using Locafi.Client.Model.Dto.Items;
 
 namespace Locafi.Client.UnitTests.Tests
 {
@@ -14,12 +16,14 @@ namespace Locafi.Client.UnitTests.Tests
     {
         private IAuthenticationRepo _authRepo;
         private ISha256HashService _hashService;
+        private IItemRepo _itemRepo;
 
         [TestInitialize]
         public void Initialize()
         {
             _authRepo = WebRepoContainer.AuthRepo;
             _hashService = ServiceContainer.HashService;
+            _itemRepo = WebRepoContainer.ItemRepo;
         }
 
         [TestMethod]
@@ -28,6 +32,15 @@ namespace Locafi.Client.UnitTests.Tests
             var result = await _authRepo.Login(DevEnvironment.TestUserEmail, DevEnvironment.TestUserPassword);
 
             AuthenticationDtoValidator.AuthenticationResponseCheck(result, true);
+
+            // change to use our new token
+            await WebRepoContainer.AuthorisedHttpTransferConfigService.SetTokenGroupAsync(result.TokenGroup);
+
+            // validate that we can use the token
+            var items = await _itemRepo.QueryItems();
+
+            Validator.IsNotNull(items);
+            Validator.IsInstanceOfType(items, typeof(PageResult<ItemSummaryDto>));
         }
 
         [TestMethod]
@@ -52,6 +65,15 @@ namespace Locafi.Client.UnitTests.Tests
             result = await _authRepo.RefreshLogin(token);
 
             AuthenticationDtoValidator.AuthenticationResponseCheck(result, true);
+
+            // change to use our new token
+            await WebRepoContainer.AuthorisedHttpTransferConfigService.SetTokenGroupAsync(result.TokenGroup);
+
+            // validate that we can use the token
+            var items = await _itemRepo.QueryItems();
+
+            Validator.IsNotNull(items);
+            Validator.IsInstanceOfType(items, typeof(PageResult<ItemSummaryDto>));
         }
 
         [TestMethod]

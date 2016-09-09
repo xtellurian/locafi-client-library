@@ -158,6 +158,8 @@ namespace Locafi.Client.UnitTests.Tests
             q.CreateQuery((p) => p.Name, place.Name, ComparisonOperator.Contains);
             var r = await _placeRepo.QueryPlaces(q);
 
+            r = await _placeRepo.QueryPlaces();
+
             // check result
             Validator.IsNotNull(r);
             Validator.IsTrue(r.Contains(place));
