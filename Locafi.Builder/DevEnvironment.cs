@@ -180,6 +180,8 @@ namespace Locafi.Builder
         public static string HHTestUserPassword = "ramp123";
         public static string TestUserEmail = "clienttester@ramp.comm.au";
         public static string TestUserPassword = "tester123";
+        public static string DemoUserEmail = "demo@ramp.com.au";
+        public static string DemoUserPassword = "demo123";
         public static List<BuilderAddUserDto> UsersToCreate = new List<BuilderAddUserDto>()
         {
             new BuilderAddUserDto()
@@ -205,6 +207,23 @@ namespace Locafi.Builder
                 Surname = "Tester",
                 Email = TestUserEmail,
                 Password = TestUserPassword,
+                RoleName = AdminRoleName,
+                TemplateName = PersonTemplateName,
+                PersonTagList = new List<WriteTagDto>()
+                {
+
+                },
+                BuilderPersonExtendedPropertyList = new List<BuilderWriteEntityExtendedPropertyDto>()
+                {
+
+                }
+            },
+            new BuilderAddUserDto()
+            {
+                GivenName = "Demo",
+                Surname = "User",
+                Email = DemoUserEmail,
+                Password = DemoUserPassword,
                 RoleName = AdminRoleName,
                 TemplateName = PersonTemplateName,
                 PersonTagList = new List<WriteTagDto>()

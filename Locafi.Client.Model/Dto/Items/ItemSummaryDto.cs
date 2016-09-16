@@ -45,6 +45,6 @@ namespace Locafi.Client.Model.Dto.Items
         public string Thumbnail { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public ItemStateType? Status { get; set; }
+        public ItemStateType? State { get; set; }
     }
 }
