@@ -61,15 +61,39 @@ namespace Locafi.Client.Model.Query
                 return $"null";
 
             var type = typeof(TProperty);
-            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || (type.GetTypeInfo().BaseType == typeof(ValueType) && type != typeof(Guid?) && type != typeof(Guid) && type != typeof(DateTimeOffset) && type != typeof(DateTimeOffset?))) // strings must be surrounded like so: '<string_value>'
-                return $"'{p}'";
-            if (type == typeof(DateTimeOffset)) //datetimes are difficult
+
+            // bool's are not surrounded by '', and are lower case
+            if (type == typeof(bool)
+                || type == typeof(byte)
+                || type == typeof(char)
+                || type == typeof(decimal)
+                || type == typeof(double)
+                || type == typeof(float)
+                || type == typeof(int)
+                || type == typeof(long)
+                || type == typeof(sbyte)
+                || type == typeof(short)
+                || type == typeof(uint)
+                || type == typeof(ulong)
+                || type == typeof(ushort)
+                )
+            {
+                return $"{p.ToString().ToLower()}";
+            }
+
+            if (type == typeof(Guid) || type == typeof(Guid?)) // guid's are not surrounded by ''
+                return $"{p}";
+
+            if (type == typeof(DateTimeOffset) || type == typeof(DateTimeOffset?)) //datetimes are difficult
             {
                 var d = (DateTimeOffset)(object)p;
                 return d.ToString("o").Remove(19) + 'Z';
             }
-            if (type == typeof(Guid) || type == typeof(Guid?)) // guids are not surrounded by ''
-                return $"{p}";
+
+            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || type.GetTypeInfo().BaseType == typeof(ValueType)) // strings must be surrounded like so: '<string_value>'
+                return $"'{p}'";
+            
+            
             throw new NotImplementedException($"{type.FullName} is not supported as a queriable property");
         }
 

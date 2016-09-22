@@ -316,6 +316,16 @@ namespace Locafi.Client.UnitTests.Tests
             Validator.IsTrue(inventories.Items.Count() > 0);
             Validator.IsTrue(inventories.Items.Contains(inventory));
             InventoryDtoValidator.InventorySummarycheck(inventories.Items.First(i => i.Id == inventory.Id));
+
+            var query = QueryBuilder<InventorySummaryDto>.NewQuery(i => i.PlaceId, addInventoryDto.PlaceId, ComparisonOperator.Equals)
+                        .And(i => i.Complete, false, ComparisonOperator.Equals)
+                        .Build();
+            inventories = await _inventoryRepo.QueryInventories(query);
+
+            Validator.IsNotNull(inventories);
+            Validator.IsTrue(inventories.Items.Count() > 0);
+            Validator.IsTrue(inventories.Items.Contains(inventory));
+            InventoryDtoValidator.InventorySummarycheck(inventories.Items.First(i => i.Id == inventory.Id));
         }
 
         [TestMethod]
@@ -328,12 +338,12 @@ namespace Locafi.Client.UnitTests.Tests
                 Name = "Test Inventory - " + rand.Next().ToString(),
                 PlaceId = WebRepoContainer.Place1Id
             };
-            var inventory = await _inventoryRepo.CreateInventory(addInventoryDto);
+ //           var inventory = await _inventoryRepo.CreateInventory(addInventoryDto);
 
             // check the response
-            InventoryDtoValidator.InventoryDetailcheck(inventory);
+            //            InventoryDtoValidator.InventoryDetailcheck(inventory);
 
-            var getInventory = await _inventoryRepo.GetInventory(inventory.Id);
+            var getInventory = await _inventoryRepo.GetInventory(new Guid("dc415e45-fad4-4995-bb32-326c2483c8d1"));// inventory.Id);
 
             Validator.IsNotNull(getInventory);
             InventoryDtoValidator.InventoryDetailcheck(getInventory);

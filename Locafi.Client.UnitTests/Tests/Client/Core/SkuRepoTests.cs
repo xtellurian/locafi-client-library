@@ -481,6 +481,12 @@ namespace Locafi.Client.UnitTests.Tests
                 var skuSum = stockCounts.Where(s => s.SkuId == sku.Id).Sum(s => s.ItemCount);
                 Validator.IsTrue(skuSum == (numSgtinItemsPerSku));
             }
+
+            // now query the stock count for this place, for a specific quantity of items
+            query = QueryBuilder<SkuStockCountDto>.NewQuery(s => s.PlaceId, place.Id, ComparisonOperator.Equals)
+                .And(s => s.ItemCount, numSgtinItemsPerSku, ComparisonOperator.Equals)
+                .Build();
+            stockCounts = await _skuRepo.GetSkuStockCount(query);
         }
 
         [TestMethod]

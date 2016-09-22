@@ -305,6 +305,42 @@ namespace Locafi.Client.UnitTests.Tests
             SkuDtoValidator.SkuSummaryCheck(cycleDto.CreatedItems.First(i => i.Id == WebRepoContainer.Sku2Id), true);
         }
 
+        [TestMethod]
+        public async Task CycleCount_Query()
+        {
+            // create the cycle count
+            var addDto = new AddCycleCountDto() { PlaceId = WebRepoContainer.Place1Id };
+            var cycleCount = await _cycleCountRepo.CreateCycleCount(addDto);
+
+            // check the response
+            CycleCountDtoValidator.CycleCountDetailcheck(cycleCount);
+
+            // query the cyclecounts
+            var cyclecounts = await _cycleCountRepo.QueryCycleCounts();
+
+            Validator.IsNotNull(cyclecounts);
+            Validator.IsTrue(cyclecounts.Items.Count() > 0);
+            Validator.IsTrue(cyclecounts.Items.Contains(cycleCount));
+            CycleCountDtoValidator.CycleCountSummarycheck(cyclecounts.Items.First(i => i.Id == cycleCount.Id));
+        }
+
+        [TestMethod]
+        public async Task CycleCount_Get()
+        {
+            // create the cycle count
+            var addDto = new AddCycleCountDto() { PlaceId = WebRepoContainer.Place1Id };
+            var cycleCount = await _cycleCountRepo.CreateCycleCount(addDto);
+
+            // check the response
+            CycleCountDtoValidator.CycleCountDetailcheck(cycleCount);
+
+            // get the cyclecount
+            var getCycleCount = await _cycleCountRepo.GetCycleCount(cycleCount.Id);
+
+            Validator.IsNotNull(getCycleCount);
+            CycleCountDtoValidator.CycleCountDetailcheck(getCycleCount);
+        }
+
         public async Task TestCompleteCycleCountProcess(Dictionary<Guid,int> skusToUse, Dictionary<Guid, int> assetCategoriesToUse, SkuGroupDetailDto SkuGroup = null, List<Guid> selectedSkus = null)
         {
             Validator.IsFalse(SkuGroup != null && selectedSkus != null, "Cannot provide both sku group and list of sku's");
@@ -579,9 +615,6 @@ namespace Locafi.Client.UnitTests.Tests
 
             // check the response we have create the items
             CycleCountDtoValidator.CycleCountDetailcheck(cycleDto3, true);
-
-            // check the response we have create the items
-            CycleCountDtoValidator.CycleCountDetailcheck(cycleDto3, true);
             if (SkuGroup != null)
             {
                 var includedSkus = SkuGroup.Skus.Select(s => s.Id).Intersect(skusToUse.Keys).ToList();
@@ -708,6 +741,14 @@ namespace Locafi.Client.UnitTests.Tests
 
             var t2 = DateTime.UtcNow;
             var totalTime = t2 - t1;
+
+            // now get the cycle count so we can check that the get is correctly returning all the items
+            var getCycle = await _cycleCountRepo.GetCycleCount(cycleDto3.Id);
+
+            Validator.IsTrue(getCycle.Id == cycleDto3.Id);
+            Validator.IsTrue(getCycle.PresentItems.Count == cycleDto3.PresentItems.Count);
+            Validator.IsTrue(getCycle.MovedItems.Count == cycleDto3.MovedItems.Count);
+            Validator.IsTrue(getCycle.CreatedItems.Count == cycleDto3.CreatedItems.Count);
         }
     }
 }
