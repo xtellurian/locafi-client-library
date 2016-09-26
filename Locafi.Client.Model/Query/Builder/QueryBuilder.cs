@@ -11,7 +11,9 @@ namespace Locafi.Client.Model.Query.Builder
     {
         And,
         Or,
-        Not
+        Not,
+        OpenGroup,
+        CloseGroup
     }
 
     public class FilterExpression
@@ -64,6 +66,30 @@ namespace Locafi.Client.Model.Query.Builder
             return this;
         }
 
+        public QueryBuilder<T> AndOpenGroup()
+        {
+            _filterExpressions.Add(new FilterExpression() { Expression = " and (", Operator = LogicalOperator.OpenGroup });
+            return this;
+        }
+
+        public QueryBuilder<T> OrOpenGroup()
+        {
+            _filterExpressions.Add(new FilterExpression() { Expression = " or (", Operator = LogicalOperator.OpenGroup });
+            return this;
+        }
+
+        public QueryBuilder<T> OpenGroup()
+        {
+            _filterExpressions.Add(new FilterExpression() { Expression = "(", Operator = LogicalOperator.OpenGroup });
+            return this;
+        }
+
+        public QueryBuilder<T> CloseGroup()
+        {
+            _filterExpressions.Add(new FilterExpression() { Expression = ")", Operator = LogicalOperator.CloseGroup });
+            return this;
+        }
+
         public QueryBuilder<T> Skip(int skip)
         {
             _skip = skip;
@@ -87,11 +113,26 @@ namespace Locafi.Client.Model.Query.Builder
             var filter = new StringBuilder();
             if (_filterExpressions.Count > 0)
             {
+                // loop through all expressions and build the query
                 filter.Append(QueryStrings.Filter.FilterStart);
                 var numberOfExpressions = _filterExpressions.Count;
                 for (int c = 0; c < numberOfExpressions; c++)
                 {
-                    if (c > 0 && c < numberOfExpressions) filter.Append(" " + _filterExpressions[c].Operator.ToString().ToLower() + " ");
+                    // if it is not our first one then we will add the logical operator
+                    if (c > 0 && c < numberOfExpressions)
+                    {
+                        // if its not a close group then add the operator
+                        if (_filterExpressions[c].Operator != LogicalOperator.CloseGroup && _filterExpressions[c].Operator != LogicalOperator.OpenGroup  && _filterExpressions[c-1].Operator != LogicalOperator.OpenGroup)
+                            filter.Append(" " + _filterExpressions[c].Operator.ToString().ToLower() + " ");
+                        else
+                        {
+                            // just close the group and continue to the next part of the expression
+                            filter.Append(_filterExpressions[c].Expression);
+                            continue;
+                        }
+                    }
+
+                    // add the expression
                     filter.Append(_filterExpressions[c].Expression);
                 }
             }

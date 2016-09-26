@@ -8,10 +8,13 @@ namespace Locafi.Client.Model.Enums
 {
     public enum ItemStateType
     {
-        Created,
         Present,
         Missing,
         Moved,
-        Cleared
+        Cleared,
+        Allocated,
+        Received,
+        Dispatched,
+        Consumed
     }
 }

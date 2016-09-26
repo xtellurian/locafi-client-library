@@ -398,7 +398,7 @@ namespace Locafi.Client.UnitTests.Tests
                 {
                     SkuDtoValidator.SkuStockCountCheck(stockCount, true);
                     Validator.IsTrue(stockCount.ItemStatus != ItemStateType.Missing);
-                    Validator.IsTrue(stockCount.ItemCount == (stockCount.ItemStatus == ItemStateType.Created ? 2 * numSgtinItemsPerSku : numSgtinItemsPerSku));
+                    Validator.IsTrue(stockCount.ItemCount == (stockCount.ItemStatus == ItemStateType.Present ? 2 * numSgtinItemsPerSku : numSgtinItemsPerSku));
                 }
 
                 var skuSum = stockCounts.Where(s => s.SkuId == sku.Id).Sum(s => s.ItemCount);
@@ -526,7 +526,7 @@ namespace Locafi.Client.UnitTests.Tests
             {
                 var stockCount = stockCounts.First(s => s.SkuId == sku.Id);
                 SkuDtoValidator.SkuStockCountCheck(stockCount);
-                Validator.IsTrue(stockCount.ItemStatus == ItemStateType.Created);
+                Validator.IsTrue(stockCount.ItemStatus == ItemStateType.Present);
                 Validator.IsTrue(stockCount.ItemCount == numUniqueItemsPerSku);
             }
 
@@ -550,7 +550,7 @@ namespace Locafi.Client.UnitTests.Tests
                 foreach (var stockCount in stockCounts.Where(s => s.SkuId == sku.Id))
                 {
                     SkuDtoValidator.SkuStockCountCheck(stockCount);
-                    Validator.IsTrue(stockCount.ItemStatus == ItemStateType.Created || stockCount.ItemStatus == ItemStateType.Moved);
+                    Validator.IsTrue(stockCount.ItemStatus == ItemStateType.Present || stockCount.ItemStatus == ItemStateType.Moved);
                     Validator.IsTrue(stockCount.ItemCount == numUniqueItemsPerSku);
                 }
                 var skuSum = stockCounts.Where(s => s.SkuId == sku.Id).Sum(s => s.ItemCount);
