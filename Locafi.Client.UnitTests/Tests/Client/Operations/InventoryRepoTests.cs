@@ -338,12 +338,12 @@ namespace Locafi.Client.UnitTests.Tests
                 Name = "Test Inventory - " + rand.Next().ToString(),
                 PlaceId = WebRepoContainer.Place1Id
             };
- //           var inventory = await _inventoryRepo.CreateInventory(addInventoryDto);
+            var inventory = await _inventoryRepo.CreateInventory(addInventoryDto);
 
             // check the response
-            //            InventoryDtoValidator.InventoryDetailcheck(inventory);
+            InventoryDtoValidator.InventoryDetailcheck(inventory);
 
-            var getInventory = await _inventoryRepo.GetInventory(new Guid("dc415e45-fad4-4995-bb32-326c2483c8d1"));// inventory.Id);
+            var getInventory = await _inventoryRepo.GetInventory(inventory.Id);
 
             Validator.IsNotNull(getInventory);
             InventoryDtoValidator.InventoryDetailcheck(getInventory);
@@ -401,7 +401,10 @@ namespace Locafi.Client.UnitTests.Tests
             _tagNumbersToDelete.AddRange(addSnapshotDto.Tags.Where(t => !_tagNumbersToDelete.Contains(t.TagNumber)).Select(t => t.TagNumber));
 
             // resolve the snapshot
-            inventory = await _inventoryRepo.AddSnapshot(inventory.Id,addSnapshotDto);
+            var responseDto = await _inventoryRepo.AddSnapshot(inventory.Id,addSnapshotDto);
+            inventory = responseDto.InventoryDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // check the response we have created the items
             InventoryDtoValidator.InventoryDetailcheck(inventory);
@@ -510,7 +513,10 @@ namespace Locafi.Client.UnitTests.Tests
             _tagNumbersToDelete.AddRange(addSnapshotDto.Tags.Where(t => !_tagNumbersToDelete.Contains(t.TagNumber)).Select(t => t.TagNumber));
 
             // resolve the snapshot
-            inventory2 = await _inventoryRepo.AddSnapshot(inventory2.Id, addSnapshotDto2);
+            responseDto = await _inventoryRepo.AddSnapshot(inventory2.Id, addSnapshotDto2);
+            inventory2 = responseDto.InventoryDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // check the response we have created the items
             InventoryDtoValidator.InventoryDetailcheck(inventory2);
@@ -613,7 +619,10 @@ namespace Locafi.Client.UnitTests.Tests
             Validator.IsTrue(inventory3.MissingItems.Count == (resolvedInventory2.FoundItemsExpected.Count + resolvedInventory2.FoundItemsUnexpected.Count)); // all items in the place should initially be missing
 
             // resolve the snapshot
-            inventory3 = await _inventoryRepo.AddSnapshot(inventory3.Id, addSnapshotDto);
+            responseDto = await _inventoryRepo.AddSnapshot(inventory3.Id, addSnapshotDto);
+            inventory3 = responseDto.InventoryDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // check the response we have created the items
             InventoryDtoValidator.InventoryDetailcheck(inventory3);

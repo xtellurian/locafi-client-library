@@ -49,11 +49,11 @@ namespace Locafi.Client.Processors.Orders
             var expectedItem = base.GetItemLineItem(tag);
             if (expectedItem != null)
             {
-                expectedItem.IsAllocated = true;
+                expectedItem.IsReceived = true;
                 return new ProcessTagResult(true, gtin, itemLineItem:expectedItem);
 
             }
-            OrderDetail.UnknownTags.Add(tag);
+//            OrderDetail.UnknownTags.Add(tag);
             return new ProcessTagResult(false, gtin);
         }
 
@@ -80,7 +80,7 @@ namespace Locafi.Client.Processors.Orders
                 return new ProcessTagResult(true, gtin, itemLineItem: expectedItem);
 
             }
-            OrderDetail.UnknownTags.Add(tag);
+//            OrderDetail.UnknownTags.Add(tag);
             return new ProcessTagResult(false, gtin);
         }
     }

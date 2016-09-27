@@ -21,18 +21,19 @@ namespace Locafi.Client.Contract.Repo
         Task<IList<SkuDetailDto>> GetSkuPrintInfoById(Guid id);
 
         Task<OrderDetailDto> Create(AddOrderDto orderDetail);
-        Task<OrderActionResponseDto> Allocate(OrderSummaryDto orderDetail, Guid snapshotId);
-        Task<OrderActionResponseDto> Receive(OrderSummaryDto order, Guid snapshotId);
-        Task<OrderActionResponseDto> Dispatch(OrderSummaryDto orderDetail);
-        Task<OrderActionResponseDto> Complete(OrderSummaryDto orderDetail);
 
-        Task<OrderActionResponseDto> DisputeAllocate(OrderSummaryDto orderSummary, OrderDisputeDto dispute, Guid snapshotId);
-        Task<OrderActionResponseDto> DisputeDispatch(OrderSummaryDto orderSummary, OrderDisputeDto dispute);
+        Task<OrderDetailDto> Allocate(Guid orderId);
+        Task<OrderDetailDto> RevertToAllocating(Guid orderId);
 
-        Task<OrderActionResponseDto> DisputeReceive(OrderSummaryDto order, Guid snapshotId,
-            OrderDisputeDto dispute);
+        Task<OrderDetailDto> Dispatch(Guid orderId);
 
-        Task<OrderActionResponseDto> Cancel(OrderSummaryDto order);
-        Task<bool> DeleteOrder(Guid orderId);
+        Task<OrderDetailDto> Receive(Guid orderId);
+        Task<OrderDetailDto> RevertToReceiving(Guid orderId);
+
+        Task<OrderDetailDto> Complete(Guid orderId);
+
+        Task<OrderDetailDto> Cancel(Guid orderId);
+
+        Task<AddOrderSnapshotResultDto> AddSnapshotToOrder(AddOrderSnapshotDto orderSnapshotDto);
     }
 }

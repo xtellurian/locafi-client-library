@@ -61,6 +61,7 @@
     <Compile Include="EntityGenerators\DeviceGenerator.cs" />
     <Compile Include="EntityGenerators\ExtendedPropertyGenerator.cs" />
     <Compile Include="EntityGenerators\ItemGenerator.cs" />
+    <Compile Include="EntityGenerators\OrderGenerator.cs" />
     <Compile Include="EntityGenerators\PersonGenerator.cs" />
     <Compile Include="EntityGenerators\PlaceGenerator.cs" />
     <Compile Include="EntityGenerators\RoleGenerator.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Validators\AuthenticationDtoValidator.cs" />
     <Compile Include="Validators\BaseDtoValidator.cs" />
     <Compile Include="Validators\ExtendedPropertyDtoValidator.cs" />
+    <Compile Include="Validators\OrderDtoValidator.cs" />
     <Compile Include="Validators\InventoryDtoValidator.cs" />
     <Compile Include="Validators\PersonDtoValidator.cs" />
     <Compile Include="Validators\PlaceDtoValidator.cs" />

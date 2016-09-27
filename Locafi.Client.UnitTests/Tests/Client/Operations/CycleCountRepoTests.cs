@@ -288,7 +288,11 @@ namespace Locafi.Client.UnitTests.Tests
 
             var t1 = DateTime.UtcNow;
             // resolve the snapshot
-            cycleDto = await _cycleCountRepo.ResolveCycleCount(resolveDto);
+            var responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto);
+            cycleDto = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
+
             var t2 = DateTime.UtcNow;
             var totalTime = t2 - t1;
 
@@ -386,7 +390,10 @@ namespace Locafi.Client.UnitTests.Tests
             };
 
             // resolve the snapshot
-            cycleDto = await _cycleCountRepo.ResolveCycleCount(resolveDto);
+            var responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto);
+            cycleDto = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // check the response we have created the items
             CycleCountDtoValidator.CycleCountDetailcheck(cycleDto, true);
@@ -495,7 +502,10 @@ namespace Locafi.Client.UnitTests.Tests
             };
 
             // resolve the snapshot
-            cycleDto2 = await _cycleCountRepo.ResolveCycleCount(resolveDto2);
+            responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto2);
+            cycleDto2 = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // check the response we have create the items
             CycleCountDtoValidator.CycleCountDetailcheck(cycleDto2, true);
@@ -611,7 +621,10 @@ namespace Locafi.Client.UnitTests.Tests
             };
 
             // resolve the snapshot
-            cycleDto3 = await _cycleCountRepo.ResolveCycleCount(resolveDto3);
+            responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto3);
+            cycleDto3 = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // check the response we have create the items
             CycleCountDtoValidator.CycleCountDetailcheck(cycleDto3, true);
@@ -742,13 +755,16 @@ namespace Locafi.Client.UnitTests.Tests
             var t2 = DateTime.UtcNow;
             var totalTime = t2 - t1;
 
-            // now get the cycle count so we can check that the get is correctly returning all the items
-            var getCycle = await _cycleCountRepo.GetCycleCount(cycleDto3.Id);
+            // By Design we are not expecting the Present, Moved, Created lists to persist and be returned as part of a detailDto obtained via a Get request
+            // they are only populated as part of a detail dto returned after a resolve (the below tests are not valid)
 
-            Validator.IsTrue(getCycle.Id == cycleDto3.Id);
-            Validator.IsTrue(getCycle.PresentItems.Count == cycleDto3.PresentItems.Count);
-            Validator.IsTrue(getCycle.MovedItems.Count == cycleDto3.MovedItems.Count);
-            Validator.IsTrue(getCycle.CreatedItems.Count == cycleDto3.CreatedItems.Count);
+            // now get the cycle count so we can check that the get is correctly returning all the items
+            //var getCycle = await _cycleCountRepo.GetCycleCount(cycleDto3.Id);
+
+            //Validator.IsTrue(getCycle.Id == cycleDto3.Id);
+            //Validator.IsTrue(getCycle.PresentItems.Count == cycleDto3.PresentItems.Count);
+            //Validator.IsTrue(getCycle.MovedItems.Count == cycleDto3.MovedItems.Count);
+            //Validator.IsTrue(getCycle.CreatedItems.Count == cycleDto3.CreatedItems.Count);
         }
     }
 }

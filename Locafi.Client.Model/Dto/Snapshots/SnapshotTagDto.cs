@@ -18,7 +18,7 @@ namespace Locafi.Client.Model.Dto.Snapshots
         public TagType? TagType { get; set; }   // reference to the type of tag ie. passive UHF, barcode, RFCode, etc
         public int ReadCount { get; set; }  // number of times the tag was read during this inventory/allocation/receive etc
         public double Rssi { get; set; } // average RSSI of the tag during this inventory/allocation/receive etc
-        public DateTime LastReadTime { get; set; }  // the time when the Tag was last read
+        public DateTimeOffset LastReadTime { get; set; }  // the time when the Tag was last read
 
         public SnapshotTagDto()
         {

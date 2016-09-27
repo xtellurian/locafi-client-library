@@ -20,7 +20,7 @@ namespace Locafi.Client.Contract.Repo
         Task<InventoryDetailDto> GetInventory(Guid id);
         Task<InventoryDetailDto> CreateInventory(Guid placeId, string name = null, Guid? skuGroupId = null, List<Guid> SkuIds = null);
         Task<InventoryDetailDto> CreateInventory(AddInventoryDto addDto);
-        Task<InventoryDetailDto> AddSnapshot(Guid inventoryId, AddSnapshotDto snapshot);
+        Task<AddInventorySnapshotResultDto> AddSnapshot(Guid inventoryId, AddSnapshotDto snapshot);
         Task<InventoryDetailDto> Resolve(ResolveInventoryDto resolvedDto);
         Task<bool> Delete(Guid id);
         //Task<InventoryDetailDto> Complete(Guid inventoryId);

@@ -24,6 +24,7 @@ namespace Locafi.Client.Model.Dto.Inventory
             FoundItemsExpected = new List<ItemSummaryReasonDto>();
             FoundItemsUnexpected = new List<ItemSummaryReasonDto>();
             MissingItems = new List<ItemSummaryReasonDto>();
+            SelectedSkus = new List<SkuSummaryDto>();
         }
 
         public InventoryDetailDto(InventoryDetailDto dto) : base(dto)

@@ -101,10 +101,11 @@ namespace Locafi.Script
         public static async Task CleanOrders(IRestQuery<OrderSummaryDto> query)
         {
             Console.WriteLine("--- Cleaning Orders ---");
-            var orderRepo = WebRepoContainer.OrderRepo;
-            var orders = await orderRepo.QueryOrders(query);
+            Console.WriteLine("--- Can't delete anymore, should try and Cancel/Complete instead ---");
+            //var orderRepo = WebRepoContainer.OrderRepo;
+            //var orders = await orderRepo.QueryOrders(query);
 
-            await DeleteEntities(orders, o => orderRepo.DeleteOrder(o.Id), "order");
+            //await DeleteEntities(orders, o => orderRepo.DeleteOrder(o.Id), "order");
         }
 
         public static async Task CleanSkus(IRestQuery<SkuSummaryDto> query)

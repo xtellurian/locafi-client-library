@@ -18,6 +18,8 @@ using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Dto;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.Model.Dto.Skus;
+using Locafi.Client.Model.Dto.Persons;
+using Locafi.Client.Model.Dto.Items;
 
 namespace Locafi.Client.UnitTests
 {
@@ -139,6 +141,90 @@ namespace Locafi.Client.UnitTests
                 }
 
                 return _assetCategory2Id;
+            }
+        }
+
+        private static Guid _person1Id;
+        public static Guid Person1Id
+        {
+            get
+            {
+                if (_person1Id == null || _person1Id == Guid.Empty)
+                {
+                    _person1Id = PersonRepo.QueryPersons(QueryBuilder<PersonSummaryDto>.NewQuery(e => e.Email, DevEnvironment.Person1Email, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _person1Id;
+            }
+        }
+
+        private static Guid _person2Id;
+        public static Guid Person2Id
+        {
+            get
+            {
+                if (_person2Id == null || _person2Id == Guid.Empty)
+                {
+                    _person2Id = PersonRepo.QueryPersons(QueryBuilder<PersonSummaryDto>.NewQuery(e => e.Email, DevEnvironment.Person2Email, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _person2Id;
+            }
+        }
+
+        private static Guid _asset1Id;
+        public static Guid Asset1Id
+        {
+            get
+            {
+                if (_asset1Id == null || _asset1Id == Guid.Empty)
+                {
+                    _asset1Id = ItemRepo.QueryItems(QueryBuilder<ItemSummaryDto>.NewQuery(e => e.TagNumber, DevEnvironment.Asset1TagNumber, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _asset1Id;
+            }
+        }
+
+        private static Guid _asset2Id;
+        public static Guid Asset2Id
+        {
+            get
+            {
+                if (_asset2Id == null || _asset2Id == Guid.Empty)
+                {
+                    _asset2Id = ItemRepo.QueryItems(QueryBuilder<ItemSummaryDto>.NewQuery(e => e.TagNumber, DevEnvironment.Asset2TagNumber, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _asset2Id;
+            }
+        }
+
+        private static Guid _asset3Id;
+        public static Guid Asset3Id
+        {
+            get
+            {
+                if (_asset3Id == null || _asset3Id == Guid.Empty)
+                {
+                    _asset3Id = ItemRepo.QueryItems(QueryBuilder<ItemSummaryDto>.NewQuery(e => e.TagNumber, DevEnvironment.Asset3TagNumber, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _asset3Id;
+            }
+        }
+
+        private static Guid _asset4Id;
+        public static Guid Asset4Id
+        {
+            get
+            {
+                if (_asset4Id == null || _asset4Id == Guid.Empty)
+                {
+                    _asset4Id = ItemRepo.QueryItems(QueryBuilder<ItemSummaryDto>.NewQuery(e => e.TagNumber, DevEnvironment.Asset4TagNumber, ComparisonOperator.Equals).Build()).Result.First().Id;
+                }
+
+                return _asset4Id;
             }
         }
     }

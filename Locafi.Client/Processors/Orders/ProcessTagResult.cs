@@ -10,7 +10,7 @@ namespace Locafi.Client.Processors.Orders
 {
     class ProcessTagResult : IProcessTagResult
     {
-        public ProcessTagResult(bool isRecognised, string gtin, OrderSkuLineItemDto skuLineItem = null, OrderItemLineItemDto itemLineItem = null)
+        public ProcessTagResult(bool isRecognised, string gtin, ReadOrderSkuDto skuLineItem = null, ReadOrderItemDto itemLineItem = null)
         {
             IsRecognised = isRecognised;
             Gtin = gtin;
@@ -19,8 +19,8 @@ namespace Locafi.Client.Processors.Orders
         }
 
         public bool IsRecognised { get; }
-        public OrderSkuLineItemDto SkuLineItem { get; }
-        public OrderItemLineItemDto ItemLineItem { get; }
+        public ReadOrderSkuDto SkuLineItem { get; }
+        public ReadOrderItemDto ItemLineItem { get; }
         public string Gtin { get; }
     }
 }

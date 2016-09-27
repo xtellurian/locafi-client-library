@@ -11,8 +11,8 @@ namespace Locafi.Client.Contract.Processors
     public interface IProcessTagResult
     {
         bool IsRecognised { get; }
-        OrderSkuLineItemDto SkuLineItem { get; }
-        OrderItemLineItemDto ItemLineItem { get; }
+        ReadOrderSkuDto SkuLineItem { get; }
+        ReadOrderItemDto ItemLineItem { get; }
         string Gtin { get; }
 
     }

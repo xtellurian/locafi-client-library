@@ -217,6 +217,13 @@ namespace Locafi.Client.Repo
             return result.AsQueryResult(query);
         }
 
+        public async Task<bool> ConsumeItems(ConsumeItemsDto consumeItemsDto)
+        {
+            var path = ItemUri.ConsumeItems;
+            var result = await Post(consumeItemsDto, path);
+            return result;
+        }
+
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
             throw new ItemRepoException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());

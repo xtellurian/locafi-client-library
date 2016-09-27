@@ -8,6 +8,6 @@ namespace Locafi.Client.Model.RFID
         string TagNumber { get; }
         int ReadCount { get; set; }  // number of times the tag was read during this inventory/allocation/receive etc
         double Rssi { get; set; } // average RSSI of the tag during this inventory/allocation/receive et
-        DateTime LastReadTime { get; set; } // last time the tag was read for this process
+        DateTimeOffset LastReadTime { get; set; } // last time the tag was read for this process
     }
 }

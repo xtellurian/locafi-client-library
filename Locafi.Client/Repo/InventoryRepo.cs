@@ -86,11 +86,11 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<InventoryDetailDto> AddSnapshot(Guid inventoryId, AddSnapshotDto snapshot)
+        public async Task<AddInventorySnapshotResultDto> AddSnapshot(Guid inventoryId, AddSnapshotDto snapshot)
         {
             var dto = new AddInventorySnapshotDto(inventoryId, snapshot);
             var path = InventoryUri.AddSnapshot;
-            var result = await Post<InventoryDetailDto>(dto, path);
+            var result = await Post<AddInventorySnapshotResultDto>(dto, path);
             return result;
         }
 

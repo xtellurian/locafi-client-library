@@ -21,6 +21,12 @@ namespace Locafi.Client.Model.Dto.Inventory
 
         public bool Complete { get; set; }
 
+        public int ExpectedItemsCount { get; set; }
+
+        public int MissingItemsCount { get; set; }
+
+        public int UnexpectedItemsCount { get; set; }
+
         public InventorySummaryDto()
         {
             

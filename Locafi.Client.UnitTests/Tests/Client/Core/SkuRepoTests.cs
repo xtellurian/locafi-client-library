@@ -320,7 +320,10 @@ namespace Locafi.Client.UnitTests.Tests
             {
                 CycleCountId = cycleDto.Id
             };
-            cycleDto = await _cycleCountRepo.ResolveCycleCount(resolveDto);
+            var responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto);
+            cycleDto = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // now query the stock count for this place
             var query = QueryBuilder<SkuStockCountDto>.NewQuery(s => s.PlaceId,place.Id,ComparisonOperator.Equals).Build();
@@ -349,7 +352,10 @@ namespace Locafi.Client.UnitTests.Tests
             {
                 CycleCountId = cycleDto2.Id
             };
-            cycleDto2 = await _cycleCountRepo.ResolveCycleCount(resolveDto2);
+            responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto2);
+            cycleDto2 = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // now query the stock count for this place
             query = QueryBuilder<SkuStockCountDto>.NewQuery(s => s.PlaceId, place.Id, ComparisonOperator.Equals).Build();
@@ -357,13 +363,13 @@ namespace Locafi.Client.UnitTests.Tests
 
             // check the response
             Validator.IsInstanceOfType(stockCounts, typeof(PageResult<SkuStockCountDto>));
-            Validator.IsTrue(stockCounts.Items.Count() == (skus.Count * 2));    // should be one set for the created and one set for the present
+            Validator.IsTrue(stockCounts.Items.Count() == skus.Count);    // all items should show as present
             foreach (var sku in skus)
             {
                 foreach (var stockCount in stockCounts.Where(s => s.SkuId == sku.Id))
                 {
                     SkuDtoValidator.SkuStockCountCheck(stockCount, true);
-                    Validator.IsTrue(stockCount.ItemCount == numSgtinItemsPerSku);
+                    Validator.IsTrue(stockCount.ItemCount == (numSgtinItemsPerSku * 2));
                 }
 
                 var skuSum = stockCounts.Where(s => s.SkuId == sku.Id).Sum(s => s.ItemCount);
@@ -383,7 +389,10 @@ namespace Locafi.Client.UnitTests.Tests
             {
                 CycleCountId = cycleDto3.Id
             };
-            cycleDto3 = await _cycleCountRepo.ResolveCycleCount(resolveDto3);
+            responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto3);
+            cycleDto3 = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // now query the stock count for this place
             query = QueryBuilder<SkuStockCountDto>.NewQuery(s => s.PlaceId, place.Id, ComparisonOperator.Equals).Build();
@@ -391,14 +400,14 @@ namespace Locafi.Client.UnitTests.Tests
 
             // check the response
             Validator.IsInstanceOfType(stockCounts, typeof(PageResult<SkuStockCountDto>));
-            Validator.IsTrue(stockCounts.Items.Count() == (skus.Count * 2));    // should be one set for the created, one set for the present
+            Validator.IsTrue(stockCounts.Items.Count() == skus.Count);    // all items should show as present
             foreach (var sku in skus)
             {
                 foreach (var stockCount in stockCounts.Where(s => s.SkuId == sku.Id))
                 {
                     SkuDtoValidator.SkuStockCountCheck(stockCount, true);
                     Validator.IsTrue(stockCount.ItemStatus != ItemStateType.Missing);
-                    Validator.IsTrue(stockCount.ItemCount == (stockCount.ItemStatus == ItemStateType.Present ? 2 * numSgtinItemsPerSku : numSgtinItemsPerSku));
+                    Validator.IsTrue(stockCount.ItemCount == (3 * numSgtinItemsPerSku));
                 }
 
                 var skuSum = stockCounts.Where(s => s.SkuId == sku.Id).Sum(s => s.ItemCount);
@@ -438,7 +447,10 @@ namespace Locafi.Client.UnitTests.Tests
             {
                 CycleCountId = cycleDto4.Id
             };
-            cycleDto = await _cycleCountRepo.ResolveCycleCount(resolveDto4);
+            responseDto = await _cycleCountRepo.ResolveCycleCount(resolveDto4);
+            cycleDto = responseDto.CycleCountDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // now query the stock count for this place
             query = QueryBuilder<SkuStockCountDto>.NewQuery(s => s.PlaceId, place.Id, ComparisonOperator.Equals).Build();
@@ -571,7 +583,10 @@ namespace Locafi.Client.UnitTests.Tests
             _tagNumbersToDelete.AddRangeUnique(addSnapshotDto.Tags.Select(t => t.TagNumber));
 
             // resolve the snapshot
-            inventory = await _inventoryRepo.AddSnapshot(inventory.Id, addSnapshotDto);
+            var responseDto = await _inventoryRepo.AddSnapshot(inventory.Id, addSnapshotDto);
+            inventory = responseDto.InventoryDto;
+            // check no notifications
+            Validator.IsTrue(responseDto.Notifications.Count <= 0, "Notifications in response");
 
             // resolve the inventory with no reasons
             var resolveDto = new ResolveInventoryDto() { Id = inventory.Id };

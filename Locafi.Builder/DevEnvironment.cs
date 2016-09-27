@@ -310,9 +310,13 @@ namespace Locafi.Builder
 
         // Items to create
         public static string Asset1Name = "Hammer";
+        public static string Asset1TagNumber = "586000000000000000000001";
         public static string Asset2Name = "Circular Saw";
+        public static string Asset2TagNumber = "586000000000000000000002";
         public static string Asset3Name = "Monitor";
+        public static string Asset3TagNumber = "596000000000000000000001";
         public static string Asset4Name = "Printer";
+        public static string Asset4TagNumber = "596000000000000000000002";
         public static List<BuilderAddItemDto> ItemsToCreate = new List<BuilderAddItemDto>()
         {
             new BuilderAddItemDto()
@@ -326,7 +330,7 @@ namespace Locafi.Builder
                 {
                     new WriteTagDto()
                     {
-                        TagNumber = "586000000000000000000001"
+                        TagNumber = Asset1TagNumber
                     }
                 },
                 BuilderItemExtendedPropertyList = new List<BuilderWriteItemExtendedPropertyDto>()
@@ -349,7 +353,7 @@ namespace Locafi.Builder
                 {
                     new WriteTagDto()
                     {
-                        TagNumber = "586000000000000000000002"
+                        TagNumber = Asset2TagNumber
                     }
                 },
                 BuilderItemExtendedPropertyList = new List<BuilderWriteItemExtendedPropertyDto>()
@@ -372,7 +376,7 @@ namespace Locafi.Builder
                 {
                     new WriteTagDto()
                     {
-                        TagNumber = "596000000000000000000001"
+                        TagNumber = Asset3TagNumber
                     }
                 },
                 BuilderItemExtendedPropertyList = new List<BuilderWriteItemExtendedPropertyDto>()
@@ -395,7 +399,7 @@ namespace Locafi.Builder
                 {
                     new WriteTagDto()
                     {
-                        TagNumber = "596000000000000000000002"
+                        TagNumber = Asset4TagNumber
                     }
                 },
                 BuilderItemExtendedPropertyList = new List<BuilderWriteItemExtendedPropertyDto>()

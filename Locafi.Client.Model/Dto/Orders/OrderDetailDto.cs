@@ -13,13 +13,9 @@ namespace Locafi.Client.Model.Dto.Orders
     {
         public OrderDetailDto()
         {
-            
-            ExpectedSkus = new List<OrderSkuLineItemDto>();
-            AdditionalSkus = new List<OrderSkuLineItemDto>();
-            ExpectedItems = new List<OrderItemLineItemDto>();
-            AdditionalItems = new List<OrderItemLineItemDto>();
-            ExcludedTagNumbers = new List<string>();
-            UnknownTags = new List<IRfidTag>();
+
+            OrderSkuList = new List<ReadOrderSkuDto>();
+            OrderItemList = new List<ReadOrderItemDto>();
         }
 
         public OrderDetailDto(OrderDetailDto dto): base(dto)
@@ -34,17 +30,11 @@ namespace Locafi.Client.Model.Dto.Orders
                 property.SetValue(this, value);
             }
         }
-        
-        public IList<OrderSkuLineItemDto> ExpectedSkus { get; set; }
-        public IList<OrderSkuLineItemDto> AdditionalSkus { get; set; }
-        public IList<OrderItemLineItemDto> ExpectedItems { get; set; }
-        public IList<OrderItemLineItemDto> AdditionalItems { get; set; }
-        public IList<string> ExcludedTagNumbers { get; set; } 
-        public string ServerMessage { get; set; }
 
-        [JsonIgnore]
-        public IList<IRfidTag> UnknownTags { get; set; }
-        
+        public IList<ReadOrderSkuDto> OrderSkuList { get; set; }
+
+        public IList<ReadOrderItemDto> OrderItemList { get; set; }
+
 
     }
 }

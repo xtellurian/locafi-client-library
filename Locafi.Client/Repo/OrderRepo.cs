@@ -87,67 +87,60 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<OrderActionResponseDto> Allocate(OrderSummaryDto orderSummary, Guid snapshotId)
+        public async Task<OrderDetailDto> Allocate(Guid orderId)
         {
-            var path = OrderUri.Allocate(orderSummary, snapshotId);
-            var result = await Post<OrderActionResponseDto>(orderSummary, path);
+            var path = OrderUri.Allocate(orderId);
+            var result = await Post<OrderDetailDto>(null,path);
             return result;
         }
 
-        public async Task<OrderActionResponseDto> DisputeAllocate(OrderSummaryDto orderSummary, OrderDisputeDto dispute, Guid snapshotId)
+        public async Task<OrderDetailDto> RevertToAllocating(Guid orderId)
         {
-            var path = OrderUri.DisputeAllocate(orderSummary, snapshotId);
-            var result = await Post<OrderActionResponseDto>(dispute, path);
+            var path = OrderUri.RevertToAllocating(orderId);
+            var result = await Post<OrderDetailDto>(null, path);
             return result;
         }
 
-        public async Task<OrderActionResponseDto> Dispatch(OrderSummaryDto orderDetail)
+        public async Task<OrderDetailDto> Dispatch(Guid orderId)
         {
-            var path = OrderUri.Dispatch(orderDetail);
-            var result = await Post<OrderActionResponseDto>(orderDetail, path);
+            var path = OrderUri.Dispatch(orderId);
+            var result = await Post<OrderDetailDto>(null, path);
             return result;
         }
 
-        public async Task<OrderActionResponseDto> Complete(OrderSummaryDto orderDetail)
+        public async Task<OrderDetailDto> Complete(Guid orderId)
         {
-            var path = OrderUri.Complete(orderDetail);
-            var result = await Post<OrderActionResponseDto>(orderDetail, path);
+            var path = OrderUri.Complete(orderId);
+            var result = await Post<OrderDetailDto>(null, path);
             return result;
         }
 
-        public async Task<OrderActionResponseDto> DisputeDispatch(OrderSummaryDto orderSummary, OrderDisputeDto dispute)
+        public async Task<OrderDetailDto> Receive(Guid orderId)
         {
-            var path = OrderUri.DisputeDispatch(orderSummary);
-            var result = await Post<OrderActionResponseDto>(dispute, path);
+            var path = OrderUri.Receive(orderId);
+            var result = await Post<OrderDetailDto>(null, path);
             return result;
         }
 
-        public async Task<OrderActionResponseDto> Receive(OrderSummaryDto order, Guid snapshotId)
+        public async Task<OrderDetailDto> RevertToReceiving(Guid orderId)
         {
-            var path = OrderUri.Receive(order, snapshotId);
-            var result = await Post<OrderActionResponseDto>(order, path);
+            var path = OrderUri.RevertToReceiving(orderId);
+            var result = await Post<OrderDetailDto>(null, path);
             return result;
         }
 
-        public async Task<OrderActionResponseDto> DisputeReceive(OrderSummaryDto order, Guid snapshotId,
-            OrderDisputeDto dispute)
+        public async Task<OrderDetailDto> Cancel(Guid orderId)
         {
-            var path = OrderUri.DisputeReceive(order, snapshotId);
-            var result = await Post<OrderActionResponseDto>(dispute, path);
+            var path = OrderUri.Cancel(orderId);
+            var result = await Post<OrderDetailDto>(null, path);
             return result;
         }
 
-        public async Task<OrderActionResponseDto> Cancel(OrderSummaryDto order)
+        public async Task<AddOrderSnapshotResultDto> AddSnapshotToOrder(AddOrderSnapshotDto orderSnapshotDto)
         {
-            var path = OrderUri.Cancel(order);
-            var result = await Post<OrderActionResponseDto>(null, path);
+            var path = OrderUri.AddSnapshotToOrder;
+            var result = await Post<AddOrderSnapshotResultDto>(orderSnapshotDto, path);
             return result;
-        }
-
-        public async Task<bool> DeleteOrder(Guid orderId)
-        {
-            var path = OrderUri.Delete(orderId);
-            return await Delete(path);
         }
 
         public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)

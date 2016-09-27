@@ -31,7 +31,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
             return snap;
         }
 
-        public static async Task<AddSnapshotDto> CreateNewGtinSnapshotForUpload(Guid placeId, int totalTagNumber = -1, int randomTagNumber = -1, Guid? skuId = null)
+        public static async Task<AddSnapshotDto> CreateNewGtinSnapshotForUpload(int totalTagNumber = -1, Guid? skuId = null, int randomTagNumber = -1)
         {
             ISkuRepo _skuRepo = WebRepoContainer.SkuRepo;
             SkuSummaryDto sku;

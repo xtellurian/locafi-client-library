@@ -82,10 +82,10 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<CycleCountDetailDto> ResolveCycleCount(ResolveCycleCountDto resolveDto)
+        public async Task<ResolveCycleCountResultDto> ResolveCycleCount(ResolveCycleCountDto resolveDto)
         {
             var path = CycleCountUri.ResolveCycleCount;
-            var result = await Post<CycleCountDetailDto>(resolveDto, path);
+            var result = await Post<ResolveCycleCountResultDto>(resolveDto, path);
             return result;
         }
 

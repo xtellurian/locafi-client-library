@@ -52,7 +52,7 @@ namespace Locafi.Client.Processors.Orders
             }
             lock (_unknownTagLock)
             {
-                OrderDetail.UnknownTags.Add(tag);
+//                OrderDetail.UnknownTags.Add(tag);
             }
             
             return new ProcessTagResult(false, gtin);

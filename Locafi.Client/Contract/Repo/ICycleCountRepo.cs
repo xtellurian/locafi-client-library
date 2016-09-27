@@ -16,6 +16,6 @@ namespace Locafi.Client.Contract.Repo
         Task<IQueryResult<CycleCountSummaryDto>> QueryCycleCountsWithContinuation(IRestQuery<CycleCountSummaryDto> query);
         Task<CycleCountDetailDto> GetCycleCount(Guid id);
         Task<CycleCountDetailDto> CreateCycleCount(AddCycleCountDto addDto);
-        Task<CycleCountDetailDto> ResolveCycleCount(ResolveCycleCountDto resolveDto);
+        Task<ResolveCycleCountResultDto> ResolveCycleCount(ResolveCycleCountDto resolveDto);
     }
 }

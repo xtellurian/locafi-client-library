@@ -22,6 +22,7 @@ namespace Locafi.Client.Model.Dto.CycleCountDtos
             PresentItems = new List<ItemSkuCountDto>();
             MovedItems = new List<ItemSkuCountDto>();
             CreatedItems = new List<ItemSkuCountDto>();
+            SelectedSkus = new List<SkuSummaryDto>();
         }
 
     }

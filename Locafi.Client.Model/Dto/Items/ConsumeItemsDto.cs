@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Enums
+namespace Locafi.Client.Model.Dto.Items
 {
-    public enum OrderState
+    public class ConsumeItemsDto
     {
-       Allocatable,
-       Receivable,
-       Closed,
-       Cancelled
+        public IList<string> TagNumbers { get; set; }
     }
 }

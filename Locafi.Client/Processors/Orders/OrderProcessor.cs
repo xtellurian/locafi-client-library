@@ -19,6 +19,14 @@ namespace Locafi.Client.Processors.Orders
             OrderDetail = orderDetail;
             _snapshotAddTags = new List<SnapshotTagDto>();
             _snapshotRemoveTags = new List<SnapshotTagDto>();
+            // make sure all of our skus have a valid gtin
+            foreach(var sku in OrderDetail.OrderSkuList)
+            {
+                if(string.IsNullOrEmpty(sku.Gtin))
+                {
+                    sku.Gtin = Sgtin.GetGtin(sku.CompanyPrefix, sku.ItemReference);
+                }
+            }
         }
 
         public IList<SnapshotTagDto> GetAddTags()
@@ -43,18 +51,18 @@ namespace Locafi.Client.Processors.Orders
             return null;
         }
 
-        protected OrderSkuLineItemDto GetExpectedSkuLineItem(IRfidTag tag)
+        protected ReadOrderSkuDto GetExpectedSkuLineItem(IRfidTag tag)
         {
             if (!tag.HasSgtin()) return null;
             var gtin = tag.GetGtin();
-            return OrderDetail.ExpectedSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
+            return OrderDetail.OrderSkuList.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
         }
 
-        protected OrderSkuLineItemDto GetAdditionalSkuLineItem(IRfidTag tag)
+        protected ReadOrderSkuDto GetAdditionalSkuLineItem(IRfidTag tag)
         {
             if (!tag.HasSgtin()) return null;
             var gtin = tag.GetGtin();
-            return OrderDetail.AdditionalSkus.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
+            return OrderDetail.OrderSkuList.FirstOrDefault(s => string.Equals(s.Gtin, gtin));
         }
 
         protected string GetGtin(IRfidTag tag)
@@ -62,9 +70,9 @@ namespace Locafi.Client.Processors.Orders
             return tag.GetGtin();
         }
 
-        protected OrderItemLineItemDto GetItemLineItem(IRfidTag tag)
+        protected ReadOrderItemDto GetItemLineItem(IRfidTag tag)
         {
-            return OrderDetail.ExpectedItems.FirstOrDefault(i => string.Equals(i.TagNumber, tag.TagNumber));
+            return OrderDetail.OrderItemList.FirstOrDefault(i => string.Equals(i.TagNumber, tag.TagNumber));
         }
     }
 }

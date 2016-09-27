@@ -9,45 +9,40 @@ namespace Locafi.Client.Model.RelativeUri
         public static string ServiceName => "Orders";
         public static string Create => "CreateOrder";
         public static string GetOrders => "GetFilteredOrders";
+        public static string AddSnapshotToOrder => "AddSnapshot";
 
         public static string GetOrder(Guid id)
         {
             return $"GetOrder/{id}";
         }
-        public static string Allocate(OrderSummaryDto orderDetail, Guid snapshotId)
+        public static string Allocate(Guid id)
         {
-            return $"{GetOrder(orderDetail.Id)}/Allocate/{snapshotId}";
+            return $"AllocateOrder/{id}";
         }
 
-        public static string Dispatch(OrderSummaryDto orderSummary)
+        public static string RevertToAllocating(Guid id)
         {
-            return $"/{GetOrder(orderSummary.Id)}/Dispatch";
+            return $"RevertOrderToAllocating/{id}";
         }
 
-        public static string Complete(OrderSummaryDto orderSummary)
+        public static string Dispatch(Guid id)
         {
-            return $"/{GetOrder(orderSummary.Id)}/Complete";
+            return $"DispatchOrder/{id}";
         }
 
-        public static string DisputeDispatch(OrderSummaryDto orderSummary)
+        public static string Complete(Guid id)
         {
-            return $"/{GetOrder(orderSummary.Id)}/DisputeDispatch";
+            return $"CompleteOrder/{id}";
         }
 
-        public static string DisputeAllocate(OrderSummaryDto orderSummary, Guid snapshotId)
+        public static string Receive(Guid id)
         {
-            return $"{GetOrder(orderSummary.Id)}/DisputeAllocate/{snapshotId}";
+            return $"ReceiveOrder/{id}";
         }
 
-
-        public static string Receive(OrderSummaryDto orderSummary, Guid snapshotId)
+        public static string RevertToReceiving(Guid id)
         {
-            return $"{GetOrder(orderSummary.Id)}/Receive/{snapshotId}";
-        }
-
-        public static string DisputeReceive(OrderSummaryDto orderSummary, Guid snapshotId)
-        {
-            return $"/{orderSummary.Id}/DisputeReceive/{snapshotId}";
+            return $"RevertOrderToReceiving/{id}";
         }
 
         public static string ClearSnapshots(OrderSummaryDto orderSummary, Guid placeId)
@@ -70,5 +65,9 @@ namespace Locafi.Client.Model.RelativeUri
             return $"{GetOrder(id)}/GetSkuPrintInfo";
         }
 
+        public static string Cancel(Guid id)
+        {
+            return $"CancelOrder/{id}";
+        }
     }
 }

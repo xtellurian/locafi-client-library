@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,34 +13,42 @@ namespace Locafi.Client.Model.Dto.Orders
     {
         public AddOrderDto()
         {
-            
+            OrderSkus = new List<AddOrderSkuDto>();
+            OrderUniqueItems = new List<AddOrderUniqueItemDto>();
         }
 
-        public AddOrderDto(string referenceNumber, string description, 
-            Guid sourcePlaceId, Guid destinationPlaceId, IList<AddOrderSkuLineItemDto> skuLineItems, 
-            IList<AddOrderItemLineItemDto> itemLineItems = null, Guid? deliverToId = null)
+        public AddOrderDto(OrderType orderType, string customerOrderNumber, string comments, 
+            Guid? sourcePlaceId, Guid? destinationPlaceId, IList<AddOrderSkuDto> skuLineItems, 
+            IList<AddOrderUniqueItemDto> itemLineItems = null, Guid? deliverToId = null, Guid? customerId = null) : base()
         {
-            ReferenceNumber = referenceNumber;
-            Description = description;
-            SourcePlaceId = sourcePlaceId;
-            DestinationPlaceId = destinationPlaceId;
-            SkuLineItems = skuLineItems;
-            ItemLineItems = itemLineItems;
-            DeliverToId = deliverToId;
+            CustomerOrderNumber = customerOrderNumber;
+            Comments = comments;
+            FromPlaceId = sourcePlaceId;
+            ToPlaceId = destinationPlaceId;
+            OrderSkus = skuLineItems;
+            OrderUniqueItems = itemLineItems;
+            DeliverToPersonId = deliverToId;
+            CustomerId = customerId;
+            OrderType = orderType;
         }
 
-        public string ReferenceNumber { get; set; }
+        public string CustomerOrderNumber { get; set; }
 
-        public string Description { get; set; }
+        public string Comments { get; set; }
 
-        public Guid SourcePlaceId { get; set; }
+        public Guid? FromPlaceId { get; set; }
 
-        public Guid DestinationPlaceId { get; set; }
+        public Guid? ToPlaceId { get; set; }
 
-        public Guid? DeliverToId { get; set; }
+        public Guid? CustomerId { get; set; }
 
-        public IList<AddOrderSkuLineItemDto> SkuLineItems { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public OrderType OrderType { get; set; }
 
-        public IList<AddOrderItemLineItemDto> ItemLineItems { get; set; }
+        public Guid? DeliverToPersonId { get; set; }
+
+        public IList<AddOrderSkuDto> OrderSkus { get; set; }
+
+        public IList<AddOrderUniqueItemDto> OrderUniqueItems { get; set; }
     }
 }
