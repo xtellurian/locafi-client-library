@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Locafi.Builder;
 using Locafi.Client.Contract.Crypto;
 using Locafi.Client.Contract.Repo;
-using Locafi.Client.Model.Dto.Inventory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Locafi.Builder;
-using Locafi.Client.UnitTests.Validators;
 using Locafi.Client.Model;
 using Locafi.Client.Model.Dto.Items;
+using Locafi.Client.UnitTests.Validators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Locafi.Client.UnitTests.Tests
+namespace Locafi.Client.UnitTests.Tests.Client.Core
 {
     [TestClass]
     public class AuthenticationTests

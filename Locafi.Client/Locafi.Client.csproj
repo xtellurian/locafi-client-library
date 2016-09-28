@@ -141,8 +141,8 @@
     <Compile Include="Repo\UserRepo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="bouncy_castle_hmac_sha_pcl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BouncyCastle-PCL.1.0.0.6\lib\bouncy_castle_hmac_sha_pcl.dll</HintPath>
+    <Reference Include="crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.1.1\lib\portable-net4+sl5+wp8+win8+wpa81\crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.OData.Core, Version=6.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -169,8 +169,8 @@
       <HintPath>..\packages\modernhttpclient.2.4.2\lib\Portable-Net45+WinRT45+WP8+WPA81\ModernHttpClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Simple.OData.Client.Core, Version=4.10.0.0, Culture=neutral, processorArchitecture=MSIL">

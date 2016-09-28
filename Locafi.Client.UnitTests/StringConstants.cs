@@ -1,5 +1,5 @@
-﻿//#define MB_LOCAL
-#define PURU_V3
+﻿#define MB_LOCAL
+//#define PURU_V3
 //#define PURU_LOCAL
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Locafi.Client.UnitTests
         public static string PortalUsername => "0123456789";
         public static string Secret => "Locafi_";
 #if MB_LOCAL
-        public static string BaseUrl => @"http://legacylocafiapiv3.azurewebsites.net/api/";
+        public static string BaseUrl => @"http://locafiv2demo.azurewebsites.net/api";
         public static string Password => "ramp123";
         public static string TestingEmailAddress => "admin@ramp.com.au";
 #else
@@ -24,7 +24,7 @@ namespace Locafi.Client.UnitTests
         public static string Password => "ramp123";
         public static string TestingEmailAddress => "hh@ramp.com.au";
 #else
-#if PURU_LOCAL
+#if PURU_LOCALk
         public static string BaseUrl => @"http://192.168.0.51:52117/api/";
         public static string Password => "ramp123";
         public static string TestingEmailAddress => "hh@ramp.com.au";
