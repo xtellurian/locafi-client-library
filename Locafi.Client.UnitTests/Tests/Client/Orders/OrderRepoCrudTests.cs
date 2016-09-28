@@ -1241,7 +1241,7 @@ namespace Locafi.Client.UnitTests.Tests
                     if (toPlaceId == null || fromPlaceId == null)
                     {
                         toPlaceId = WebRepoContainer.Place2Id;
-                        fromPlaceId = WebRepoContainer.Place2Id;
+                        fromPlaceId = WebRepoContainer.Place1Id;
                     }
                     break;
                 case OrderType.Return:
