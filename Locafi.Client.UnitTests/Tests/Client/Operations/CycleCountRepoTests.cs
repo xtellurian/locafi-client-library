@@ -495,6 +495,7 @@ namespace Locafi.Client.UnitTests.Tests
 
             // build snapshot to resolve
             var addSnapshotDto2 = await SnapshotGenerator.GenerateSgtinSnapshot(skusToUse, null);
+            _tagNumbersToDelete.AddRange(addSnapshotDto2.Tags.Where(t => !_tagNumbersToDelete.Contains(t.TagNumber)).Select(t => t.TagNumber));
 
             var resolveDto2 = new ResolveCycleCountDto(addSnapshotDto2)
             {
@@ -614,6 +615,7 @@ namespace Locafi.Client.UnitTests.Tests
                 existingTags.Add(tag.TagNumber);
             }
             var addSnapshotDto3 = await SnapshotGenerator.GenerateSgtinSnapshot(skusToUse, existingTags);
+            _tagNumbersToDelete.AddRange(addSnapshotDto3.Tags.Where(t => !_tagNumbersToDelete.Contains(t.TagNumber)).Select(t => t.TagNumber));
 
             var resolveDto3 = new ResolveCycleCountDto(addSnapshotDto3)
             {

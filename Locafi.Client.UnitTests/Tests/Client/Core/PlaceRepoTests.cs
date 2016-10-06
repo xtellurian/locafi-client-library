@@ -24,15 +24,23 @@ namespace Locafi.Client.UnitTests.Tests
     {
         private IPlaceRepo _placeRepo;
         private ITemplateRepo _templateRepo;
+        private IExtendedPropertyRepo _extPropRepo;
+
         private List<Guid> _placesToCleanup;
-            
-            
+        private List<Guid> _templatesToDelete;
+        private List<Guid> _extpropsToDelete;
+
+
         [TestInitialize]
         public void Initialize()
         {
             _placeRepo = WebRepoContainer.PlaceRepo;
             _templateRepo = WebRepoContainer.TemplateRepo;
+            _extPropRepo = WebRepoContainer.ExtendedPropertyRepo;
+
             _placesToCleanup = new List<Guid>();
+            _templatesToDelete = new List<Guid>();
+            _extpropsToDelete = new List<Guid>();
         }
 
         [TestCleanup]
@@ -42,6 +50,16 @@ namespace Locafi.Client.UnitTests.Tests
             foreach (var placeId in _placesToCleanup)
             {
                 _placeRepo.Delete(placeId).Wait();
+            }
+
+            foreach (var id in _templatesToDelete)
+            {
+                _templateRepo.DeleteTemplate(id).Wait();
+            }
+
+            foreach (var id in _extpropsToDelete)
+            {
+                _extPropRepo.DeleteExtendedProperty(id).Wait();
             }
         }
 
@@ -214,7 +232,7 @@ namespace Locafi.Client.UnitTests.Tests
 
                 switch (prop.ExtendedPropertyDataType)
                 {
-                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+//                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
                     case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
                     case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
@@ -312,6 +330,154 @@ namespace Locafi.Client.UnitTests.Tests
             catch (Exception e)
             {
                 // this is expected                
+            }
+        }
+
+        [TestMethod]
+        public async Task Place_TestAllExtendedPropertyTypes()
+        {
+            // create full place template
+             var addTemplateDto = await TemplateGenerator.GenerateAddTemplateDtoWithFullExtProps(TemplateFor.Place);
+            var template = await _templateRepo.CreateTemplate(addTemplateDto);
+            _templatesToDelete.AddUnique(template.Id);
+            _extpropsToDelete.AddRangeUnique(template.TemplateExtendedPropertyList.Select(e => e.ExtendedPropertyId));
+
+            // create place
+            var addDto = await PlaceGenerator.GenerateRandomAddPlaceDto(template);
+            var result = await _placeRepo.CreatePlace(addDto);
+            _placesToCleanup.AddUnique(result.Id);
+
+            PlaceDtoValidator.PlaceDetailCheck(result);
+
+            // check every extended property
+            var tempalteDetail = await _templateRepo.GetById(template.Id);
+            foreach (var templateExtendedProperty in tempalteDetail.TemplateExtendedPropertyList)
+            {
+                var extendedProperty = result.PlaceExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsNotNull(extendedProperty, "Extended property was null");
+                var addExtendedProperty = addDto.PlaceExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(extendedProperty));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(extendedProperty, addExtendedProperty));
+            }
+
+            // now do a get to check it works
+            var getResult = await _placeRepo.GetPlaceById(result.Id);
+            PlaceDtoValidator.PlaceDetailCheck(getResult);
+
+            // check every extended property
+            foreach (var templateExtendedProperty in tempalteDetail.TemplateExtendedPropertyList)
+            {
+                var extendedProperty = getResult.PlaceExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsNotNull(extendedProperty, "Extended property was null");
+                var addExtendedProperty = addDto.PlaceExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(extendedProperty));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(extendedProperty, addExtendedProperty));
+            }
+
+            // now update extended properties
+
+            // build update item dto, but only change the extended properties
+            var updateDto = new UpdatePlaceDto()
+            {
+                Id = result.Id,
+                Description = Guid.NewGuid().ToString(),
+                Name = Guid.NewGuid().ToString(),
+                TemplateId = result.TemplateId  // don't change template
+            };
+
+            // loop through each extended property and change
+            foreach (var prop in result.PlaceExtendedPropertyList)
+            {
+                var newProp = new WriteEntityExtendedPropertyDto()
+                {
+                    ExtendedPropertyId = prop.ExtendedPropertyId
+                };
+
+                switch (prop.ExtendedPropertyDataType)
+                {
+                    //                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+                    case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+                    case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
+                }
+
+                updateDto.PlaceExtendedPropertyList.Add(newProp);
+            }
+
+            // update the entity
+            var updateResult = await _placeRepo.UpdatePlace(updateDto);
+
+            // check the result
+            PlaceDtoValidator.PlaceDetailCheck(updateResult);
+            Validator.IsTrue(string.Equals(updateDto.Name, updateResult.Name));
+            Validator.IsTrue(string.Equals(updateDto.Description, updateResult.Description));
+            // check the extended properties were changed
+            foreach (var prop in updateResult.PlaceExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PlaceExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now do a get to check it works
+            getResult = await _placeRepo.GetPlaceById(updateResult.Id);
+            PlaceDtoValidator.PlaceDetailCheck(getResult);
+
+            // check every extended property
+            foreach (var prop in getResult.PlaceExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PlaceExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now update the xt props with null values
+
+            updateDto.PlaceExtendedPropertyList.Clear();
+            // loop through each extended property and change
+            foreach (var prop in result.PlaceExtendedPropertyList)
+            {
+                var newProp = new WriteEntityExtendedPropertyDto()
+                {
+                    ExtendedPropertyId = prop.ExtendedPropertyId
+                };
+
+                newProp.Value = null;
+
+                updateDto.PlaceExtendedPropertyList.Add(newProp);
+            }
+
+            // update the entity
+            updateResult = await _placeRepo.UpdatePlace(updateDto);
+
+            // check the result
+            PlaceDtoValidator.PlaceDetailCheck(updateResult);
+            Validator.IsTrue(string.Equals(updateDto.Name, updateResult.Name));
+            Validator.IsTrue(string.Equals(updateDto.Description, updateResult.Description));
+            // check the extended properties were changed
+            foreach (var prop in updateResult.PlaceExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PlaceExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now do a get to check it works
+            getResult = await _placeRepo.GetPlaceById(updateResult.Id);
+            PlaceDtoValidator.PlaceDetailCheck(getResult);
+
+            // check every extended property
+            foreach (var prop in getResult.PlaceExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PlaceExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
             }
         }
     }

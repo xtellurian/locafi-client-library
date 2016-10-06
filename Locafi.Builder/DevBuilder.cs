@@ -722,7 +722,8 @@ namespace Locafi.Builder
                 SkuNumber = bAddDto.SkuNumber,
                 CompanyPrefix = bAddDto.CompanyPrefix,
                 ItemReference = bAddDto.ItemReference,
-                CustomPrefix = bAddDto.CustomPrefix
+                CustomPrefix = bAddDto.CustomPrefix,
+                IsSgtin = bAddDto.IsSgtin
             };
 
             // find the item template with the desired name
@@ -738,7 +739,8 @@ namespace Locafi.Builder
                 addSkuDto.SkuExtendedPropertyList.Add(new WriteSkuExtendedPropertyDto()
                 {
                     ExtendedPropertyId = prop.Id,
-                    IsSkuLevelProperty = bprop.IsSkuLevelProperty
+                    IsSkuLevelProperty = bprop.IsSkuLevelProperty,
+                    Value = bprop.Value
                 });
             }
 

@@ -74,7 +74,7 @@ namespace Locafi.Client.Model.Dto.Skus
 
                     switch (templateProp.ExtendedPropertyDataType)
                     {
-                        case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+//                        case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                         case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
                         case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
                         case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;

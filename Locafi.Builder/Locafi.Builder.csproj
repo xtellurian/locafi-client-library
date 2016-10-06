@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DevBuilder.cs" />
     <Compile Include="DevEnvironment.cs" />
+    <Compile Include="DemoEnvironment.cs" />
     <Compile Include="Model\Items\BuilderAddItemDto.cs" />
     <Compile Include="Model\Items\BuilderWriteItemExtendedPropertyDto.cs" />
     <Compile Include="Model\Persons\BuilderAddPersonDto.cs" />

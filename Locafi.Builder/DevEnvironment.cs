@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Builder
 {
-    public static class DevEnvironment
+    public class DevEnvironment
     {
         // Register details / 
         public static string OrganisationName => "Locafi_Client_Test_Organisation";
@@ -108,6 +108,7 @@ namespace Locafi.Builder
                 CompanyPrefix = "2000000",
                 ItemReference = "000004",
                 CustomPrefix = "",
+                IsSgtin = true,
                 TemplateName = SkuTemplateName,
                 BuilderSkuExtendedPropertyList = new List<BuilderWriteSkuExtendedPropertyDto>()
                 {
@@ -125,6 +126,7 @@ namespace Locafi.Builder
                 CompanyPrefix = "0000250",
                 ItemReference = "880318",
                 CustomPrefix = "",
+                IsSgtin = true,
                 TemplateName = SkuTemplateName,
                 BuilderSkuExtendedPropertyList = new List<BuilderWriteSkuExtendedPropertyDto>()
                 {

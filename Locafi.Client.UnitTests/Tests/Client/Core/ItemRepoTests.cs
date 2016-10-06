@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Locafi.Client.UnitTests.Extensions;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model;
+using Locafi.Client.UnitTests.EntityGenerators;
 
 namespace Locafi.Client.UnitTests.Tests
 {
@@ -35,10 +36,14 @@ namespace Locafi.Client.UnitTests.Tests
         private IPersonRepo _personRepo;
         private ISkuRepo _skuRepo;
         private IUserRepo _userRepo;
-        private ITemplateRepo _teplateRepo;
+        private ITemplateRepo _templateRepo;
+        private IExtendedPropertyRepo _extPropRepo;
 
         private List<Guid> _itemsToDelete;
         private List<Guid> _placesToDelete;
+        private List<Guid> _skusToDelete;
+        private List<Guid> _templatesToDelete;
+        private List<Guid> _extpropsToDelete;
 
         [TestInitialize]
         public void Setup()
@@ -48,10 +53,14 @@ namespace Locafi.Client.UnitTests.Tests
             _personRepo = WebRepoContainer.PersonRepo;
             _skuRepo = WebRepoContainer.SkuRepo;
             _userRepo = WebRepoContainer.UserRepo;
-            _teplateRepo = WebRepoContainer.TemplateRepo;
+            _templateRepo = WebRepoContainer.TemplateRepo;
+            _extPropRepo = WebRepoContainer.ExtendedPropertyRepo;
 
             _itemsToDelete = new List<Guid>();
             _placesToDelete = new List<Guid>();
+            _skusToDelete = new List<Guid>();
+            _templatesToDelete = new List<Guid>();
+            _extpropsToDelete = new List<Guid>();
         }
 
         [TestCleanup]
@@ -67,6 +76,21 @@ namespace Locafi.Client.UnitTests.Tests
             foreach (var placeId in _placesToDelete)
             {
                 _placeRepo.Delete(placeId).Wait();
+            }
+
+            foreach (var id in _skusToDelete)
+            {
+                _skuRepo.DeleteSku(id).Wait();
+            }
+
+            foreach (var id in _templatesToDelete)
+            {
+                _templateRepo.DeleteTemplate(id).Wait();
+            }
+
+            foreach (var id in _extpropsToDelete)
+            {
+                _extPropRepo.DeleteExtendedProperty(id).Wait();
             }
         }
 
@@ -203,7 +227,7 @@ namespace Locafi.Client.UnitTests.Tests
 
                 switch (prop.DataType)
                 {
-                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+//                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
                     case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
                     case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
                     case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
@@ -211,7 +235,7 @@ namespace Locafi.Client.UnitTests.Tests
                     case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
                 }
 
-                updateItemDto.ItemExtendedPropertyList.Add(prop);
+                updateItemDto.ItemExtendedPropertyList.Add(newProp);
             }
 
             // update the item
@@ -540,7 +564,7 @@ namespace Locafi.Client.UnitTests.Tests
             // create a new place for this test
             var addPlaceDto = new AddPlaceDto() {
                 Name = "Item_Count_Test_Place",
-                TemplateId = (await _teplateRepo.QueryTemplates(QueryBuilder<TemplateSummaryDto>.NewQuery(t => t.TemplateType, TemplateFor.Place, ComparisonOperator.Equals).Build())).First().Id
+                TemplateId = (await _templateRepo.QueryTemplates(QueryBuilder<TemplateSummaryDto>.NewQuery(t => t.TemplateType, TemplateFor.Place, ComparisonOperator.Equals).Build())).First().Id
             };
             var placeResult = await _placeRepo.CreatePlace(addPlaceDto);
             _placesToDelete.AddUnique(placeResult.Id);
@@ -565,7 +589,168 @@ namespace Locafi.Client.UnitTests.Tests
             var queryResult = await _itemRepo.QueryItems(query);
             Validator.IsNotNull(queryResult);
             Validator.IsTrue(queryResult.Count == numItemsTocreate);
-        }        
+        }
+
+        [TestMethod] 
+        public async Task Item_TestAllExtendedPropertyTypes()
+        {
+            // create full item template
+            var addTemplateDto = await TemplateGenerator.GenerateAddTemplateDtoWithFullExtProps(TemplateFor.Item);
+            var template = await _templateRepo.CreateTemplate(addTemplateDto);
+            _templatesToDelete.AddUnique(template.Id);
+            _extpropsToDelete.AddRangeUnique(template.TemplateExtendedPropertyList.Select(e => e.ExtendedPropertyId));
+            // create sku from template
+            var addSkuDto = await SkuGenerator.GeneratePlainSkuDto(template.Id);
+            var sku = await _skuRepo.CreateSku(addSkuDto);
+            _skusToDelete.AddUnique(sku.Id);
+            // create item
+            var ran = new Random(DateTime.UtcNow.Millisecond);
+            var name = "Random - " + sku.Name + " " + ran.Next().ToString();
+            var description = name + " - Description";
+            var tagNumber = Guid.NewGuid().ToString();
+            var addItemDto = new AddItemDto(sku, WebRepoContainer.Place1Id, name, description, tagNumber: tagNumber,
+                personId: WebRepoContainer.Person1Id);
+            var result = await _itemRepo.CreateItem(addItemDto);
+            _itemsToDelete.AddUnique(result.Id);
+
+            ItemDtoValidator.ItemDetailCheck(result);
+
+            // check every extended property
+            var skuDetail = await _skuRepo.GetSku(result.SkuId);
+            foreach (var skuDetailExtendedProperty in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
+            {
+                var extendedProperty = result.ItemExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.ExtendedPropertyId);
+                Validator.IsNotNull(extendedProperty, "Extended property was null");
+                var addExtendedProperty = addItemDto.ItemExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(extendedProperty));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(extendedProperty, addExtendedProperty));
+            }
+
+            // now do a get to check it works
+            var itemGet = await _itemRepo.GetItemDetail(result.Id);
+            ItemDtoValidator.ItemDetailCheck(itemGet);
+
+            // check every extended property
+            foreach (var skuDetailExtendedProperty in skuDetail.SkuExtendedPropertyList.Where(s => !s.IsSkuLevelProperty))
+            {
+                var extendedProperty = itemGet.ItemExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.ExtendedPropertyId);
+                Validator.IsNotNull(extendedProperty, "Extended property was null");
+                var addExtendedProperty = addItemDto.ItemExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == skuDetailExtendedProperty.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(extendedProperty));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(extendedProperty, addExtendedProperty));
+            }
+
+            // now update extended properties
+
+            // build update item dto, but only change the extended properties
+            var updateItemDto = new UpdateItemDto()
+            {
+                Id = result.Id,
+                Description = Guid.NewGuid().ToString(),
+                Name = Guid.NewGuid().ToString(),
+                SkuId = result.SkuId,
+                PersonId = result.PersonId
+            };
+
+            // loop through each extended property and change
+            foreach (var prop in result.ItemExtendedPropertyList)
+            {
+                var newProp = new WriteItemExtendedPropertyDto()
+                {
+                    ExtendedPropertyId = prop.ExtendedPropertyId
+                };
+
+                switch (prop.DataType)
+                {
+                    //                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+                    case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+                    case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
+                }
+
+                updateItemDto.ItemExtendedPropertyList.Add(newProp);
+            }
+
+            // update the item
+            var updateItemResult = await _itemRepo.UpdateItem(updateItemDto);
+
+            // check the result
+            ItemDtoValidator.ItemDetailCheck(updateItemResult);
+            Validator.IsTrue(string.Equals(updateItemDto.Name, updateItemResult.Name));
+            Validator.IsTrue(string.Equals(updateItemDto.Description, updateItemResult.Description));
+            Validator.AreEqual(updateItemDto.PersonId, updateItemResult.PersonId);
+            Validator.AreEqual(updateItemDto.SkuId, updateItemResult.SkuId);
+            // check the extended properties were changed
+            foreach (var prop in updateItemResult.ItemExtendedPropertyList)
+            {
+                var dtoProp = updateItemDto.ItemExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now do a get to check it works
+            itemGet = await _itemRepo.GetItemDetail(updateItemResult.Id);
+            ItemDtoValidator.ItemDetailCheck(itemGet);
+
+            // check every extended property
+            foreach (var prop in itemGet.ItemExtendedPropertyList)
+            {
+                var dtoProp = updateItemDto.ItemExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now update again but set all ext props to null to check that there are no errors
+
+            updateItemDto.ItemExtendedPropertyList.Clear();
+            // loop through each extended property and change
+            foreach (var prop in result.ItemExtendedPropertyList)
+            {
+                var newProp = new WriteItemExtendedPropertyDto()
+                {
+                    ExtendedPropertyId = prop.ExtendedPropertyId
+                };
+
+                newProp.Value = "";
+
+                updateItemDto.ItemExtendedPropertyList.Add(newProp);
+            }
+
+            // update the item
+            updateItemResult = await _itemRepo.UpdateItem(updateItemDto);
+
+            // check the result
+            ItemDtoValidator.ItemDetailCheck(updateItemResult);
+            Validator.IsTrue(string.Equals(updateItemDto.Name, updateItemResult.Name));
+            Validator.IsTrue(string.Equals(updateItemDto.Description, updateItemResult.Description));
+            Validator.AreEqual(updateItemDto.PersonId, updateItemResult.PersonId);
+            Validator.AreEqual(updateItemDto.SkuId, updateItemResult.SkuId);
+            // check the extended properties were changed
+            foreach (var prop in updateItemResult.ItemExtendedPropertyList)
+            {
+                var dtoProp = updateItemDto.ItemExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now do a get to check it works
+            itemGet = await _itemRepo.GetItemDetail(updateItemResult.Id);
+            ItemDtoValidator.ItemDetailCheck(itemGet);
+
+            // check every extended property
+            foreach (var prop in itemGet.ItemExtendedPropertyList)
+            {
+                var dtoProp = updateItemDto.ItemExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+        }
 
         // TODO: Complete below when functionality added to V3
 

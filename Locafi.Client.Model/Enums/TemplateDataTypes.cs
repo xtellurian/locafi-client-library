@@ -12,7 +12,6 @@ namespace Locafi.Client.Model.Enums
         DateTime,
         Number,
         Decimal,
-        AutoId,
         Bool
     }
 }

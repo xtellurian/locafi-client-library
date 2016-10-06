@@ -1,6 +1,7 @@
 ﻿using Locafi.Client.Contract.Repo;
 using Locafi.Client.Model.Dto.Persons;
 using Locafi.Client.Model.Dto.Tags;
+using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model.Enums;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,20 @@ namespace Locafi.Client.UnitTests.EntityGenerators
 {
     public static class PersonGenerator
     {
-        public static async Task<AddPersonDto> GenerateRandomAddPersonDto(Guid? placeId = null)
+        public static async Task<AddPersonDto> GenerateRandomAddPersonDto(Guid? placeId = null, TemplateDetailDto templateDetailDto = null)
         {
             ITemplateRepo _templateRepo = WebRepoContainer.TemplateRepo;
 
             var ran = new Random(DateTime.UtcNow.Millisecond);
-            var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Person);
-            var template = await _templateRepo.GetById(templates.Items.ElementAt(ran.Next(templates.Items.Count())).Id);
+            TemplateDetailDto template;
+            if (templateDetailDto == null)
+            {
+                var templates = await _templateRepo.GetTemplatesForType(TemplateFor.Person);
+                template = await _templateRepo.GetById(templates.Items.ElementAt(ran.Next(templates.Items.Count())).Id);
+            }else
+            {
+                template = templateDetailDto;
+            }
             var email = $"{Guid.NewGuid().ToString().Substring(0, 16)}@FakeDomain.com";
             var name = "Random - " + template.Name + " " + ran.Next().ToString();
             var surname = name + " - Surname";

@@ -325,6 +325,14 @@ namespace Locafi.Client.UnitTests.Tests
 
             // now test the allocate/dispatch process for the outbound order
             await TestOutboundOrderProces(orderDetail, skusToUse, itemsToUse);
+
+            // outbound test leaves the unique items in a dispatched state which means that they can't be used anywhere until they are received again
+            // So as a cleanup do an inbound order to receive them back into stock, wrap in a try/catch so it doesn't cause this test to fail
+            try
+            {
+                await Order_Inbound_CompleteProcess_UniqueOnly();
+            }
+            catch { }
         }
 
         [TestMethod]
@@ -357,6 +365,14 @@ namespace Locafi.Client.UnitTests.Tests
 
             // now test the allocate/dispatch process for the outbound order
             await TestOutboundOrderProces(orderDetail, skusToUse, itemsToUse);
+
+            // outbound test leaves the unique items in a dispatched state which means that they can't be used anywhere until they are received again
+            // So as a cleanup do an inbound order to receive them back into stock, wrap in a try/catch so it doesn't cause this test to fail
+            try
+            {
+                await Order_Inbound_CompleteProcess_SkuAndUnique();
+            }
+            catch { }
         }
 
         [TestMethod]
@@ -371,6 +387,76 @@ namespace Locafi.Client.UnitTests.Tests
             //itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset2Id, DevEnvironment.Asset2TagNumber));
             //itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset3Id, DevEnvironment.Asset3TagNumber));
             //itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset4Id, DevEnvironment.Asset4TagNumber));
+
+            // create an order so we at least have something to query
+            var addOrderDto = OrderGenerator.CreateAddOrderDto(OrderType.Transfer, skusToUse.ToDictionary(k => k.Key, v => v.Value), itemsToUse.Select(i => i.Key).ToList());
+
+            var orderDetail = await _orderRepo.Create(addOrderDto);
+            _ordersToDelete.AddUnique(orderDetail.Id);
+
+            // check response
+            OrderDtoValidator.OrderDetailcheck(orderDetail, OrderStateType.Created);
+            OrderDtoValidator.OrderCreateComparison(orderDetail, addOrderDto);
+
+            // now test the allocate/dispatch process for the outbound portion of the transfer order
+            await TestOutboundOrderProces(orderDetail, skusToUse, itemsToUse);
+
+            // now test the receive process for the inbound portion of the transfer order
+            await TestInboundOrderProces(orderDetail, skusToUse, itemsToUse);
+        }
+
+        [TestMethod]
+        public async Task Order_Transfer_CompleteProcess_UniqueOnly()
+        {
+            var skusToUse = new List<KeyValuePair<Guid, int>>();
+            //skusToUse.Add(new KeyValuePair<Guid, int>(WebRepoContainer.Sku1Id, 10));
+            //skusToUse.Add(new KeyValuePair<Guid, int>(WebRepoContainer.Sku2Id, 5));
+
+            var itemsToUse = new List<KeyValuePair<Guid, string>>();
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset1Id, DevEnvironment.Asset1TagNumber));
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset2Id, DevEnvironment.Asset2TagNumber));
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset3Id, DevEnvironment.Asset3TagNumber));
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset4Id, DevEnvironment.Asset4TagNumber));
+
+            // make sure the items are not already in the to location
+            await PrepareItemsForTest(itemsToUse, WebRepoContainer.Place2Id);   // hack to cleanup states for testing
+            // make sure the items are not already in the to location
+            await PrepareItemsForTest(itemsToUse, WebRepoContainer.Place1Id);
+
+            // create an order so we at least have something to query
+            var addOrderDto = OrderGenerator.CreateAddOrderDto(OrderType.Transfer, skusToUse.ToDictionary(k => k.Key, v => v.Value), itemsToUse.Select(i => i.Key).ToList());
+
+            var orderDetail = await _orderRepo.Create(addOrderDto);
+            _ordersToDelete.AddUnique(orderDetail.Id);
+
+            // check response
+            OrderDtoValidator.OrderDetailcheck(orderDetail, OrderStateType.Created);
+            OrderDtoValidator.OrderCreateComparison(orderDetail, addOrderDto);
+
+            // now test the allocate/dispatch process for the outbound portion of the transfer order
+            await TestOutboundOrderProces(orderDetail, skusToUse, itemsToUse);
+
+            // now test the receive process for the inbound portion of the transfer order
+            await TestInboundOrderProces(orderDetail, skusToUse, itemsToUse);
+        }
+
+        [TestMethod]
+        public async Task Order_Transfer_CompleteProcess_SkuAndUnique()
+        {
+            var skusToUse = new List<KeyValuePair<Guid, int>>();
+            skusToUse.Add(new KeyValuePair<Guid, int>(WebRepoContainer.Sku1Id, 10));
+            skusToUse.Add(new KeyValuePair<Guid, int>(WebRepoContainer.Sku2Id, 5));
+
+            var itemsToUse = new List<KeyValuePair<Guid, string>>();
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset1Id, DevEnvironment.Asset1TagNumber));
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset2Id, DevEnvironment.Asset2TagNumber));
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset3Id, DevEnvironment.Asset3TagNumber));
+            itemsToUse.Add(new KeyValuePair<Guid, string>(WebRepoContainer.Asset4Id, DevEnvironment.Asset4TagNumber));
+
+            // make sure the items are not already in the to location
+            await PrepareItemsForTest(itemsToUse, WebRepoContainer.Place2Id);   // hack to cleanup states for testing
+            // make sure the items are not already in the to location
+            await PrepareItemsForTest(itemsToUse, WebRepoContainer.Place1Id);
 
             // create an order so we at least have something to query
             var addOrderDto = OrderGenerator.CreateAddOrderDto(OrderType.Transfer, skusToUse.ToDictionary(k => k.Key, v => v.Value), itemsToUse.Select(i => i.Key).ToList());
@@ -1270,7 +1356,7 @@ namespace Locafi.Client.UnitTests.Tests
             var skus = (await _skuRepo.QuerySkus()).Where(s => !string.IsNullOrEmpty(s.CompanyPrefix) && !string.IsNullOrEmpty(s.ItemReference)).ToList();
 
             // check that we have enough skus for the line items that we want
-            Assert.IsTrue(numLines < skus.Count);
+            Assert.IsTrue(numLines <= skus.Count);
 
             var result = new List<AddOrderSkuDto>();
 
@@ -1440,12 +1526,12 @@ namespace Locafi.Client.UnitTests.Tests
             {
                 Validator.IsTrue(skuLine.Value == orderProgressDetail.OrderSkuList.Where(s => s.Id == skuLine.Key).First().ReceivedTagNumbers.Count, "");
             }
-            // check that the correct items have been allocated
+            // check that the correct items have been received
             foreach (var itemLine in itemsToUse)
             {
                 Validator.IsTrue(orderProgressDetail.OrderItemList.Where(s => s.Id == itemLine.Key).First().IsReceived, "");
                 // check that they have been moved
-//                Validator.IsTrue(orderDetail.ToPlaceId == orderProgressDetail.OrderItemList.Where(s => s.Id == itemLine.Key).First().PlaceId);
+                Validator.IsTrue(orderDetail.ToPlaceId == orderProgressDetail.OrderItemList.Where(s => s.Id == itemLine.Key).First().PlaceId);
             }
 
             // now receive the order
@@ -1464,7 +1550,7 @@ namespace Locafi.Client.UnitTests.Tests
             foreach (var itemLine in itemsToUse)
             {
                 // check that they have been moved
-//                Validator.IsTrue(orderDetail.ToPlaceId == orderProgressDetail.OrderItemList.Where(s => s.Id == itemLine.Key).First().PlaceId);
+                Validator.IsTrue(orderDetail.ToPlaceId == orderProgressDetail.OrderItemList.Where(s => s.Id == itemLine.Key).First().PlaceId);
             }
         }
 
@@ -1569,7 +1655,7 @@ namespace Locafi.Client.UnitTests.Tests
             foreach (var itemLine in itemsToUse)
             {
                 // check that they have been moved
-//                Validator.IsTrue(ItemStateType.Dispatched == orderProgressDetail.OrderItemList.Where(s => s.Id == itemLine.Key).First().State);
+                Validator.IsTrue(ItemStateType.Dispatched == orderProgressDetail.OrderItemList.Where(s => s.Id == itemLine.Key).First().State);
             }
         }
 
@@ -1591,7 +1677,7 @@ namespace Locafi.Client.UnitTests.Tests
                     Id = item.Id,
                     NewPlaceId = placeId
                 };
-                var result = _itemRepo.UpdateItemPlace(moveDto);
+                var result = await _itemRepo.UpdateItemPlace(moveDto);
             }
         }
 

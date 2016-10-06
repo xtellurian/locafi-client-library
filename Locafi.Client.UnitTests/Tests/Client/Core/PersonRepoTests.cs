@@ -15,6 +15,7 @@ using Locafi.Client.Model.Dto.Places;
 using Locafi.Client.Model.Query;
 using Locafi.Client.UnitTests.EntityGenerators;
 using Locafi.Client.UnitTests.Extensions;
+using Locafi.Client.Model.Dto;
 
 namespace Locafi.Client.UnitTests.Tests
 {
@@ -23,14 +24,22 @@ namespace Locafi.Client.UnitTests.Tests
     {
         private IPersonRepo _personRepo;
         private ITemplateRepo _templateRepo;
+        private IExtendedPropertyRepo _extPropRepo;
+
         private IList<Guid> _personsToCleanup;
+        private List<Guid> _templatesToDelete;
+        private List<Guid> _extpropsToDelete;
 
         [TestInitialize]
         public void Initialise()
         {
             _personRepo = WebRepoContainer.PersonRepo;
             _templateRepo = WebRepoContainer.TemplateRepo;
+            _extPropRepo = WebRepoContainer.ExtendedPropertyRepo;
+
             _personsToCleanup = new List<Guid>();
+            _templatesToDelete = new List<Guid>();
+            _extpropsToDelete = new List<Guid>();
         }
 
         [TestCleanup]
@@ -40,6 +49,16 @@ namespace Locafi.Client.UnitTests.Tests
             foreach (var Id in _personsToCleanup)
             {
                 _personRepo.DeletePerson(Id).Wait();
+            }
+
+            foreach (var id in _templatesToDelete)
+            {
+                _templateRepo.DeleteTemplate(id).Wait();
+            }
+
+            foreach (var id in _extpropsToDelete)
+            {
+                _extPropRepo.DeleteExtendedProperty(id).Wait();
             }
         }
 
@@ -234,6 +253,157 @@ namespace Locafi.Client.UnitTests.Tests
             catch (Exception e)
             {
                 // this is expected                
+            }
+        }
+
+        [TestMethod]
+        public async Task Person_TestAllExtendedPropertyTypes()
+        {
+            // create full person template
+            var addTemplateDto = await TemplateGenerator.GenerateAddTemplateDtoWithFullExtProps(TemplateFor.Person);
+            var template = await _templateRepo.CreateTemplate(addTemplateDto);
+            _templatesToDelete.AddUnique(template.Id);
+            _extpropsToDelete.AddRangeUnique(template.TemplateExtendedPropertyList.Select(e => e.ExtendedPropertyId));
+
+            // create person
+            var addDto = await PersonGenerator.GenerateRandomAddPersonDto(null,template);
+            var result = await _personRepo.CreatePerson(addDto);
+            _personsToCleanup.AddUnique(result.Id);
+
+            PersonDtoValidator.PersonDetailCheck(result);
+
+            // check every extended property
+            var tempalteDetail = await _templateRepo.GetById(template.Id);
+            foreach (var templateExtendedProperty in tempalteDetail.TemplateExtendedPropertyList)
+            {
+                var extendedProperty = result.PersonExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsNotNull(extendedProperty, "Extended property was null");
+                var addExtendedProperty = addDto.PersonExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(extendedProperty));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(extendedProperty, addExtendedProperty));
+            }
+
+            // now do a get to check it works
+            var getResult = await _personRepo.GetPersonById(result.Id);
+            PersonDtoValidator.PersonDetailCheck(getResult);
+
+            // check every extended property
+            foreach (var templateExtendedProperty in tempalteDetail.TemplateExtendedPropertyList)
+            {
+                var extendedProperty = getResult.PersonExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsNotNull(extendedProperty, "Extended property was null");
+                var addExtendedProperty = addDto.PersonExtendedPropertyList
+                    .FirstOrDefault(e => e.ExtendedPropertyId == templateExtendedProperty.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(extendedProperty));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(extendedProperty, addExtendedProperty));
+            }
+
+            // now update extended properties
+
+            // build update item dto, but only change the extended properties
+            var updateDto = new UpdatePersonDto()
+            {
+                Id = result.Id,
+                Email = $"{Guid.NewGuid().ToString().Substring(0, 16)}@FakeDomain.com",
+                GivenName = "Random - " + template.Name,
+                Surname = "Random - " + template.Name + " - Surname",
+                TemplateId = result.TemplateId
+            };
+
+            // loop through each extended property and change
+            foreach (var prop in result.PersonExtendedPropertyList)
+            {
+                var newProp = new WriteEntityExtendedPropertyDto()
+                {
+                    ExtendedPropertyId = prop.ExtendedPropertyId
+                };
+
+                switch (prop.ExtendedPropertyDataType)
+                {
+                    //                    case TemplateDataTypes.AutoId: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+                    case TemplateDataTypes.Bool: newProp.Value = true.ToString(); break;
+                    case TemplateDataTypes.DateTime: newProp.Value = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK"); break;
+                    case TemplateDataTypes.Decimal: newProp.Value = (((double)new Random(DateTime.UtcNow.Millisecond).Next()) / 10.0).ToString(); break;
+                    case TemplateDataTypes.Number: newProp.Value = new Random(DateTime.UtcNow.Millisecond).Next().ToString(); break;
+                    case TemplateDataTypes.String: newProp.Value = Guid.NewGuid().ToString(); break;
+                }
+
+                updateDto.PersonExtendedPropertyList.Add(newProp);
+            }
+
+            // update the entity
+            var updateResult = await _personRepo.UpdatePerson(updateDto);
+
+            // check the result
+            PersonDtoValidator.PersonDetailCheck(updateResult);
+            Validator.IsTrue(string.Equals(updateDto.GivenName, updateResult.GivenName));
+            Validator.IsTrue(string.Equals(updateDto.Surname, updateResult.Surname));
+            Validator.IsTrue(string.Equals(updateDto.Email, updateResult.Email));
+            // check the extended properties were changed
+            foreach (var prop in updateResult.PersonExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PersonExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now do a get to check it works
+            getResult = await _personRepo.GetPersonById(updateResult.Id);
+            PersonDtoValidator.PersonDetailCheck(getResult);
+
+            // check every extended property
+            foreach (var prop in getResult.PersonExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PersonExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now update with null values to check this works
+
+            updateDto.PersonExtendedPropertyList.Clear();
+            // loop through each extended property and change
+            foreach (var prop in result.PersonExtendedPropertyList)
+            {
+                var newProp = new WriteEntityExtendedPropertyDto()
+                {
+                    ExtendedPropertyId = prop.ExtendedPropertyId
+                };
+
+                newProp.Value = null;
+
+                updateDto.PersonExtendedPropertyList.Add(newProp);
+            }
+
+            // update the entity
+            updateResult = await _personRepo.UpdatePerson(updateDto);
+
+            // check the result
+            PersonDtoValidator.PersonDetailCheck(updateResult);
+            Validator.IsTrue(string.Equals(updateDto.GivenName, updateResult.GivenName));
+            Validator.IsTrue(string.Equals(updateDto.Surname, updateResult.Surname));
+            Validator.IsTrue(string.Equals(updateDto.Email, updateResult.Email));
+            // check the extended properties were changed
+            foreach (var prop in updateResult.PersonExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PersonExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
+            }
+
+            // now do a get to check it works
+            getResult = await _personRepo.GetPersonById(updateResult.Id);
+            PersonDtoValidator.PersonDetailCheck(getResult);
+
+            // check every extended property
+            foreach (var prop in getResult.PersonExtendedPropertyList)
+            {
+                var dtoProp = updateDto.PersonExtendedPropertyList.FirstOrDefault(p => p.ExtendedPropertyId == prop.ExtendedPropertyId);
+                Validator.IsTrue(ExtendedPropertyDtoValidator.CanParseDtoValue(prop));
+                Validator.IsTrue(ExtendedPropertyDtoValidator.ParsedValuesAreEqual(prop, dtoProp));
             }
         }
     }
