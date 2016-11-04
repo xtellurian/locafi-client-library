@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Locafi.Client.Model.Dto.Devices;
+using Locafi.Client.Model.Dto.PortalDtos.Clusters;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.RFID;
@@ -36,7 +36,7 @@ namespace Locafi.Client.Model.Conversion
             return new ClusterTagDto
             {
                 TagNumber = tag.TagNumber,
-                TagType = tagType,
+                TagType = tagType.ToString(),
                 AverageRssi = tag.Rssi,
                 ReadCount = tag.ReadCount,
                 ReadTime = readTime??DateTime.Now

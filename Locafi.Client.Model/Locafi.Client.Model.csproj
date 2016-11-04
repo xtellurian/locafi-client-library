@@ -53,28 +53,6 @@
     <Compile Include="Dto\CycleCountDtos\ItemSkuCountDto.cs" />
     <Compile Include="Dto\CycleCountDtos\ResolveCycleCountDto.cs" />
     <Compile Include="Dto\CycleCountDtos\ResolveCycleCountResultDto.cs" />
-    <Compile Include="Dto\Devices\AddIpConfigDto.cs" />
-    <Compile Include="Dto\Devices\AddPeripheralDeviceActuatorDto.cs" />
-    <Compile Include="Dto\Devices\AddPeripheralDeviceDto.cs" />
-    <Compile Include="Dto\Devices\AddPeripheralDeviceSensorDto.cs" />
-    <Compile Include="Dto\Devices\AddRfidReaderAntennaDto.cs" />
-    <Compile Include="Dto\Devices\AddRfidReaderDto.cs" />
-    <Compile Include="Dto\Devices\AddSerialConfigDto.cs" />
-    <Compile Include="Dto\Devices\ClusterResponseDto.cs" />
-    <Compile Include="Dto\Devices\ClusterTagDto.cs" />
-    <Compile Include="Dto\Devices\CusterDto.cs" />
-    <Compile Include="Dto\Devices\IpConfigDetailDto.cs" />
-    <Compile Include="Dto\Devices\PeripheralDeviceActuatorDetailDto.cs" />
-    <Compile Include="Dto\Devices\PeripheralDeviceDetailDto.cs" />
-    <Compile Include="Dto\Devices\PeripheralDeviceSensorDetailDto.cs" />
-    <Compile Include="Dto\Devices\PeripheralDeviceSummaryDto.cs" />
-    <Compile Include="Dto\Devices\RfidReaderAntennaStatusDto.cs" />
-    <Compile Include="Dto\Devices\RfidReaderStatusDto.cs" />
-    <Compile Include="Dto\Devices\RfidReaderAntennaDto.cs" />
-    <Compile Include="Dto\Devices\RfidReaderDetailDto.cs" />
-    <Compile Include="Dto\Devices\RfidReaderSummaryDto.cs" />
-    <Compile Include="Dto\Devices\RfidReaderTemperatureDto.cs" />
-    <Compile Include="Dto\Devices\SerialConfigDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\AddErrorLogDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogDetailDto.cs" />
     <Compile Include="Dto\ErrorLogs\ErrorLogSummaryDto.cs" />
@@ -101,11 +79,33 @@
     <Compile Include="Dto\Orders\ReadOrderSkuDto.cs" />
     <Compile Include="Dto\Orders\RemoveOrderSnapshotDto.cs" />
     <Compile Include="Dto\Places\UpdatePlaceTagDto.cs" />
-    <Compile Include="Dto\Portals\CheckTagAccessDto.cs" />
-    <Compile Include="Dto\Portals\PortalHeartBeatDto.cs" />
-    <Compile Include="Dto\Portals\PortalStatusDto.cs" />
-    <Compile Include="Dto\Portals\TagAccessResultDto.cs" />
-    <Compile Include="Dto\Portals\UpdatePortalStatusDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddActuatorDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddAntennaDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddAntennaEventPortalRuleDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddDeviceDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddPortalDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddPortalRuleComponentDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddPortalRuleDto.cs" />
+    <Compile Include="Dto\PortalDtos\AddSensorDto.cs" />
+    <Compile Include="Dto\PortalDtos\AntennaEventPortalRuleDetailDto.cs" />
+    <Compile Include="Dto\PortalDtos\Clusters\ClusterDto.cs" />
+    <Compile Include="Dto\PortalDtos\Clusters\ClusterTagDto.cs" />
+    <Compile Include="Dto\PortalDtos\ContinuousPortalRuleDetailDto.cs" />
+    <Compile Include="Dto\PortalDtos\DeviceDetailDto.cs" />
+    <Compile Include="Dto\PortalDtos\DeviceSummaryDto.cs" />
+    <Compile Include="Dto\PortalDtos\PortalRuleDetailDto.cs" />
+    <Compile Include="Dto\PortalDtos\PortalRuleSummaryDto.cs" />
+    <Compile Include="Dto\PortalDtos\ReadActuatorDto.cs" />
+    <Compile Include="Dto\PortalDtos\ReadAntennaDto.cs" />
+    <Compile Include="Dto\PortalDtos\ReadSensorDto.cs" />
+    <Compile Include="Dto\PortalDtos\RfidPortalSummaryDto.cs" />
+    <Compile Include="Dto\PortalDtos\SensorEventPortalRuleDetailDto.cs" />
+    <Compile Include="Dto\PortalDtos\UpdateActuatorDto.cs" />
+    <Compile Include="Dto\PortalDtos\UpdateAntennaDto.cs" />
+    <Compile Include="Dto\PortalDtos\UpdateAntennaEventPortalRule.cs" />
+    <Compile Include="Dto\PortalDtos\UpdateDeviceDto.cs" />
+    <Compile Include="Dto\PortalDtos\UpdatePortalRuleDto.cs" />
+    <Compile Include="Dto\PortalDtos\UpdateSensorDto.cs" />
     <Compile Include="Dto\Reasons\ReasonSummaryDto.cs" />
     <Compile Include="Dto\Reasons\UpdateReasonDto.cs" />
     <Compile Include="Dto\Roles\AddRoleDto.cs" />
@@ -117,15 +117,6 @@
     <Compile Include="Dto\SearchCollectionDto.cs" />
     <Compile Include="Dto\Orders\AddOrderDto.cs" />
     <Compile Include="Dto\Orders\OrderSummaryDto.cs" />
-    <Compile Include="Dto\Portals\AddPortalDto.cs" />
-    <Compile Include="Dto\PortalRules\AddPortalRuleDto.cs" />
-    <Compile Include="Dto\Portals\PortalDetailDto.cs" />
-    <Compile Include="Dto\PortalRules\PortalRuleDetailDto.cs" />
-    <Compile Include="Dto\PortalRules\PortalRulePlaceDetailDto.cs" />
-    <Compile Include="Dto\PortalRules\PortalRuleSummaryDto.cs" />
-    <Compile Include="Dto\Portals\PortalSummaryDto.cs" />
-    <Compile Include="Dto\Portals\UpdatePortalDto.cs" />
-    <Compile Include="Dto\PortalRules\UpdatePortalRuleDto.cs" />
     <Compile Include="Dto\SkuGroups\AddSkuGroupDto.cs" />
     <Compile Include="Dto\SkuGroups\AddSkuGroupNameDto.cs" />
     <Compile Include="Dto\SkuGroups\SkuGroupDetailDto.cs" />
@@ -286,6 +277,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
