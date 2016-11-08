@@ -197,7 +197,7 @@
     <Compile Include="Enums\OrderType.cs" />
     <Compile Include="Enums\RfidReaderAntennaStatus.cs" />
     <Compile Include="Enums\ErrorLevel.cs" />
-    <Compile Include="Enums\PeripheralDeviceType.cs" />
+    <Compile Include="Enums\DeviceType.cs" />
     <Compile Include="Enums\PortalRuleType.cs" />
     <Compile Include="Enums\ReaderMode.cs" />
     <Compile Include="Enums\ReaderType.cs" />
