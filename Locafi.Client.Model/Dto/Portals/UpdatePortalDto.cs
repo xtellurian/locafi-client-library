@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.PortalDtos
+namespace Locafi.Client.Model.Dto.Portals
 {
-    public class ReadAntennaDto
+    public class UpdatePortalDto
     {
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
-        public int AntennaNumber { get; set; }
+        public IList<Guid> Devices { get; set; }
 
-        public bool IsEnabled { get; set; }
-
-        public double TxPower { get; set; }
+        public UpdatePortalDto()
+        {
+            Devices = new List<Guid>();
+        }
     }
 }

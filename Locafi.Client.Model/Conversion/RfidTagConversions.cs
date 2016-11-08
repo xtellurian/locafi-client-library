@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Locafi.Client.Model.Dto.PortalDtos.Clusters;
+using Locafi.Client.Model.Dto.Portals.Clusters;
 using Locafi.Client.Model.Dto.Snapshots;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.RFID;

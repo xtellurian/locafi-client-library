@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.PortalDtos
+namespace Locafi.Client.Model.Dto.Portals
 {
-    class ContinuousPortalRuleDetailDto : PortalRuleDetailDto
+    public class SensorEventPortalRuleDetailDto : PortalRuleDetailDto
     {
     }
 }

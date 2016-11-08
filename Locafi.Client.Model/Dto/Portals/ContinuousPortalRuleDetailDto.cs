@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.PortalDtos
+namespace Locafi.Client.Model.Dto.Portals
 {
-    public class UpdateAntennaDto : AddAntennaDto
+    class ContinuousPortalRuleDetailDto : PortalRuleDetailDto
     {
-        public Guid? Id { get; set; }
     }
 }

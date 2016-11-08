@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Locafi.Client.Model.Dto.Portals
+{
+    public class PortalDetailDto : PortalSummaryDto
+    {
+        public IList<DeviceSummaryDto> PortalDevices { get; set; }
+
+        public PortalDetailDto()
+        {
+            PortalDevices = new List<DeviceSummaryDto>();
+        }
+    }
+}

@@ -14,7 +14,6 @@ using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Locafi.Client.Model;
-using Locafi.Client.Model.Dto.PortalRules;
 using Locafi.Client.Model.Dto.Portals;
 using Locafi.Client.Model.Query;
 

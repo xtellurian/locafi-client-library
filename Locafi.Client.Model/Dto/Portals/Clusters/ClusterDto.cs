@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.PortalDtos.Clusters
+namespace Locafi.Client.Model.Dto.Portals.Clusters
 {
     public class ClusterDto
     {

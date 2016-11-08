@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.PortalDtos
+namespace Locafi.Client.Model.Dto.Portals
 {
-    public class SensorEventPortalRuleDetailDto : PortalRuleDetailDto
+    public class UpdateAntennaDto : AddAntennaDto
     {
+        public Guid? Id { get; set; }
     }
 }

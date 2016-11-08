@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.PortalDtos
+namespace Locafi.Client.Model.Dto.Portals
 {
-    public class RfidPortalSummaryDto
+    public class PortalSummaryDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

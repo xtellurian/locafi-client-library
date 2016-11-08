@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Locafi.Client.Model.Enums;
 
-namespace Locafi.Client.Model.Dto.PortalDtos
+namespace Locafi.Client.Model.Dto.Portals
 {
-    public abstract class UpdatePortalRuleDto
+    public class PortalRuleSummaryDto
     {
         public Guid Id { get; set; }
 
@@ -17,7 +17,9 @@ namespace Locafi.Client.Model.Dto.PortalDtos
 
         public int Timeout { get; set; }
 
-        public IList<Guid> Antennas { get; set; }
+        public Guid RfidPortalId { get; set; }
+
+        public string RfidPortalName { get; set; }
 
     }
 }
