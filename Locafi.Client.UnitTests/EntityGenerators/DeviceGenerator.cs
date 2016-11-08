@@ -48,7 +48,7 @@ namespace Locafi.Client.UnitTests.EntityGenerators
     //        return new AddPeripheralDeviceDto
     //        {
     //            Actuators = CreateRandomActuators(),
-    //            DeviceType = PeripheralDeviceType.SpeedwayR420,
+    //            DeviceType = DeviceType.SpeedwayR420,
     //            IpConfig = CreateRandomIpConfigDto(),
     //            Name = "Random Peripheral Device",
     //            Sensors = CreateRandomSensors()

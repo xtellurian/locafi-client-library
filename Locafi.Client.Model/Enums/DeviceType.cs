@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Enums
 {
-    public enum PeripheralDeviceType
+    public enum DeviceType
     {
         SpeedwayR220 = 1,
         SpeedwayR420 = 2,

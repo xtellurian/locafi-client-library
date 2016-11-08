@@ -38,7 +38,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
     //        Assert.IsInstanceOfType(devices.Items, typeof(IEnumerable<PeripheralDeviceSummaryDto>));
     //        Assert.IsTrue(devices.Items.Count() > 0);
 
-    //        var query = QueryBuilder<PeripheralDeviceSummaryDto>.NewQuery(d => d.DeviceType, PeripheralDeviceType.SpeedwayR420, Model.Query.ComparisonOperator.Equals)
+    //        var query = QueryBuilder<PeripheralDeviceSummaryDto>.NewQuery(d => d.DeviceType, DeviceType.SpeedwayR420, Model.Query.ComparisonOperator.Equals)
     //            .Build();
     //        devices = await _deviceRepoAsUser.QueryDevices(query);
     //        Assert.IsNotNull(devices);
