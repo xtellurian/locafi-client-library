@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public class UpdatePortalDto
+    public class AddAntennaDto
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
 
-        public IList<Guid> Devices { get; set; }
+        public int AntennaNumber { get; set; }
 
-        public UpdatePortalDto()
-        {
-            Devices = new List<Guid>();
-        }
+        public bool IsEnabled { get; set; }
+
+        public double TxPower { get; set; }
     }
 }

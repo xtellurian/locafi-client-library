@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public class CheckTagAccessDto
+    public class UpdateAntennaDto : AddAntennaDto
     {
-        public Guid PlaceId { get; set; }
-        public string TagNumber { get; set; }
+        public Guid? Id { get; set; }
     }
 }

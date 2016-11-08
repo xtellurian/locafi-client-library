@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.Devices
+namespace Locafi.Client.Model.Dto.Portals
 {
-    public class AddPeripheralDeviceActuatorDto
+    public class ReadActuatorDto
     {
+        public Guid Id { get; set; }
+
         public string Name { get; set; }
 
         public int PortNo { get; set; }

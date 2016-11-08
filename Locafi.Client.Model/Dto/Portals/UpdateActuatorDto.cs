@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public class AddPortalDto
+    public class UpdateActuatorDto : AddActuatorDto
     {
-        public string Name { get; set; }
-
-        public string HardwareKey { get; set; }
-
+        public Guid? Id { get; set; }
     }
 }

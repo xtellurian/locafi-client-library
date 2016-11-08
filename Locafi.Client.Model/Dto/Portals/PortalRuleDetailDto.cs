@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public class AddPortalDto
+    public class PortalRuleDetailDto : PortalRuleSummaryDto
     {
-        public string Name { get; set; }
-
-        public string HardwareKey { get; set; }
-
+        public IList<Guid> Antennas { get; set; }
     }
 }

@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public class UpdatePortalDto
+    public class ReadSensorDto
     {
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
-        public IList<Guid> Devices { get; set; }
-
-        public UpdatePortalDto()
-        {
-            Devices = new List<Guid>();
-        }
+        public int PortNo { get; set; }
     }
 }

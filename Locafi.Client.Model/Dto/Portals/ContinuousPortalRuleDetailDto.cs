@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public class AddPortalDto
+    class ContinuousPortalRuleDetailDto : PortalRuleDetailDto
     {
-        public string Name { get; set; }
-
-        public string HardwareKey { get; set; }
-
     }
 }
