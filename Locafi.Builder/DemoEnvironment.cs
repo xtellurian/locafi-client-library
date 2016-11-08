@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Builder
 {
-    public static class DevEnvironment1
+    public static class DevEnvironment
     {
         // Register details / 
         public static string OrganisationName => "Locafi_Demo_Organisation";
@@ -139,14 +139,22 @@ namespace Locafi.Builder
         };
 
         // Categories to Create
-        public static string SkuCategory1Name = "Prosthetic Arm";
-        public static string SkuCategory2Name = "Prosthetic Leg";
-        public static string SkuCategory3Name = "Prosthetic Knee";
-        public static string SkuCategory4Name = "Prosthetic Foot";
-        public static string SkuCategory5Name = "Silicone Arm Cover";
-        public static string SkuCategory6Name = "Dynamic Arm";
-        public static string SkuCategory7Name = "Silicone Partial Finger";
-        public static string SkuCategory8Name = "residual Limb Socket";
+        //public static string SkuCategory1Name = "Prosthetic Arm";
+        //public static string SkuCategory2Name = "Prosthetic Leg";
+        //public static string SkuCategory3Name = "Prosthetic Knee";
+        //public static string SkuCategory4Name = "Prosthetic Foot";
+        //public static string SkuCategory5Name = "Silicone Arm Cover";
+        //public static string SkuCategory6Name = "Dynamic Arm";
+        //public static string SkuCategory7Name = "Silicone Partial Finger";
+        //public static string SkuCategory8Name = "residual Limb Socket";
+        public static string SkuCategory1Name = "Sku 1";
+        public static string SkuCategory2Name = "Sku 2";
+        public static string SkuCategory3Name = "Sku 3";
+        public static string SkuCategory4Name = "Sku 4";
+        public static string SkuCategory5Name = "Sku 5";
+        public static string SkuCategory6Name = "Sku 6";
+        public static string SkuCategory7Name = "Sku 7";
+        public static string SkuCategory8Name = "Sku 8";
         public static string AssetCategory1Name = "Tools";
         public static string AssetCategory2Name = "IT Assets";
         public static List<BuilderAddSkuDto> SkusToCreate = new List<BuilderAddSkuDto>()
@@ -731,15 +739,15 @@ namespace Locafi.Builder
         };
 
         // Places to create
-        public static string Place1Name = "Stock Room 1";
-        public static string Place2Name = "Stock Room 2";
-        public static string Place3Name = "Stock Room 3";
-        public static string Place4Name = "Stock Room 4";
-        public static string Place5Name = "Stock Room 5";
-        public static string Place6Name = "Stock Room 6";
-        public static string Place7Name = "Stock Room 7";
-        public static string Place8Name = "Stock Room 8";
-        public static string Place9Name = "Stock Room 9";
+        public static string Place1Name = "Stock Room 01";
+        public static string Place2Name = "Stock Room 02";
+        public static string Place3Name = "Stock Room 03";
+        public static string Place4Name = "Stock Room 04";
+        public static string Place5Name = "Stock Room 05";
+        public static string Place6Name = "Stock Room 06";
+        public static string Place7Name = "Stock Room 07";
+        public static string Place8Name = "Stock Room 08";
+        public static string Place9Name = "Stock Room 09";
         public static string Place10Name = "Stock Room 10";
         public static string Place11Name = "Stock Room 11";
         public static string Place12Name = "Stock Room 12";
@@ -775,9 +783,9 @@ namespace Locafi.Builder
         public static string Place42Name = "Stock Room 42";
         public static string Place43Name = "Stock Room 43";
         public static string Place44Name = "Stock Room 44";
-        public static string Place45Name = "DHL Warehouse";
-        public static string Place46Name = "Hospital 1";
-        public static string Place47Name = "Hospital 2";
+        public static string Place45Name = "Warehouse 1";
+        public static string Place46Name = "Warehouse 2";
+        public static string Place47Name = "Warehouse 3";
         public static List<BuilderAddPlaceDto> PlacesToCreate = new List<BuilderAddPlaceDto>()
         {
             new BuilderAddPlaceDto()
