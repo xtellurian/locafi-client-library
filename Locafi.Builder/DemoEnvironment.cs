@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Builder
 {
-    public static class DevEnvironment
+    public static class DevEnvironment1
     {
         // Register details / 
         public static string OrganisationName => "Locafi_Demo_Organisation";

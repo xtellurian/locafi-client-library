@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
-using Locafi.Client.Model.Dto.Devices;
+//using Locafi.Client.Model.Dto.Devices;
 
 namespace Locafi.Client.Contract.Repo
 {
-    public interface IClusterRepo
-    {
-        Task<ClusterResponseDto> ProcessCluster(ClusterDto cluster);
-        Task FlushCache(int? amount = null);
-    }
+    //public interface IClusterRepo
+    //{
+    //    Task<ClusterResponseDto> ProcessCluster(ClusterDto cluster);
+    //    Task FlushCache(int? amount = null);
+    //}
 }

@@ -23,7 +23,7 @@ namespace Locafi.Client.Model.Query.PropertyComparison
             Skip = skip;
             var propInfo = Validate(propertyLambda);
 
-            FilterString = $"{QueryStrings.Filter.FilterStart}{BuildSingleExpression(value, op, propInfo)}";
+            FilterString = $"{QueryStrings.Filter.FilterStart}{BuildSingleExpression(value, op, propInfo, propertyLambda)}";
         }
 
 

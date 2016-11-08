@@ -45,7 +45,7 @@ namespace Locafi.Client.Model.Query.Builder
         public QueryBuilder<T> And<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op)
         {
             var propertyInfo = Validate(propertyLambda);
-            var filterString = BuildSingleExpression(value, op, propertyInfo);
+            var filterString = BuildSingleExpression(value, op, propertyInfo, propertyLambda);
             _filterExpressions.Add(new FilterExpression() { Expression = filterString, Operator = LogicalOperator.And });
             return this;
         }
@@ -53,7 +53,7 @@ namespace Locafi.Client.Model.Query.Builder
         public QueryBuilder<T> Or<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op)
         {
             var propertyInfo = Validate(propertyLambda);
-            var filterString = BuildSingleExpression(value, op, propertyInfo);
+            var filterString = BuildSingleExpression(value, op, propertyInfo, propertyLambda);
             _filterExpressions.Add(new FilterExpression() { Expression = filterString, Operator = LogicalOperator.Or });
             return this;
         }
@@ -61,7 +61,7 @@ namespace Locafi.Client.Model.Query.Builder
         public QueryBuilder<T> Not<TProperty>(Expression<Func<T, TProperty>> propertyLambda, TProperty value, ComparisonOperator op)
         {
             var propertyInfo = Validate(propertyLambda);
-            var filterString = BuildSingleExpression(value, op, propertyInfo);
+            var filterString = BuildSingleExpression(value, op, propertyInfo, propertyLambda);
             _filterExpressions.Add(new FilterExpression() { Expression = filterString, Operator = LogicalOperator.Not });
             return this;
         }

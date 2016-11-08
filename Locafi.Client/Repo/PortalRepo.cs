@@ -169,31 +169,31 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public async Task<PortalStatusDto> GetPortalStatus(Guid id)
-        {
-            var path = PortalUri.GetPortalStatus(id);
-            var result = await Get<PortalStatusDto>(path);
-            return result;
-        }
+        //public async Task<PortalStatusDto> GetPortalStatus(Guid id)
+        //{
+        //    var path = PortalUri.GetPortalStatus(id);
+        //    var result = await Get<PortalStatusDto>(path);
+        //    return result;
+        //}
 
-        public async Task<PortalStatusDto> UpdatePortalStatus(UpdatePortalStatusDto updatePortalStatusDto)
-        {
-            var path = PortalUri.UpdatePortalStatus;
-            var result = await Post<PortalStatusDto>(updatePortalStatusDto, path);
-            return result;
-        }
+        //public async Task<PortalStatusDto> UpdatePortalStatus(UpdatePortalStatusDto updatePortalStatusDto)
+        //{
+        //    var path = PortalUri.UpdatePortalStatus;
+        //    var result = await Post<PortalStatusDto>(updatePortalStatusDto, path);
+        //    return result;
+        //}
 
-        public async Task<bool> UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto)
-        {
-            var path = PortalUri.UpdatePortalHeartbeat;
-            return await Post(portalHeartbeatDto, path);            
-        }
+        //public async Task<bool> UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto)
+        //{
+        //    var path = PortalUri.UpdatePortalHeartbeat;
+        //    return await Post(portalHeartbeatDto, path);            
+        //}
 
-        public async Task<TagAccessResultDto> CheckAccess(CheckTagAccessDto tagAccessDto)
-        {
-            var path = PortalUri.CheckAccess;
-            return await Post<TagAccessResultDto>(tagAccessDto, path);
-        }
+        //public async Task<TagAccessResultDto> CheckAccess(CheckTagAccessDto tagAccessDto)
+        //{
+        //    var path = PortalUri.CheckAccess;
+        //    return await Post<TagAccessResultDto>(tagAccessDto, path);
+        //}
 
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {

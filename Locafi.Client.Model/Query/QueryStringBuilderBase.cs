@@ -10,49 +10,69 @@ namespace Locafi.Client.Model.Query
 {
     public abstract class QueryStringBuilderBase<T>
     {
-        protected string BuildSingleExpression<TProperty>(TProperty value, ComparisonOperator op, PropertyInfo propInfo)
+        protected string BuildSingleExpression<TProperty>(TProperty value, ComparisonOperator op, PropertyInfo propInfo, Expression<Func<T, TProperty>> propertyLambda)
         {
             var filter = "";
             switch (op)
             {
                 case ComparisonOperator.Equals:
                     filter =
-                        $"{QueryStrings.Filter.Equals(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.Equals(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.NotEquals:
                     filter =
-                        $"{QueryStrings.Filter.NotEquals(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.NotEquals(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.Contains:
                     filter =
-                        $"{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.Contains(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.GreaterThan:
                     filter =
-                        $"{QueryStrings.Filter.GreaterThan(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.GreaterThan(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.LessThan:
                     filter =
-                        $"{QueryStrings.Filter.LessThan(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.LessThan(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.GreaterThanOrEqual:
                     filter =
-                        $"{QueryStrings.Filter.GreaterThanOrEqual(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.GreaterThanOrEqual(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.LessThanOrEqual:
                     filter =
-                        $"{QueryStrings.Filter.LessThanOrEqual(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.LessThanOrEqual(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
                 case ComparisonOperator.ContainedIn:
                     filter =
-                        $"{QueryStrings.Filter.ContainedIn(ConvertToOdataValue(value), propInfo.Name)}";
+                        $"{QueryStrings.Filter.ContainedIn(ConvertToOdataValue(value), ConvertToOdataProperty(propInfo, propertyLambda))}";
                     break;
                 default:
                     filter =
-                        $"{QueryStrings.Filter.Contains(propInfo.Name, ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.Contains(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
                     break;
             }
             return filter;
+        }
+
+        private string ConvertToOdataProperty<TProperty>(PropertyInfo propInfo, Expression<Func<T, TProperty>> propertyLambda)
+        {
+            // validate is a supported method
+            MethodCallExpression method = propertyLambda.Body as MethodCallExpression;
+            if (method != null)
+            {
+                if (method.Method.Name != "ToLower")
+                    throw new ArgumentException($"Expression '{propertyLambda}' refers to a method that is not supported.");
+
+                switch(method.Method.Name)
+                {
+                    case "ToLower": return "tolower(" + propInfo.Name + ")";
+                    default:
+                        throw new ArgumentException($"Expression '{propertyLambda}' refers to a method that is not supported.");
+                }
+            }
+
+            return propInfo.Name;
         }
 
         private string ConvertToOdataValue<TProperty>(TProperty p)
@@ -101,14 +121,30 @@ namespace Locafi.Client.Model.Query
         {
             Type type = typeof(T);
             Type otherType = typeof(TProperty);
-            // validate is not method
-            MemberExpression member = propertyLambda.Body as MemberExpression;
-            if (member == null)
-                throw new ArgumentException($"Expression '{propertyLambda}' refers to a method, not a property.");
+            MemberExpression member;
+            PropertyInfo propInfo;
+            // validate is a supported method
+            MethodCallExpression method = propertyLambda.Body as MethodCallExpression;
+            if (method != null)
+            {
+                if (method.Method.Name != "ToLower")
+                    throw new ArgumentException($"Expression '{propertyLambda}' refers to a method that is not supported.");
+
+                member = method.Object as MemberExpression;
+            }
+            else
+            {
+                // validate is not method
+                member = propertyLambda.Body as MemberExpression;
+                if (member == null)
+                    throw new ArgumentException($"Expression '{propertyLambda}' refers to a method, not a property.");
+            }
+
             // validate is property
-            PropertyInfo propInfo = member.Member as PropertyInfo;
+            propInfo = member.Member as PropertyInfo;
             if (propInfo == null)
                 throw new ArgumentException($"Expression '{propertyLambda}' refers to a field, not a property.");
+
             // validate is part of type
             var basetype = type;
             while (!basetype.GetRuntimeProperties().Contains(propInfo))

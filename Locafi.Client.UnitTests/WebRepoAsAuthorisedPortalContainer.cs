@@ -22,7 +22,7 @@ namespace Locafi.Client.UnitTests
         }
 
         public static IAuthenticationRepo AuthRepo => new AuthenticationRepo(HttpConfigService, Serialiser);
-        public static IDeviceRepo DeviceRepo => new DeviceRepo(AuthorisedHttpTransferConfigService, Serialiser);
+//        public static IDeviceRepo DeviceRepo => new DeviceRepo(AuthorisedHttpTransferConfigService, Serialiser);
         public static IPortalRepo PortalRepo => new PortalRepo(AuthorisedHttpTransferConfigService, Serialiser);
 
         static WebRepoAsAuthorisedPortalContainer()
