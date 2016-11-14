@@ -7,17 +7,21 @@ using Locafi.Client.Model.Enums;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public abstract class UpdatePortalRuleDto
+    public class UpdatePortalRuleDto
     {
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
-        public PortalRuleType RuleType { get; set; }
+        public IList<WriteEntityExtendedPropertyDto> PortalRuleProperties { get; set; }
 
-        public int Timeout { get; set; }
+        public IList<WritePortalRuleComponentDto> ComponentList { get; set; }
 
-        public IList<Guid> Antennas { get; set; }
+        public UpdatePortalRuleDto()
+        {
+            PortalRuleProperties = new List<WriteEntityExtendedPropertyDto>();
+            ComponentList = new List<WritePortalRuleComponentDto>();
+        }
 
     }
 }

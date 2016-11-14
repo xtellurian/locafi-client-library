@@ -8,6 +8,8 @@ namespace Locafi.Client.Model.Dto.Portals
 {
     public class PortalRuleDetailDto : PortalRuleSummaryDto
     {
-        public IList<Guid> Antennas { get; set; }
+        public IList<ReadEntityExtendedPropertyDto> PortalRuleProperties { get; set; }
+
+        public IList<ReadPortalRuleComponentDto> PortalRuleComponents { get; set; }
     }
 }

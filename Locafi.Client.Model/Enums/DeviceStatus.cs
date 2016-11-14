@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locafi.Client.Model.Dto.Portals
+namespace Locafi.Client.Model.Enums
 {
-    public class SensorEventPortalRuleDetailDto : PortalRuleDetailDto
+    public enum DeviceStatus
     {
+        Offline = 0,
+        Idle,
+        Operating
     }
 }

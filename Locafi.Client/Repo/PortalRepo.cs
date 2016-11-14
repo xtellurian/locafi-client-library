@@ -15,6 +15,7 @@ using Locafi.Client.Model.Responses;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Locafi.Client.Model;
 using Locafi.Client.Model.Dto.Portals;
+using Locafi.Client.Model.Dto.Portals.Clusters;
 using Locafi.Client.Model.Query;
 
 namespace Locafi.Client.Repo
@@ -26,7 +27,9 @@ namespace Locafi.Client.Repo
         {
         }
 
-        public async Task<PageResult<PortalSummaryDto>> QueryPortals(string oDataQueryOptions = null)
+        #region -- portals
+
+        public async Task<PageResult<PortalSummaryDto>> GetPortals(string oDataQueryOptions = null)
         {
             var path = PortalUri.GetPortals;
 
@@ -53,26 +56,20 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<PageResult<PortalSummaryDto>> QueryPortals(IRestQuery<PortalSummaryDto> query)
+        public async Task<PageResult<PortalSummaryDto>> GetPortals(IRestQuery<PortalSummaryDto> query)
         {
-            return await QueryPortals(query.AsRestQuery());
+            return await GetPortals(query.AsRestQuery());
         }
-        public async Task<IQueryResult<PortalSummaryDto>> QueryPortalsContinuation(IRestQuery<PortalSummaryDto> query)
+
+        public async Task<IQueryResult<PortalSummaryDto>> GetPortalsContinuation(IRestQuery<PortalSummaryDto> query)
         {
-            var result = await QueryPortals(query.AsRestQuery());
+            var result = await GetPortals(query.AsRestQuery());
             return result.AsQueryResult(query);
         }
 
         public async Task<PortalDetailDto> GetPortal(Guid id)
         {
             var path = PortalUri.GetPortal(id);
-            var result = await Get<PortalDetailDto>(path);
-            return result;
-        }
-
-        public async Task<PortalDetailDto> GetPortal(string serial)
-        {
-            var path = PortalUri.GetPortal(serial);
             var result = await Get<PortalDetailDto>(path);
             return result;
         }
@@ -97,7 +94,87 @@ namespace Locafi.Client.Repo
             await Delete(path);
         }
 
-        public async Task<PageResult<PortalRuleSummaryDto>> QueryPortalRules(string oDataQueryOptions = null)
+        #endregion
+
+        #region -- devices
+
+        public async Task<DeviceDetailDto> CreateDevice(AddDeviceDto deviceDto)
+        {
+            var path = PortalUri.CreateDevice;
+            var result = await Post<DeviceDetailDto>(deviceDto, path);
+            return result;
+        }
+
+        public async Task<DeviceDetailDto> UpdateDevice(UpdateDeviceDto updateDto)
+        {
+            var path = PortalUri.UpdateDevice;
+            var result = await Post<DeviceDetailDto>(updateDto, path);
+            return result;
+        }
+
+        public async Task<PageResult<DeviceSummaryDto>> GetDevices(string oDataQueryOptions = null)
+        {
+            var path = PortalUri.GetDevices;
+
+            // add the query options if required
+            if (!string.IsNullOrEmpty(oDataQueryOptions))
+            {
+                if (oDataQueryOptions[0] != '?')
+                    path += "?";
+
+                path += oDataQueryOptions;
+            }
+
+            // make sure the query asks to return the item count
+            if (!path.Contains("$count"))
+            {
+                if (path.Contains("?"))
+                    path += "&$count=true";
+                else
+                    path += "?$count=true";
+            }
+
+            // run query
+            var result = await Get<PageResult<DeviceSummaryDto>>(path);
+            return result;
+        }
+
+        public async Task<PageResult<DeviceSummaryDto>> GetDevices(IRestQuery<DeviceSummaryDto> query)
+        {
+            return await GetDevices(query.AsRestQuery());
+        }
+
+        public async Task<IQueryResult<DeviceSummaryDto>> GetDevicesContinuation(IRestQuery<DeviceSummaryDto> query)
+        {
+            var result = await GetDevices(query.AsRestQuery());
+            return result.AsQueryResult(query);
+        }
+
+        public async Task<DeviceDetailDto> GetDevice(Guid id)
+        {
+            var path = PortalUri.GetDevice(id);
+            var result = await Get<DeviceDetailDto>(path);
+            return result;
+        }
+
+        public async Task DeleteDevice(Guid id)
+        {
+            var path = PortalUri.DeleteDevice(id);
+            await Delete(path);
+        }
+
+        #endregion
+
+        #region -- portal rules
+
+        public async Task<PortalRuleDetailDto> CreatePortalRule(AddPortalRuleDto addPortalRuleDto)
+        {
+            var path = PortalUri.CreatePortalRule;
+            var result = await Post<PortalRuleDetailDto>(addPortalRuleDto, path);
+            return result;
+        }
+
+        public async Task<PageResult<PortalRuleSummaryDto>> GetPortalRules(string oDataQueryOptions = null)
         {
             var path = PortalUri.GetPortalRules;
 
@@ -124,21 +201,21 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<PageResult<PortalRuleSummaryDto>> QueryPortalRules(IRestQuery<PortalRuleSummaryDto> query)
+        public async Task<PageResult<PortalRuleSummaryDto>> GetPortalRules(IRestQuery<PortalRuleSummaryDto> query)
         {
-            return await QueryPortalRules(query.AsRestQuery());
+            return await GetPortalRules(query.AsRestQuery());
         }
 
-        public async Task<IQueryResult<PortalRuleSummaryDto>> QueryPortalRulesContinuation(IRestQuery<PortalRuleSummaryDto> query)
+        public async Task<IQueryResult<PortalRuleSummaryDto>> GetPortalRulesContinuation(IRestQuery<PortalRuleSummaryDto> query)
         {
-            var result = await QueryPortalRules(query.AsRestQuery());
+            var result = await GetPortalRules(query.AsRestQuery());
             return result.AsQueryResult(query);
         }
 
-        public async Task<IList<PortalRuleDetailDto>> GetRulesForPortal(Guid id)
+        public async Task<PortalRuleDetailDto> UpdatePortalRule(UpdatePortalRuleDto updatePortalRuleDto)
         {
-            var path = PortalUri.GetRulesForPortal(id);
-            var result = await Get<List<PortalRuleDetailDto>>(path);
+            var path = PortalUri.UpdatePortalRule;
+            var result = await Post<PortalRuleDetailDto>(updatePortalRuleDto, path);
             return result;
         }
 
@@ -149,51 +226,25 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async Task<PortalRuleDetailDto> CreatePortalRule(AddPortalRuleDto addPortalRuleDto)
-        {
-            var path = PortalUri.CreatePortalRule;
-            var result = await Post<PortalRuleDetailDto>(addPortalRuleDto, path);
-            return result;
-        }
-
-        public async Task<PortalRuleDetailDto> UpdatePortalRule(UpdatePortalRuleDto updatePortalRuleDto)
-        {
-            var path = PortalUri.UpdatePortalRule;
-            var result = await Post<PortalRuleDetailDto>(updatePortalRuleDto, path);
-            return result;
-        }
-
+        [Obsolete("Not yet implemented on the server")]
         public async Task DeletePortalRule(Guid id)
         {
             var path = PortalUri.DeletePortalRule(id);
             await Delete(path);
         }
 
-        //public async Task<PortalStatusDto> GetPortalStatus(Guid id)
-        //{
-        //    var path = PortalUri.GetPortalStatus(id);
-        //    var result = await Get<PortalStatusDto>(path);
-        //    return result;
-        //}
+        #endregion
 
-        //public async Task<PortalStatusDto> UpdatePortalStatus(UpdatePortalStatusDto updatePortalStatusDto)
-        //{
-        //    var path = PortalUri.UpdatePortalStatus;
-        //    var result = await Post<PortalStatusDto>(updatePortalStatusDto, path);
-        //    return result;
-        //}
+        #region -- clusters
 
-        //public async Task<bool> UpdatePortalHeartbeat(PortalHeartbeatDto portalHeartbeatDto)
-        //{
-        //    var path = PortalUri.UpdatePortalHeartbeat;
-        //    return await Post(portalHeartbeatDto, path);            
-        //}
+        public async Task<bool> ProcessCluster(ClusterDto clusterDto)
+        {
+            var path = PortalUri.ProcessCluster;
+            var result = await Post(clusterDto, path);
+            return result;
+        }
 
-        //public async Task<TagAccessResultDto> CheckAccess(CheckTagAccessDto tagAccessDto)
-        //{
-        //    var path = PortalUri.CheckAccess;
-        //    return await Post<TagAccessResultDto>(tagAccessDto, path);
-        //}
+        #endregion
 
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {

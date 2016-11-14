@@ -11,15 +11,13 @@ namespace Locafi.Client.Model.Dto.Portals
     {
         public Guid Id { get; set; }
 
+        public Guid PortalId { get; set; }
+
+        public string PortalName { get; set; }
+
         public string Name { get; set; }
 
-        public PortalRuleType RuleType { get; set; }
-
-        public int Timeout { get; set; }
-
-        public Guid RfidPortalId { get; set; }
-
-        public string RfidPortalName { get; set; }
+        public string RuleType { get; set; }
 
     }
 }

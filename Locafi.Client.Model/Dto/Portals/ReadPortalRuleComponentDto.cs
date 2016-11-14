@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
-    public class PortalSummaryDto
+    public class ReadPortalRuleComponentDto
     {
-        public Guid Id { get; set; }
+        public string Component { get; set; }
 
-        public string Name { get; set; }
+        public Guid? ValueId { get; set; }
 
-        public string HardwareKey { get; set; }
+        public string ValueName { get; set; }
     }
 }

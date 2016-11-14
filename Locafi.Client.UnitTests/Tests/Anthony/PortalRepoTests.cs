@@ -32,7 +32,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortals()
 //        {
-//            var portals = await _portalRepo.QueryPortals();
+//            var portals = await _portalRepo.GetPortals();
 //            Assert.IsNotNull(portals);
 //            Assert.IsInstanceOfType(portals, typeof (IEnumerable<PortalSummaryDto>));
 //            Assert.IsTrue(portals.Count > 0);
@@ -41,7 +41,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalByIdAsUser()
 //        {
-//            var portals = await _portalRepo.QueryPortals();
+//            var portals = await _portalRepo.GetPortals();
 //            var portal = await _portalRepo.GetPortal(portals.First().Id);
 //            Assert.IsNotNull(portal);
 //            Assert.IsInstanceOfType(portal, typeof (PortalDetailDto));
@@ -50,7 +50,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalByIdAsPortal()
 //        {
-//            var portals = await _portalRepo.QueryPortals();
+//            var portals = await _portalRepo.GetPortals();
 //            var portalId = portals.FirstOrDefault(t => t.SerialNumber == StringConstants.PortalUsername).Id;
 //            var portal = await _portalRepoAsPortal.GetPortal(portalId); //fails as it's unauthorised
 //            Assert.IsNotNull(portal);
@@ -124,7 +124,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalRules()
 //        {
-//            var portalRules = await _portalRepo.QueryPortalRules();
+//            var portalRules = await _portalRepo.GetPortalRules();
 //            Assert.IsNotNull(portalRules);
 //            Assert.IsInstanceOfType(portalRules, typeof (IEnumerable<PortalRuleSummaryDto>));
 //            Assert.IsTrue(portalRules.Count > 0);
@@ -133,7 +133,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalRuleByIdAsUser()
 //        {
-//            var portalRules = await _portalRepo.QueryPortalRules();
+//            var portalRules = await _portalRepo.GetPortalRules();
 //            var portalRule = await _portalRepo.GetPortalRule(portalRules.FirstOrDefault().Id);
 //            Assert.IsNotNull(portalRule);
 //            Assert.IsInstanceOfType(portalRule, typeof (PortalRuleDetailDto));
@@ -142,7 +142,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalRuleByIdAsPortal()
 //        {
-//            var portalRules = await _portalRepo.QueryPortalRules();
+//            var portalRules = await _portalRepo.GetPortalRules();
 //            var portalRule = await _portalRepoAsPortal.GetPortalRule(portalRules.FirstOrDefault().Id);
 //            Assert.IsNotNull(portalRule);
 //            Assert.IsInstanceOfType(portalRule, typeof (PortalRuleDetailDto));
@@ -151,7 +151,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalRulesForSpecificPortalAsUser()
 //        {
-//            var portals = await _portalRepo.QueryPortals();
+//            var portals = await _portalRepo.GetPortals();
 //            var portalRules = await _portalRepo.GetRulesForPortal(portals.FirstOrDefault(t => !String.IsNullOrEmpty(t.SerialNumber)).Id);
 //            Assert.IsNotNull(portalRules);
 //            Assert.IsInstanceOfType(portalRules, typeof (IEnumerable<PortalRuleDetailDto>));
@@ -160,7 +160,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalRulesForSpecificPortalAsPortal()
 //        {
-//            var portals = await _portalRepo.QueryPortals();
+//            var portals = await _portalRepo.GetPortals();
 //            var portalRules =
 //                await
 //                    _portalRepoAsPortal.GetRulesForPortal(
@@ -182,7 +182,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 
 //        private async Task<AddPortalRuleDto> CreateRandomPortalRule()
 //        {
-//            var portalId = (await _portalRepo.QueryPortals()).FirstOrDefault().Id;
+//            var portalId = (await _portalRepo.GetPortals()).FirstOrDefault().Id;
 //            var placeInId = (await _placeRepo.QueryPlaces()).FirstOrDefault().Id;
 
 //            return new AddPortalRuleDto
@@ -241,7 +241,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_GetPortalStatus()
 //        {
-//            var portalId = (await _portalRepo.QueryPortals()).FirstOrDefault().Id;
+//            var portalId = (await _portalRepo.GetPortals()).FirstOrDefault().Id;
 //            var status = await _portalRepo.GetPortalStatus(portalId);
 //            Assert.IsNotNull(status);
 //            Assert.IsInstanceOfType(status, typeof(PortalStatusDto));
@@ -250,7 +250,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_UpdatePortalStatus()
 //        {
-//            var portalId = (await _portalRepo.QueryPortals()).FirstOrDefault().Id;
+//            var portalId = (await _portalRepo.GetPortals()).FirstOrDefault().Id;
 //            var update = await CreateRandomPortalStatusUpdate(portalId);
 //            var result = await _portalRepoAsPortal.UpdatePortalStatus(update);
 //            Assert.IsNotNull(result);
@@ -272,7 +272,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //                update.RfidReaderStatuses.Add(new RfidReaderStatusDto
 //                {
 //                    AntennaStatuses = new List<RfidReaderAntennaStatusDto>(),
-//                    Status = RfidReaderStatus.Offline,
+//                    Status = DeviceStatus.Offline,
 //                    Id = reader.Id
 //                });
 //                foreach (var antenna in reader.Antennas)
@@ -290,7 +290,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
 //        [TestMethod]
 //        public async Task Portal_UpdatePortalHeartbeat()
 //        {
-//            var portalId = (await _portalRepo.QueryPortals()).FirstOrDefault().Id;
+//            var portalId = (await _portalRepo.GetPortals()).FirstOrDefault().Id;
 //            var heartbeat = new PortalHeartbeatDto {RfidPortalId = portalId, RfidReaderTemperatures = new List<RfidReaderTemperatureDto>()};
 //            try
 //            {

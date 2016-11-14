@@ -9,49 +9,60 @@ namespace Locafi.Client.Model.RelativeUri
     public static class PortalUri
     {
         public static string ServiceName => @"Portals";
-        public static string GetPortals => @"GetFilteredPortals";
-        public static string CreatePortal => @"CreatePortal";
-        public static string GetPortalRules => @"GetFilteredPortalRules";
-        public static string CreatePortalRule => @"CreatePortalRule";
-        public static string UpdatePortalStatus => @"UpdatePortalStatus";
-        public static string UpdatePortalHeartbeat => @"SendHeartbeat";
-        public static string UpdatePortalRule => @"UpdatePortalRule";
-        public static string UpdatePortal => @"UpdatePortal";
-        public static string CheckAccess => @"CheckAccess";
 
+        #region -- portals
+
+        public static string GetPortals => @"GetPortals";
         public static string GetPortal(Guid id)
         {
             return $"GetPortal/{id}";
         }
-
-        public static string GetPortal(string serial)
-        {
-            return $"GetPortalBySerial/{serial}";
-        }
-
+        public static string CreatePortal => @"CreatePortal";
+        public static string UpdatePortal => @"UpdatePortal";
         public static string DeletePortal(Guid id)
         {
             return $"DeletePortal/{id}";
         }
 
+        #endregion
+
+        #region -- devices
+
+        public static string CreateDevice => @"CreateDevice";
+        public static string UpdateDevice => @"UpdateDevice";
+        public static string GetDevices => @"GetDevices";
+        public static string GetDevice(Guid id)
+        {
+            return $"GetDevice/{id}";
+        }
+
+        public static string DeleteDevice(Guid id)
+        {
+            return $"DeleteDevice/{id}";
+        }
+
+        #endregion
+
+        #region -- portal rules
+
+        public static string CreatePortalRule => @"CreatePortalRule";
+        public static string GetPortalRules => @"GetPortalRules";
+        public static string UpdatePortalRule => @"UpdatePortalRule";
         public static string GetPortalRule(Guid id)
         {
             return $"GetPortalRule/{id}";
         }
-
-        public static string GetRulesForPortal(Guid id)
-        {
-            return $"GetRulesForPortal/{id}";
-        }
-
         public static string DeletePortalRule(Guid id)
         {
             return $"DeletePortalRule/{id}";
         }
 
-        public static string GetPortalStatus(Guid id)
-        {
-            return $"GetPortalStatus/{id}";
-        }
+        #endregion
+
+        #region -- clusters
+
+        public static string ProcessCluster => @"ProcessCluster";
+
+        #endregion
     }
 }
