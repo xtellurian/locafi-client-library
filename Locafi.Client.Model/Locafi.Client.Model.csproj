@@ -41,6 +41,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Conversion\ExtendedPropertyConversions.cs" />
+    <Compile Include="Dto\Agent\AddAgentDto.cs" />
+    <Compile Include="Dto\Agent\AgentSummaryDto.cs" />
+    <Compile Include="Dto\Authentication\AgentLoginDto.cs" />
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
     <Compile Include="Dto\Authentication\RegistrationDto.cs" />
     <Compile Include="Dto\Ble\BleDetectionBase.cs" />
@@ -223,6 +226,7 @@
     <Compile Include="Query\QueryExtensions.cs" />
     <Compile Include="Query\QueryResult.cs" />
     <Compile Include="Query\QueryStringBuilderBase.cs" />
+    <Compile Include="RelativeUri\AgentUri.cs" />
     <Compile Include="RelativeUri\AuthenticationUri.cs" />
     <Compile Include="RelativeUri\CycleCountUri.cs" />
     <Compile Include="RelativeUri\DeviceUri.cs" />

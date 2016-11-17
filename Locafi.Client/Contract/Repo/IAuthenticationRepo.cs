@@ -12,8 +12,9 @@ namespace Locafi.Client.Contract.Repo
         Task<AuthenticationResponseDto> Login (string emailAddress, string password);
         Task<AuthenticationResponseDto> RefreshLogin(string refreshToken);
         Task<AuthenticationResponseDto> Login(ILoginCredentialsProvider credentials);
-        Task<AuthenticationResponseDto> PortalLogin(ILoginCredentialsProvider credentials);
-        Task<AuthenticationResponseDto> PortalLogin(string serial, string password);
         Task<bool> Register(RegistrationDto registrationDto);
+        Task<AuthenticationResponseDto> AgentLogin(AgentLoginDto agentLoginDto);
+        Task<AuthenticationResponseDto> AgentLogin(string hardwareKey);
+        Task<AuthenticationResponseDto> RefreshAgentLogin(string refreshToken);
     }
 }

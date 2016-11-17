@@ -15,6 +15,7 @@ using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 using Locafi.Client.Model;
 using Locafi.Client.Model.Dto;
+using Locafi.Client.Model.RelativeUri;
 
 namespace Locafi.Client.Repo
 {

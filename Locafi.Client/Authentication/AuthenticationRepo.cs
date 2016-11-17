@@ -56,29 +56,13 @@ namespace Locafi.Client.Authentication
             return result;
         }
 
-
-        public async Task<AuthenticationResponseDto> PortalLogin(ILoginCredentialsProvider credentials)
-        {
-            var dto = new UserLoginDto
-            {
-                Password = credentials.Password,
-                Username = credentials.UserName
-            };
-
-            return await LoginWithDto(dto, AuthenticationUri.PortalLogin);
-        }
-
-        public async Task<AuthenticationResponseDto> PortalLogin(string serial, string password)
-        {
-            var dto = new UserLoginDto
-            {
-                Password = password,
-                Username = serial
-            };
-            return await LoginWithDto(dto, AuthenticationUri.PortalLogin);
-        }
-
         private async Task<AuthenticationResponseDto> LoginWithDto(UserLoginDto dto, string path)
+        {
+            var result = await Post<AuthenticationResponseDto>(dto, path);
+            return result;
+        }
+
+        private async Task<AuthenticationResponseDto> LoginWithDto(AgentLoginDto dto, string path)
         {
             var result = await Post<AuthenticationResponseDto>(dto, path);
             return result;
@@ -88,6 +72,27 @@ namespace Locafi.Client.Authentication
         {
             var path = AuthenticationUri.Register;
             var result = await Post(registrationDto, path);
+            return result;
+        }
+
+        public async Task<AuthenticationResponseDto> AgentLogin(AgentLoginDto agentLoginDto)
+        {
+            var path = AuthenticationUri.AgentLogin;
+            return await LoginWithDto(agentLoginDto, path);
+        }
+
+        public async Task<AuthenticationResponseDto> AgentLogin(string hardwareKey)
+        {
+            var agentLoginDto = new AgentLoginDto {HardwareKey = hardwareKey};
+            var path = AuthenticationUri.AgentLogin;
+            return await LoginWithDto(agentLoginDto, path);
+        }
+
+        public async Task<AuthenticationResponseDto> RefreshAgentLogin(string refreshToken)
+        {
+            var dto = new RefreshLoginDto(refreshToken);
+            var path = AuthenticationUri.RefreshAgentLogin;
+            var result = await Post<AuthenticationResponseDto>(dto, path);
             return result;
         }
 
