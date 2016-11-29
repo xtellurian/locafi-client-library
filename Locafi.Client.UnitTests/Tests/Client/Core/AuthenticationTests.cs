@@ -76,19 +76,17 @@ namespace Locafi.Client.UnitTests.Tests.Client.Core
         }
 
         [TestMethod]
-        public async Task Authentication_PortalLogin() // changed implemention on server side
+        public async Task Authentication_AgentLogin() // changed implemention on server side
         {
-            var password = _hashService.GenerateHash(StringConstants.Secret, StringConstants.PortalUsername);
-            var result = await _authRepo.PortalLogin(StringConstants.PortalUsername, password);
+            var result = await _authRepo.AgentLogin(StringConstants.HardwareKey);
 
             AuthenticationDtoValidator.AuthenticationResponseCheck(result, true);
         }
 
         [TestMethod]
-        public async Task Authentication_PortalLoginBadSerialNumber() // changed implemention on server side
-        {
-            var password = _hashService.GenerateHash(StringConstants.Secret, "skjdbgsijbo");
-            var result = await _authRepo.PortalLogin(StringConstants.PortalUsername, password);
+        public async Task Authentication_AgentLoginBadSerialNumber() // changed implemention on server side
+        {            
+            var result = await _authRepo.AgentLogin("skjdbgsijbo");
 
             AuthenticationDtoValidator.AuthenticationResponseCheck(result, false);
         }

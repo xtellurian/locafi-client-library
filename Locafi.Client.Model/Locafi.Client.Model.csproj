@@ -189,8 +189,10 @@
     <Compile Include="Enums\AgentType.cs" />
     <Compile Include="Enums\BarcodeType.cs" />
     <Compile Include="Enums\DataAccessMode.cs" />
+    <Compile Include="Enums\DeviceConnectionType.cs" />
     <Compile Include="Enums\FileUploadOperation.cs" />
     <Compile Include="Enums\ItemStateType.cs" />
+    <Compile Include="Enums\LicenseAgentType.cs" />
     <Compile Include="Enums\NavigatorModule.cs" />
     <Compile Include="Enums\OrderStateType.cs" />
     <Compile Include="Enums\OrderType.cs" />

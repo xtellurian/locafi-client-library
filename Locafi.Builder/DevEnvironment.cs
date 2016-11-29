@@ -17,6 +17,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Builder.Model.Agents;
+using Locafi.Builder.Model.Portals;
+using Locafi.Client.Model.Dto.Portals;
 
 namespace Locafi.Builder
 {
@@ -54,7 +57,7 @@ namespace Locafi.Builder
         public static string SkuTemplateName = "Sku Item";
         public static string AssetTemplateName = "Asset Item";
         public static string PlaceTemplateName = "Place";
-        public static string PersonTemplateName = "Person Template";
+        public static string PersonTemplateName = "Person Template";        
         public static List<BuilderAddTemplateDto> TemplatesToCreate = new List<BuilderAddTemplateDto>()
         {
             new BuilderAddTemplateDto()
@@ -236,6 +239,60 @@ namespace Locafi.Builder
                 {
 
                 }
+            }
+        };
+
+        //Agents to create
+        public static string FileUploadName = "Test File Upload Agent";
+        public static string FileUploadHardwareKey = "FileUploadClientTestHardwareKeyUHFRFIDREADERZZQ";
+        public static string VernonName = "Test Vernon Service Agent";
+        public static string VernonHardwareKey = "GetPHACDVernonServiceHardwareKeyBBQ";
+        public static string CustomClientName = "Test Custom Client Agent";
+        public static string CustomClientHardwareKey = "SiqCustomClientHardwareKeyYEYE";
+        public static List<BuilderAddAgentDto> AgentsToCreate = new List<BuilderAddAgentDto>()
+        {
+            new BuilderAddAgentDto()
+            {
+                AgentType = LicenseAgentType.FileUploadService,
+                HardwareKey = FileUploadHardwareKey,
+                Name = FileUploadName
+            },
+            new BuilderAddAgentDto()
+            {
+                AgentType = LicenseAgentType.VernonService,
+                HardwareKey = VernonHardwareKey,
+                Name = VernonName
+            },
+            new BuilderAddAgentDto()
+            {
+                AgentType = LicenseAgentType.CustomClient,
+                HardwareKey = CustomClientHardwareKey,
+                Name = CustomClientName
+            }
+        };
+
+        //Devices to create
+        public static List<BuilderAddDeviceDto> DevicesToCreate = new List<BuilderAddDeviceDto>()
+        {
+            new BuilderAddDeviceDto()
+            {
+                Actuators = new List<AddActuatorDto>(),
+                Antennas = new List<AddAntennaDto>(),
+                Sensors = new List<AddSensorDto>(),
+                ConnectionType = DeviceConnectionType.Tcp
+
+            }            
+        };
+
+        //Portals to create
+        public static string Portal1Name = "Test Portal";
+        public static string Portal1HardwareKey = "TestPortal1HardwareKey";
+        public static List<BuilderAddPortalDto> PortalsToCreate = new List<BuilderAddPortalDto>()
+        {
+            new BuilderAddPortalDto()
+            {
+                HardwareKey = Portal1HardwareKey,
+                Name = Portal1Name
             }
         };
 

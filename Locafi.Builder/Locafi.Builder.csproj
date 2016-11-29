@@ -47,11 +47,14 @@
     <Compile Include="DevBuilder.cs" />
     <Compile Include="DevEnvironment.cs" />
     <Compile Include="DemoEnvironment.cs" />
+    <Compile Include="Model\Agents\BuilderAddAgentDto.cs" />
     <Compile Include="Model\Items\BuilderAddItemDto.cs" />
     <Compile Include="Model\Items\BuilderWriteItemExtendedPropertyDto.cs" />
     <Compile Include="Model\Persons\BuilderAddPersonDto.cs" />
     <Compile Include="Model\Places\BuilderAddPlaceDto.cs" />
     <Compile Include="Model\BuilderWriteEntityExtendedPropertyDto.cs" />
+    <Compile Include="Model\Portals\BuilderAddDeviceDto.cs" />
+    <Compile Include="Model\Portals\BuilderAddPortalDto.cs" />
     <Compile Include="Model\Skus\BuilderAddSkuDto.cs" />
     <Compile Include="Model\Skus\BuilderWriteSkuExtendedPropertyDto.cs" />
     <Compile Include="Model\Tags\BuilderWriteTagDto.cs" />

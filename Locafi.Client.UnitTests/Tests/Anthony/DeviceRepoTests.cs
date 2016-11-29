@@ -23,7 +23,7 @@ namespace Locafi.Client.UnitTests.Tests.Anthony
     //    [TestInitialize]
     //    public void Initialize()
     //    {
-    //        _deviceRepoAsPortal = WebRepoAsAuthorisedPortalContainer.DeviceRepo;
+    //        _deviceRepoAsPortal = WebRepoAgentContainer.DeviceRepo;
     //        _deviceRepoAsUser = WebRepoContainer.DeviceRepo;
     //        _placeRepo = WebRepoContainer.PlaceRepo;
     //        _personRepo = WebRepoContainer.PersonRepo;

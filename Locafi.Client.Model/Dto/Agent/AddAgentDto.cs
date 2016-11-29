@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Agent
 {
@@ -12,6 +15,7 @@ namespace Locafi.Client.Model.Dto.Agent
 
         public string HardwareKey { get; set; }
 
-        public string AgentType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public LicenseAgentType AgentType { get; set; }
     }
 }

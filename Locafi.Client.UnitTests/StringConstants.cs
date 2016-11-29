@@ -12,7 +12,7 @@ namespace Locafi.Client.UnitTests
     public static class StringConstants
     {
        // public static string UserName => "admintester";
-        public static string PortalUsername => "0123456789";
+        public static string HardwareKey => "0123456789";
         public static string Secret => "Locafi_";
 #if MB_LOCAL
         public static string BaseUrl => @"http://locafiv2demo.azurewebsites.net/api";

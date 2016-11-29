@@ -17,22 +17,30 @@ namespace Locafi.Client.UnitTests.Factory
     public static class HttpConfigFactory
     {
 
-        public static async Task<AuthorisedHttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd, bool isReader = false)
+        public static async Task<AuthorisedHttpTransferConfigService> Generate(string baseUrl, string usrname, string passwrd)
         {
             var user = new UserLoginDto
             {
                 Username = usrname,
                 Password = passwrd
-            };
-            TokenGroup result;
-            if (isReader)
+            };                                  
+            var result = await Post(baseUrl + "Authentication/Login/", user);                            
+            var configService = new UnauthorisedHttpTransferConfigService();
+            var authRepo = new AuthenticationRepo(configService, new Serialiser());
+            var authConfigService = new AuthorisedHttpTransferConfigService(authRepo, result)
             {
-                result = await Post(baseUrl + "Authentication/PortalLogin/", user);
-            }
-            else
-            {                
-                result = await Post(baseUrl + "Authentication/Login/", user);                
-            }
+                BaseUrl = baseUrl
+            };
+            return authConfigService;
+        }
+
+        public static async Task<AuthorisedHttpTransferConfigService> GenerateAgent(string baseUrl, string hardwarekey)
+        {
+            var agent = new AgentLoginDto
+            {
+                HardwareKey = hardwarekey
+            };
+            var result = await Post(baseUrl + "Authentication/AgentLogin/", agent);
             var configService = new UnauthorisedHttpTransferConfigService();
             var authRepo = new AuthenticationRepo(configService, new Serialiser());
             var authConfigService = new AuthorisedHttpTransferConfigService(authRepo, result)
@@ -47,6 +55,22 @@ namespace Locafi.Client.UnitTests.Factory
             var message = new HttpRequestMessage(HttpMethod.Post, url)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json")
+            };
+
+
+            var client = new HttpClient();
+            var response = await client.SendAsync(message);
+
+            var result = response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<AuthenticationResponseDto>(await response.Content.ReadAsStringAsync()) : null;
+
+            return result?.TokenGroup;
+        }
+
+        private static async Task<TokenGroup> Post(string url, AgentLoginDto agentLoginDto)
+        {
+            var message = new HttpRequestMessage(HttpMethod.Post, url)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(agentLoginDto), Encoding.UTF8, "application/json")
             };
 
 
