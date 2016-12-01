@@ -62,7 +62,16 @@
     <Compile Include="Dto\ExtendedProperties\AddExtendedPropertyDto.cs" />
     <Compile Include="Dto\ExtendedProperties\ExtendedPropertyDetailDto.cs" />
     <Compile Include="Dto\ExtendedProperties\UpdateExtendedPropertyDto.cs" />
-    <Compile Include="Dto\FileUpload\FileUploadDto.cs" />
+    <Compile Include="Dto\InboundIntegrations\FileUploadDto.cs" />
+    <Compile Include="Dto\InboundIntegrations\FileUploadEntityDto.cs" />
+    <Compile Include="Dto\InboundIntegrations\FileUploadEntityPropertyDto.cs" />
+    <Compile Include="Dto\InboundIntegrations\FileUploadResultDto.cs" />
+    <Compile Include="Dto\InboundIntegrations\FileUploadResultEntityDto.cs" />
+    <Compile Include="Dto\OutboundIntegrations\IntegrationExtendedProperty.cs" />
+    <Compile Include="Dto\OutboundIntegrations\ItemIntegrationDto.cs" />
+    <Compile Include="Dto\OutboundIntegrations\ItemMovementDto.cs" />
+    <Compile Include="Dto\OutboundIntegrations\PersonIntegrationDto.cs" />
+    <Compile Include="Dto\OutboundIntegrations\PlaceIntegrationDto.cs" />
     <Compile Include="Dto\Inventory\AddInventorySnapshotDto.cs" />
     <Compile Include="Dto\Inventory\AddInventorySnapshotResultDto.cs" />
     <Compile Include="Dto\Inventory\ItemSummaryReasonDto.cs" />
@@ -191,6 +200,7 @@
     <Compile Include="Enums\DataAccessMode.cs" />
     <Compile Include="Enums\DeviceConnectionType.cs" />
     <Compile Include="Enums\FileUploadOperation.cs" />
+    <Compile Include="Enums\FileUploadResultType.cs" />
     <Compile Include="Enums\ItemStateType.cs" />
     <Compile Include="Enums\LicenseAgentType.cs" />
     <Compile Include="Enums\NavigatorModule.cs" />
