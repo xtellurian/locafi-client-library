@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Locafi.Client.Contract.Config;
 using Locafi.Client.Contract.ErrorHandlers;
 using Locafi.Client.Contract.Http;
+using Locafi.Client.Contract.Repo;
 using Locafi.Client.Exceptions;
 using Locafi.Client.Model.Dto.InboundIntegrations;
 using Locafi.Client.Model.RelativeUri;
@@ -15,7 +16,7 @@ using Locafi.Client.Model.Responses;
 
 namespace Locafi.Client.Repo
 {
-    public class FileImportRepo : WebRepo, IWebRepoErrorHandler
+    public class FileImportRepo : WebRepo, IWebRepoErrorHandler, IFileImportRepo
     {
         public FileImportRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service) : base(transferer, authorisedConfigService, serialiser, service)
         {

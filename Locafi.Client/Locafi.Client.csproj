@@ -124,6 +124,7 @@
     <Compile Include="Contract\Repo\IBleDetectionRepo.cs" />
     <Compile Include="Contract\Repo\IAgentRepo.cs" />
     <Compile Include="Repo\FileImportRepo.cs" />
+    <Compile Include="Contract\Repo\IFileImportRepo.cs" />
     <Compile Include="Repo\RoleRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
