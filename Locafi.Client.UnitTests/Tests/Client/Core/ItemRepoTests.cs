@@ -14,7 +14,6 @@ using Locafi.Client.Model.Query.PropertyComparison;
 using Locafi.Client.Model.Enums;
 using Locafi.Client.Model.Search;
 using Locafi.Client.Model.Dto;
-using Locafi.Client.Model.Dto.FileUpload;
 using Locafi.Client.Model.Query.Builder;
 using Locafi.Client.Model.Dto.Skus;
 using Locafi.Client.UnitTests.Validators;
@@ -781,80 +780,6 @@ namespace Locafi.Client.UnitTests.Tests
         //    //var count = await _itemRepo.GetItemCount(query);
         //    //Assert.IsTrue(count > 0);
         //}
-
-        [TestMethod]
-        public async Task Item_Upload()
-        {
-            var itemToCreate = await CreateRandomAssetAddItemDto();
-            var item = await _itemRepo.CreateItem(itemToCreate);
-            Validator.IsNotNull(item);
-
-            var id = item.Id;
-            await _itemRepo.DeleteItem(id);
-            try
-            {
-                var sameItem = await _itemRepo.GetItemDetail(id);
-                Validator.IsTrue(false);
-            }
-            catch (Exception)
-            {
-                Validator.IsTrue(true); //successfully deleted
-            }
-
-            var itemToUpload = ConvertItemToUploadDto(item);
-            itemToUpload.Operation = FileUploadOperation.Update;
-            var updatedItem = await _itemRepo.UploadItems(itemToUpload);
-            Validator.IsTrue(updatedItem.Count == 0);
-
-            itemToUpload.Operation = FileUploadOperation.Create;
-            updatedItem = await _itemRepo.UploadItems(itemToUpload);
-            Validator.IsTrue(updatedItem.Count == 1);
-
-            itemToUpload.Operation = FileUploadOperation.Update;
-            updatedItem = await _itemRepo.UploadItems(itemToUpload);
-            Validator.IsTrue(updatedItem.Count == 1);
-
-            itemToUpload.Operation = FileUploadOperation.CreateIgnoreDuplicates;
-            updatedItem = await _itemRepo.UploadItems(itemToUpload);
-            Validator.IsTrue(updatedItem.Count == 0);
-
-            itemToUpload.Operation = FileUploadOperation.CreateOrUpdate;
-            itemToUpload.Entities.First()["tagnumber"] = "0101010101";
-            updatedItem = await _itemRepo.UploadItems(itemToUpload);
-            Validator.IsTrue(updatedItem.Count == 1);
-            Validator.IsTrue(updatedItem.First().TagNumber == "0101010101");
-
-            await _itemRepo.DeleteItem(id);
-            try
-            {
-                var sameItem = await _itemRepo.GetItemDetail(id);
-                Validator.IsTrue(false);
-            }
-            catch (Exception)
-            {
-                Validator.IsTrue(true); //successfully deleted
-            }
-        }
-
-        private FileUploadDto ConvertItemToUploadDto(ItemDetailDto item)
-        {
-            var uploadDtoEntities = new List<Dictionary<string, string>>();
-            var dic = new Dictionary<string, string>
-            {
-                ["name"] = item.Name,
-                ["description"] = item.Description,
-                ["person"] = item.CreatedByUserFullName,
-                ["place"] = item.PlaceName,
-                ["type"] = item.SkuName,
-                ["tagnumber"] = item.TagNumber
-            };
-            foreach (var exProperty in item.ItemExtendedPropertyList)
-            {
-                dic[exProperty.Name] = exProperty.Value;
-            }
-            uploadDtoEntities.Add(dic);
-            return new FileUploadDto { Entities = uploadDtoEntities, Operation = FileUploadOperation.CreateOrUpdate, UniqueProperty = "name" };
-        }
 
         #region PrivateMethods
         private async Task<AddItemDto> CreateRandomAssetAddItemDto()

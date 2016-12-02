@@ -9,7 +9,6 @@ using Locafi.Client.Model.Dto.Items;
 using Locafi.Client.Model.Query;
 using Locafi.Client.Model.Search;
 using Locafi.Client.Model.Dto;
-using Locafi.Client.Model.Dto.FileUpload;
 using Locafi.Client.Model;
 
 namespace Locafi.Client.Contract.Repo
@@ -31,7 +30,6 @@ namespace Locafi.Client.Contract.Repo
         Task<IQueryResult<ItemSummaryDto>> QueryItemsContinuation(IRestQuery<ItemSummaryDto> query);
         Task<IList<ItemSummaryDto>> SearchItems(SearchCollectionDto searchItemQueryDto);
         Task<ISearchResult<ItemSummaryDto>> SearchItems(IRestSearch<ItemSummaryDto> search);
-        Task<IList<ItemSummaryDto>> UploadItems(FileUploadDto file);
         Task<bool> ClearItems(ClearItemStateDto clearItemsDto);
         Task<PageResult<ItemStateHistoryDto>> GetItemStateHistory(IRestQuery<ItemStateHistoryDto> query);
         Task<IQueryResult<ItemStateHistoryDto>> GetItemStateHistoryContinuation(IRestQuery<ItemStateHistoryDto> query);
