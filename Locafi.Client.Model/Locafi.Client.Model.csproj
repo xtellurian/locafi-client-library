@@ -68,6 +68,7 @@
     <Compile Include="Dto\InboundIntegrations\FileUploadEntityPropertyDto.cs" />
     <Compile Include="Dto\InboundIntegrations\FileUploadResultDto.cs" />
     <Compile Include="Dto\InboundIntegrations\FileUploadResultEntityDto.cs" />
+    <Compile Include="Dto\OutboundIntegrations\IntegrationDto.cs" />
     <Compile Include="Dto\OutboundIntegrations\IntegrationExtendedProperty.cs" />
     <Compile Include="Dto\OutboundIntegrations\ItemIntegrationDto.cs" />
     <Compile Include="Dto\OutboundIntegrations\ItemMovementDto.cs" />
