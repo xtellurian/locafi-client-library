@@ -81,12 +81,11 @@
     <Compile Include="Mocks\UnauthorisedMockHttpTransferer.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="StringConstants.cs" />
-    <Compile Include="Tests\Anthony\DeviceRepoTests.cs" />
-    <Compile Include="Tests\Anthony\PortalRepoTests.cs" />
     <Compile Include="Tests\Client\Core\AgentRepoTests.cs" />
     <Compile Include="Tests\Client\Core\AuthenticationTests.cs" />
     <Compile Include="Tests\Client\Ble\BleRepoTests.cs" />
     <Compile Include="Tests\Client\Cache\CachedClusterRepoTest.cs" />
+    <Compile Include="Tests\Client\Core\FileImportRepoTests.cs" />
     <Compile Include="Tests\Client\Core\PortalRepoTests.cs" />
     <Compile Include="Tests\Client\Core\RoleRepoTests.cs" />
     <Compile Include="Tests\Client\Operations\InventoryRepoTests.cs" />
