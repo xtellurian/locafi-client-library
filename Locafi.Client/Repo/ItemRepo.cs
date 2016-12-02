@@ -13,7 +13,6 @@ using Locafi.Client.Model.RelativeUri;
 using Locafi.Client.Model.Responses;
 using Locafi.Client.Model.Uri;
 using Locafi.Client.Model.Dto;
-using Locafi.Client.Model.Dto.FileUpload;
 using Locafi.Client.Model.Search;
 using Locafi.Client.Model;
 
@@ -124,13 +123,6 @@ namespace Locafi.Client.Repo
         {
             var path = ItemUri.SearchItems;
             var result = await Post<List<ItemSummaryDto>>(searchItemQueryDto, path);
-            return result;
-        }
-
-        public async Task<IList<ItemSummaryDto>> UploadItems(FileUploadDto file)
-        {
-            var path = ItemUri.UploadItems;
-            var result = await Post<List<ItemSummaryDto>>(file, path);
             return result;
         }
 

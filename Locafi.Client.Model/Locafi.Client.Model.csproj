@@ -43,6 +43,7 @@
     <Compile Include="Conversion\ExtendedPropertyConversions.cs" />
     <Compile Include="Dto\Agent\AddAgentDto.cs" />
     <Compile Include="Dto\Agent\AgentSummaryDto.cs" />
+    <Compile Include="Dto\Agent\UpdateAgentDto.cs" />
     <Compile Include="Dto\Authentication\AgentLoginDto.cs" />
     <Compile Include="Dto\Authentication\ILoginCredentialsProvider.cs" />
     <Compile Include="Dto\Authentication\RegistrationDto.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="RelativeUri\CycleCountUri.cs" />
     <Compile Include="RelativeUri\DeviceUri.cs" />
     <Compile Include="RelativeUri\ErrorLogUri.cs" />
+    <Compile Include="RelativeUri\FileImportUri.cs" />
     <Compile Include="RelativeUri\RoleUri.cs" />
     <Compile Include="RelativeUri\ItemUri.cs" />
     <Compile Include="Conversion\PlaceDtoConversions.cs" />

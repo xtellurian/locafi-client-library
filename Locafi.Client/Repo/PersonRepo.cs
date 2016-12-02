@@ -101,7 +101,7 @@ namespace Locafi.Client.Repo
             return result;
         }
 
-        public async override Task Handle(HttpResponseMessage responseMessage, string url, string payload)
+        public override async Task Handle(HttpResponseMessage responseMessage, string url, string payload)
         {
             throw new PersonException($"{url} -- {payload} -- " + await responseMessage.Content.ReadAsStringAsync());
         }

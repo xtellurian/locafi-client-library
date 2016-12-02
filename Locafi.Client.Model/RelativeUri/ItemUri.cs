@@ -8,7 +8,6 @@ namespace Locafi.Client.Model.RelativeUri
         public static string ServiceName => "Items";
         public static string GetItems => "GetFilteredItems";
         public static string CreateItem => @"CreateItem";
-        public static string UploadItems => @"UploadItems";
         public static string UpdatePlace => @"UpdatePlace";
         public static string UpdateTag => @"UpdateTag";
         public static string UpdateItem => @"UpdateItem";

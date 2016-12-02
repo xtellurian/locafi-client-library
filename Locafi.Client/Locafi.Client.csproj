@@ -84,6 +84,7 @@
     <Compile Include="Exceptions\CycleCountRepoExeption.cs" />
     <Compile Include="Exceptions\DeviceRepoException.cs" />
     <Compile Include="Exceptions\ErrorRepoException.cs" />
+    <Compile Include="Exceptions\FileRepoException.cs" />
     <Compile Include="Exceptions\RoleRepoException.cs" />
     <Compile Include="Exceptions\InventoryException.cs" />
     <Compile Include="Exceptions\ItemRepoException.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Contract\Repo\IClusterRepo.cs" />
     <Compile Include="Contract\Repo\IBleDetectionRepo.cs" />
     <Compile Include="Contract\Repo\IAgentRepo.cs" />
+    <Compile Include="Repo\FileImportRepo.cs" />
     <Compile Include="Repo\RoleRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />
