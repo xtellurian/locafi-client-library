@@ -19,11 +19,11 @@ namespace Locafi.Client.Repo
 {
     public class AgentRepo : WebRepo, IAgentRepo
     {
-        public AgentRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service) : base(transferer, authorisedConfigService, serialiser, service)
+        public AgentRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, AgentUri.ServiceName)
         {
         }
 
-        public AgentRepo(IHttpTransferer transferer, IHttpTransferConfigService configService, ISerialiserService serialiser, string service) : base(transferer, configService, serialiser, service)
+        public AgentRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(transferer, configService, serialiser, AgentUri.ServiceName)
         {
         }
 

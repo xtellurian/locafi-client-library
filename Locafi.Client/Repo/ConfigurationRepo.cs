@@ -17,11 +17,11 @@ namespace Locafi.Client.Repo
 {
     public class ConfigurationRepo : WebRepo, IConfigurationRepo
     {
-        public ConfigurationRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service) : base(transferer, authorisedConfigService, serialiser, service)
+        public ConfigurationRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, ConfigurationUri.ServiceName)
         {
         }
 
-        public ConfigurationRepo(IHttpTransferer transferer, IHttpTransferConfigService configService, ISerialiserService serialiser, string service) : base(transferer, configService, serialiser, service)
+        public ConfigurationRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(transferer, configService, serialiser, ConfigurationUri.ServiceName)
         {
         }
 
