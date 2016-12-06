@@ -81,6 +81,7 @@
     <Compile Include="Crypto\Sha256HashService.cs" />
     <Compile Include="Exceptions\AgentRepoException.cs" />
     <Compile Include="Exceptions\AuthenticationRepoException.cs" />
+    <Compile Include="Exceptions\ConfigurationRepoException.cs" />
     <Compile Include="Exceptions\CycleCountRepoExeption.cs" />
     <Compile Include="Exceptions\DeviceRepoException.cs" />
     <Compile Include="Exceptions\ErrorRepoException.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Repo\Cache\CachedEntity.cs" />
     <Compile Include="Repo\Cache\WebRepoCacheResult.cs" />
     <Compile Include="Repo\ClusterCachedRepo.cs" />
+    <Compile Include="Repo\ConfigurationRepo.cs" />
     <Compile Include="Repo\CycleCountRepo.cs" />
     <Compile Include="Repo\DeviceRepo.cs" />
     <Compile Include="Repo\ErrorRepo.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Contract\Repo\IAgentRepo.cs" />
     <Compile Include="Repo\FileImportRepo.cs" />
     <Compile Include="Contract\Repo\IFileImportRepo.cs" />
+    <Compile Include="Contract\Repo\IConfigurationRepo.cs" />
     <Compile Include="Repo\RoleRepo.cs" />
     <Compile Include="Repo\InventoryRepo.cs" />
     <Compile Include="Contract\Repo\ITagReservationRepo.cs" />

@@ -51,6 +51,7 @@
     <Compile Include="Dto\Ble\BleDetectionCollection.cs" />
     <Compile Include="Dto\Ble\IBleDetection.cs" />
     <Compile Include="Dto\Ble\SensorBleDetection.cs" />
+    <Compile Include="Dto\Configuration\ConfigurationDto.cs" />
     <Compile Include="Dto\CycleCountDtos\AddCycleCountDto.cs" />
     <Compile Include="Dto\CycleCountDtos\CycleCountDetailDto.cs" />
     <Compile Include="Dto\CycleCountDtos\CycleCountSummaryDto.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Query\QueryStringBuilderBase.cs" />
     <Compile Include="RelativeUri\AgentUri.cs" />
     <Compile Include="RelativeUri\AuthenticationUri.cs" />
+    <Compile Include="RelativeUri\ConfigurationUri.cs" />
     <Compile Include="RelativeUri\CycleCountUri.cs" />
     <Compile Include="RelativeUri\DeviceUri.cs" />
     <Compile Include="RelativeUri\ErrorLogUri.cs" />
