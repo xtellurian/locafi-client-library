@@ -18,11 +18,11 @@ namespace Locafi.Client.Repo
 {
     public class FileImportRepo : WebRepo, IWebRepoErrorHandler, IFileImportRepo
     {
-        public FileImportRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser, string service) : base(transferer, authorisedConfigService, serialiser, service)
+        public FileImportRepo(IAuthorisedHttpTransferConfigService authorisedConfigService, ISerialiserService serialiser) : base(new SimpleHttpTransferer(), authorisedConfigService, serialiser, FileImportUri.ServiceName)
         {
         }
 
-        public FileImportRepo(IHttpTransferer transferer, IHttpTransferConfigService configService, ISerialiserService serialiser, string service) : base(transferer, configService, serialiser, service)
+        public FileImportRepo(IHttpTransferer transferer, IAuthorisedHttpTransferConfigService configService, ISerialiserService serialiser) : base(transferer, configService, serialiser, FileImportUri.ServiceName)
         {
         }
 
