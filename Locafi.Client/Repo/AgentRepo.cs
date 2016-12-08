@@ -86,6 +86,13 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<AgentSummaryDto> GetLoggedInAgent()
+        {
+            var path = AgentUri.GetLoggedInAgent;
+            var result = await Get<AgentSummaryDto>(path);
+            return result;
+        }
+
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
             throw new AgentRepoException(serverMessages, statusCode, url, payload);

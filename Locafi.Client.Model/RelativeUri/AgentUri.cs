@@ -12,7 +12,7 @@ namespace Locafi.Client.Model.RelativeUri
         public static string CreateAgent => "CreateAgent";
         public static string UpdateAgent => "UpdateAgent";
         public static string GetAgents => "GetFilteredAgents";
-
+        public static string GetLoggedInAgent => "GetLoggedInAgent";
         public static string GetAgent(Guid id)
         {
             return $"GetAgent/{id}";

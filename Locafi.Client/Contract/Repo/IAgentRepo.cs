@@ -14,5 +14,6 @@ namespace Locafi.Client.Contract.Repo
         Task<PageResult<AgentSummaryDto>> QueryAgents(IRestQuery<AgentSummaryDto> query);
         Task<IQueryResult<AgentSummaryDto>> QueryAgentsContinuation(IRestQuery<AgentSummaryDto> query);
         Task<AgentSummaryDto> GetAgentById(Guid id);
+        Task<AgentSummaryDto> GetLoggedInAgent();
     }
 }
