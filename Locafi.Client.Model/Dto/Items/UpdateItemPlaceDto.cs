@@ -8,7 +8,9 @@ namespace Locafi.Client.Model.Dto.Items
 
         public Guid NewPlaceId { get; set; }
 
-        public Guid? TagId { get; set; } 
+        public Guid? TagId { get; set; }
+
+        public Guid? ReasonId { get; set; }
 
         public static UpdateItemPlaceDto FromItemDetail(ItemSummaryDto summary)
         {

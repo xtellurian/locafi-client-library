@@ -49,5 +49,9 @@ namespace Locafi.Client.Model.Dto.Items
 
         public string AgentName { get; set; }
 
+        public Guid? ReasonId { get; set; }
+
+        public string ReasonName { get; set; }
+
     }
 }

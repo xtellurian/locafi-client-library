@@ -13,5 +13,7 @@ namespace Locafi.Client.Model.Dto.Portals
         public string Name { get; set; }
 
         public int PortNo { get; set; }
+
+
     }
 }
