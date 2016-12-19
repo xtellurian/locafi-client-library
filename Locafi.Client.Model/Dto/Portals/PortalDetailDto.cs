@@ -10,6 +10,8 @@ namespace Locafi.Client.Model.Dto.Portals
     {
         public IList<DeviceSummaryDto> PortalDevices { get; set; }
 
+        public IList<PortalRuleSummaryDto> PortalRules { get; set; }
+
         public PortalDetailDto()
         {
             PortalDevices = new List<DeviceSummaryDto>();
