@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Locafi.Client.Model.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Locafi.Client.Model.Dto.Portals
 {
     public class ReadPortalRuleComponentDto
     {
-        public string Component { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public PortalRuleComponentType Component { get; set; }
 
         public Guid? ValueId { get; set; }
 
