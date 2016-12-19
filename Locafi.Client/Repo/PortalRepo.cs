@@ -237,12 +237,7 @@ namespace Locafi.Client.Repo
 
         #region -- clusters
 
-        public async Task<bool> ProcessCluster(ClusterDto clusterDto)
-        {
-            var path = PortalUri.ProcessCluster;
-            var result = await Post(clusterDto, path);
-            return result;
-        }
+        //removed to allow for cluster cache repo
 
         #endregion
 

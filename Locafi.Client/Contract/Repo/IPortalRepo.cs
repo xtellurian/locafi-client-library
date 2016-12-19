@@ -31,6 +31,5 @@ namespace Locafi.Client.Contract.Repo
         Task<IQueryResult<DeviceSummaryDto>> GetDevicesContinuation(IRestQuery<DeviceSummaryDto> query);
         Task<DeviceDetailDto> GetDevice(Guid id);
         Task DeleteDevice(Guid id);
-        Task<bool> ProcessCluster(ClusterDto clusterDto);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locafi.Client.Model.Dto.Portals.Clusters
 {
-    public class ClusterDto
+    public class ClusterDto : ICacheable
     {
         public IList<ClusterTagDto> Tags { get; set; }
 
@@ -18,8 +18,10 @@ namespace Locafi.Client.Model.Dto.Portals.Clusters
 
         public ClusterDto()
         {
+            Id = new Guid().ToString();
             Tags = new List<ClusterTagDto>();
         }
 
+        public string Id { get; set; }
     }
 }

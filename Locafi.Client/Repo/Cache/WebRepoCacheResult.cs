@@ -16,7 +16,7 @@ namespace Locafi.Client.Repo.Cache
             Uploaded = uploaded;
             Cached = cached;
             Error = error;
-        }
+        }     
 
         public TData Data { get; }
         public bool Uploaded { get; }
