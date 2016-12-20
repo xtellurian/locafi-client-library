@@ -8,9 +8,11 @@ namespace Locafi.Client.Model.Enums
 {
     public enum PortalRuleType
     {
-        Continuous = 1,
-        AntennaEvents = 2,
-        SensorEvents = 3,
-        AccessControl = 4
+        FixedLocationEvent = 1,
+        ContinuousEvent,
+        SensorEventRule,
+        TagLocationRule,
+        GpsLocationRule,
+        AccessControl
     }
 }
