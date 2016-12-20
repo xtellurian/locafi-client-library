@@ -9,7 +9,7 @@ namespace Locafi.Client.Model.Dto.Portals
     public class DeviceDetailDto : DeviceSummaryDto
     {
 
-        public IList<ReadEntityExtendedPropertyDto> DeviceProperties { get; set; }
+        public IList<ReadSysExtendedPropertyDto> DeviceProperties { get; set; }
 
         public IList<ReadSensorDto> Sensors { get; set; }
 
@@ -19,7 +19,7 @@ namespace Locafi.Client.Model.Dto.Portals
 
         public DeviceDetailDto()
         {
-            DeviceProperties = new List<ReadEntityExtendedPropertyDto>();
+            DeviceProperties = new List<ReadSysExtendedPropertyDto>();
             Sensors = new List<ReadSensorDto>();
             Actuators = new List<ReadActuatorDto>();
             Antennas = new List<ReadAntennaDto>();
