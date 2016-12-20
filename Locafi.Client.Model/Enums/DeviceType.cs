@@ -8,10 +8,10 @@ namespace Locafi.Client.Model.Enums
 {
     public enum DeviceType
     {
-        SpeedwayR220 = 1,
-        SpeedwayR420 = 2,
+        SpeedwayR220Reader = 1,
+        SpeedwayR420Reader = 2,
         Barionet50 = 3,
-        ZebraMotorola = 4,
-        Cs203 = 5
+        ZebraMotorolaReader = 4,
+        Cs203Reader = 5
     }
 }
