@@ -224,6 +224,7 @@
     <Compile Include="Enums\SearchMode.cs" />
     <Compile Include="Enums\SnapshotType.cs" />
     <Compile Include="Enums\SystemMessageType.cs" />
+    <Compile Include="Enums\SysTemplateFor.cs" />
     <Compile Include="Enums\TagFor.cs" />
     <Compile Include="Enums\TagType.cs" />
     <Compile Include="Enums\TemplateDataTypes.cs" />
