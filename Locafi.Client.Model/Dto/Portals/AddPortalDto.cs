@@ -12,5 +12,16 @@ namespace Locafi.Client.Model.Dto.Portals
 
         public string HardwareKey { get; set; }
 
+        public int ReaderConnectBackoffDelay { get; set; }
+
+        public int OnlineTestPingDelay { get; set; }
+
+        public int OnlineThreshold { get; set; }
+
+        public int OfflineThreshold { get; set; }
+
+        public int CacheFlushAmount { get; set; }
+
+        public int CacheFlushInterval { get; set; }
     }
 }
