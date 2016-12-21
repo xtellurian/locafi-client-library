@@ -12,6 +12,7 @@ namespace Locafi.Client.Model.Enums
         Inventory,
         CycleCount,
         Portal,
-        Handheld
+        Handheld,
+        FileImport
     }
 }
