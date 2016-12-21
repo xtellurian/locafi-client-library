@@ -8,9 +8,9 @@ namespace Locafi.Client.Model.Enums
 {
     public enum FileUploadOperation
     {
-        Create = 0,
-        CreateIgnoreDuplicates,
-        Update,
         CreateOrUpdate,
+        UpdateOnly,
+        CreateIgnoreExisting,
+        Delete
     }
 }

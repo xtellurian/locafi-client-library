@@ -253,13 +253,13 @@ namespace Locafi.Builder
         {
             new BuilderAddAgentDto()
             {
-                AgentType = LicenseAgentType.FileUploadService,
+                //AgentType = LicenseAgentType.FileUploadService,
                 HardwareKey = FileUploadHardwareKey,
                 Name = FileUploadName
             },
             new BuilderAddAgentDto()
             {
-                AgentType = LicenseAgentType.VernonService,
+                //AgentType = LicenseAgentType.VernonService,
                 HardwareKey = VernonHardwareKey,
                 Name = VernonName
             },
