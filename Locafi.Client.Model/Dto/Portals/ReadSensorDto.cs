@@ -14,6 +14,6 @@ namespace Locafi.Client.Model.Dto.Portals
 
         public int PortNo { get; set; }
 
-
+        public bool ActiveState { get; set; }
     }
 }
