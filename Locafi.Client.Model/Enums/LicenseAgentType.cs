@@ -9,9 +9,9 @@ namespace Locafi.Client.Model.Enums
     public enum LicenseAgentType
     {
         Handheld,
-        VernonService,
-        FileUploadService,
+        FileIntegrationService,
         CustomClient,
-        Portal
+        Portal,
+        TelemetryAgent
     }
 }

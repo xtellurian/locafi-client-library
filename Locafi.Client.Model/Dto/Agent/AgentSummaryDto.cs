@@ -16,7 +16,7 @@ namespace Locafi.Client.Model.Dto.Agent
         public Guid HardwareKey { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public AgentType AgentType { get; set; }
+        public LicenseAgentType AgentType { get; set; }
 
         public string Name { get; set; }
     }
