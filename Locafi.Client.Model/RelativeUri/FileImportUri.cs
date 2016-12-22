@@ -9,6 +9,8 @@ namespace Locafi.Client.Model.RelativeUri
     public static class FileImportUri
     {
         public static string ServiceName => "FileImport";
-        public static string ImportItems => "ImportItems";
+        public static string ImportItems => "ImportItems";    
+        public static string ImportPlaces => "ImportPlaces";
+        public static string ImportPersons => "ImportPersons";
     }
 }

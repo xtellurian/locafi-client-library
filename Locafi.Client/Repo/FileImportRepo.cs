@@ -33,6 +33,20 @@ namespace Locafi.Client.Repo
             return result;
         }
 
+        public async Task<FileUploadResultDto> ImportPlaces(FileUploadDto uploadDto)
+        {
+            var path = FileImportUri.ImportPlaces;
+            var result = await Post<FileUploadResultDto>(uploadDto, path);
+            return result;
+        }
+
+        public async Task<FileUploadResultDto> ImportPersons(FileUploadDto uploadDto)
+        {
+            var path = FileImportUri.ImportPersons;
+            var result = await Post<FileUploadResultDto>(uploadDto, path);
+            return result;
+        }
+
         public override Task Handle(IEnumerable<CustomResponseMessage> serverMessages, HttpStatusCode statusCode, string url, string payload)
         {
             throw new FileRepoException(serverMessages, statusCode, url, payload);
