@@ -22,6 +22,22 @@ namespace Locafi.Client.Model.Query.Builder
         public LogicalOperator Operator { get; set; }
     }
 
+    public static class ExpressionBuilder{
+
+        public static Expression<Func<T, object>> BuildPropertyExpression<T>(string field)
+        {
+            //the 'IN' parameter for expression ie claim=> condition
+            ParameterExpression pe = Expression.Parameter(typeof(T), "x");
+
+            //Expression for accessing property
+            Expression ePropName = Expression.Property(pe, field.ToString());
+
+            var y = Expression.Lambda<Func<T, object>>(ePropName, new ParameterExpression[] { pe });
+
+            return y;
+        }
+    }
+
     public class QueryBuilder <T> : QueryStringBuilderBase<T> where T : class 
     {
         private readonly IList<FilterExpression> _filterExpressions = new List<FilterExpression>();

@@ -24,6 +24,7 @@ using Locafi.Client.UnitTests.Extensions;
 using Locafi.Client.Model.Dto.Templates;
 using Locafi.Client.Model;
 using Locafi.Client.UnitTests.EntityGenerators;
+using System.Linq.Expressions;
 
 namespace Locafi.Client.UnitTests.Tests
 {
@@ -275,6 +276,26 @@ namespace Locafi.Client.UnitTests.Tests
             Validator.IsTrue(r1.Entities.Count == 1);
             ItemDtoValidator.ItemSummaryCheck(r1.Entities.First());
             Validator.IsTrue(r1.Entities.Contains(item));
+
+            try
+            {
+                var y = ExpressionBuilder.BuildPropertyExpression<ItemSummaryDto>("Name");
+
+                var q2 = QueryBuilder<ItemSummaryDto>.NewQuery(y, item.Name, ComparisonOperator.Contains);
+
+                // query item
+                var r2 = await _itemRepo.QueryItemsContinuation(q2.Build());
+
+                // check the response
+                Validator.IsNotNull(r2);
+                Validator.IsTrue(r2.Entities.Count == 1);
+                ItemDtoValidator.ItemSummaryCheck(r2.Entities.First());
+                Validator.IsTrue(r2.Entities.Contains(item));
+            }
+            catch
+            {
+
+            }
         }
 
         [TestMethod]

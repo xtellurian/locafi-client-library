@@ -17,39 +17,39 @@ namespace Locafi.Client.Model.Query
             {
                 case ComparisonOperator.Equals:
                     filter =
-                        $"{QueryStrings.Filter.Equals(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.Equals(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
                 case ComparisonOperator.NotEquals:
                     filter =
-                        $"{QueryStrings.Filter.NotEquals(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.NotEquals(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
                 case ComparisonOperator.Contains:
                     filter =
-                        $"{QueryStrings.Filter.Contains(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.Contains(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
                 case ComparisonOperator.GreaterThan:
                     filter =
-                        $"{QueryStrings.Filter.GreaterThan(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.GreaterThan(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
                 case ComparisonOperator.LessThan:
                     filter =
-                        $"{QueryStrings.Filter.LessThan(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.LessThan(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
                 case ComparisonOperator.GreaterThanOrEqual:
                     filter =
-                        $"{QueryStrings.Filter.GreaterThanOrEqual(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.GreaterThanOrEqual(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
                 case ComparisonOperator.LessThanOrEqual:
                     filter =
-                        $"{QueryStrings.Filter.LessThanOrEqual(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.LessThanOrEqual(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
                 case ComparisonOperator.ContainedIn:
                     filter =
-                        $"{QueryStrings.Filter.ContainedIn(ConvertToOdataValue(value), ConvertToOdataProperty(propInfo, propertyLambda))}";
+                        $"{QueryStrings.Filter.ContainedIn(ConvertToOdataValue(propInfo, value), ConvertToOdataProperty(propInfo, propertyLambda))}";
                     break;
                 default:
                     filter =
-                        $"{QueryStrings.Filter.Contains(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(value))}";
+                        $"{QueryStrings.Filter.Contains(ConvertToOdataProperty(propInfo, propertyLambda), ConvertToOdataValue(propInfo, value))}";
                     break;
             }
             return filter;
@@ -75,46 +75,56 @@ namespace Locafi.Client.Model.Query
             return propInfo.Name;
         }
 
-        private string ConvertToOdataValue<TProperty>(TProperty p)
+        private string ConvertToOdataValue<TProperty>(PropertyInfo propInfo, TProperty p)
         {
             if (p == null)
                 return $"null";
 
             var type = typeof(TProperty);
 
-            // bool's are not surrounded by '', and are lower case
-            if (type == typeof(bool)
-                || type == typeof(byte)
-                || type == typeof(char)
-                || type == typeof(decimal)
-                || type == typeof(double)
-                || type == typeof(float)
-                || type == typeof(int)
-                || type == typeof(long)
-                || type == typeof(sbyte)
-                || type == typeof(short)
-                || type == typeof(uint)
-                || type == typeof(ulong)
-                || type == typeof(ushort)
-                )
+            // if we were given a generic object then use the type from the object property
+            if(type == typeof(object))
+                type = propInfo.PropertyType;
+
+            try
             {
-                return $"{p.ToString().ToLower()}";
-            }
+                // bool's are not surrounded by '', and are lower case
+                if (type == typeof(bool)
+                    || type == typeof(byte)
+                    || type == typeof(char)
+                    || type == typeof(decimal)
+                    || type == typeof(double)
+                    || type == typeof(float)
+                    || type == typeof(int)
+                    || type == typeof(long)
+                    || type == typeof(sbyte)
+                    || type == typeof(short)
+                    || type == typeof(uint)
+                    || type == typeof(ulong)
+                    || type == typeof(ushort)
+                    )
+                {
+                    return $"{p.ToString().ToLower()}";
+                }
 
-            if (type == typeof(Guid) || type == typeof(Guid?)) // guid's are not surrounded by ''
-                return $"{p}";
+                if (type == typeof(Guid) || type == typeof(Guid?)) // guid's are not surrounded by ''
+                    return $"{p}";
 
-            if (type == typeof(DateTimeOffset) || type == typeof(DateTimeOffset?)) //datetimes are difficult
+                if (type == typeof(DateTimeOffset) || type == typeof(DateTimeOffset?)) //datetimes are difficult
+                {
+                    var d = (DateTimeOffset)(object)p;
+                    return d.ToString("o").Remove(19) + 'Z';
+                }
+
+                if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || type.GetTypeInfo().BaseType == typeof(ValueType)) // strings must be surrounded like so: '<string_value>'
+                    return $"'{p}'";
+
+
+                throw new NotImplementedException($"{type.FullName} is not supported as a queriable property");
+            }catch
             {
-                var d = (DateTimeOffset)(object)p;
-                return d.ToString("o").Remove(19) + 'Z';
+                throw new ArgumentException("Unable to convert to odata value");
             }
-
-            if (type == typeof(string) || type.GetTypeInfo().BaseType == typeof(Enum) || type.GetTypeInfo().BaseType == typeof(ValueType)) // strings must be surrounded like so: '<string_value>'
-                return $"'{p}'";
-            
-            
-            throw new NotImplementedException($"{type.FullName} is not supported as a queriable property");
         }
 
         protected PropertyInfo Validate<TProperty>(Expression<Func<T, TProperty>> propertyLambda)
@@ -159,7 +169,7 @@ namespace Locafi.Client.Model.Query
 
             // validate value and property type are the same
             Type propertyType = propInfo.PropertyType;
-            if (propertyType != otherType)
+            if (propertyType != otherType && otherType != typeof(object))   // don't error yet if we've been given a generic object, wait and error if it can't be converted to the correct odata value
                 throw new ArgumentException("Types must match");
 
 
